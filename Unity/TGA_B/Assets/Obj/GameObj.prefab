@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1933682501586198230
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1933682501586198232}
+  - component: {fileID: 1933682501586198233}
+  - component: {fileID: 1933682501586198235}
+  - component: {fileID: 4979717295734072713}
+  m_Layer: 0
+  m_Name: GameObj
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1933682501586198232
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933682501586198230}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1933682501586198233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933682501586198230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93341effdce65694cbfe8da58bc3fbd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1933682501586198235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933682501586198230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e1db1a963b597428e965980b9855e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_forceHand: {x: 3, y: 3}
+  m_speedHand: 1
+  m_gravityHand: 8
+  m_forceAssult: {x: 6, y: 3}
+  m_speedAssult: 1.5
+  m_gravityAssult: 5
+  m_forceGrenade: {x: 12, y: 9}
+  m_speedGrenade: 0.65
+  m_gravityGrenade: 16
+  m_forceShot: {x: 3, y: 3}
+  m_speedShot: 1
+  m_gravityShot: 5
+  m_forceLMG: {x: 9, y: 6}
+  m_speedLMG: 1.2
+  m_gravityLMG: 2
+  m_forceSniper: {x: 15, y: 3}
+  m_speedSniper: 4
+  m_gravitySniper: 2
+--- !u!114 &4979717295734072713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933682501586198230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0218c260524d04469b2826cc8e89e61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  g_Enemy: {fileID: 6856223325821138868, guid: f6988cc4e770f04489915d4a9f85a582, type: 3}
+  g_smallEnemy: {fileID: 7549394169755212019, guid: 99975a5c6c5fd24468d7ef06685157eb,
+    type: 3}
