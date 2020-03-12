@@ -24,7 +24,6 @@ namespace basecross{
 
 		void CreateResourses();
 		void FindFile(wstring dir);
-		void FindMediaDirectoryFile(wstring dir);
 
 		wstring m_stageKey[GameStageKey::Max];
 

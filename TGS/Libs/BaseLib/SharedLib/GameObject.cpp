@@ -709,7 +709,7 @@ namespace basecross {
 			m_UpdateActive(true),
 			m_DrawViewIndex(0),
 			m_IsShadowmapDraw(true),
-			m_IsPhysicsActive(false)
+			m_IsPhysicsActive(true)
 		{}
 		~Impl() {}
 		void RemoveTargetGameObject(const shared_ptr<GameObject>& targetobj);

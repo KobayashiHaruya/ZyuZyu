@@ -24,40 +24,6 @@ namespace basecross{
 
 	}
 
-	void Scene::FindMediaDirectoryFile(wstring dir) {
-		//wstring folderDir = dir + L"Wall/";
-
-		////メッシュを登録
-		//auto wallMesh = MeshResource::CreateStaticModelMesh(folderDir, L"m_wall.bmf");
-		//App::GetApp()->RegisterResource(L"m_wall.bmf", wallMesh);
-
-		//folderDir = dir + L"Rock/";
-		//auto rockMesh = MeshResource::CreateStaticModelMesh(folderDir, L"m_rock.bmf");
-		//App::GetApp()->RegisterResource(L"m_rock.bmf", rockMesh);
-
-		//folderDir = dir + L"GasTank/";
-		//auto gasTankMesh = MeshResource::CreateStaticModelMesh(folderDir, L"m_GasTank.bmf");
-		//App::GetApp()->RegisterResource(L"m_GasTank.bmf", gasTankMesh);
-
-		//folderDir = dir + L"Buil_S/";
-		//auto buil_sMesh = MeshResource::CreateStaticModelMesh(folderDir, L"m_Buil_s.bmf");
-		//App::GetApp()->RegisterResource(L"m_Buil_s.bmf", buil_sMesh);
-
-		//folderDir = dir + L"Buil_M/";
-		//auto buil_mMesh = MeshResource::CreateStaticModelMesh(folderDir, L"m_buil.bmf");
-		//App::GetApp()->RegisterResource(L"m_buil.bmf", buil_mMesh);
-
-		//folderDir = dir + L"House/";
-		//auto houseMesh = MeshResource::CreateStaticModelMesh(folderDir, L"m_House.bmf");
-		//App::GetApp()->RegisterResource(L"m_House.bmf", houseMesh);
-
-		//folderDir = dir + L"Wall_Corner/";
-		//auto wall_cornerMesh = MeshResource::CreateStaticModelMesh(folderDir, L"m_wall_corner.bmf");
-		//App::GetApp()->RegisterResource(L"m_wall_corner.bmf", wall_cornerMesh);
-
-
-	}
-
 	void Scene::FindFile(wstring dir) {
 		HANDLE hFind;
 		WIN32_FIND_DATA win32fd;
@@ -132,7 +98,7 @@ namespace basecross{
 		try {
 			//リソース作成
 			CreateResourses();
-			SetGameStage(GameStageKey::result);
+			SetGameStage(GameStageKey::game);
 		}
 		catch (...) {
 			throw;
