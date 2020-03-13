@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class Weapon : MonoBehaviour
 {
+    [SerializeField]
+    private Transform m_instanceTrans;
+
     public GameObject m_camera;
 
     public GameObject g_weaponType;
@@ -243,25 +246,25 @@ public class Weapon : MonoBehaviour
             case 0:
                 break;
             case 1:
-                Instantiate(m_bulletHand, transform.position, m_bulletRot);
+                Instantiate(m_bulletHand, m_instanceTrans.position, m_bulletRot);
                 break;
             case 2:
-                Instantiate(m_bulletAssult, transform.position, m_bulletRot);
+                Instantiate(m_bulletAssult, m_instanceTrans.position, m_bulletRot);
                 break;
             case 3:
-                Instantiate(m_bulletGrenade, transform.position, m_bulletRot);
+                Instantiate(m_bulletGrenade, m_instanceTrans.position, m_bulletRot);
                 break;
             case 4:
-                Instantiate(m_bulletShot, transform.position, m_bulletRot);
+                Instantiate(m_bulletShot, m_instanceTrans.position, m_bulletRot);
                 break;
             case 5:
-                Instantiate(m_bulletLMG, transform.position, m_bulletRot);
+                Instantiate(m_bulletLMG, m_instanceTrans.position, m_bulletRot);
                 break;
             case 6:
-                Instantiate(m_bulletSniper, transform.position, m_bulletRot);
+                Instantiate(m_bulletSniper, m_instanceTrans.position, m_bulletRot);
                 break;
             case 7:
-                Instantiate(m_bulletC4, transform.position, m_bulletRot);
+                Instantiate(m_bulletC4, m_instanceTrans.position, m_bulletRot);
                 break;
         }
     }

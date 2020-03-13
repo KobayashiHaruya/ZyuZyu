@@ -36,8 +36,10 @@ public class Key : MonoBehaviour
 
 
     static public int mouseLeft = 0;
+    static public int mouseRight = 0;
 
     bool push = true;
+    bool rightPush = true;
 
     void Start()
     {
@@ -155,6 +157,25 @@ public class Key : MonoBehaviour
         else
         {
             mouseLeft = 0;
+        }
+
+        if (Input.GetMouseButtonDown(1) || (LT == 1 && rightPush))
+        {
+            mouseRight = 1;
+            push = false;
+        }
+        else if (Input.GetMouseButton(1) || LT == 1)
+        {
+            mouseRight = 2;
+        }
+        else if (Input.GetMouseButtonUp(1) || (LT < 1 && !rightPush))
+        {
+            mouseRight = 3;
+            push = true;
+        }
+        else
+        {
+            mouseRight = 0;
         }
 
 

@@ -17,7 +17,7 @@ public class SetWeaponCannon : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Enemy")
         {
             m_enter = true;
         }
@@ -25,7 +25,7 @@ public class SetWeaponCannon : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Enemy")
         {
             m_enter = false;
         }

@@ -20,8 +20,11 @@ public class EnemySearch : MonoBehaviour
 
     Vector3 m_dis = Vector3.zero;
 
+    private EnemyPlayer m_enemyPlayer;
+
     void Start()
     {
+        m_enemyPlayer = GetComponent<EnemyPlayer>();
     }
 
 
@@ -94,6 +97,8 @@ public class EnemySearch : MonoBehaviour
             {
                 p2 = other.gameObject.transform.position;
             }
+
+            m_enemyPlayer.RandomBulletShot();
         }
 
 
