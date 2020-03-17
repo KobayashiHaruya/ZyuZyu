@@ -57,10 +57,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5e1db1a963b597428e965980b9855e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_forceHand: {x: 3, y: 3}
+  m_forceHand: {x: 50, y: 50}
   m_speedHand: 1
   m_gravityHand: 8
-  m_forceAssult: {x: 6, y: 3}
+  m_forceAssult: {x: 100, y: 100}
   m_speedAssult: 1.5
   m_gravityAssult: 5
   m_forceGrenade: {x: 12, y: 9}
@@ -75,6 +75,11 @@ MonoBehaviour:
   m_forceSniper: {x: 15, y: 3}
   m_speedSniper: 4
   m_gravitySniper: 2
+  m_forceC4: {x: 20, y: 14}
+  m_speedC4: 0.5
+  m_gravityC4: 5
+  m_forceProx: {x: 10, y: 8}
+  m_forceOil: {x: 100, y: 1}
 --- !u!114 &4979717295734072713
 MonoBehaviour:
   m_ObjectHideFlags: 0
