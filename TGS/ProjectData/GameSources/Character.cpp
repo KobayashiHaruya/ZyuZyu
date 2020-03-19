@@ -23,7 +23,6 @@ namespace basecross{
 		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
 		PtrDraw->SetMeshResource(L"DEFAULT_CAPSULE");
 
-
 		auto ptrColl = AddComponent<CollisionCapsule>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 
@@ -140,9 +139,12 @@ namespace basecross{
 	}
 
 	void Character::BulletFire() {
-		//GetStage()->AddGameObject<Bullet>(
-		//	
-		//	);
+		GetStage()->AddGameObject<Bullet>(
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(1.0f, 1.0f, 1.0f),
+			1.0f, 1.0f
+			);
 	}
 
 	void Character::AttackHit(Vec3 rot) {

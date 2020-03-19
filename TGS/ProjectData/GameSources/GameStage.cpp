@@ -67,6 +67,19 @@ namespace basecross {
 				Vec3(1.0f, 1.0f, 1.0f),
 				0.15f, 10.0f, 5.0f
 				);
+
+			AddGameObject<Bullet>(
+				Vec3(-5.0f, 1.0f, 0.0f),
+				Vec3(0.0f, 4.0f, 0.0f),
+				Vec3(1.0f, 1.0f, 1.0f),
+				1.0f, 1.0f
+				);
+			AddGameObject<Bullet>(
+				Vec3(-10.0f, 1.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(1.0f, 1.0f, 1.0f),
+				1.0f, 1.0f
+				);
 		}
 		catch (...) {
 			throw;

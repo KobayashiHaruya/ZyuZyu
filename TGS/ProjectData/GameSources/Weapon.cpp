@@ -19,6 +19,7 @@ namespace basecross {
 		PtrDraw->SetMeshResource(L"DEFAULT_Sphere");
 		//PtrDraw->SetDiffuse(m_color);
 
+
 		auto ptrColl = AddComponent<CollisionSphere>();
 		//ptrColl->SetAfterCollision(AfterCollision::None);
 
@@ -44,7 +45,6 @@ namespace basecross {
 		ptr->SetRotation(m_rot);
 		ptr->SetScale(m_scale);
 
-
 		//‰e‚ð‚Â‚¯‚é
 		auto ShadowPtr = AddComponent<Shadowmap>();
 		ShadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
@@ -52,6 +52,8 @@ namespace basecross {
 		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
 		PtrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
+		PtrDraw->SetTextureResource(L"trace.png");
+		SetAlphaActive(true);
 
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
@@ -71,18 +73,15 @@ namespace basecross {
 		auto psPtr = GetComponent<RigidbodySphere>();
 		auto rot = GetComponent<Transform>()->GetRotation();
 
+		float rad = rot.y * (180.0f / 3.14f);
 
-		float rad = rot.y /** Mathf.Deg2Rad*/;
+		float x = cosf(rot.y);
+		float z = sinf(rot.y);
 
-		float x = sinf(rad);
-		float z = cosf(rad);
+		Vec3 force = m_moveSpeed * Vec3(x, 0.0f, z);
 
-		
-
-		Vec3 force = m_moveSpeed * Vec3(x, 1.0f, z);
-
-		psPtr->SetLinearVelocity(force);
-		psPtr->ApplyForce(Vec3(0.0f, -m_gravityScale, 0.0f));
+		psPtr->SetLinearVelocity(Vec3(x, 0.0f, z));
+		//psPtr->ApplyForce(Vec3(0.0f, -m_gravityScale, 0.0f));
 	}
 
 	void BulletBase::Destroy() {
