@@ -1,8 +1,0 @@
-*.user
-*.aps
-/**/Temp/
-/**/Debug/
-/**/Release/
-/**/media/
-/**/.vs/
-/**/GameSources/.filters
