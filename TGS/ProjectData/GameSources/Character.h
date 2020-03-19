@@ -43,6 +43,7 @@ namespace basecross{
 		void Draw();
 		void PlayerCamera();
 		void PlayerMove();
+		void BulletFire();
 		void AttackHit(Vec3 rot);
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
