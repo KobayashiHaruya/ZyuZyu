@@ -11,6 +11,7 @@ namespace basecross{
 	enum GameStageKey {
 		copyright,
 		title,
+		charSelect,
 		game,
 		result,
 		Max

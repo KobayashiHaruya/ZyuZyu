@@ -3,7 +3,7 @@
 
 namespace basecross {
 
-	void TitleStage::CreateViewLight() {
+	void CharSelectStage::CreateViewLight() {
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
@@ -18,11 +18,11 @@ namespace basecross {
 		PtrMultiLight->SetDefaultLighting();
 	}
 
-	void TitleStage::CreateUI() {
+	void CharSelectStage::CreateUI() {
 
 	}
 
-	void TitleStage::OnCreate() {
+	void CharSelectStage::OnCreate() {
 		try {
 			CreateViewLight();
 			CreateUI();
@@ -32,12 +32,8 @@ namespace basecross {
 		}
 	}
 
-	void TitleStage::OnUpdate() {
-		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-		if (KeyState.m_bPressedKeyTbl[VK_SPACE] || KeyState.m_bPushKeyTbl['W'] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) {
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::game);
-		}
+	void CharSelectStage::OnUpdate() {
+
 	}
 
 }
