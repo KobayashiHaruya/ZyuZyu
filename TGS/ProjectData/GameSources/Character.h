@@ -16,10 +16,9 @@ namespace basecross{
 		float m_gravityScale;
 		float m_jumpPower;
 
-		void Draw();
-		void PlayerCamera();
-		Vec3 PlayerMove();
-		void PlayerJump();
+		float m_force = 1.0f;
+		bool m_jump = true;
+
 
 	public:
 
@@ -41,9 +40,44 @@ namespace basecross{
 		{}
 		~Character() {}
 
-		virtual void OnCreate();
-		virtual void OnUpdate();
+		void Draw();
+		void PlayerCamera();
+		void PlayerMove();
+		void AttackHit(Vec3 rot);
+
+		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
+		virtual void OnCollisionExit(shared_ptr<GameObject>& Other) override;
+	
+	
 	};
+
+
+	class TestPlayer : public Character {
+	public:
+		TestPlayer(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos,
+			const Vec3& rot,
+			const Vec3& scale,
+			const float& speed,
+			const float& gravity,
+			const float& jump
+		) :
+			Character(StagePtr,
+			pos,
+			rot,
+			scale,
+			speed,
+			gravity,
+			jump
+			)
+		{}
+		~TestPlayer() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+	};
+
 
 }
 //end basecross

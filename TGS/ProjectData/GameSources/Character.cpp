@@ -25,7 +25,7 @@ namespace basecross{
 
 
 		auto ptrColl = AddComponent<CollisionCapsule>();
-		//ptrColl->SetAfterCollision(AfterCollision::None);
+		ptrColl->SetAfterCollision(AfterCollision::None);
 
 		//各パフォーマンスを得る
 		GetStage()->SetCollisionPerformanceActive(true);
@@ -35,12 +35,14 @@ namespace basecross{
 		AddTag(L"Character");
 
 
-		//WorldMatrixをもとにRigidbodySphereのパラメータを作成
-		PsSphereParam param(ptr->GetWorldMatrix(), 10.0f, false, PsMotionType::MotionTypeActive);
-		auto psPtr = AddComponent<RigidbodySphere>(param);
+
+		PsBoxParam param(ptr->GetWorldMatrix(), 10.0f, true, PsMotionType::MotionTypeActive);
+		auto psPtr = AddComponent<RigidbodyBox>(param);
 		psPtr->SetAutoTransform(true);
 
+
 		psPtr->SetAutoGravity(-m_gravityScale);
+
 	}
 
 	void Character::PlayerCamera() {
@@ -54,7 +56,7 @@ namespace basecross{
 
 	}
 
-	Vec3 Character::PlayerMove() {
+	void Character::PlayerMove() {
 		Vec3 angle(0, 0, 0);
 		//コントローラの取得
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
@@ -109,25 +111,9 @@ namespace basecross{
 			//移動サイズを設定。
 			angle *= moveSize;
 		}
-		return angle;
 
-	}
-
-	void Character::PlayerJump() {
-
-	}
-
-
-
-	void Character::OnCreate() {
-		Draw();
-		PlayerCamera();
-	}
-
-	void Character::OnUpdate() {
-		auto vec = PlayerMove();
-		auto ptrPs = GetComponent<RigidbodySphere>();
-		
+		auto vec = angle;
+		auto ptrPs = GetComponent<RigidbodyBox>();
 				
 		Vec3 speed = Vec3(0.0f, 0.0f, 0.0f);
 
@@ -141,8 +127,61 @@ namespace basecross{
 
 		speed = speed + ptrPs->GetPosition();
 		ptrPs->SetPosition(speed);
-		//ptrPs->SetLinearVelocity(Vec3(0.0f,0.0f,0.0f));
+		ptrPs->SetAngularVelocity(Vec3(0.0f, 0.0f, 0.0f));
 
+
+		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl[VK_SPACE]) & m_jump) {
+			auto vel = ptrPs->GetLinearVelocity();
+			ptrPs->SetLinearVelocity(Vec3(vel.x, m_jumpPower, vel.z));
+			m_jump = false;
+		}
+
+
+	}
+
+	void Character::AttackHit(Vec3 rot) {
+		auto ptrPs = GetComponent<RigidbodyBox>();
+
+		
+
+  //      float rad = rot.y * Mathf.Deg2Rad;
+
+  //      float x = Mathf.Sin(rad);
+  //      float z = Mathf.Cos(rad);
+
+  //      Vec3 vecForce = (Vec3(x, 1.0f, z)) * m_force;
+
+		//Vec3 force = vecForce * m_force;
+		//ptrPs->SetLinearVelocity(m_force);
+
+	}
+
+	void Character::OnCollisionEnter(shared_ptr<GameObject>& Other) {
+		if (Other->FindTag(L"Object")) {
+			m_jump = true;
+			auto ptrPs = GetComponent<RigidbodyBox>();
+		}
+		if (Other->FindTag(L"Bullet")) {
+			auto rot = Other->GetComponent<Transform>()->GetRotation();
+			AttackHit(rot);
+		}
+	}
+
+	void Character::OnCollisionExit(shared_ptr<GameObject>& Other) {
+		if (Other->FindTag(L"Object")) {
+			m_jump = false;
+			auto ptrPs = GetComponent<RigidbodyBox>();
+		}
+	}
+
+
+	void TestPlayer::OnCreate() {
+		Draw();
+		PlayerCamera();
+	}
+
+	void TestPlayer::OnUpdate() {
+		PlayerMove();
 	}
 
 }
