@@ -52,6 +52,7 @@ public class WireGun : MonoBehaviour
     private void Start()
     {
         m_coolTimeCount = m_coolTime;
+        m_playerRigidbody = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -101,6 +102,7 @@ public class WireGun : MonoBehaviour
     private void Roll()
     {
         if (!m_instanceWire || !m_isLanding) return;
+        m_playerRigidbody.AddForce(Vector3.zero);
         transform.position = Vector3.Lerp(transform.position, m_endPos, m_rollSpeed * Time.deltaTime);
         if (Vector3.Distance(transform.position, m_endPos) <= m_unlockDistance) ResetWire();
     }
