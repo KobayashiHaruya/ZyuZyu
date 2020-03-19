@@ -15,6 +15,8 @@
 #include "MyUI.h"
 #include "TitleStage.h"
 #include "ResultStage.h"
+#include "CharSelect.h"
 #include "MyCamera.h"
 #include "Object.h"
+#include "Weapon.h"
 

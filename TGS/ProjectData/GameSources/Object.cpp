@@ -20,12 +20,12 @@ namespace basecross {
 
 
 		auto ptrColl = AddComponent<CollisionObb>();
-		//ptrColl->SetAfterCollision(AfterCollision::None);
+		ptrColl->SetAfterCollision(AfterCollision::None);
 
-		//各パフォーマンスを得る
-		GetStage()->SetCollisionPerformanceActive(true);
-		GetStage()->SetUpdatePerformanceActive(true);
-		GetStage()->SetDrawPerformanceActive(true);
+		PsBoxParam param(ptr->GetWorldMatrix(), 100.0f, true, PsMotionType::MotionTypeFixed);
+		auto PsPtr = AddComponent<RigidbodyBox>(param);
+		PsPtr->SetAutoTransform(false);
+
 
 		AddTag(L"Object");
 
