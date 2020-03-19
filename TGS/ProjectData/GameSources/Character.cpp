@@ -139,6 +139,12 @@ namespace basecross{
 
 	}
 
+	void Character::BulletFire() {
+		//GetStage()->AddGameObject<Bullet>(
+		//	
+		//	);
+	}
+
 	void Character::AttackHit(Vec3 rot) {
 		auto ptrPs = GetComponent<RigidbodyBox>();
 
