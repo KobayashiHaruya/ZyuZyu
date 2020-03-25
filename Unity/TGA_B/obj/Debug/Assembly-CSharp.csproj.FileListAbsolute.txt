@@ -1,0 +1,2 @@
+C:\Users\sou\Desktop\銃銃\Unity\TGA_B\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+C:\Users\sou\Desktop\銃銃\Unity\TGA_B\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
