@@ -50,21 +50,50 @@ namespace basecross {
 			//SetPhysicsActive(true);
 			//ビューとライトの作成
 			CreateViewLight();
+			CreateUI();
 			AddGameObject<Object>(
-				Vec3(0.0f, -1.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(10.0f, 0.5f, 10.0f)
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(50.0f, 0.5f, 10.0f)
 				);
-			AddGameObject<Character>(
-				Vec3(0.0f, 2.0f, 0.0f),
+			AddGameObject<Object>(
+				Vec3(0.0f, 4.0f, 20.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(5.0f, 10.0f, 5.0f)
+				);
+			AddGameObject<TestPlayer>(
+				Vec3(0.0f, 3.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f),
-				0.1f, 1.0f, 10.0f
+				0.15f, 10.0f, 5.0f
+				);
+
+			AddGameObject<Bullet>(
+				Vec3(-5.0f, 1.0f, 0.0f),
+				Vec3(0.0f, 4.0f, 0.0f),
+				Vec3(1.0f, 1.0f, 1.0f),
+				1.0f, 1.0f
+				);
+			AddGameObject<Bullet>(
+				Vec3(-10.0f, 1.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(1.0f, 1.0f, 1.0f),
+				1.0f, 1.0f
 				);
 		}
 		catch (...) {
 			throw;
 		}
+	}
+
+	void GameStage::OnUpdate() {
+		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+
+		if (KeyState.m_bPressedKeyTbl['E']) {
+
+
+		}
+
 	}
 
 }

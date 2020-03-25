@@ -100,6 +100,7 @@ public class Weapon : MonoBehaviour
 
     void WeaponState()
     {
+        var status = new GunStatus();
         switch (m_weaponF)
         {
             case 0:
@@ -115,6 +116,7 @@ public class Weapon : MonoBehaviour
                 m_maxTime = 0;
                 m_maxReloadTime = 50;
                 m_shootType = false;
+                status.m_gunName = "ハンドガン";
                 break;
             case 2:
                 m_maxAmmo = 30;
@@ -122,6 +124,7 @@ public class Weapon : MonoBehaviour
                 m_maxTime = 5;
                 m_maxReloadTime = 80;
                 m_shootType = true;
+                status.m_gunName = "アサルト";
                 break;
             case 3:
                 m_maxAmmo = 6;
@@ -129,6 +132,7 @@ public class Weapon : MonoBehaviour
                 m_maxTime = 0;
                 m_maxReloadTime = 360;
                 m_shootType = false;
+                status.m_gunName = "グレラン";
                 break;
             case 4:
                 m_maxAmmo = 2;
@@ -136,6 +140,7 @@ public class Weapon : MonoBehaviour
                 m_maxTime = 0;
                 m_maxReloadTime = 90;
                 m_shootType = false;
+                status.m_gunName = "ショットガン";
                 break;
             case 5:
                 m_maxAmmo = 100;
@@ -143,6 +148,7 @@ public class Weapon : MonoBehaviour
                 m_maxTime = 12;
                 m_maxReloadTime = 240;
                 m_shootType = true;
+                status.m_gunName = "LMG";
                 break;
             case 6:
                 m_maxAmmo = 6;
@@ -150,6 +156,7 @@ public class Weapon : MonoBehaviour
                 m_maxTime = 80;
                 m_maxReloadTime = 100;
                 m_shootType = false;
+                status.m_gunName = "スナイパー";
                 break;
             case 7:
                 m_maxAmmo = 999;
@@ -157,6 +164,7 @@ public class Weapon : MonoBehaviour
                 m_maxTime = 0;
                 m_maxReloadTime = 0;
                 m_shootType = false;
+                status.m_gunName = "C4";
                 break;
         }
 
@@ -164,7 +172,12 @@ public class Weapon : MonoBehaviour
         m_reloadTime = m_maxReloadTime;
         m_time = 0;
 
+        status.m_maxAmmo = m_maxAmmo;
+        status.m_shootAmmo = m_shootAmmo;
+        status.m_maxTime = m_maxTime;
+        status.m_maxReloadTime = m_maxReloadTime;
 
+        StatusInformation.Instance.SetGunStatus(status);
     }
 
     void Shoot()
