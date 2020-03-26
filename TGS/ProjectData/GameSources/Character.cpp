@@ -9,38 +9,73 @@
 namespace basecross{
 
 	void Character::Draw() {
-		auto ptr = GetComponent<Transform>();
+		vector<VertexPositionNormalTexture> vertices;
+		vector<uint16_t> indices;
+		bsm::Vec3 pointA(0, 0, 0);
+		bsm::Vec3 pointB(0, 0, 0);
+		pointA -= bsm::Vec3(0, m_scale.y * 0.5f, 0);
+		pointB += bsm::Vec3(0, m_scale.y * 0.5f, 0);
+		MeshUtill::CreateCapsule(m_scale.x,
+			pointA, pointB, 18, vertices, indices, true);
 
-		ptr->SetPosition(m_pos);
-		ptr->SetRotation(m_rot);
-		ptr->SetScale(m_scale);
+		shared_ptr<MeshResource> m_CapsuleMesh;
+
+		m_CapsuleMesh = MeshResource::CreateMeshResource(vertices, indices, false);
+
+
+		Quat q;
+		q.rotationZ(-1.5f);
+		auto ptrTrans = GetComponent<Transform>();
+		//スケーリングは1.0f
+		ptrTrans->SetScale(Vec3(1.0f));
+		ptrTrans->SetPosition(m_pos);
 
 
 		//影をつける
-		auto ShadowPtr = AddComponent<Shadowmap>();
-		ShadowPtr->SetMeshResource(L"DEFAULT_CAPSULE");
+		auto ptrShadow = AddComponent<Shadowmap>();
+		ptrShadow->SetMeshResource(m_CapsuleMesh);
 
-		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
-		PtrDraw->SetMeshResource(L"DEFAULT_CAPSULE");
+		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		ptrDraw->SetFogEnabled(true);
+		ptrDraw->SetMeshResource(m_CapsuleMesh);
+		ptrDraw->SetOwnShadowActive(true);
 
-		auto ptrColl = AddComponent<CollisionCapsule>();
-		ptrColl->SetAfterCollision(AfterCollision::None);
+		//ptrDraw->SetMeshResource(L"DEFAULT_CAPSULE");
+		//ptrDraw->SetTextureResource(L"trace.png");
+		//SetAlphaActive(true);
 
 		//各パフォーマンスを得る
 		GetStage()->SetCollisionPerformanceActive(true);
 		GetStage()->SetUpdatePerformanceActive(true);
 		GetStage()->SetDrawPerformanceActive(true);
 
+		auto ptrColl = AddComponent<CollisionCapsule>();
+		ptrColl->SetAfterCollision(AfterCollision::None);
+
 		AddTag(L"Character");
 
 
+		//物理計算カプセル
+		PsCapsuleParam param;
+		//半径にする
+		param.m_HalfLen = m_scale.y * 0.5f;
+		param.m_Radius = m_scale.x * 0.5f;
+		param.m_Mass = 1.0f;
+		//慣性テンソルの計算
+		param.m_Inertia = BasePhysics::CalcInertiaCylinderX(
+			param.m_HalfLen + param.m_Radius,
+			param.m_Radius,
+			param.m_Mass
+		);
+		param.m_MotionType = PsMotionType::MotionTypeActive;
+		param.m_Quat = q;
+		param.m_Pos = m_pos;
+		auto ptrPs = AddComponent<RigidbodyCapsule>(param);
+		ptrPs->SetDrawActive(true);
 
-		PsBoxParam param(ptr->GetWorldMatrix(), 10.0f, true, PsMotionType::MotionTypeActive);
-		auto psPtr = AddComponent<RigidbodyBox>(param);
-		psPtr->SetAutoTransform(true);
+		ptrPs->SetAutoTransform(true);
 
-
-		psPtr->SetAutoGravity(-m_gravityScale);
+		ptrPs->SetAutoGravity(-m_gravityScale);
 
 	}
 
@@ -112,7 +147,7 @@ namespace basecross{
 		}
 
 		auto vec = angle;
-		auto ptrPs = GetComponent<RigidbodyBox>();
+		auto ptrPs = GetComponent<RigidbodyCapsule>();
 				
 		Vec3 speed = Vec3(0.0f, 0.0f, 0.0f);
 
@@ -138,17 +173,63 @@ namespace basecross{
 
 	}
 
+	void Character::PlayerRotMove() {
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+
+		float fThumbLY = 0.0f;
+		float fThumbLX = 0.0f;
+		WORD wButtons = 0;
+		if (cntlVec[0].bConnected) {
+			fThumbLY = cntlVec[0].fThumbRY;
+			fThumbLX = cntlVec[0].fThumbRX;
+		}
+
+		if (KeyState.m_bPushKeyTbl[VK_UP]) {
+			//前
+			fThumbLX = 1.0f;
+		}
+		else if (KeyState.m_bPushKeyTbl[VK_DOWN]) {
+			//後ろ
+			fThumbLX = -1.0f;
+		}
+		if (KeyState.m_bPushKeyTbl[VK_RIGHT]) {
+			//右
+			fThumbLY = 1.0f;
+		}
+		else if (KeyState.m_bPushKeyTbl[VK_LEFT]) {
+			//左
+			fThumbLY = -1.0f;
+		}
+		auto ptrPs = GetComponent<RigidbodyCapsule>();
+
+		Vec3 rotSpeed = Vec3(0.0f, 0.0f, 0.0f);
+
+		rotSpeed.x = fThumbLX * m_rotSpeed;
+		rotSpeed.y = fThumbLY * m_rotSpeed;
+
+		ptrPs->SetAngularVelocity(Vec3(0.0f, 0.0f, 0.0f));
+
+	}
+
 	void Character::BulletFire() {
-		GetStage()->AddGameObject<Bullet>(
-			Vec3(0.0f, 0.0f, 0.0f),
-			Vec3(0.0f, 0.0f, 0.0f),
-			Vec3(1.0f, 1.0f, 1.0f),
-			1.0f, 1.0f
-			);
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+
+		auto ptr = GetComponent<Transform>();
+
+		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl['F'])) {
+			GetStage()->AddGameObject<Bullet>(
+				ptr->GetPosition() + Vec3(1.0f,0.0f,0.0f),
+				ptr->GetRotation(),
+				Vec3(1.0f, 1.0f, 1.0f),
+				5.0f, 1.0f
+				);
+		}
 	}
 
 	void Character::AttackHit(Vec3 rot) {
-		auto ptrPs = GetComponent<RigidbodyBox>();
+		auto ptrPs = GetComponent<RigidbodyCapsule>();
 
 		
 
@@ -159,15 +240,15 @@ namespace basecross{
 
   //      Vec3 vecForce = (Vec3(x, 1.0f, z)) * m_force;
 
-		//Vec3 force = vecForce * m_force;
-		//ptrPs->SetLinearVelocity(m_force);
+		//Vec3 force = vecForce;
+		ptrPs->SetLinearVelocity(rot * m_force);
 
 	}
 
 	void Character::OnCollisionEnter(shared_ptr<GameObject>& Other) {
 		if (Other->FindTag(L"Object")) {
 			m_jump = true;
-			auto ptrPs = GetComponent<RigidbodyBox>();
+			auto ptrPs = GetComponent<RigidbodyCapsule>();
 		}
 		if (Other->FindTag(L"Bullet")) {
 			auto rot = Other->GetComponent<Transform>()->GetRotation();
@@ -178,7 +259,7 @@ namespace basecross{
 	void Character::OnCollisionExit(shared_ptr<GameObject>& Other) {
 		if (Other->FindTag(L"Object")) {
 			m_jump = false;
-			auto ptrPs = GetComponent<RigidbodyBox>();
+			auto ptrPs = GetComponent<RigidbodyCapsule>();
 		}
 	}
 
@@ -190,6 +271,8 @@ namespace basecross{
 
 	void TestPlayer::OnUpdate() {
 		PlayerMove();
+		PlayerRotMove();
+		BulletFire();
 	}
 
 }

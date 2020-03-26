@@ -37,7 +37,6 @@ namespace basecross {
 		float m_moveSpeed;
 		float m_gravityScale;
 
-
 	public:
 
 		BulletBase(const shared_ptr<Stage>& StagePtr,
@@ -82,6 +81,7 @@ namespace basecross {
 		virtual ~Bullet() {}
 
 		virtual void OnCreate();
+		virtual void OnUpdate();
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
 	};

@@ -13,6 +13,7 @@ namespace basecross{
 		Vec3 m_rot;
 		Vec3 m_scale;
 		float m_moveSpeed;
+		float m_rotSpeed = 1.0f;
 		float m_gravityScale;
 		float m_jumpPower;
 
@@ -43,6 +44,7 @@ namespace basecross{
 		void Draw();
 		void PlayerCamera();
 		void PlayerMove();
+		void PlayerRotMove();
 		void BulletFire();
 		void AttackHit(Vec3 rot);
 
