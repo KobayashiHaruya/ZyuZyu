@@ -78,7 +78,6 @@ namespace basecross {
 
 		if (KeyState.m_bPressedKeyTbl['E']) {
 
-
 		}
 
 	}
