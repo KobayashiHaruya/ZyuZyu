@@ -51,6 +51,13 @@ namespace basecross {
 		if (cntlVec[0].bConnected) {
 			fThumbLX = cntlVec[0].fThumbLX;
 		}
+	void Title_UI::OnCreate() {
+		Draw();
+	}
+
+	void Operation_UI::OnCreate() {
+		Draw();
+	}
 
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		if (KeyState.m_bPressedKeyTbl['A'] || (fThumbLX < 0.0f && m_oldFThumbLX == 0.0f)) {
