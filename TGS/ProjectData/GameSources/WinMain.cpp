@@ -143,7 +143,7 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 		MSG msg = { 0 };
 		//キーボード入力用
 		//ここに設定したキーボード入力を得る
-		vector<DWORD> UseKeyVec = { 'Q','W','E','R','A','S','D','F','G','Z','X','C','V',VK_SPACE,VK_SHIFT,VK_LSHIFT,VK_RSHIFT,VK_CONTROL,VK_RIGHT,VK_LEFT,VK_UP,VK_DOWN };
+		vector<DWORD> UseKeyVec = { 'Q','W','E','R','A','S','D','F','G','Z','X','C','V',VK_SPACE,VK_SHIFT,VK_LSHIFT,VK_RSHIFT,VK_CONTROL,VK_RIGHT,VK_LEFT,VK_UP,VK_DOWN,VK_LBUTTON,VK_RBUTTON };
 		while (WM_QUIT != msg.message) {
 			if (!App::GetApp()->ResetInputState(hWnd, UseKeyVec)) {
 				//キー状態が何もなければウインドウメッセージを得る
@@ -230,8 +230,8 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	setlocale(LC_ALL, "JPN");
 
 	//ウインドウの幅と高さ
-	int iClientWidth = 1920;
-	int iClientHeight = 1080;
+	int iClientWidth = 1240;
+	int iClientHeight = 960;
 	// フルスクリーンにするかどうかの判定
 	// コマンドラインに/fが設定されていたらフルスクリーンにする
 	bool isFullScreen = true;

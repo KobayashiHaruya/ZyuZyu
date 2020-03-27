@@ -114,7 +114,6 @@ namespace basecross {
 		~Operation_UI() {}
 
 		virtual void OnCreate() override;
-		void Draw();
 
 	};
 
