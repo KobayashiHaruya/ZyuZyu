@@ -32,5 +32,12 @@ namespace basecross {
 
 	}
 
+	void Title_UI::OnCreate() {
+		Draw();
+	}
+
+	void Operation_UI::OnCreate() {
+		Draw();
+	}
 
 }
