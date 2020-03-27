@@ -32,9 +32,6 @@ namespace basecross {
 
 	}
 
-		Draw();
-	}
-
 	void UI_Character_Select_Mask_Image::OnCreate() {
 		Draw();
 		SetMaskIndex(m_maskIndex);
@@ -42,14 +39,6 @@ namespace basecross {
 
 	void UI_Character_Select_Mask_Image::OnUpdate() {
 		MaskMove();
-	}
-
-	void UI_Character_Select_Mask_Image::MaskMove() {
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-		float fThumbLX = 0.0f;
-		if (cntlVec[0].bConnected) {
-			fThumbLX = cntlVec[0].fThumbLX;
-		}
 	}
 
 	void Title_UI::OnCreate() {
@@ -60,7 +49,7 @@ namespace basecross {
 		Draw();
 	}
 
-	void UI_Character_Select_Mask_Image::SetMaskIndex(int& index) {
+	void UI_Character_Select_Mask_Image::MaskMove() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		float fThumbLX = 0.0f;
