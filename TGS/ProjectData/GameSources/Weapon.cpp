@@ -42,7 +42,7 @@ namespace basecross {
 		auto ptr = GetComponent<Transform>();
 
 		ptr->SetPosition(m_pos);
-		ptr->SetRotation(m_rot);
+		ptr->SetRotation(Vec3(0.0f, m_rot.y, 0.0f));
 		ptr->SetScale(m_scale);
 
 		//‰e‚ð‚Â‚¯‚é
@@ -73,16 +73,15 @@ namespace basecross {
 		auto psPtr = GetComponent<RigidbodySphere>();
 		auto trans = GetComponent<Transform>();
 		auto rot = trans->GetRotation();
-		float rad = rot.y * (180.0f / 3.14f);
 
-		float x = cosf(rad);
-		float z = sinf(rad);
+		float rad = (90.0f * 3.1415) / 180.0f;
 
-		Vec3 force = m_moveSpeed * Vec3(x, 0.0f, z);
+		float x = tan(rot.y);
+		float z = cos(rot.y);
 
-		trans->SetPosition(force + trans->GetPosition());
+		Vec3 force = m_moveSpeed * Vec3(z, 0.0f, x);
 
-		//psPtr->SetLinearVelocity(force);
+		psPtr->SetLinearVelocity(force);
 		//psPtr->ApplyForce(Vec3(0.0f, -m_gravityScale, 0.0f));
 	}
 
@@ -93,11 +92,10 @@ namespace basecross {
 
 	void Bullet::OnCreate() {
 		Draw();
-
+		Move();
 	}
 
 	void Bullet::OnUpdate() {
-		Move();
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& Other) {

@@ -29,4 +29,24 @@ namespace basecross {
 
 	};
 
+	class Oil :public Object {
+	public:
+
+		Oil(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos,
+			const Vec3& rot,
+			const Vec3& scale
+		) :
+			Object(
+				StagePtr,
+				pos,
+				rot,
+				scale
+			)
+		{}
+		~Oil() {}
+
+	};
+
+
 }

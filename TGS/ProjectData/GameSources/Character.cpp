@@ -22,14 +22,13 @@ namespace basecross{
 
 		m_CapsuleMesh = MeshResource::CreateMeshResource(vertices, indices, false);
 
-
 		Quat q;
-		q.rotationZ(-1.5f);
-		auto ptrTrans = GetComponent<Transform>();
-		//スケーリングは1.0f
-		ptrTrans->SetScale(Vec3(1.0f));
-		ptrTrans->SetPosition(m_pos);
+		q.rotationZ(-90.0f * (3.14f / 180.0f));
 
+		auto ptrTrans = GetComponent<Transform>();
+		ptrTrans->SetPosition(m_pos);
+		ptrTrans->SetScale(Vec3(1.0f));
+		ptrTrans->SetQuaternion(q);
 
 		//影をつける
 		auto ptrShadow = AddComponent<Shadowmap>();
@@ -41,15 +40,16 @@ namespace basecross{
 		ptrDraw->SetOwnShadowActive(true);
 
 		//ptrDraw->SetMeshResource(L"DEFAULT_CAPSULE");
-		//ptrDraw->SetTextureResource(L"trace.png");
-		//SetAlphaActive(true);
+		ptrDraw->SetTextureResource(L"trace.png");
+		SetAlphaActive(true);
 
 		//各パフォーマンスを得る
 		GetStage()->SetCollisionPerformanceActive(true);
 		GetStage()->SetUpdatePerformanceActive(true);
 		GetStage()->SetDrawPerformanceActive(true);
 
-		auto ptrColl = AddComponent<CollisionCapsule>();
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetMakedSize(Vec3(1.0f, 1.5f, 1.0f));
 		ptrColl->SetAfterCollision(AfterCollision::None);
 
 		AddTag(L"Character");
@@ -161,7 +161,6 @@ namespace basecross{
 
 		speed = speed + ptrPs->GetPosition();
 		ptrPs->SetPosition(speed);
-		ptrPs->SetAngularVelocity(Vec3(0.0f, 0.0f, 0.0f));
 
 
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl[VK_SPACE]) & m_jump) {
@@ -178,21 +177,10 @@ namespace basecross{
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
 		float fThumbLY = 0.0f;
-		float fThumbLX = 0.0f;
-		WORD wButtons = 0;
 		if (cntlVec[0].bConnected) {
 			fThumbLY = cntlVec[0].fThumbRY;
-			fThumbLX = cntlVec[0].fThumbRX;
 		}
 
-		if (KeyState.m_bPushKeyTbl[VK_UP]) {
-			//前
-			fThumbLX = 1.0f;
-		}
-		else if (KeyState.m_bPushKeyTbl[VK_DOWN]) {
-			//後ろ
-			fThumbLX = -1.0f;
-		}
 		if (KeyState.m_bPushKeyTbl[VK_RIGHT]) {
 			//右
 			fThumbLY = 1.0f;
@@ -201,15 +189,17 @@ namespace basecross{
 			//左
 			fThumbLY = -1.0f;
 		}
+
+		auto trans = GetComponent<Transform>();
 		auto ptrPs = GetComponent<RigidbodyCapsule>();
 
-		Vec3 rotSpeed = Vec3(0.0f, 0.0f, 0.0f);
+		Vec3 speed;
 
-		rotSpeed.x = fThumbLX * m_rotSpeed;
-		rotSpeed.y = fThumbLY * m_rotSpeed;
+		speed.y = fThumbLY * m_rotSpeed;
 
-		ptrPs->SetAngularVelocity(Vec3(0.0f, 0.0f, 0.0f));
+		auto rot = trans->GetRotation();
 
+		ptrPs->SetAngularVelocity(speed);
 	}
 
 	void Character::BulletFire() {
@@ -217,10 +207,10 @@ namespace basecross{
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
 		auto ptr = GetComponent<Transform>();
-
+		
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl['F'])) {
 			GetStage()->AddGameObject<Bullet>(
-				ptr->GetPosition() + Vec3(1.0f,0.0f,0.0f),
+				ptr->GetPosition() + Vec3(0.0f,0.0f,2.0f),
 				ptr->GetRotation(),
 				Vec3(1.0f, 1.0f, 1.0f),
 				5.0f, 1.0f
@@ -238,10 +228,9 @@ namespace basecross{
   //      float x = Mathf.Sin(rad);
   //      float z = Mathf.Cos(rad);
 
-  //      Vec3 vecForce = (Vec3(x, 1.0f, z)) * m_force;
+        Vec3 vecForce = (Vec3(rot.x, 1.0f, rot.z)) * m_force;
 
-		//Vec3 force = vecForce;
-		ptrPs->SetLinearVelocity(rot * m_force);
+		ptrPs->SetLinearVelocity(rot);
 
 	}
 

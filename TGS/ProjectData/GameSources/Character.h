@@ -13,7 +13,7 @@ namespace basecross{
 		Vec3 m_rot;
 		Vec3 m_scale;
 		float m_moveSpeed;
-		float m_rotSpeed = 1.0f;
+		float m_rotSpeed = 1.5f;
 		float m_gravityScale;
 		float m_jumpPower;
 
