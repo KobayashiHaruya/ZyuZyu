@@ -32,7 +32,6 @@ namespace basecross {
 
 	}
 
-	void UI_Character_Select_Static_Image::OnCreate() {
 		Draw();
 	}
 
@@ -51,6 +50,8 @@ namespace basecross {
 		if (cntlVec[0].bConnected) {
 			fThumbLX = cntlVec[0].fThumbLX;
 		}
+	}
+
 	void Title_UI::OnCreate() {
 		Draw();
 	}
@@ -59,7 +60,13 @@ namespace basecross {
 		Draw();
 	}
 
+	void UI_Character_Select_Mask_Image::SetMaskIndex(int& index) {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		float fThumbLX = 0.0f;
+		if (cntlVec[0].bConnected) {
+			fThumbLX = cntlVec[0].fThumbLX;
+		}
 		if (KeyState.m_bPressedKeyTbl['A'] || (fThumbLX < 0.0f && m_oldFThumbLX == 0.0f)) {
 			SetMaskIndex(--m_maskIndex);
 		}
