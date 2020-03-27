@@ -32,5 +32,51 @@ namespace basecross {
 
 	}
 
+	void UI_Character_Select_Static_Image::OnCreate() {
+		Draw();
+	}
 
+	void UI_Character_Select_Mask_Image::OnCreate() {
+		Draw();
+		SetMaskIndex(m_maskIndex);
+	}
+
+	void UI_Character_Select_Mask_Image::OnUpdate() {
+		MaskMove();
+	}
+
+	void UI_Character_Select_Mask_Image::MaskMove() {
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		float fThumbLX = 0.0f;
+		if (cntlVec[0].bConnected) {
+			fThumbLX = cntlVec[0].fThumbLX;
+		}
+	void Title_UI::OnCreate() {
+		Draw();
+	}
+
+	void Operation_UI::OnCreate() {
+		Draw();
+	}
+
+		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+		if (KeyState.m_bPressedKeyTbl['A'] || (fThumbLX < 0.0f && m_oldFThumbLX == 0.0f)) {
+			SetMaskIndex(--m_maskIndex);
+		}
+
+		if (KeyState.m_bPressedKeyTbl['D'] || (fThumbLX > 0.0f && m_oldFThumbLX == 0.0f)) {
+			SetMaskIndex(++m_maskIndex);
+		}
+
+		m_oldFThumbLX = fThumbLX;
+	}
+
+	void UI_Character_Select_Mask_Image::SetMaskIndex(int& index) {
+		if (index < m_indexMin) index = m_indexMax;
+		if (index > m_indexMax) index = m_indexMin;
+		auto trans = GetComponent<Transform>();
+		auto pos = trans->GetPosition();
+		pos.x = m_startPosX + (index * m_movingValue);
+		trans->SetPosition(pos);
+	}
 }

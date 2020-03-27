@@ -27,7 +27,6 @@ namespace basecross {
 		//PtrMultiLight->SetDefaultLighting();
 
 
-
 		auto ptrView = CreateView<SingleView>();
 		//ƒrƒ…[‚ÌƒJƒƒ‰‚Ìİ’è
 		auto ptrMyCamera = ObjectFactory::Create<MyCamera>();
@@ -68,18 +67,6 @@ namespace basecross {
 				0.15f, 10.0f, 5.0f
 				);
 
-			AddGameObject<Bullet>(
-				Vec3(-5.0f, 1.0f, 0.0f),
-				Vec3(0.0f, 4.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f),
-				1.0f, 1.0f
-				);
-			AddGameObject<Bullet>(
-				Vec3(-10.0f, 1.0f, 0.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f),
-				1.0f, 1.0f
-				);
 		}
 		catch (...) {
 			throw;
@@ -90,7 +77,6 @@ namespace basecross {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
 		if (KeyState.m_bPressedKeyTbl['E']) {
-
 
 		}
 

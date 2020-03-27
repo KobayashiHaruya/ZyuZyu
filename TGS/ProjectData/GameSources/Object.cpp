@@ -22,8 +22,9 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 
-		PsBoxParam param(ptr->GetWorldMatrix(), 100.0f, true, PsMotionType::MotionTypeFixed);
+		PsBoxParam param(ptr->GetWorldMatrix(), 0.0f, true, PsMotionType::MotionTypeFixed);
 		auto PsPtr = AddComponent<RigidbodyBox>(param);
+		PsPtr->SetDrawActive(true);
 		PsPtr->SetAutoTransform(false);
 
 
