@@ -210,8 +210,9 @@ namespace basecross{
 		
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl['F'])) {
 			GetStage()->AddGameObject<Bullet>(
-				ptr->GetPosition() + Vec3(0.0f,0.0f,2.0f),
-				ptr->GetRotation(),
+				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
+				Vec3(0.0f),
+				//ptr->GetRotation(),
 				Vec3(1.0f, 1.0f, 1.0f),
 				5.0f, 1.0f
 				);

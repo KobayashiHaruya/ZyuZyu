@@ -74,10 +74,10 @@ namespace basecross {
 		auto trans = GetComponent<Transform>();
 		auto rot = trans->GetRotation();
 
-		float rad = (90.0f * 3.1415) / 180.0f;
+		float rad = (rot.y * 3.1415) / 180.0f;
 
-		float x = tan(rot.y);
-		float z = cos(rot.y);
+		float x = sin(rad);
+		float z = cos(rad);
 
 		Vec3 force = m_moveSpeed * Vec3(z, 0.0f, x);
 
