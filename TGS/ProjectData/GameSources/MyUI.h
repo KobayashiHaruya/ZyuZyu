@@ -107,7 +107,7 @@ namespace basecross {
 		{}
 		~UI_Static_Image() {}
 
-		void Draw();
+		virtual void OnCreate() override;
 
 	};
 
