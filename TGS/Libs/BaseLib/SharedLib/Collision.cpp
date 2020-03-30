@@ -959,7 +959,7 @@ namespace basecross {
 	//	用途: コンポーネントImplクラス
 	//--------------------------------------------------------------------------------------
 	struct CollisionObb::Impl {
-		float m_Size;					//作成時のサイズ
+		Vec3 m_Size;					//作成時のサイズ
 		float m_ChkOnUnderLaySize;
 		bsm::Mat4x4 m_BeforeWorldMatrix;
 		bsm::Mat4x4 m_WorldMatrix;
@@ -998,10 +998,10 @@ namespace basecross {
 
 
 	//アクセサ
-	float CollisionObb::GetMakedSize() const {
+	Vec3 CollisionObb::GetMakedSize() const {
 		return pImpl->m_Size;
 	}
-	void CollisionObb::SetMakedSize(float f) {
+	void CollisionObb::SetMakedSize(Vec3 f) {
 		pImpl->m_Size = f;
 	}
 
@@ -1010,9 +1010,9 @@ namespace basecross {
 //		if (pImpl->m_FirstCalc) {
 			pImpl->m_WorldMatrix = TransPtr->GetWorldMatrix();
 			bsm::Mat4x4 MatBase;
-			MatBase.scale(bsm::Vec3(pImpl->m_Size, pImpl->m_Size, pImpl->m_Size));
+			MatBase.scale(bsm::Vec3(pImpl->m_Size));
 			MatBase *= pImpl->m_WorldMatrix;
-			pImpl->m_WorldObb = OBB(bsm::Vec3(pImpl->m_Size, pImpl->m_Size, pImpl->m_Size), MatBase);
+			pImpl->m_WorldObb = OBB(bsm::Vec3(pImpl->m_Size), MatBase);
 			pImpl->m_FirstCalc = false;
 //		}
 		return pImpl->m_WorldObb;
@@ -1024,9 +1024,9 @@ namespace basecross {
 //		if (pImpl->m_FirstBeforeCalc) {
 			pImpl->m_BeforeWorldMatrix = TransPtr->GetBeforeWorldMatrix();
 			bsm::Mat4x4 MatBase;
-			MatBase.scale(bsm::Vec3(pImpl->m_Size, pImpl->m_Size, pImpl->m_Size));
+			MatBase.scale(bsm::Vec3(pImpl->m_Size));
 			MatBase *= pImpl->m_BeforeWorldMatrix;
-			pImpl->m_BeforeWorldObb = OBB(bsm::Vec3(pImpl->m_Size, pImpl->m_Size, pImpl->m_Size), MatBase);
+			pImpl->m_BeforeWorldObb = OBB(bsm::Vec3(pImpl->m_Size), MatBase);
 			pImpl->m_FirstBeforeCalc = false;
 //		}
 		return pImpl->m_BeforeWorldObb;

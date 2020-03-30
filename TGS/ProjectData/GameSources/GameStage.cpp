@@ -53,12 +53,12 @@ namespace basecross {
 			AddGameObject<Object>(
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(50.0f, 0.5f, 10.0f)
+				Vec3(100.0f, 0.5f, 100.0f)
 				);
-			AddGameObject<Object>(
-				Vec3(0.0f, 4.0f, 20.0f),
+			AddGameObject<Oil>(
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(5.0f, 10.0f, 5.0f)
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(150.0f, 0.1f, 150.0f)
 				);
 			AddGameObject<TestPlayer>(
 				Vec3(0.0f, 3.0f, 0.0f),
