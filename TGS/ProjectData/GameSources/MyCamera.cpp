@@ -160,9 +160,16 @@ namespace basecross {
 			wButtons = cntlVec[0].wButtons;
 		}
 
+		if (keyData.m_bPushKeyTbl[VK_RIGHT]) {
+			fThumbRX = 1.0f;
+		}
+		else if (keyData.m_bPushKeyTbl[VK_LEFT]) {
+			fThumbRX = -1.0f;
+		}
+
 		armVec.y = sin(m_RadY);
 		//ここでY軸回転を作成
-		if (fThumbRX != 0 || keyData.m_bPushKeyTbl[VK_LEFT] || keyData.m_bPushKeyTbl[VK_RIGHT]) {
+		if (fThumbRX != 0) {
 			//回転スピードを反映
 			if (fThumbRX != 0) {
 				if (IsLRBaseMode()) {
@@ -172,23 +179,7 @@ namespace basecross {
 					m_RadXZ += -fThumbRX * elapsedTime * m_RotSpeed;
 				}
 			}
-			else if (keyData.m_bPushKeyTbl[VK_LEFT]) {
-				if (IsLRBaseMode()) {
-					m_RadXZ -= elapsedTime * m_RotSpeed;
-				}
-				else {
-					m_RadXZ += elapsedTime * m_RotSpeed;
-				}
-			}
-			else if (keyData.m_bPushKeyTbl[VK_RIGHT]) {
-				if (IsLRBaseMode()) {
-					m_RadXZ += elapsedTime * m_RotSpeed;
-				}
-				else {
-					m_RadXZ -= elapsedTime * m_RotSpeed;
-				}
 
-			}
 			if (abs(m_RadXZ) >= XM_2PI) {
 				//1週回ったら0回転にする
 				m_RadXZ = 0;
