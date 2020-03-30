@@ -28,30 +28,44 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\Libs\BaseLib\Dx11FullLib\Dx11FullLib.vcxitems*{12b4ea0b-bf4f-4c4e-b659-dd6561ea2666}*SharedItemsImports = 9
 		..\Libs\BaseLib\Dx11Lib\Dx11Lib.vcxitems*{45d41acc-2c3c-43d2-bc10-02aa73ffc7c7}*SharedItemsImports = 9
-		GameSources\GameSources.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
 		..\Libs\BaseLib\Dx11FullLib\Dx11FullLib.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
 		..\Libs\BaseLib\Dx11Lib\Dx11Lib.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
 		..\Libs\BaseLib\DxLib\DxLib.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
 		..\Libs\BaseLib\DxShaders\DxShaders.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
 		..\Libs\BaseLib\SharedLib\SharedLib.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
+		GameSources\GameSources.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
 		..\Libs\BaseLib\DxShaders\DxShaders.vcxitems*{577bccee-82df-4f0e-bfcd-c4787d95afd3}*SharedItemsImports = 9
 		GameSources\GameSources.vcxitems*{8c1d084c-c178-4a5d-84d5-9d8b94e39ab0}*SharedItemsImports = 9
 		..\Libs\BaseLib\DxLib\DxLib.vcxitems*{974c28f3-3934-456b-be8e-408774ef14cf}*SharedItemsImports = 9
 		..\Libs\BaseLib\SharedLib\SharedLib.vcxitems*{caa0470e-f76d-42a8-84fa-d6562fa70f4a}*SharedItemsImports = 9
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
 		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Win32 = Release|Win32
 		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5184B598-9842-4856-85C8-5C2BBD8E5035}.Debug|Win32.ActiveCfg = Debug|x64
 		{5184B598-9842-4856-85C8-5C2BBD8E5035}.Debug|x64.ActiveCfg = Debug|x64
 		{5184B598-9842-4856-85C8-5C2BBD8E5035}.Debug|x64.Build.0 = Debug|x64
+		{5184B598-9842-4856-85C8-5C2BBD8E5035}.Debug|x86.ActiveCfg = Debug|x64
+		{5184B598-9842-4856-85C8-5C2BBD8E5035}.Release|Win32.ActiveCfg = Release|x64
+		{5184B598-9842-4856-85C8-5C2BBD8E5035}.Release|Win32.Build.0 = Release|x64
 		{5184B598-9842-4856-85C8-5C2BBD8E5035}.Release|x64.ActiveCfg = Release|x64
 		{5184B598-9842-4856-85C8-5C2BBD8E5035}.Release|x64.Build.0 = Release|x64
+		{5184B598-9842-4856-85C8-5C2BBD8E5035}.Release|x86.ActiveCfg = Release|x64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Debug|Win32.ActiveCfg = Debug|x64
 		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Debug|x64.ActiveCfg = Debug|x64
 		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Debug|x64.Build.0 = Debug|x64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Debug|x86.ActiveCfg = Debug|Win32
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Release|Win32.ActiveCfg = Release|x64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Release|Win32.Build.0 = Release|x64
 		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Release|x64.ActiveCfg = Release|x64
 		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Release|x64.Build.0 = Release|x64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
