@@ -74,14 +74,19 @@ namespace basecross {
 		auto trans = GetComponent<Transform>();
 		auto rot = trans->GetRotation();
 
-		float rad = (rot.y * 3.1415) / 180.0f;
+		auto time = App::GetApp()->GetElapsedTime();
 
-		float x = sin(rad);
-		float z = cos(rad);
 
-		Vec3 force = m_moveSpeed * Vec3(z, 0.0f, x);
+		//float rad = (rot.y * 3.1415) / 180.0f;
 
-		psPtr->SetLinearVelocity(force);
+		//float x = sin(rad);
+		//float z = cos(rad);
+
+		//Vec3 force = m_moveSpeed * Vec3(z, 0.0f, x);
+
+		trans->SetPosition(trans->GetPosition() + m_moveSpeed * time);
+
+		//psPtr->SetLinearVelocity(force);
 		//psPtr->ApplyForce(Vec3(0.0f, -m_gravityScale, 0.0f));
 	}
 
@@ -92,10 +97,17 @@ namespace basecross {
 
 	void Bullet::OnCreate() {
 		Draw();
-		Move();
 	}
 
 	void Bullet::OnUpdate() {
+		Move();
+		auto psPtr = GetComponent<RigidbodySphere>();
+		auto trans = GetComponent<Transform>();
+		auto rot = trans->GetRotation();
+
+		auto time = App::GetApp()->GetElapsedTime();
+
+		trans->SetPosition(trans->GetPosition() + 5.0f * time);
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& Other) {
