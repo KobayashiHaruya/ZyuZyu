@@ -6,8 +6,7 @@ namespace basecross {
 	class TitleStage : public Stage {
 		void CreateViewLight();
 		void CreateUI();
-		void CreateOperationUI();
-		bool m_Update;
+
 	public:
 		TitleStage() :Stage() {}
 		virtual ~TitleStage() {}

@@ -69,7 +69,7 @@ namespace basecross {
 			Vec3(-720.0f + (480.0f * 0), 180.0f, 0.0f),
 			Vec3(1.0f, 1.0f, 1.0f),
 			1,
-			Col4(1.0f, 1.0f, 1.0f, 0.5f),
+			Col4(1.0f, 1.0f, 1.0f, 1.0f),
 			m_maskImageName,
 			m_startIndex
 			);

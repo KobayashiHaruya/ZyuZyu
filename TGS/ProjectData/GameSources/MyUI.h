@@ -59,6 +59,7 @@ namespace basecross {
 		{}
 		~UI_Character_Select_Static_Image() {}
 
+
 		void Draw();
 
 	};
@@ -112,6 +113,7 @@ namespace basecross {
 			)
 		{}
 		~Operation_UI() {}
+
 
 		virtual void OnCreate() override;
 	};
