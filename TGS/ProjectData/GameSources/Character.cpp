@@ -194,12 +194,10 @@ namespace basecross{
 		auto ptrPs = GetComponent<RigidbodyCapsule>();
 
 		Vec3 speed;
-
-		speed.y = fThumbLY * m_rotSpeed;
-
-		auto rot = trans->GetRotation();
-
 		ptrPs->SetAngularVelocity(speed);
+		m_rot.y += fThumbLY * m_rotSpeed;
+		trans->SetRotation(m_rot);
+
 	}
 
 	void Character::BulletFire() {
@@ -213,7 +211,7 @@ namespace basecross{
 				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
 				ptr->GetRotation(),
 				Vec3(1.0f, 1.0f, 1.0f),
-				5.0f, 1.0f
+				50.0f, 10.0f
 				);
 		}
 	}

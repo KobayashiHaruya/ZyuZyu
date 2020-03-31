@@ -98,12 +98,7 @@ namespace basecross{
 		try {
 			//ƒŠƒ\[ƒXì¬
 			CreateResourses();
-<<<<<<< HEAD
-			SetGameStage(GameStageKey::charSelect);
-			SetGameStage(GameStageKey::title);
-=======
 			SetGameStage(GameStageKey::game);
->>>>>>> Kobayashi
 		}
 		catch (...) {
 			throw;

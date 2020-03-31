@@ -59,6 +59,9 @@ namespace basecross {
 		ptrColl->SetAfterCollision(AfterCollision::None);
 
 
+		auto gravity = AddComponent<Gravity>();
+		gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
+
 		AddTag(L"Bullet");
 
 		//WorldMatrix‚ð‚à‚Æ‚ÉRigidbodySphere‚Ìƒpƒ‰ƒ[ƒ^‚ðì¬
@@ -84,9 +87,10 @@ namespace basecross {
 
 		//Vec3 force = m_moveSpeed * Vec3(z, 0.0f, x);
 
-		trans->SetPosition(trans->GetPosition() + m_moveSpeed * time);
+		Vec3 force = trans->GetForword() * m_moveSpeed;
 
-		//psPtr->SetLinearVelocity(force);
+		//trans->SetPosition(trans->GetPosition() + force);
+		psPtr->SetLinearVelocity(force);
 		//psPtr->ApplyForce(Vec3(0.0f, -m_gravityScale, 0.0f));
 	}
 
@@ -97,17 +101,10 @@ namespace basecross {
 
 	void Bullet::OnCreate() {
 		Draw();
+		Move();
 	}
 
 	void Bullet::OnUpdate() {
-		Move();
-		auto psPtr = GetComponent<RigidbodySphere>();
-		auto trans = GetComponent<Transform>();
-		auto rot = trans->GetRotation();
-
-		auto time = App::GetApp()->GetElapsedTime();
-
-		trans->SetPosition(trans->GetPosition() + 5.0f * time);
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& Other) {

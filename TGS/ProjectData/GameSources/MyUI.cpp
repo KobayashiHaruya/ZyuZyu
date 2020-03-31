@@ -91,7 +91,6 @@ namespace basecross {
 			fThumbLX = cntlVec[0].fThumbLX;
 		}
 
-	void Title_UI::OnCreate() {
 		Draw();
 		if (KeyState.m_bPressedKeyTbl['A'] || (fThumbLX < 0.0f && m_oldFThumbLX == 0.0f)) {
 			SetMaskIndex(--m_maskIndex);
