@@ -98,6 +98,7 @@ namespace basecross{
 		try {
 			//ƒŠƒ\[ƒXì¬
 			CreateResourses();
+
 			SetGameStage(GameStageKey::game);
 		}
 		catch (...) {
