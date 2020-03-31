@@ -13,12 +13,15 @@ namespace basecross{
 		Vec3 m_rot;
 		Vec3 m_scale;
 		float m_moveSpeed;
-		float m_rotSpeed = 1.0f;
+		float m_rotSpeed = 1.5f;
 		float m_gravityScale;
 		float m_jumpPower;
 
 		float m_force = 1.0f;
 		bool m_jump = true;
+
+		float m_RadXZ;
+		float m_RadY = 1.5f;
 
 
 	public:
@@ -49,6 +52,7 @@ namespace basecross{
 		void AttackHit(Vec3 rot);
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
+		virtual void OnCollisionExcute(shared_ptr<GameObject>& Other) override;
 		virtual void OnCollisionExit(shared_ptr<GameObject>& Other) override;
 	
 	

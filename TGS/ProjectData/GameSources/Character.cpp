@@ -22,13 +22,11 @@ namespace basecross{
 
 		m_CapsuleMesh = MeshResource::CreateMeshResource(vertices, indices, false);
 
-		Quat q;
-		q.rotationZ(-90.0f * (3.14f / 180.0f));
-
 		auto ptrTrans = GetComponent<Transform>();
 		ptrTrans->SetPosition(m_pos);
 		ptrTrans->SetScale(Vec3(1.0f));
-		ptrTrans->SetQuaternion(q);
+		//ptrTrans->SetQuaternion(q);
+		ptrTrans->SetRotation(m_rot);
 
 		//影をつける
 		auto ptrShadow = AddComponent<Shadowmap>();
@@ -51,31 +49,37 @@ namespace basecross{
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetMakedSize(Vec3(1.0f, 1.5f, 1.0f));
 		ptrColl->SetAfterCollision(AfterCollision::None);
+		ptrColl->SetDrawActive(true);
 
 		AddTag(L"Character");
+		auto gravity = AddComponent<Gravity>();
+		gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
 
 
-		//物理計算カプセル
-		PsCapsuleParam param;
-		//半径にする
-		param.m_HalfLen = m_scale.y * 0.5f;
-		param.m_Radius = m_scale.x * 0.5f;
-		param.m_Mass = 1.0f;
-		//慣性テンソルの計算
-		param.m_Inertia = BasePhysics::CalcInertiaCylinderX(
-			param.m_HalfLen + param.m_Radius,
-			param.m_Radius,
-			param.m_Mass
-		);
-		param.m_MotionType = PsMotionType::MotionTypeActive;
-		param.m_Quat = q;
-		param.m_Pos = m_pos;
-		auto ptrPs = AddComponent<RigidbodyCapsule>(param);
-		ptrPs->SetDrawActive(true);
+		//Quat q;
+		//q.rotationZ(-90.0f * (3.14f / 180.0f));
 
-		ptrPs->SetAutoTransform(true);
+		////物理計算カプセル
+		//PsCapsuleParam param;
+		////半径にする
+		//param.m_HalfLen = m_scale.y * 0.5f;
+		//param.m_Radius = m_scale.x * 0.5f;
+		//param.m_Mass = 1.0f;
+		////慣性テンソルの計算
+		//param.m_Inertia = BasePhysics::CalcInertiaCylinderX(
+		//	param.m_HalfLen + param.m_Radius,
+		//	param.m_Radius,
+		//	param.m_Mass
+		//);
+		//param.m_MotionType = PsMotionType::MotionTypeActive;
+		//param.m_Quat = q;
+		//param.m_Pos = m_pos;
+		//auto ptrPs = AddComponent<RigidbodyCapsule>(param);
+		//ptrPs->SetDrawActive(true);
 
-		ptrPs->SetAutoGravity(-m_gravityScale);
+		//ptrPs->SetAutoTransform(true);
+
+		//ptrPs->SetAutoGravity(-m_gravityScale);
 
 	}
 
@@ -120,8 +124,8 @@ namespace basecross{
 			//左
 			fThumbLX = -1.0f;
 		}
-		if (fThumbLX != 0 || fThumbLY != 0) {
 			auto ptrTransform = GetComponent<Transform>();
+		if (fThumbLX != 0 || fThumbLY != 0) {
 			auto ptrCamera = OnGetDrawCamera();
 			//進行方向の向きを計算
 			auto front = ptrTransform->GetPosition() - ptrCamera->GetEye();
@@ -146,28 +150,23 @@ namespace basecross{
 			angle *= moveSize;
 		}
 
-		auto vec = angle;
-		auto ptrPs = GetComponent<RigidbodyCapsule>();
-				
-		Vec3 speed = Vec3(0.0f, 0.0f, 0.0f);
-
-		if (vec.x != 0) {
-			speed.x = vec.x * m_moveSpeed;
+		if (angle.x != 0) {
+			m_pos.x = angle.x * m_moveSpeed;
 		}
 
-		if (vec.z != 0) {
-			speed.z = vec.z * m_moveSpeed;
+		if (angle.z != 0) {
+			m_pos.z = angle.z * m_moveSpeed;
 		}
 
-		speed = speed + ptrPs->GetPosition();
-		ptrPs->SetPosition(speed);
+		Vec3 speed = m_pos + ptrTransform->GetPosition();
 
+		//ptrTransform->SetPosition(speed);
 
-		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl[VK_SPACE]) & m_jump) {
-			auto vel = ptrPs->GetLinearVelocity();
-			ptrPs->SetLinearVelocity(Vec3(vel.x, m_jumpPower, vel.z));
-			m_jump = false;
-		}
+		//if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl[VK_SPACE]) & m_jump) {
+		//	auto vel = ptrPs->GetLinearVelocity();
+		//	ptrPs->SetLinearVelocity(Vec3(vel.x, m_jumpPower, vel.z));
+		//	m_jump = false;
+		//}
 
 
 	}
@@ -191,11 +190,8 @@ namespace basecross{
 		}
 
 		auto trans = GetComponent<Transform>();
-		auto ptrPs = GetComponent<RigidbodyCapsule>();
-
-		Vec3 speed;
-		ptrPs->SetAngularVelocity(speed);
-		m_rot.y += fThumbLY * m_rotSpeed;
+		auto time = App::GetApp()->GetElapsedTime();
+		m_rot.y += fThumbLY * m_rotSpeed * time;
 		trans->SetRotation(m_rot);
 
 	}
@@ -208,8 +204,8 @@ namespace basecross{
 		
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl['F'])) {
 			GetStage()->AddGameObject<Bullet>(
-				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
-				ptr->GetRotation(),
+				m_pos + Vec3(0.0f, 0.0f, 2.0f),
+				m_rot,
 				Vec3(1.0f, 1.0f, 1.0f),
 				50.0f, 10.0f
 				);
@@ -217,36 +213,36 @@ namespace basecross{
 	}
 
 	void Character::AttackHit(Vec3 rot) {
-		auto ptrPs = GetComponent<RigidbodyCapsule>();
+		//auto ptrPs = GetComponent<RigidbodyCapsule>();
 
-		
+		//float rad = rot.y * Mathf.Deg2Rad;
 
-  //      float rad = rot.y * Mathf.Deg2Rad;
+		//float x = Mathf.Sin(rad);
+		//float z = Mathf.Cos(rad);
 
-  //      float x = Mathf.Sin(rad);
-  //      float z = Mathf.Cos(rad);
+		//Vec3 vecForce = (Vec3(rot.x, 1.0f, rot.z)) * m_force;
 
-        Vec3 vecForce = (Vec3(rot.x, 1.0f, rot.z)) * m_force;
-
-		ptrPs->SetLinearVelocity(rot);
+		//ptrPs->SetLinearVelocity(rot);
 
 	}
 
 	void Character::OnCollisionEnter(shared_ptr<GameObject>& Other) {
-		if (Other->FindTag(L"Object")) {
-			m_jump = true;
-			auto ptrPs = GetComponent<RigidbodyCapsule>();
-		}
 		if (Other->FindTag(L"Bullet")) {
 			auto rot = Other->GetComponent<Transform>()->GetRotation();
 			AttackHit(rot);
 		}
 	}
 
+	void Character::OnCollisionExcute(shared_ptr<GameObject>& Other) {
+		if (Other->FindTag(L"Object")) {
+			m_jump = true;
+		}
+
+	}
+
 	void Character::OnCollisionExit(shared_ptr<GameObject>& Other) {
 		if (Other->FindTag(L"Object")) {
 			m_jump = false;
-			auto ptrPs = GetComponent<RigidbodyCapsule>();
 		}
 	}
 
