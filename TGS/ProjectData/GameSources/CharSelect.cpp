@@ -69,7 +69,7 @@ namespace basecross {
 			Vec3(-720.0f + (480.0f * 0), 180.0f, 0.0f),
 			Vec3(1.0f, 1.0f, 1.0f),
 			1,
-			Col4(1.0f, 1.0f, 1.0f, 0.5f),
+			Col4(1.0f, 1.0f, 1.0f, 0.85f),
 			m_maskImageName,
 			m_startIndex
 			);
@@ -80,7 +80,7 @@ namespace basecross {
 
 
 
-		m_theWorld = AddGameObject<UI_The_World>();
+		m_theWorld = AddGameObject<UI_The_World>(5);
 
 		vector<CharacterStatus_s> statuses;
 		statuses.push_back({ L"ポテト", 10, 2, 5260, true, 0 });
@@ -94,16 +94,22 @@ namespace basecross {
 		m_theWorld->SetCharacterStatuses(statuses);
 
 		vector<CharacterKillDetails_s> killDetails;
-		killDetails.push_back({ L"エビ", 2 });
-		killDetails.push_back({ L"チキン", 2 });
-		killDetails.push_back({ L"ポテト", 2 });
-		killDetails.push_back({ L"ドーナツ", 2 });
-		killDetails.push_back({ L"エビ", 2 });
-		killDetails.push_back({ L"チキン", 2 });
-		killDetails.push_back({ L"ポテト", 2 });
-		killDetails.push_back({ L"ドーナツ", 2 });
-		killDetails.push_back({ L"エビ", 2 });
-		killDetails.push_back({ L"チキン", 2 });
+		killDetails.push_back({ CharacterType::SHRIMP, 1 });
+		killDetails.push_back({ CharacterType::CHICKEN, 2 });
+		killDetails.push_back({ CharacterType::POTATO, 3 });
+		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+		killDetails.push_back({ CharacterType::SHRIMP, 1 });
+		killDetails.push_back({ CharacterType::CHICKEN, 2 });
+		killDetails.push_back({ CharacterType::POTATO, 3 });
+		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+		killDetails.push_back({ CharacterType::SHRIMP, 1 });
+		killDetails.push_back({ CharacterType::CHICKEN, 2 });
+		killDetails.push_back({ CharacterType::POTATO, 3 });
+		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+		killDetails.push_back({ CharacterType::SHRIMP, 1 });
+		killDetails.push_back({ CharacterType::CHICKEN, 2 });
+		killDetails.push_back({ CharacterType::POTATO, 3 });
+		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
 		m_theWorld->SetCharacterKillDetails(killDetails);
 	}
 
@@ -128,6 +134,7 @@ namespace basecross {
 		m_potato->SetDrawActive(false);
 		m_shrimp->SetDrawActive(false);
 		m_doughnut->SetDrawActive(false);
+		return;
 		switch (index)
 		{
 		case 0:
@@ -160,15 +167,37 @@ namespace basecross {
 
 	void CharSelectStage::TestFunc() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
-		if (KeyState.m_bPressedKeyTbl['W']) {
-			
-
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		if (KeyState.m_bPressedKeyTbl['W'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_START) {
 			m_theWorld->Show(!(m_theWorld->GetShowing()));
 		}
 
 		if (KeyState.m_bPressedKeyTbl['S']) {
-			CharacterStatus_s status = { L"ポテト", 1000, 102, 50, false, 0 };
+			CharacterStatus_s status = { L"ポテト", 1000, 102, 50, true, 0 };
 			m_theWorld->SetCharacterStatus(status);
+
+			vector<CharacterKillDetails_s> killDetails;
+			killDetails.push_back({ CharacterType::SHRIMP, 1 });
+			killDetails.push_back({ CharacterType::CHICKEN, 2 });
+			killDetails.push_back({ CharacterType::POTATO, 3 });
+			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+			killDetails.push_back({ CharacterType::SHRIMP, 1 });
+			killDetails.push_back({ CharacterType::CHICKEN, 2 });
+			killDetails.push_back({ CharacterType::POTATO, 3 });
+			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+			killDetails.push_back({ CharacterType::SHRIMP, 1 });
+			killDetails.push_back({ CharacterType::CHICKEN, 2 });
+			killDetails.push_back({ CharacterType::POTATO, 3 });
+			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+			killDetails.push_back({ CharacterType::SHRIMP, 1 });
+			killDetails.push_back({ CharacterType::CHICKEN, 2 });
+			killDetails.push_back({ CharacterType::POTATO, 3 });
+			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+			m_theWorld->SetCharacterKillDetails(killDetails);
 		}
 	}
 }
