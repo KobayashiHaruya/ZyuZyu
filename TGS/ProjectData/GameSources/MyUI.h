@@ -109,9 +109,9 @@ namespace basecross {
 		{}
 		~UI_Static_Image() {}
 
-
 		virtual void OnCreate() override;
 
+		void Hidden(bool e);
 	};
 
 	class Title_UI : public UI_Base {
@@ -164,12 +164,7 @@ namespace basecross {
 		{}
 		~Operation_UI() {}
 
-
 		virtual void OnCreate() override;
-
-<<<<<<< HEAD
-=======
-		void Hidden(bool e);
 	};
 
 
@@ -250,13 +245,13 @@ namespace basecross {
 		int GetMaxIndex() {
 			return m_vertex.x / m_cutOut.x;
 		}
->>>>>>> Takinami
 	};
 
 
 	//------------------------------------------------------------------------------------------------
 	//キャラクターセレクトの選択マスク : Class
 	//------------------------------------------------------------------------------------------------
+
 	class UI_Character_Select_Mask_Image :public UI_Base {
 		int m_indexMin;
 		int m_indexMax;
@@ -521,6 +516,7 @@ namespace basecross {
 			return *it;
 		}
 	};
+
 
 	//------------------------------------------------------------------------------------------------
 	//キル詳細 : Class
