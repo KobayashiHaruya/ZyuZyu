@@ -28,40 +28,13 @@ namespace basecross {
 			m_baseImageName
 			);
 
-		m_chicken = AddGameObject<UI_Static_Image>(
-			Vec2(1920.0f, 360.0f),
-			Vec3(0.0f, -360.0f, 0.0f),
+		m_characterLogo = AddGameObject<UI_Static_Image>(
+			Vec2(631.0f, 278.0f),
+			Vec3(-480.0f, -380.0f, 0.0f),
 			Vec3(1.0f, 1.0f, 1.0f),
-			1,
+			m_layer,
 			Col4(1.0f, 1.0f, 1.0f, 1.0f),
 			m_chickenImageName
-			);
-
-		m_potato = AddGameObject<UI_Static_Image>(
-			Vec2(1920.0f, 360.0f),
-			Vec3(0.0f, -360.0f, 0.0f),
-			Vec3(1.0f, 1.0f, 1.0f),
-			1,
-			Col4(1.0f, 1.0f, 1.0f, 1.0f),
-			m_potatoImageName
-			);
-
-		m_shrimp = AddGameObject<UI_Static_Image>(
-			Vec2(1920.0f, 360.0f),
-			Vec3(0.0f, -360.0f, 0.0f),
-			Vec3(1.0f, 1.0f, 1.0f),
-			1,
-			Col4(1.0f, 1.0f, 1.0f, 1.0f),
-			m_shrimpImageName
-			);
-
-		m_doughnut = AddGameObject<UI_Static_Image>(
-			Vec2(1920.0f, 360.0f),
-			Vec3(0.0f, -360.0f, 0.0f),
-			Vec3(1.0f, 1.0f, 1.0f),
-			1,
-			Col4(1.0f, 1.0f, 1.0f, 1.0f),
-			m_doughnutImageName
 			);
 
 		m_mask = AddGameObject<UI_Character_Select_Mask_Image>(
@@ -74,43 +47,13 @@ namespace basecross {
 			m_startIndex
 			);
 
-		SetStatusImage(m_startIndex);
+		wstring mediaDir;
+		App::GetApp()->GetDataDirectory(mediaDir);
+		m_characterStatus = AddGameObject<UI_Character_Status>(mediaDir + L"Texters/StageSelectImagies/Status_Animation/SpriteStudio/", Vec3(230.0f, -375.0f, 0.0f), Vec3(30.0f), m_layer);
 
+		ChangeCharacter(m_startIndex);
 
-
-
-
-		m_theWorld = AddGameObject<UI_The_World>(5);
-
-		vector<CharacterStatus_s> statuses;
-		statuses.push_back({ L"ポテト", 10, 2, 5260, true, 0 });
-		statuses.push_back({ L"チキン", 10, 2, 3000, false, 1 });
-		statuses.push_back({ L"ドーナツ", 10, 2, 3000, false, 2 });
-		statuses.push_back({ L"エビ", 10, 2, 3000, false, 3 });
-		statuses.push_back({ L"ポテト", 10, 2, 3000, false, 4 });
-		statuses.push_back({ L"チキン", 10, 2, 3000, false, 5 });
-		statuses.push_back({ L"ドーナツ", 10, 2, 3000, false, 6 });
-		statuses.push_back({ L"エビ", 10, 2, 3000, false, 7 });
-		m_theWorld->SetCharacterStatuses(statuses);
-
-		vector<CharacterKillDetails_s> killDetails;
-		killDetails.push_back({ CharacterType::SHRIMP, 1 });
-		killDetails.push_back({ CharacterType::CHICKEN, 2 });
-		killDetails.push_back({ CharacterType::POTATO, 3 });
-		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-		killDetails.push_back({ CharacterType::SHRIMP, 1 });
-		killDetails.push_back({ CharacterType::CHICKEN, 2 });
-		killDetails.push_back({ CharacterType::POTATO, 3 });
-		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-		killDetails.push_back({ CharacterType::SHRIMP, 1 });
-		killDetails.push_back({ CharacterType::CHICKEN, 2 });
-		killDetails.push_back({ CharacterType::POTATO, 3 });
-		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-		killDetails.push_back({ CharacterType::SHRIMP, 1 });
-		killDetails.push_back({ CharacterType::CHICKEN, 2 });
-		killDetails.push_back({ CharacterType::POTATO, 3 });
-		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-		m_theWorld->SetCharacterKillDetails(killDetails);
+		m_theWorld = AddGameObject<UI_The_World>(m_layer);
 	}
 
 	void CharSelectStage::OnCreate() {
@@ -124,34 +67,49 @@ namespace basecross {
 	}
 
 	void CharSelectStage::OnUpdate() {
-		SetStatusImage(m_mask->GetIndex());
+		ChangeCharacter(m_mask->GetIndex());
 		Select();
 		TestFunc();
 	}
 
-	void CharSelectStage::SetStatusImage(int index) {
-		m_chicken->SetDrawActive(false);
-		m_potato->SetDrawActive(false);
-		m_shrimp->SetDrawActive(false);
-		m_doughnut->SetDrawActive(false);
-		return;
+	void CharSelectStage::ChangeCharacter(int index) {
+		if (m_oldIndex == index) return;
 		switch (index)
 		{
 		case 0:
-			m_potato->SetDrawActive(true);
+			m_characterLogo->SetTexture(
+				m_shrimpImageName,
+				Vec2(631.0f, 298.0f),
+				Vec3(0.95f, 0.95f, 0.95f)
+			);
+			m_characterStatus->ChangeCharacterStatus(CharacterType::SHRIMP);
 			break;
 		case 1:
-			m_shrimp->SetDrawActive(true);
+			m_characterLogo->SetTexture(
+				m_chickenImageName,
+				Vec2(631.0f, 278.0f),
+				Vec3(1.0f, 1.0f, 1.0f)
+			);
+			m_characterStatus->ChangeCharacterStatus(CharacterType::CHICKEN);
 			break;
 		case 2:
-			m_chicken->SetDrawActive(true);
+			m_characterLogo->SetTexture(
+				m_potatoImageName,
+				Vec2(621.0f, 285.0f),
+				Vec3(1.0f, 1.0f, 1.0f)
+			);
+			m_characterStatus->ChangeCharacterStatus(CharacterType::POTATO);
 			break;
 		case 3:
-			m_doughnut->SetDrawActive(true);
-			break;
-		default:
+			m_characterLogo->SetTexture(
+				m_doughnutImageName,
+				Vec2(631.0f, 264.0f),
+				Vec3(1.0f, 1.0f, 1.0f)
+			);
+			m_characterStatus->ChangeCharacterStatus(CharacterType::DOUGHNUT);
 			break;
 		}
+		m_oldIndex = index;
 	}
 
 	void CharSelectStage::Select() {
@@ -170,34 +128,6 @@ namespace basecross {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		if (KeyState.m_bPressedKeyTbl['W'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_START) {
 			m_theWorld->Show(!(m_theWorld->GetShowing()));
-		}
-
-		if (KeyState.m_bPressedKeyTbl['S']) {
-			CharacterStatus_s status = { L"ポテト", 1000, 102, 50, true, 0 };
-			m_theWorld->SetCharacterStatus(status);
-
-			vector<CharacterKillDetails_s> killDetails;
-			killDetails.push_back({ CharacterType::SHRIMP, 1 });
-			killDetails.push_back({ CharacterType::CHICKEN, 2 });
-			killDetails.push_back({ CharacterType::POTATO, 3 });
-			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-			killDetails.push_back({ CharacterType::SHRIMP, 1 });
-			killDetails.push_back({ CharacterType::CHICKEN, 2 });
-			killDetails.push_back({ CharacterType::POTATO, 3 });
-			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-			killDetails.push_back({ CharacterType::SHRIMP, 1 });
-			killDetails.push_back({ CharacterType::CHICKEN, 2 });
-			killDetails.push_back({ CharacterType::POTATO, 3 });
-			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-			killDetails.push_back({ CharacterType::SHRIMP, 1 });
-			killDetails.push_back({ CharacterType::CHICKEN, 2 });
-			killDetails.push_back({ CharacterType::POTATO, 3 });
-			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-			killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-			m_theWorld->SetCharacterKillDetails(killDetails);
 		}
 	}
 }
