@@ -87,7 +87,20 @@ namespace basecross {
 	//スタティックな画像 : Class
 	//------------------------------------------------------------------------------------------------
 
-	class UI_Static_Image :public UI_Base {
+	class UI_Static_Image :public GameObject {
+		Vec2 m_vertex;
+		float m_size;
+		Vec3 m_pos;
+		Vec3 m_scale;
+		Col4 m_color;
+		int m_layer;
+		wstring m_textures;
+
+		float m_xHalf;
+		float m_yHalf;
+
+		vector<VertexPositionColorTexture> m_vertices;
+
 	public:
 		UI_Static_Image(const shared_ptr<Stage>& StagePtr,
 			const Vec2& vertex,
@@ -97,20 +110,24 @@ namespace basecross {
 			const Col4& color,
 			const wstring& textures
 		) :
-			UI_Base(
-				StagePtr,
-				vertex,
-				pos,
-				scale,
-				layer,
-				color,
-				textures
-			)
+			GameObject(StagePtr),
+			m_vertex(vertex),
+			m_pos(pos),
+			m_scale(scale),
+			m_layer(layer),
+			m_color(color),
+			m_textures(textures),
+			m_xHalf(m_vertex.x / 2.0f),
+			m_yHalf(m_vertex.y / 2.0f)
 		{}
 		~UI_Static_Image() {}
 
 		virtual void OnCreate() override;
 
+		void Draw();
+		void SetTexture(const wstring& texture);
+		void SetTexture(const wstring& texture, Vec2& vertex);
+		void SetTexture(const wstring& texture, Vec2& vertex, const Vec3& scale);
 		void Hidden(bool e);
 	};
 
@@ -464,6 +481,7 @@ namespace basecross {
 		}
 	};
 
+
 	//------------------------------------------------------------------------------------------------
 	//キル詳細 : Class
 	//------------------------------------------------------------------------------------------------
@@ -570,6 +588,8 @@ namespace basecross {
 		void ChangeTab();
 		void Key();
 
+		void SetTestDeta();  //テスト用のデータを設定します。本番時にはコメントアウトしてください
+
 	public:
 		UI_The_World(const shared_ptr<Stage>& StagePtr,
 			int layer
@@ -617,5 +637,35 @@ namespace basecross {
 		bool GetShowing() {
 			return m_isShow;
 		}
+	};
+
+
+	//------------------------------------------------------------------------------------------------
+	//キャラクターステータス : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_Character_Status :public SS5ssae {
+		Vec3 m_pos;
+		Vec3 m_scale;
+		int m_layer;
+
+	public:
+		UI_Character_Status(const shared_ptr<Stage>& StagePtr,
+			const wstring& BaseDir,
+		    const Vec3& pos,
+			const Vec3& scale,
+			const int layer
+		):
+			SS5ssae(StagePtr, BaseDir, L"Status_Animation_ver2.ssae", L"Status_ver2_Chicken", true),
+			m_pos(pos),
+			m_scale(scale),
+			m_layer(layer)
+		{}
+		~UI_Character_Status() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+		void ChangeCharacterStatus(CharacterType type);
 	};
 }

@@ -66,6 +66,51 @@ namespace basecross {
 		Draw();
 	}
 
+	void UI_Static_Image::Draw() {
+		Col4 color = Col4(1.0f, 1.0f, 1.0f, 1.0f);
+		m_vertices.push_back(VertexPositionColorTexture(Vec3(-m_xHalf, m_yHalf, 0.0f), color, Vec2(0.0f, 0.0f)));
+		m_vertices.push_back(VertexPositionColorTexture(Vec3(m_xHalf, m_yHalf, 0.0f), color, Vec2(1.0f, 0.0f)));
+		m_vertices.push_back(VertexPositionColorTexture(Vec3(-m_xHalf, -m_yHalf, 0.0f), color, Vec2(0.0f, 1.0f)));
+		m_vertices.push_back(VertexPositionColorTexture(Vec3(m_xHalf, -m_yHalf, 0.0f), color, Vec2(1.0f, 1.0f)));
+
+		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
+
+		auto ptrDraw = AddComponent<PCTSpriteDraw>(m_vertices, indices);
+		ptrDraw->SetDiffuse(m_color);
+		ptrDraw->SetTextureResource(m_textures);
+		SetDrawLayer(m_layer);
+
+		auto ptrTrans = GetComponent<Transform>();
+		ptrTrans->SetPosition(m_pos);
+		ptrTrans->SetScale(m_scale);
+
+		SetAlphaActive(true);
+	}
+
+	void UI_Static_Image::SetTexture(const wstring& texture) {
+		auto ptrDraw = GetComponent<PCTSpriteDraw>();
+		ptrDraw->SetTextureResource(texture);
+	}
+
+	void UI_Static_Image::SetTexture(const wstring& texture, Vec2& vertex) {
+		m_xHalf = vertex.x / 2.0f;
+		m_yHalf = vertex.y / 2.0f;	
+		m_vertices[0].position = Vec3(-m_xHalf, m_yHalf, 0.0f);
+		m_vertices[1].position = Vec3(m_xHalf, m_yHalf, 0.0f);
+		m_vertices[2].position = Vec3(-m_xHalf, -m_yHalf, 0.0f);
+		m_vertices[3].position = Vec3(m_xHalf, -m_yHalf, 0.0f);
+		auto ptrDraw = GetComponent<PCTSpriteDraw>();
+		ptrDraw->UpdateVertices(m_vertices);
+		SetTexture(texture);
+	}
+
+	void UI_Static_Image::SetTexture(const wstring& texture, Vec2& vertex, const Vec3& scale) {
+		m_scale = scale;
+		auto ptrTrans = GetComponent<Transform>();
+		ptrTrans->SetScale(m_scale);
+		SetTexture(texture, vertex);
+	}
+
 	void UI_Static_Image::Hidden(bool e) {
 		SetDrawActive(!e);
 		SetUpdateActive(!e);
@@ -79,10 +124,10 @@ namespace basecross {
 	void UI_Horizontal_Sprite_Image::Draw() {
 
 		Col4 color = Col4(1.0f, 1.0f, 1.0f, 1.0f);
-		m_vertices.push_back(VertexPositionColorTexture(Vec3(-m_xHalf, m_yHalf, 0), color, Vec2(0.0f, 0.0f)));
-		m_vertices.push_back(VertexPositionColorTexture(Vec3(m_xHalf, m_yHalf, 0), color, Vec2(1.0f, 0.0f)));
-		m_vertices.push_back(VertexPositionColorTexture(Vec3(-m_xHalf, -m_yHalf, 0), color, Vec2(0.0f, 1.0f)));
-		m_vertices.push_back(VertexPositionColorTexture(Vec3(m_xHalf, -m_yHalf, 0), color, Vec2(1.0f, 1.0f)));
+		m_vertices.push_back(VertexPositionColorTexture(Vec3(-m_xHalf, m_yHalf, 0.0f), color, Vec2(0.0f, 0.0f)));
+		m_vertices.push_back(VertexPositionColorTexture(Vec3(m_xHalf, m_yHalf, 0.0f), color, Vec2(1.0f, 0.0f)));
+		m_vertices.push_back(VertexPositionColorTexture(Vec3(-m_xHalf, -m_yHalf, 0.0f), color, Vec2(0.0f, 1.0f)));
+		m_vertices.push_back(VertexPositionColorTexture(Vec3(m_xHalf, -m_yHalf, 0.0f), color, Vec2(1.0f, 1.0f)));
 
 		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
 
@@ -486,7 +531,7 @@ namespace basecross {
 	void UI_Kill_Details::Show(bool e) {
 		m_isShow = e;
 		Hidden(!e);
-		if (!e) {
+		if (!e || !m_characterStatusKillDetails.size()) {
 			return;
 		}
 
@@ -574,7 +619,9 @@ namespace basecross {
 
 		m_scoreTable = stage->AddGameObject<UI_Score_Table>(8, m_layer);
 		m_scoreTable->SetCharacterStatuses(m_characterStatuses);
-		m_killDetails = stage->AddGameObject<UI_Kill_Details>(m_layer + 100);
+		m_killDetails = stage->AddGameObject<UI_Kill_Details>(m_layer);
+
+		SetTestDeta();
 	}
 
 	void UI_The_World::OnUpdate() {
@@ -655,7 +702,7 @@ namespace basecross {
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f),
 				m_baseLayer,
-				Col4(1.0f, 1.0f, 1.0f, 0.85f),
+				Col4(1.0f, 1.0f, 1.0f, 0.9f),
 				m_baseImageName
 				);
 		}
@@ -751,5 +798,87 @@ namespace basecross {
 		if (KeyState.m_bPressedKeyTbl['P'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X) {
 			Show(false);
 		}
+	}
+
+	void UI_The_World::SetTestDeta() {
+		vector<CharacterStatus_s> statuses;
+		statuses.push_back({ L"ポテト", 10, 2, 5260, true, 0 });
+		statuses.push_back({ L"チキン", 10, 2, 3000, false, 1 });
+		statuses.push_back({ L"ドーナツ", 10, 2, 3000, false, 2 });
+		statuses.push_back({ L"エビ", 10, 2, 3000, false, 3 });
+		statuses.push_back({ L"ポテト", 10, 2, 3000, false, 4 });
+		statuses.push_back({ L"チキン", 10, 2, 3000, false, 5 });
+		statuses.push_back({ L"ドーナツ", 10, 2, 3000, false, 6 });
+		statuses.push_back({ L"エビ", 10, 2, 3000, false, 7 });
+		SetCharacterStatuses(statuses);
+
+		vector<CharacterKillDetails_s> killDetails;
+		killDetails.push_back({ CharacterType::SHRIMP, 1 });
+		killDetails.push_back({ CharacterType::CHICKEN, 2 });
+		killDetails.push_back({ CharacterType::POTATO, 3 });
+		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+		killDetails.push_back({ CharacterType::SHRIMP, 1 });
+		killDetails.push_back({ CharacterType::CHICKEN, 2 });
+		killDetails.push_back({ CharacterType::POTATO, 3 });
+		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+		killDetails.push_back({ CharacterType::SHRIMP, 1 });
+		killDetails.push_back({ CharacterType::CHICKEN, 2 });
+		killDetails.push_back({ CharacterType::POTATO, 3 });
+		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+		killDetails.push_back({ CharacterType::SHRIMP, 1 });
+		killDetails.push_back({ CharacterType::CHICKEN, 2 });
+		killDetails.push_back({ CharacterType::POTATO, 3 });
+		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
+		SetCharacterKillDetails(killDetails);
+	}
+
+
+	//------------------------------------------------------------------------------------------------
+	//キャラクターステータス : Class
+	//------------------------------------------------------------------------------------------------
+
+	void UI_Character_Status::OnCreate() {
+		SetDrawLayer(m_layer);
+		Mat4x4 mat;
+		mat.affineTransformation(
+			Vec3(1.0f, 1.0f, 1.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f)
+		);
+		SetToAnimeMatrix(mat);
+
+		auto PtrTrans = GetComponent<Transform>();
+		PtrTrans->SetScale(m_scale);
+		PtrTrans->SetPosition(m_pos);
+		SS5ssae::OnCreate();
+	}
+
+	void UI_Character_Status::OnUpdate() {
+		float time = App::GetApp()->GetElapsedTime();
+		UpdateAnimeTime(time);
+	}
+
+	void UI_Character_Status::ChangeCharacterStatus(CharacterType type) {
+		wstring animName = L"";
+		float time = 0.0f;
+		switch (type)
+		{
+		case basecross::POTATO:
+			animName = L"Status_ver2_Potato";
+			break;
+		case basecross::SHRIMP:
+			animName = L"Status_ver2_Shrimp";
+			break;
+		case basecross::CHICKEN:
+			animName = L"Status_ver2_Chicken";
+			break;
+		case basecross::DOUGHNUT:
+			animName = L"Status_ver2_Doughnut";
+			break;
+		}
+		ChangeAnimation(animName, time);
+		SetFps(15.0f);
+		SetLooped(false);
 	}
 }
