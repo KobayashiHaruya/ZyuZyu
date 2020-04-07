@@ -19,4 +19,5 @@
 #include "MyCamera.h"
 #include "Object.h"
 #include "Weapon.h"
-
+#include "Sprite.h"
+#include "MyGameObject.h"
