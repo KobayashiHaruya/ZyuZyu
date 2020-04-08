@@ -9,35 +9,21 @@
 namespace basecross{
 
 	void Character::Draw() {
-		vector<VertexPositionNormalTexture> vertices;
-		vector<uint16_t> indices;
-		bsm::Vec3 pointA(0, 0, 0);
-		bsm::Vec3 pointB(0, 0, 0);
-		pointA -= bsm::Vec3(0, m_scale.y * 0.5f, 0);
-		pointB += bsm::Vec3(0, m_scale.y * 0.5f, 0);
-		MeshUtill::CreateCapsule(m_scale.x,
-			pointA, pointB, 18, vertices, indices, true);
-
-		shared_ptr<MeshResource> m_CapsuleMesh;
-
-		m_CapsuleMesh = MeshResource::CreateMeshResource(vertices, indices, false);
-
 		auto ptrTrans = GetComponent<Transform>();
 		ptrTrans->SetPosition(m_pos);
 		ptrTrans->SetScale(Vec3(1.0f));
-		//ptrTrans->SetQuaternion(q);
 		ptrTrans->SetRotation(m_rot);
 
 		//影をつける
 		auto ptrShadow = AddComponent<Shadowmap>();
-		ptrShadow->SetMeshResource(m_CapsuleMesh);
+		ptrShadow->SetMeshResource(L"DEFAULT_CAPSULE");
 
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetFogEnabled(true);
-		ptrDraw->SetMeshResource(m_CapsuleMesh);
+		ptrDraw->SetMeshResource(L"DEFAULT_CAPSULE");
 		ptrDraw->SetOwnShadowActive(true);
 
-		//ptrDraw->SetMeshResource(L"DEFAULT_CAPSULE");
+		ptrDraw->SetMeshResource(L"DEFAULT_CAPSULE");
 		ptrDraw->SetTextureResource(L"trace.png");
 		SetAlphaActive(true);
 
@@ -48,38 +34,12 @@ namespace basecross{
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetMakedSize(Vec3(1.0f, 1.5f, 1.0f));
-		ptrColl->SetAfterCollision(AfterCollision::None);
+		ptrColl->SetAfterCollision(AfterCollision::Auto);
 		ptrColl->SetDrawActive(true);
 
 		AddTag(L"Character");
 		auto gravity = AddComponent<Gravity>();
-		gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
-
-
-		//Quat q;
-		//q.rotationZ(-90.0f * (3.14f / 180.0f));
-
-		////物理計算カプセル
-		//PsCapsuleParam param;
-		////半径にする
-		//param.m_HalfLen = m_scale.y * 0.5f;
-		//param.m_Radius = m_scale.x * 0.5f;
-		//param.m_Mass = 1.0f;
-		////慣性テンソルの計算
-		//param.m_Inertia = BasePhysics::CalcInertiaCylinderX(
-		//	param.m_HalfLen + param.m_Radius,
-		//	param.m_Radius,
-		//	param.m_Mass
-		//);
-		//param.m_MotionType = PsMotionType::MotionTypeActive;
-		//param.m_Quat = q;
-		//param.m_Pos = m_pos;
-		//auto ptrPs = AddComponent<RigidbodyCapsule>(param);
-		//ptrPs->SetDrawActive(true);
-
-		//ptrPs->SetAutoTransform(true);
-
-		//ptrPs->SetAutoGravity(-m_gravityScale);
+		//gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
 
 	}
 
@@ -148,25 +108,21 @@ namespace basecross{
 			angle.normalize();
 			//移動サイズを設定。
 			angle *= moveSize;
+			angle.y = 0.0f;
 		}
 
-		if (angle.x != 0) {
-			m_pos.x = angle.x * m_moveSpeed;
+		float time = App::GetApp()->GetElapsedTime();
+		Vec3 speed = ptrTransform->GetPosition();
+		if (angle.length() > 0.0f) {
+			speed += angle * time * m_moveSpeed;
+			ptrTransform->SetPosition(speed);
 		}
 
-		if (angle.z != 0) {
-			m_pos.z = angle.z * m_moveSpeed;
+		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl[VK_SPACE]) & m_jump) {
+			auto grav = GetComponent<Gravity>();
+			grav->StartJump(Vec3(0.0f, m_jumpPower, 0.0f));
+			m_jump = false;
 		}
-
-		Vec3 speed = m_pos + ptrTransform->GetPosition();
-
-		//ptrTransform->SetPosition(speed);
-
-		//if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl[VK_SPACE]) & m_jump) {
-		//	auto vel = ptrPs->GetLinearVelocity();
-		//	ptrPs->SetLinearVelocity(Vec3(vel.x, m_jumpPower, vel.z));
-		//	m_jump = false;
-		//}
 
 
 	}
@@ -175,24 +131,42 @@ namespace basecross{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
-		float fThumbLY = 0.0f;
+		Vec3 angle(0, 0, 0);
+
+		auto ptrTransform = GetComponent<Transform>();
+		auto ptrCamera = OnGetDrawCamera();
+		auto front = ptrTransform->GetPosition() - ptrCamera->GetEye();
+		front.y = 0;
+		front.normalize();
+		float frontAngle = atan2(front.z, front.x);
+		Vec2 moveVec(0.0f, 1.0f);
+		float moveSize = moveVec.length();
+		float cntlAngle = atan2(0.0f, 1.0f);
+		float totalAngle = frontAngle + cntlAngle;
+		angle = Vec3(cos(totalAngle), 0, sin(totalAngle));
+		angle.normalize();
+		angle *= moveSize;
+		angle.y = 0.0f;
+
+		float fThumbRY = 0.0f;
 		if (cntlVec[0].bConnected) {
-			fThumbLY = cntlVec[0].fThumbRY;
+			fThumbRY = cntlVec[0].fThumbRY;
 		}
 
 		if (KeyState.m_bPushKeyTbl[VK_RIGHT]) {
-			//右
-			fThumbLY = 1.0f;
+			fThumbRY = 1.0f;
 		}
 		else if (KeyState.m_bPushKeyTbl[VK_LEFT]) {
-			//左
-			fThumbLY = -1.0f;
+			fThumbRY = -1.0f;
 		}
 
-		auto trans = GetComponent<Transform>();
 		auto time = App::GetApp()->GetElapsedTime();
-		m_rot.y += fThumbLY * m_rotSpeed * time;
-		trans->SetRotation(m_rot);
+		m_rot.y += fThumbRY * m_rotSpeed * time;
+
+		if (angle.length() > 0.0f) {
+			auto ptr = GetBehavior<UtilBehavior>();
+			ptr->RotToHead(angle, 1.0f);
+		}
 
 	}
 
@@ -201,10 +175,10 @@ namespace basecross{
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
 		auto ptr = GetComponent<Transform>();
-		
-		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl['F'])) {
+
+		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl[VK_LBUTTON])) {
 			GetStage()->AddGameObject<Bullet>(
-				m_pos + Vec3(0.0f, 0.0f, 2.0f),
+				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
 				m_rot,
 				Vec3(1.0f, 1.0f, 1.0f),
 				50.0f, 10.0f
@@ -213,16 +187,16 @@ namespace basecross{
 	}
 
 	void Character::AttackHit(Vec3 rot) {
-		//auto ptrPs = GetComponent<RigidbodyCapsule>();
+		auto grav = GetComponent<Gravity>();
 
-		//float rad = rot.y * Mathf.Deg2Rad;
+		float rad = (rot.y * 180.0f) / 3.14f;
 
-		//float x = Mathf.Sin(rad);
-		//float z = Mathf.Cos(rad);
+		float x = cos(rad);
+		float z = sin(rad);
 
-		//Vec3 vecForce = (Vec3(rot.x, 1.0f, rot.z)) * m_force;
+		Vec3 vecForce = (Vec3(x, 2.0f, z)) * m_force;
 
-		//ptrPs->SetLinearVelocity(rot);
+		grav->StartJump(vecForce);
 
 	}
 

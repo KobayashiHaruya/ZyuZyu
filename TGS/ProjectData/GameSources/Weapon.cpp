@@ -79,17 +79,8 @@ namespace basecross {
 
 		auto time = App::GetApp()->GetElapsedTime();
 
-
-		//float rad = (rot.y * 3.1415) / 180.0f;
-
-		//float x = sin(rad);
-		//float z = cos(rad);
-
-		//Vec3 force = m_moveSpeed * Vec3(z, 0.0f, x);
-
 		Vec3 force = trans->GetForword() * m_moveSpeed;
 
-		//trans->SetPosition(trans->GetPosition() + force);
 		psPtr->SetLinearVelocity(force);
 		//psPtr->ApplyForce(Vec3(0.0f, -m_gravityScale, 0.0f));
 	}

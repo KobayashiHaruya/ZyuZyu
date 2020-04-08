@@ -13,7 +13,7 @@ namespace basecross {
 		m_ArmLen(5.0f),
 		m_MaxArm(1000.0f),
 		m_MinArm(2.0f),
-		m_RotSpeed(1.5f),
+		m_RotSpeed(2.0f),
 		m_ZoomSpeed(0.1f),
 		m_LRBaseMode(true),
 		m_UDBaseMode(true)

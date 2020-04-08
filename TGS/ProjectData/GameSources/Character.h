@@ -6,23 +6,20 @@
 #pragma once
 #include "stdafx.h"
 
-namespace basecross{
+namespace basecross {
 
 	class Character : public GameObject {
 		Vec3 m_pos;
 		Vec3 m_rot;
 		Vec3 m_scale;
 		float m_moveSpeed;
-		float m_rotSpeed = 1.5f;
+		float m_rotSpeed = 2.0f;
 		float m_gravityScale;
 		float m_jumpPower;
+		int ID;
 
-		float m_force = 1.0f;
+		float m_force = 5.0f;
 		bool m_jump = true;
-
-		float m_RadXZ;
-		float m_RadY = 1.5f;
-
 
 	public:
 
@@ -32,7 +29,8 @@ namespace basecross{
 			const Vec3& scale,
 			const float& speed,
 			const float& gravity,
-			const float& jump
+			const float& jump,
+			const int& id
 		) :
 			GameObject(StagePtr),
 			m_pos(pos),
@@ -40,7 +38,8 @@ namespace basecross{
 			m_scale(scale),
 			m_moveSpeed(speed),
 			m_gravityScale(gravity),
-			m_jumpPower(jump)
+			m_jumpPower(jump),
+			ID(id)
 		{}
 		~Character() {}
 
@@ -54,8 +53,8 @@ namespace basecross{
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
 		virtual void OnCollisionExcute(shared_ptr<GameObject>& Other) override;
 		virtual void OnCollisionExit(shared_ptr<GameObject>& Other) override;
-	
-	
+
+
 	};
 
 
@@ -67,15 +66,17 @@ namespace basecross{
 			const Vec3& scale,
 			const float& speed,
 			const float& gravity,
-			const float& jump
+			const float& jump,
+			const int& id
 		) :
 			Character(StagePtr,
-			pos,
-			rot,
-			scale,
-			speed,
-			gravity,
-			jump
+				pos,
+				rot,
+				scale,
+				speed,
+				gravity,
+				jump,
+				id
 			)
 		{}
 		~TestPlayer() {}

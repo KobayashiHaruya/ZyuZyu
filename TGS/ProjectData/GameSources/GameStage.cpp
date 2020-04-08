@@ -64,7 +64,7 @@ namespace basecross {
 				Vec3(0.0f, 3.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f),
-				0.15f, 10.0f, 5.0f
+				8.0f, 10.0f, 5.0f, 0
 				);
 
 		}
@@ -77,8 +77,14 @@ namespace basecross {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
 		if (KeyState.m_bPressedKeyTbl['E']) {
-
-
+			Vec3 rot;
+			rot.y = (180.0f * 3.14f) / 180.0f;
+			AddGameObject<Bullet>(
+				Vec3(0.0f, 2.0f, 15.0f),
+				rot,
+				Vec3(1.0f, 1.0f, 1.0f),
+				50.0f, 10.0f
+				);
 		}
 
 	}
