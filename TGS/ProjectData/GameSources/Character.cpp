@@ -214,8 +214,8 @@ namespace basecross{
 				50.0f, 10.0f,
 				m_myData.unique
 				);
-			bullet->AddEvent([this](const unsigned int value) {
-				DroppedIntoOil(value);
+			bullet->AddEvent([this](const CharacterStatus_s status) {
+				DroppedIntoOil(status);
 			});
 		}
 	}
@@ -244,7 +244,7 @@ namespace basecross{
 		if (Other->FindTag(L"Bullet")) {
 			auto rot = Other->GetComponent<Transform>()->GetRotation();
 			AttackHit(rot);
-			m_touchOil = dynamic_pointer_cast<ObstacleEvent<const unsigned int>>(Other);
+			m_touchOil = dynamic_pointer_cast<ObstacleEvent<const CharacterStatus_s>>(Other);
 		}
 		if (Other->FindTag(L"Weapon")) {
 
@@ -263,14 +263,16 @@ namespace basecross{
 
 	//–û‚ÉG‚ê‚½Žž‚Ìˆ—
 	void Character::TouchOil() {
-		m_touchOil->Run(m_myData.level);
+		m_touchOil->Run(m_myData);
 		SetUpdateActive(false);
 		SetDrawActive(false);
 	}
 
 	//‘ŠŽè‚ð–û‚É—Ž‚Æ‚µ‚½Žž‚Ìˆ—
-	void Character::DroppedIntoOil(const unsigned int level) {
-		AddScore(level * 100 + (level > 1 ? 100 : 0));
+	void Character::DroppedIntoOil(const CharacterStatus_s& status) {
+		AddScore(status.level * 100 + (status.level > 1 ? 100 : 0));
+		auto kill = CharacterKillDetails_s({ status.type, status.level });
+		AddKillCharacter(kill);
 	}
 
 	vector<CharacterKillDetails_s> Character::GetKillCharacters() {
