@@ -21,3 +21,5 @@
 #include "Weapon.h"
 #include "Sprite.h"
 #include "MyGameObject.h"
+#include "GameManager.h"
+#include "Time.h"

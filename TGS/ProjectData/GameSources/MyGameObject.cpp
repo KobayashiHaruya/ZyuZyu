@@ -9,6 +9,7 @@
 namespace basecross {
 	MyGameObject::MyGameObject(const shared_ptr<Stage>& stagePtr) :
 		GameObject(stagePtr)
+
 	{
 	}
 }
