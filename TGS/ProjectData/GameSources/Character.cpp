@@ -263,7 +263,8 @@ namespace basecross{
 
 	//–û‚ÉG‚ê‚½‚Ìˆ—
 	void Character::TouchOil() {
-		m_touchOil->Run(m_myData);
+		if(m_touchOil) m_touchOil->Run(m_myData);
+		AddDeath(1);
 		SetUpdateActive(false);
 		SetDrawActive(false);
 	}
@@ -273,6 +274,7 @@ namespace basecross{
 		AddScore(status.level * 100 + (status.level > 1 ? 100 : 0));
 		auto kill = CharacterKillDetails_s({ status.type, status.level });
 		AddKillCharacter(kill);
+		AddKill(1);
 	}
 
 	vector<CharacterKillDetails_s> Character::GetKillCharacters() {
