@@ -25,7 +25,7 @@ namespace basecross{
 		CharacterStatus_s m_myData;
 		vector<CharacterKillDetails_s> m_killCharacters;  //自身がキルした相手のキャラクタータイプとレベルを持つ
 
-		shared_ptr<ObstacleEvent<const unsigned int>> m_touchOil;
+		shared_ptr<ObstacleEvent<const CharacterStatus_s>> m_touchOil;
 
 	public:
 
@@ -64,7 +64,7 @@ namespace basecross{
 		virtual void OnCollisionExit(shared_ptr<GameObject>& Other) override;
 
 		void TouchOil();
-		void DroppedIntoOil(const unsigned int level);
+		void DroppedIntoOil(const CharacterStatus_s& status);
 
 		vector<CharacterKillDetails_s> GetKillCharacters();
 		void AddKillCharacter(const CharacterKillDetails_s& data);

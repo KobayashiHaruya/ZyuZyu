@@ -46,7 +46,7 @@ namespace basecross {
 	};
 
 
-	class BulletBase :public GameObject, public ObstacleEvent<const unsigned int> {
+	class BulletBase :public GameObject, public ObstacleEvent<const CharacterStatus_s> {
 		Vec3 m_pos;
 		Vec3 m_rot;
 		Vec3 m_scale;
