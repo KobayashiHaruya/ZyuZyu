@@ -25,9 +25,6 @@ namespace basecross {
 		void ChangeCharacter(int index);
 		void Select();
 
-		shared_ptr<UI_The_World> m_theWorld;  //本番時にはコメントアウトしてください
-		void TestFunc();  //ポーズ画面を表示します。本番時にはコメントアウトしてください
-
 	public:
 		CharSelectStage() :Stage(),
 			m_layer(5),
@@ -41,8 +38,7 @@ namespace basecross {
 			m_oldIndex(-1),
 			m_mask(NULL),
 			m_characterLogo(NULL),
-			m_characterStatus(NULL),
-			m_theWorld(NULL)
+			m_characterStatus(NULL)
 		{}
 		virtual ~CharSelectStage() {}
 

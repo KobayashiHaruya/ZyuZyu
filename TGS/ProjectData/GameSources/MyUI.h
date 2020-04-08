@@ -318,42 +318,6 @@ namespace basecross {
 
 
 	//------------------------------------------------------------------------------------------------
-	//キャラクタータイプ : enum
-	//------------------------------------------------------------------------------------------------
-
-	enum CharacterType {
-		POTATO = 0,
-		SHRIMP = 1,
-		CHICKEN = 2,
-		DOUGHNUT = 3
-	};
-
-
-	//------------------------------------------------------------------------------------------------
-	//キャラクターステータス : struct
-	//------------------------------------------------------------------------------------------------
-
-	typedef struct CharacterStatus {
-		wstring playerName;
-		int kill;
-		int death;
-		int score;
-		bool isPlayer;
-		int unique;
-	} CharacterStatus_s;
-
-
-	//------------------------------------------------------------------------------------------------
-	//キル詳細 : struct
-	//------------------------------------------------------------------------------------------------
-
-	typedef struct CharacterKillDetails {
-		CharacterType type;
-		int level;
-	} CharacterKillDetails_s;
-
-
-	//------------------------------------------------------------------------------------------------
 	//スコア表 : struct
 	//------------------------------------------------------------------------------------------------
 
@@ -514,8 +478,8 @@ namespace basecross {
 			m_headerFontSize(50.0f),
 			m_lineFontSize(45.0f),
 			m_fontName(L"メイリオ"),
-			m_headerTexts(vector<shared_ptr<UI_Sprite_Text>>(0)),
-			m_lines(vector<ScoreTableLine_s>(0)),
+			m_headerTexts(vector<shared_ptr<UI_Sprite_Text>>(NULL)),
+			m_lines(vector<ScoreTableLine_s>(NULL)),
 			m_white(Col4(1.0f)),
 			m_isCreate(false)
 		{}
@@ -572,10 +536,10 @@ namespace basecross {
 			GameObject(StagePtr),
 			m_layer(layer),
 			m_characterIconImageName(L"PS_Characteres_Level_Sprite.png"),
-			m_characterStatusKillDetails(vector<CharacterKillDetails_s>(0)),
+			m_characterStatusKillDetails(vector<CharacterKillDetails_s>(NULL)),
 			m_killText(NULL),
 			m_scoreText(NULL),
-			m_icons(vector<shared_ptr<UI_Food_Icon>>(0)),
+			m_icons(vector<shared_ptr<UI_Food_Icon>>(NULL)),
 			m_score(0),
 			m_fontName(L"メイリオ"),
 			m_infoFontSize(50.0f),
@@ -641,8 +605,6 @@ namespace basecross {
 		void ChangeTab();
 		void Key();
 
-		void SetTestDeta();  //テスト用のデータを設定します。本番時にはコメントアウトしてください
-
 	public:
 		UI_The_World(const shared_ptr<Stage>& StagePtr,
 			int layer
@@ -652,8 +614,8 @@ namespace basecross {
 			m_layer(layer + 1),
 			m_fontName(L"メイリオ"),
 			m_titleFontSize(50.0f),
-			m_characterStatuses(vector<CharacterStatus_s>(0)),
-			m_characterStatusKillDetails(vector<CharacterKillDetails_s>(0)),
+			m_characterStatuses(vector<CharacterStatus_s>(NULL)),
+			m_characterStatusKillDetails(vector<CharacterKillDetails_s>(NULL)),
 			m_isShow(false),
 			m_baseImageName(L"PS_Base.png"),
 			m_operationImageName(L"Operation.png"),
@@ -681,7 +643,7 @@ namespace basecross {
 		void SetCharacterStatuses(const vector<CharacterStatus_s>& characterStatuses) {
 			if (m_scoreTable) m_scoreTable->SetCharacterStatuses(characterStatuses);
 		}
-		void SetCharacterStatus(const CharacterStatus_s& status) {
+		void ChangeCharacterStatus(const CharacterStatus_s& status) {
 			if (m_scoreTable) m_scoreTable->SetCharacterStatus(status);
 		};
 		void SetCharacterKillDetails(const vector<CharacterKillDetails_s>& characterStatusKillDetails) {

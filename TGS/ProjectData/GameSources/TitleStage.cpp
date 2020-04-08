@@ -36,7 +36,7 @@ namespace basecross {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		if (KeyState.m_bPressedKeyTbl[VK_SPACE] || KeyState.m_bPushKeyTbl['W'] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) {
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::game);
+			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
 		}
 	}
 

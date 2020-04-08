@@ -36,4 +36,10 @@ namespace basecross {
 		Draw();
 	}
 
+
+	void Oil::OnCreate() {
+		Object::OnCreate();
+		AddTag(L"Oil");
+	}
+
 }

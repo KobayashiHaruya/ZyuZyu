@@ -17,6 +17,60 @@ namespace basecross{
 		Max
 	};
 
+
+	//------------------------------------------------------------------------------------------------
+	//キャラクタータイプ : enum
+	//------------------------------------------------------------------------------------------------
+
+	enum CharacterType {
+		POTATO = 0,
+		SHRIMP = 1,
+		CHICKEN = 2,
+		DOUGHNUT = 3
+	};
+
+	static wstring GetCharacterTypeToString(const CharacterType type) {
+		switch (type)
+		{
+		case CharacterType::POTATO:
+			return L"ポテト";
+		case CharacterType::SHRIMP:
+			return L"エビ";
+		case CharacterType::CHICKEN:
+			return L"チキン";
+		case CharacterType::DOUGHNUT:
+			return L"ドーナツ";
+		default:
+			return L"";
+		}
+	}
+
+
+	//------------------------------------------------------------------------------------------------
+	//キャラクターステータス : struct
+	//------------------------------------------------------------------------------------------------
+
+	typedef struct CharacterStatus {
+		CharacterType type;
+		unsigned int level;
+		unsigned int kill;
+		unsigned int death;
+		unsigned int score;
+		bool isPlayer;
+		unsigned int unique;
+	} CharacterStatus_s;
+
+
+	//------------------------------------------------------------------------------------------------
+	//キル詳細 : struct
+	//------------------------------------------------------------------------------------------------
+
+	typedef struct CharacterKillDetails {
+		CharacterType type;
+		unsigned int level;
+	} CharacterKillDetails_s;
+
+
 	//--------------------------------------------------------------------------------------
 	///	ゲームシーン
 	//--------------------------------------------------------------------------------------
