@@ -52,8 +52,6 @@ namespace basecross {
 		m_characterStatus = AddGameObject<UI_Character_Status>(mediaDir + L"Texters/StageSelectImagies/Status_Animation/SpriteStudio/", Vec3(230.0f, -375.0f, 0.0f), Vec3(30.0f), m_layer);
 
 		ChangeCharacter(m_startIndex);
-
-		m_theWorld = AddGameObject<UI_The_World>(m_layer);
 	}
 
 	void CharSelectStage::OnCreate() {
@@ -69,7 +67,6 @@ namespace basecross {
 	void CharSelectStage::OnUpdate() {
 		ChangeCharacter(m_mask->GetIndex());
 		Select();
-		TestFunc();
 	}
 
 	void CharSelectStage::ChangeCharacter(int index) {
@@ -120,14 +117,6 @@ namespace basecross {
 			//GetIndex()で選択したキャラクターのIndexを取得できます
 			int index = GetIndex();
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::game);
-		}
-	}
-
-	void CharSelectStage::TestFunc() {
-		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-		if (KeyState.m_bPressedKeyTbl['W'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_START) {
-			m_theWorld->Show(!(m_theWorld->GetShowing()));
 		}
 	}
 }

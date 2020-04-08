@@ -46,6 +46,8 @@ namespace basecross {
 		{}
 		~Oil() {}
 
+		virtual void OnCreate() override;
+
 	};
 
 

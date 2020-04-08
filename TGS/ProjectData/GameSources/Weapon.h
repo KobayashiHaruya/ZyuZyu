@@ -3,6 +3,22 @@
 
 namespace basecross {
 
+	template<typename... T>
+	class ObstacleEvent {
+		vector<function<void(T...)>> m_fromEvents;
+	public:
+		ObstacleEvent():
+			m_fromEvents(vector<function<void(T...)>>(0))
+		{};
+		~ObstacleEvent() {};
+		void AddEvent(const function<void(T...)>& event) {
+			m_fromEvents.push_back(event);
+		}
+		void Run(T... args) {
+			for(auto& event : m_fromEvents) event(args...);
+		}
+	};
+
 
 	class Weapon :public GameObject {
 		Vec3 m_pos;
@@ -30,12 +46,14 @@ namespace basecross {
 	};
 
 
-	class BulletBase : public GameObject {
+	class BulletBase :public GameObject, public ObstacleEvent<const unsigned int> {
 		Vec3 m_pos;
 		Vec3 m_rot;
 		Vec3 m_scale;
 		float m_moveSpeed;
 		float m_gravityScale;
+
+		int m_fromUnique;
 
 	public:
 
@@ -44,20 +62,26 @@ namespace basecross {
 			const Vec3& rot,
 			const Vec3& scale,
 			const float& speed,
-			const float& gravity
+			const float& gravity,
+			const unsigned int fromUnique
 		) :
 			GameObject(StagePtr),
 			m_pos(pos),
 			m_rot(rot),
 			m_scale(scale),
 			m_moveSpeed(speed),
-			m_gravityScale(gravity)
+			m_gravityScale(gravity),
+			m_fromUnique(fromUnique)
 		{}
 		~BulletBase() {}
 
 		void Draw();
 		void Move();
 		void Destroy();
+
+		unsigned int GetFromUnique() {
+			return m_fromUnique;
+		}
 	};
 
 
@@ -68,14 +92,16 @@ namespace basecross {
 			const Vec3& rot,
 			const Vec3& scale,
 			const float& speed,
-			const float& gravity
+			const float& gravity,
+			const unsigned int fromUnique
 		) :
 			BulletBase(StagePtr,
 			pos,
 			rot,
 			scale,
 			speed,
-			gravity
+			gravity,
+			fromUnique
 			)
 		{}
 		virtual ~Bullet() {}

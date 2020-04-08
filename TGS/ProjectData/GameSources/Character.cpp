@@ -207,12 +207,16 @@ namespace basecross{
 		auto ptr = GetComponent<Transform>();
 		
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl['F'])) {
-			GetStage()->AddGameObject<Bullet>(
+			auto bullet = GetStage()->AddGameObject<Bullet>(
 				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
 				ptr->GetRotation(),
 				Vec3(1.0f, 1.0f, 1.0f),
-				50.0f, 10.0f
+				50.0f, 10.0f,
+				m_myData.unique
 				);
+			bullet->AddEvent([this](const unsigned int value) {
+				DroppedIntoOil(value);
+			});
 		}
 	}
 
@@ -240,6 +244,13 @@ namespace basecross{
 		if (Other->FindTag(L"Bullet")) {
 			auto rot = Other->GetComponent<Transform>()->GetRotation();
 			AttackHit(rot);
+			m_touchOil = dynamic_pointer_cast<ObstacleEvent<const unsigned int>>(Other);
+		}
+		if (Other->FindTag(L"Weapon")) {
+
+		}
+		if (Other->FindTag(L"Oil")) {
+			TouchOil();
 		}
 	}
 
@@ -248,6 +259,51 @@ namespace basecross{
 			m_jump = false;
 			auto ptrPs = GetComponent<RigidbodyCapsule>();
 		}
+	}
+
+	//–û‚ÉG‚ê‚½Žž‚Ìˆ—
+	void Character::TouchOil() {
+		m_touchOil->Run(m_myData.level);
+		SetUpdateActive(false);
+		SetDrawActive(false);
+	}
+
+	//‘ŠŽè‚ð–û‚É—Ž‚Æ‚µ‚½Žž‚Ìˆ—
+	void Character::DroppedIntoOil(const unsigned int level) {
+		AddScore(level * 100 + (level > 1 ? 100 : 0));
+	}
+
+	vector<CharacterKillDetails_s> Character::GetKillCharacters() {
+		return m_killCharacters;
+	}
+
+	void Character::AddKillCharacter(const CharacterKillDetails_s& data) {
+		m_killCharacters.push_back(data);
+	}
+
+	CharacterStatus_s Character::GetMyData() {
+		return m_myData;
+	}
+
+	void Character::SetMyData(const CharacterStatus_s& data) {
+		m_myData = data;
+	}
+
+	void Character::AddScore(const int score) {
+		m_myData.score += score;
+	}
+
+	void Character::SetLevel(const unsigned int level) {
+		if (level <= 0 || level >= 4) return;
+		m_myData.level = level;
+	}
+
+	void Character::AddKill(const int kill) {
+		m_myData.kill += kill;
+	}
+
+	void Character::AddDeath(const int death) {
+		m_myData.death += death;
 	}
 
 
@@ -260,6 +316,14 @@ namespace basecross{
 		PlayerMove();
 		PlayerRotMove();
 		BulletFire();
+	}
+
+
+	void TestEnemy::OnCreate() {
+		Draw();
+	}
+
+	void TestEnemy::OnUpdate() {
 	}
 
 }

@@ -40,7 +40,7 @@ namespace basecross {
 	}
 
 	void GameStage::CreateUI() {
-
+		m_pause = AddGameObject<UI_The_World>(5);
 	}
 
 
@@ -56,15 +56,27 @@ namespace basecross {
 				Vec3(100.0f, 0.5f, 100.0f)
 				);
 			AddGameObject<Oil>(
-				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, -10.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(150.0f, 0.1f, 150.0f)
 				);
-			AddGameObject<TestPlayer>(
+			m_player = AddGameObject<TestPlayer>(
 				Vec3(0.0f, 3.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f),
-				0.15f, 10.0f, 5.0f
+				0.15f, 10.0f, 5.0f,
+				CharacterType::CHICKEN,
+				true,
+				0
+				);
+			m_enemy = AddGameObject<TestEnemy>(
+				Vec3(0.0f, 3.0f, 50.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(1.0f, 1.0f, 1.0f),
+				0.15f, 10.0f, 5.0f,
+				CharacterType::POTATO,
+				false,
+				1
 				);
 
 		}
@@ -81,6 +93,29 @@ namespace basecross {
 
 		}
 
+		ShowPause();
+	}
+
+	void GameStage::ShowPause() {
+		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+
+		//Rキーもしくはパッドのスタートボタンを押したらポーズ画面を表示する
+		if (KeyState.m_bPressedKeyTbl['R'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_START) {
+
+			//ここでは毎回配列を生成してステータスを設定しているが実際には１度だけ処理してChangeStatusをする
+			vector<CharacterStatus_s> statuses;
+			statuses.push_back(m_player->GetMyData());
+			statuses.push_back(m_enemy->GetMyData());
+			m_pause->SetCharacterStatuses(statuses);
+
+			//キルの情報詳細を表示したいCharacterから情報を取得してポーズ画面に値を渡す
+			m_pause->SetCharacterKillDetails(m_player->GetKillCharacters());
+
+			//実際にポーズ画面を表示する
+			//引数は現在ポーズ画面がアクティブかどうかを取得してそのフラグを反転させることで表示非表示を切り替えている
+			m_pause->Show(!(m_pause->GetShowing()));
+		}
 	}
 
 }

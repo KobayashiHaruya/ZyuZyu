@@ -32,6 +32,14 @@ namespace basecross {
 
 	}
 
+	void Title_UI::OnCreate() {
+		Draw();
+	}
+
+	void Operation_UI::OnCreate() {
+		Draw();
+	}
+
 
 	//------------------------------------------------------------------------------------------------
 	//テキスト : Class
@@ -174,14 +182,6 @@ namespace basecross {
 		MaskMove();
 	}
 
-	void Title_UI::OnCreate() {
-		Draw();
-	}
-
-	void Operation_UI::OnCreate() {
-		Draw();
-	}
-
 	void UI_Character_Select_Mask_Image::MaskMove() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
@@ -190,7 +190,6 @@ namespace basecross {
 			fThumbLX = cntlVec[0].fThumbLX;
 		}
 
-		Draw();
 		if (KeyState.m_bPressedKeyTbl['A'] || (fThumbLX < 0.0f && m_oldFThumbLX == 0.0f)) {
 			SetMaskIndex(--m_maskIndex);
 		}
@@ -352,7 +351,7 @@ namespace basecross {
 		vector<CharacterStatus_s>::iterator it = find_if(m_characterStatuses.begin(), m_characterStatuses.end(), [status](const CharacterStatus_s& i) {
 			return i.unique == status.unique;
 		});
-		it->playerName = status.playerName;
+		it->type = status.type;
 		it->kill = status.kill;
 		it->death = status.death;
 		it->score = status.score;
@@ -455,7 +454,7 @@ namespace basecross {
 			m_white,
 			Rect2D<float>(i, t + (index * space), 1556.0f, b + (index * space)),
 			StringSprite::TextAlignment::m_Left,
-			status.playerName,
+			GetCharacterTypeToString(status.type),
 			m_layer,
 			false
 			);
@@ -506,7 +505,7 @@ namespace basecross {
 		for (int i = 0; i < m_lines.size(); i++) {
 			auto& status = m_characterStatuses[i];
 			auto& line = m_lines[i];
-			line.name->UpdateText(status.playerName);
+			line.name->UpdateText(GetCharacterTypeToString(status.type));
 			line.kill->UpdateText(to_wstring(status.kill));
 			line.death->UpdateText(to_wstring(status.death));
 			line.score->UpdateText(to_wstring(status.score));
@@ -629,8 +628,6 @@ namespace basecross {
 		m_scoreTable = stage->AddGameObject<UI_Score_Table>(8, m_layer);
 		m_scoreTable->SetCharacterStatuses(m_characterStatuses);
 		m_killDetails = stage->AddGameObject<UI_Kill_Details>(m_layer);
-
-		SetTestDeta();
 	}
 
 	void UI_The_World::OnUpdate() {
@@ -807,38 +804,6 @@ namespace basecross {
 		if (KeyState.m_bPressedKeyTbl['P'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X) {
 			Show(false);
 		}
-	}
-
-	void UI_The_World::SetTestDeta() {
-		vector<CharacterStatus_s> statuses;
-		statuses.push_back({ L"ポテト", 10, 2, 5260, true, 0 });
-		statuses.push_back({ L"チキン", 10, 2, 3000, false, 1 });
-		statuses.push_back({ L"ドーナツ", 10, 2, 3000, false, 2 });
-		statuses.push_back({ L"エビ", 10, 2, 3000, false, 3 });
-		statuses.push_back({ L"ポテト", 10, 2, 3000, false, 4 });
-		statuses.push_back({ L"チキン", 10, 2, 3000, false, 5 });
-		statuses.push_back({ L"ドーナツ", 10, 2, 3000, false, 6 });
-		statuses.push_back({ L"エビ", 10, 2, 3000, false, 7 });
-		SetCharacterStatuses(statuses);
-
-		vector<CharacterKillDetails_s> killDetails;
-		killDetails.push_back({ CharacterType::SHRIMP, 1 });
-		killDetails.push_back({ CharacterType::CHICKEN, 2 });
-		killDetails.push_back({ CharacterType::POTATO, 3 });
-		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-		killDetails.push_back({ CharacterType::SHRIMP, 1 });
-		killDetails.push_back({ CharacterType::CHICKEN, 2 });
-		killDetails.push_back({ CharacterType::POTATO, 3 });
-		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-		killDetails.push_back({ CharacterType::SHRIMP, 1 });
-		killDetails.push_back({ CharacterType::CHICKEN, 2 });
-		killDetails.push_back({ CharacterType::POTATO, 3 });
-		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-		killDetails.push_back({ CharacterType::SHRIMP, 1 });
-		killDetails.push_back({ CharacterType::CHICKEN, 2 });
-		killDetails.push_back({ CharacterType::POTATO, 3 });
-		killDetails.push_back({ CharacterType::DOUGHNUT, 1 });
-		SetCharacterKillDetails(killDetails);
 	}
 
 
