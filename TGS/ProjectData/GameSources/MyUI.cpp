@@ -49,6 +49,37 @@ namespace basecross {
 		Draw();
 	}
 
+	void Result_UI::OnCreate() {
+		Draw();
+	}
+
+	void Score_UI::OnCreate() {
+		float score = static_cast<float>(m_Score / m_place % 10);
+		float Width = 64.0f / 640.0f;	//各数字の幅をテクスチャ座標に変換
+
+		Col4 color = Col4(1.0f, 1.0f, 1.0f, 1.0f);
+
+		vertices = {
+			{Vec3(0,    0, 0), color, Vec2((score + 0) * Width, 0.0f)}, // 頂点１
+			{Vec3(50,    0, 0), color, Vec2((score + 1) * Width, 0.0f)}, // 頂点２
+			{Vec3(0, -100, 0), color, Vec2((score + 0) * Width, 1.0f)}, // 頂点３
+			{Vec3(50, -100, 0), color, Vec2((score + 1) * Width, 1.0f)}, // 頂点４
+		};
+		indices = {0, 1, 2, 2, 1, 3 };
+
+		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
+		ptrDraw->SetDiffuse(m_color);
+		ptrDraw->SetTextureResource(m_textures);
+		SetDrawLayer(m_layer);
+
+		auto ptrTrans = GetComponent<Transform>();
+		ptrTrans->SetPosition(m_pos);
+		ptrTrans->SetScale(m_scale);
+
+		SetAlphaActive(true);
+
+	}
+
 	void UI_Character_Select_Mask_Image::MaskMove() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();

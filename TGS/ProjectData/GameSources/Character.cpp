@@ -6,7 +6,7 @@
 #include "stdafx.h"
 #include "Project.h"
 
-namespace basecross{
+namespace basecross {
 
 	void Character::Draw() {
 		vector<VertexPositionNormalTexture> vertices;
@@ -148,7 +148,7 @@ namespace basecross{
 
 		auto vec = angle;
 		auto ptrPs = GetComponent<RigidbodyCapsule>();
-				
+
 		Vec3 speed = Vec3(0.0f, 0.0f, 0.0f);
 
 		if (vec.x != 0) {
@@ -207,10 +207,10 @@ namespace basecross{
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
 		auto ptr = GetComponent<Transform>();
-		
+
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl['F'])) {
 			GetStage()->AddGameObject<Bullet>(
-				ptr->GetPosition() + Vec3(0.0f,0.0f,2.0f),
+				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
 				ptr->GetRotation(),
 				Vec3(1.0f, 1.0f, 1.0f),
 				5.0f, 1.0f
@@ -218,10 +218,34 @@ namespace basecross{
 		}
 	}
 
+	void Character::Respawn() {
+		const float activeY = 25.0f;
+		auto PtrTransform = GetComponent<Transform>();
+		if (abs(PtrTransform->GetPosition().y) > activeY) {
+			m_des = true;
+			if (m_des) {
+				auto PlayerPtr = GetStage()->AddGameObject<TestPlayer>(
+					Vec3(0.0f, 3.0f, 0.0f),
+					Vec3(0.0f, 0.0f, 0.0f),
+					Vec3(1.0f, 1.0f, 1.0f),
+					0.15f, 10.0f, 5.0f
+					);
+
+				GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
+				m_des = false;
+			}
+
+		}
+
+
+
+	}
+
+
 	void Character::AttackHit(Vec3 rot) {
 		auto ptrPs = GetComponent<RigidbodyCapsule>();
 
-		
+
 
   //      float rad = rot.y * Mathf.Deg2Rad;
 
@@ -262,7 +286,8 @@ namespace basecross{
 		PlayerMove();
 		PlayerRotMove();
 		BulletFire();
-	}
+		Respawn();
 
+	}
 }
 //end basecross

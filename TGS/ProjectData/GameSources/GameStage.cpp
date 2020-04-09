@@ -73,13 +73,13 @@ namespace basecross {
 		}
 	}
 
+
 	void GameStage::OnUpdate() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
 		if (KeyState.m_bPressedKeyTbl['E']) {
 
 		}
-
 	}
 
 }

@@ -18,9 +18,8 @@ namespace basecross{
 		float m_jumpPower;
 
 		float m_force = 1.0f;
+		bool m_des = false;
 		bool m_jump = true;
-
-
 	public:
 
 		Character(const shared_ptr<Stage>& StagePtr,
@@ -46,12 +45,13 @@ namespace basecross{
 		void PlayerMove();
 		void PlayerRotMove();
 		void BulletFire();
+		void Respawn();
+
 		void AttackHit(Vec3 rot);
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
 		virtual void OnCollisionExit(shared_ptr<GameObject>& Other) override;
-	
-	
+
 	};
 
 
@@ -78,7 +78,6 @@ namespace basecross{
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
-
 	};
 
 
