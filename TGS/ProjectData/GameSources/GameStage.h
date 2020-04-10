@@ -18,6 +18,7 @@ namespace basecross {
 		shared_ptr<UI_The_World> m_pause;
 		shared_ptr<TestPlayer> m_player;
 		shared_ptr<TestEnemy> m_enemy;
+		shared_ptr<PinP> m_pinp;
 
 		//ƒrƒ…[‚Ìì¬
 		void CreateViewLight();
@@ -31,7 +32,8 @@ namespace basecross {
 			Stage(),
 			m_pause(NULL),
 			m_player(NULL),
-			m_enemy(NULL)
+			m_enemy(NULL),
+			m_pinp(NULL)
 		{}
 		virtual ~GameStage() {}
 		//‰Šú‰»

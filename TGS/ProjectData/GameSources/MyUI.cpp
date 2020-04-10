@@ -856,14 +856,6 @@ namespace basecross {
 		SetLooped(false);
 	}
 
-	void TestStage::OnCreate() {
-
-	}
-
-	void TestStage::OnUpdate() {
-
-	}
-
 
 	//------------------------------------------------------------------------------------------------
 	//PinP : Class
@@ -871,6 +863,7 @@ namespace basecross {
 
 	void PinP::OnCreate() {
 		CreateCamera();
+		Hidden();
 	}
 
 	void PinP::OnUpdate() {
@@ -890,129 +883,99 @@ namespace basecross {
 		}
 	}
 
-	void PinP::In(PinPAction action) {
+	void PinP::In(const PinPAction action) {
+		m_mode = true;
 		m_active = true;
 		m_action = action;
-		m_startPos = GetStartPos();
-		SetView(m_startPos);
+		m_hideViewTopLeftPos = GetHideTopLeftPos(action);
+		SetViewTopLeftPos(m_hideViewTopLeftPos);
 	}
 
-	void PinP::Out(PinPAction action) {
-		m_active = false;
+	void PinP::Out(const PinPAction action) {
+		m_mode = false;
+		m_active = true;
 		m_action = action;
-		m_startPos = GetStartPos();
-		SetView(m_endPos);
+		m_hideViewTopLeftPos = GetHideTopLeftPos(action);
+		SetViewTopLeftPos(m_showViewTopLeftPos);
+	}
+
+	void PinP::Hidden() {
+		m_active = false;
+		auto& app = App::GetApp();
+		SetViewTopLeftPos(Vec2(app->GetGameWidth(), app->GetGameHeight()));
+	}
+
+	void PinP::SetAt(const Vec3& at) {
+		m_camera->SetAt(at);
+	}
+
+	void PinP::SetEye(const Vec3& eye) {
+		m_camera->SetEye(eye);
 	}
 
 	void PinP::CreateCamera() {
-
 		auto resolution = GetResolution();
 		resolution.x *= m_scale;
 		resolution.y *= m_scale;
-		auto& app = App::GetApp();
-		m_view = { m_endPos.x, m_endPos.y, resolution.x, resolution.y, 0.0f, 1.0f };
+
+		m_view = { m_showViewTopLeftPos.x, m_showViewTopLeftPos.y, resolution.x, resolution.y, 0.0f, 1.0f };
 
 		m_camera = ObjectFactory::Create<Camera>();
-
-		m_camera->SetEye(Vec3(0, -10, 3));
 		m_camera->SetViewPort(m_view);
 		m_camera->CalculateMatrix();
 
-		auto aaa = dynamic_pointer_cast<MultiView>(GetStage()->GetView());
-		m_viewIndex = aaa->AddView(m_view, m_camera);
+		auto viewPort = dynamic_pointer_cast<MultiView>(GetStage()->GetView());
+		m_viewIndex = viewPort->AddView(m_view, m_camera);
 	}
 
-	Vec2 PinP::GetStartPos() {
+	Vec2 PinP::GetHideTopLeftPos(const PinPAction action) {
 		auto& app = App::GetApp();
 		auto w = app->GetGameWidth();
 		auto h = app->GetGameHeight();
 
-		switch (m_action)
+		switch (action)
 		{
 		case PinPAction::LEFT:
-			return Vec2(-(m_view.TopLeftX + m_view.Width), m_view.TopLeftY);
+			return Vec2(-(m_view.Width + m_showViewTopLeftPos.x), m_showViewTopLeftPos.y);
 		case PinPAction::RIGHT:
-			return Vec2(w + (m_view.Width), m_view.TopLeftY);
+			return Vec2(w, m_showViewTopLeftPos.y);
 		case PinPAction::TOP:
-			return Vec2(m_view.TopLeftX, -(m_view.TopLeftY + m_view.Height));
+			return Vec2(m_showViewTopLeftPos.x, -(m_view.Height + m_showViewTopLeftPos.y));
 		case PinPAction::UNDER:
-			return Vec2(m_view.TopLeftX, h);
+			return Vec2(m_showViewTopLeftPos.x, h);
+		case PinPAction::NONE:
+			return Vec2(m_showViewTopLeftPos.x, m_showViewTopLeftPos.y);
 		}
 	}
 
-	void PinP::SetView(Vec2 pos) {
-		auto aaa = dynamic_pointer_cast<MultiView>(GetStage()->GetView());
+	void PinP::SetViewTopLeftPos(Vec2& pos) {
+		auto viewPort = dynamic_pointer_cast<MultiView>(GetStage()->GetView());
 		m_view.TopLeftX = pos.x;
 		m_view.TopLeftY = pos.y;
-		aaa->SetViewport(m_viewIndex, m_view);
+		viewPort->SetViewport(m_viewIndex, m_view);
+	}
+
+	Viewport PinP::GetView() {
+		return dynamic_pointer_cast<MultiView>(GetStage()->GetView())->GetViewport(m_viewIndex);
 	}
 
 	void PinP::Move() {
 		auto time = App::GetApp()->GetElapsedTime();
+
 		Easing<Vec2> easing;
 
-		
+		//åªç›ÇÃTopLeftPosÇéÊìæÇ∑ÇÈ
+		Vec2 nowTopLeftPos(m_view.TopLeftX, m_view.TopLeftY);
+		Vec2 movePos(0.0f);
 
-		
-
-		if (m_active) {
-			switch (m_action)
-			{
-			case PinPAction::LEFT:
-				m_startPos.x += 10;
-			case PinPAction::RIGHT:
-				m_startPos.x -= 10;
-			case PinPAction::TOP:
-				m_startPos.y += 1;
-			case PinPAction::UNDER:
-				m_startPos.y -= 1;
-			}
-			if (m_view.TopLeftX == m_endPos.x && m_view.TopLeftY == m_endPos.y) {
-				return;
-			}
-			SetView(easing.Linear(m_startPos, m_endPos, time, 1.0f));
-
+		if (m_active && m_mode) {
+			movePos = easing.Linear(Vec2(nowTopLeftPos.x, nowTopLeftPos.y), m_showViewTopLeftPos, time, 0.4);
+			SetViewTopLeftPos(movePos);
 		}
-
-		if(!m_active) {
-			switch (m_action)
-			{
-			case PinPAction::LEFT:
-				m_endPos.x -= 10;
-			case PinPAction::RIGHT:
-				m_endPos.x += 10;
-			case PinPAction::TOP:
-				m_endPos.y -= 1;
-			case PinPAction::UNDER:
-				m_endPos.y += 1;
-			}
-			SetView(easing.Linear(m_endPos, m_startPos, time, 1.0f));
-			if (m_view.TopLeftX == m_startPos.x && m_view.TopLeftY == m_startPos.y) {
-				return;
-			}
+		
+		if(m_active && !m_mode) {
+			movePos = easing.Linear(Vec2(nowTopLeftPos.x, nowTopLeftPos.y), m_hideViewTopLeftPos, time, 0.4);
+			SetViewTopLeftPos(movePos);
 		}
-
-		/*
-		if (m_active) {
-			if (m_view.TopLeftX == m_endPos.x && m_view.TopLeftY == m_endPos.y) {
-				return;
-			}
-			if (m_action == PinPAction::LEFT) {
-				m_startPos.x += 10;
-				SetView(easing.Linear(m_startPos, m_endPos, time, 1.0f));
-			}
-			if (m_action == PinPAction::RIGHT) {
-				m_startPos.x -= 10;
-				SetView(easing.Linear(m_startPos, m_endPos, time, 1.0f));
-			}
-			if (m_action == PinPAction::TOP) {
-				m_startPos.y += 1;
-				SetView(easing.Linear(m_startPos, m_endPos, time, 1.0f));
-			}
-			if (m_action == PinPAction::UNDER) {
-				m_startPos.y -= 1;
-				SetView(easing.Linear(m_startPos, m_endPos, time, 1.0f));
-			}
-		}*/
 	}
 }

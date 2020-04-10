@@ -708,48 +708,28 @@ namespace basecross {
 		NONE  = 4
 	};
 
-	//--------------------------------------------------------------------------------------
-	//	ゲームステージクラス
-	//--------------------------------------------------------------------------------------
-	class TestStage : public Stage {
-
-	public:
-		//構築と破棄
-		TestStage() :
-			Stage()
-		{}
-		virtual ~TestStage() {}
-		//初期化
-		virtual void OnCreate()override;
-		virtual void OnUpdate()override;
-	};
-
 
 	//------------------------------------------------------------------------------------------------
 	//PinP : Class
 	//------------------------------------------------------------------------------------------------
 
 	class PinP :public GameObject {
-		shared_ptr<Camera> m_camera;
-		PinPAspectType m_aspectType;
-		float m_scale;
-		Vec2 m_centerPos;
-		Vec2 m_endPos;
-		Vec2 m_startPos;
-
-		PinPAction m_action;
+		shared_ptr<Camera> m_camera;  //PinP用カメラ
+		float m_scale;                //Viewのスケール
+		Viewport m_view;			  //PinPが表示されるView
+		int m_viewIndex;              //複数のViewの中から自身のViewのインデックス
+		PinPAspectType m_aspectType;  //PinPの比率
+		PinPAction m_action;          //PinPの動き
+		Vec2 m_showViewTopLeftPos;    //PinPが見えているときの上側の左の頂点のポジション
+		Vec2 m_hideViewTopLeftPos;    //PinPが見えていないときの上側の左の頂点のポジション
+		bool m_mode;
 		bool m_active;
-
-		int m_viewIndex;
-
-		Viewport m_view;
 
 		Vec2 GetResolution();
 		void CreateCamera();
-		Vec2 GetStartPos();
-
-		void SetView(Vec2 pos);
-
+		Vec2 GetHideTopLeftPos(const PinPAction action);
+		Viewport GetView();
+		void SetViewTopLeftPos(Vec2& pos);
 		void Move();
 		
 	public:
@@ -761,20 +741,25 @@ namespace basecross {
 			GameObject(StagePtr),
 			m_aspectType(aspectType),
 			m_scale(scale),
-			m_centerPos(Vec2(0.0f)),
-			m_endPos(topLeftPos),
-			m_startPos(Vec2(0.0f)),
 			m_action(PinPAction::NONE),
+			m_camera(NULL),
+			m_mode(false),
 			m_active(false),
 			m_view({}),
-			m_viewIndex(0)
+			m_viewIndex(NULL),
+			m_showViewTopLeftPos(topLeftPos),
+			m_hideViewTopLeftPos(Vec2(0.0f))
 		{}
 		~PinP() {}
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
-		void In(PinPAction action);
-		void Out(PinPAction action);
+		void In(const PinPAction action);
+		void Out(const PinPAction action);
+		void Hidden();
+
+		void SetAt(const Vec3& at);
+		void SetEye(const Vec3& eye);
 	};
 }

@@ -27,9 +27,7 @@ namespace basecross {
 		//PtrMultiLight->SetDefaultLighting();
 
 		auto& app = App::GetApp();
-
-
-		Viewport view = { 0, 0, app->GetGameWidth(), app->GetGameHeight(), 0, 1 };
+		Viewport view = { 0.0f, 0.0f, app->GetGameWidth(), app->GetGameHeight(), 0.0f, 1.0f };
 		auto ptrView = CreateView<MultiView>();
 		//ビューのカメラの設定
 		auto ptrMyCamera = ObjectFactory::Create<MyCamera>();
@@ -44,9 +42,6 @@ namespace basecross {
 		auto ptrMultiLight = CreateLight<MultiLight>();
 		//デフォルトのライティングを指定
 		ptrMultiLight->SetDefaultLighting();
-
-		ptrView->SetCamera(0, ptrMyCamera);
-		ptrView->SetTargetIndex(0);
 	}
 
 	void GameStage::CreateUI() {
@@ -89,12 +84,13 @@ namespace basecross {
 				1
 				);
 
-			AddGameObject<PinP>(
+			m_pinp = AddGameObject<PinP>(
 				PinPAspectType::HD,
 				35.0f,
-				Vec2(10, 10)
-				)->Out(PinPAction::RIGHT);
-			
+				Vec2(10.0f, 10.0f)
+				);
+			m_pinp->SetEye(Vec3(0.0f, 10.0f, 100.0f));
+			m_pinp->In(PinPAction::UNDER);
 
 		}
 		catch (...) {
@@ -110,6 +106,10 @@ namespace basecross {
 
 		}
 
+		//とりあえずPinPのカメラがプレイヤーを追尾する
+		auto playerTrans = m_player->GetComponent<Transform>();
+		m_pinp->SetAt(playerTrans->GetPosition());
+
 		ShowPause();
 	}
 
@@ -119,6 +119,12 @@ namespace basecross {
 
 		//Rキーもしくはパッドのスタートボタンを押したらポーズ画面を表示する
 		if (KeyState.m_bPressedKeyTbl['R'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_START) {
+
+			//ポーズ中にPinPがあるとそこにもUIを表示してしまうので非表示にする
+			if(m_pause->GetShowing())
+				m_pinp->In(PinPAction::LEFT);
+			else
+				m_pinp->Hidden();
 
 			//ここでは毎回配列を生成してステータスを設定しているが実際には１度だけ処理してChangeStatusをする
 			vector<CharacterStatus_s> statuses;
