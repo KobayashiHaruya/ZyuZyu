@@ -855,4 +855,164 @@ namespace basecross {
 		SetFps(15.0f);
 		SetLooped(false);
 	}
+
+	void TestStage::OnCreate() {
+
+	}
+
+	void TestStage::OnUpdate() {
+
+	}
+
+
+	//------------------------------------------------------------------------------------------------
+	//PinP : Class
+	//------------------------------------------------------------------------------------------------
+
+	void PinP::OnCreate() {
+		CreateCamera();
+	}
+
+	void PinP::OnUpdate() {
+		m_camera->OnUpdate();
+		Move();
+	}
+
+	Vec2 PinP::GetResolution() {
+		switch (m_aspectType)
+		{
+		case PinPAspectType::SQUARE:
+			return Vec2(1.0f, 1.0f);
+		case PinPAspectType::HD:
+			return Vec2(16.0f, 9.0f);
+		case PinPAspectType::SD:
+			return Vec2(4.0f, 3.0f);
+		}
+	}
+
+	void PinP::In(PinPAction action) {
+		m_active = true;
+		m_action = action;
+		m_startPos = GetStartPos();
+		SetView(m_startPos);
+	}
+
+	void PinP::Out(PinPAction action) {
+		m_active = false;
+		m_action = action;
+		m_startPos = GetStartPos();
+		SetView(m_endPos);
+	}
+
+	void PinP::CreateCamera() {
+
+		auto resolution = GetResolution();
+		resolution.x *= m_scale;
+		resolution.y *= m_scale;
+		auto& app = App::GetApp();
+		m_view = { m_endPos.x, m_endPos.y, resolution.x, resolution.y, 0.0f, 1.0f };
+
+		m_camera = ObjectFactory::Create<Camera>();
+
+		m_camera->SetEye(Vec3(0, -10, 3));
+		m_camera->SetViewPort(m_view);
+		m_camera->CalculateMatrix();
+
+		auto aaa = dynamic_pointer_cast<MultiView>(GetStage()->GetView());
+		m_viewIndex = aaa->AddView(m_view, m_camera);
+	}
+
+	Vec2 PinP::GetStartPos() {
+		auto& app = App::GetApp();
+		auto w = app->GetGameWidth();
+		auto h = app->GetGameHeight();
+
+		switch (m_action)
+		{
+		case PinPAction::LEFT:
+			return Vec2(-(m_view.TopLeftX + m_view.Width), m_view.TopLeftY);
+		case PinPAction::RIGHT:
+			return Vec2(w + (m_view.Width), m_view.TopLeftY);
+		case PinPAction::TOP:
+			return Vec2(m_view.TopLeftX, -(m_view.TopLeftY + m_view.Height));
+		case PinPAction::UNDER:
+			return Vec2(m_view.TopLeftX, h);
+		}
+	}
+
+	void PinP::SetView(Vec2 pos) {
+		auto aaa = dynamic_pointer_cast<MultiView>(GetStage()->GetView());
+		m_view.TopLeftX = pos.x;
+		m_view.TopLeftY = pos.y;
+		aaa->SetViewport(m_viewIndex, m_view);
+	}
+
+	void PinP::Move() {
+		auto time = App::GetApp()->GetElapsedTime();
+		Easing<Vec2> easing;
+
+		
+
+		
+
+		if (m_active) {
+			switch (m_action)
+			{
+			case PinPAction::LEFT:
+				m_startPos.x += 10;
+			case PinPAction::RIGHT:
+				m_startPos.x -= 10;
+			case PinPAction::TOP:
+				m_startPos.y += 1;
+			case PinPAction::UNDER:
+				m_startPos.y -= 1;
+			}
+			if (m_view.TopLeftX == m_endPos.x && m_view.TopLeftY == m_endPos.y) {
+				return;
+			}
+			SetView(easing.Linear(m_startPos, m_endPos, time, 1.0f));
+
+		}
+
+		if(!m_active) {
+			switch (m_action)
+			{
+			case PinPAction::LEFT:
+				m_endPos.x -= 10;
+			case PinPAction::RIGHT:
+				m_endPos.x += 10;
+			case PinPAction::TOP:
+				m_endPos.y -= 1;
+			case PinPAction::UNDER:
+				m_endPos.y += 1;
+			}
+			SetView(easing.Linear(m_endPos, m_startPos, time, 1.0f));
+			if (m_view.TopLeftX == m_startPos.x && m_view.TopLeftY == m_startPos.y) {
+				return;
+			}
+		}
+
+		/*
+		if (m_active) {
+			if (m_view.TopLeftX == m_endPos.x && m_view.TopLeftY == m_endPos.y) {
+				return;
+			}
+			if (m_action == PinPAction::LEFT) {
+				m_startPos.x += 10;
+				SetView(easing.Linear(m_startPos, m_endPos, time, 1.0f));
+			}
+			if (m_action == PinPAction::RIGHT) {
+				m_startPos.x -= 10;
+				SetView(easing.Linear(m_startPos, m_endPos, time, 1.0f));
+			}
+			if (m_action == PinPAction::TOP) {
+				m_startPos.y += 1;
+				SetView(easing.Linear(m_startPos, m_endPos, time, 1.0f));
+			}
+			if (m_action == PinPAction::UNDER) {
+				m_startPos.y -= 1;
+				SetView(easing.Linear(m_startPos, m_endPos, time, 1.0f));
+			}
+		}*/
+	}
 }

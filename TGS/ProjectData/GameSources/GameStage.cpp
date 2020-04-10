@@ -26,17 +26,27 @@ namespace basecross {
 		////デフォルトのライティングを指定
 		//PtrMultiLight->SetDefaultLighting();
 
+		auto& app = App::GetApp();
 
-		auto ptrView = CreateView<SingleView>();
+
+		Viewport view = { 0, 0, app->GetGameWidth(), app->GetGameHeight(), 0, 1 };
+		auto ptrView = CreateView<MultiView>();
 		//ビューのカメラの設定
 		auto ptrMyCamera = ObjectFactory::Create<MyCamera>();
-		ptrView->SetCamera(ptrMyCamera);
+		//ptrView->SetCamera(ptrMyCamera);
+		//ptrView->SetViewport(view);
+		//ptrMyCamera->SetViewPort(ptrView->GetViewport());
+		//ptrView->SetViewport(ptrMyCamera->getv);
+		ptrView->AddView(view, ptrMyCamera);
 		ptrMyCamera->SetEye(eye);
 		ptrMyCamera->SetAt(at);
 		//マルチライトの作成
 		auto ptrMultiLight = CreateLight<MultiLight>();
 		//デフォルトのライティングを指定
 		ptrMultiLight->SetDefaultLighting();
+
+		ptrView->SetCamera(0, ptrMyCamera);
+		ptrView->SetTargetIndex(0);
 	}
 
 	void GameStage::CreateUI() {
@@ -78,6 +88,13 @@ namespace basecross {
 				false,
 				1
 				);
+
+			AddGameObject<PinP>(
+				PinPAspectType::HD,
+				35.0f,
+				Vec2(10, 10)
+				)->Out(PinPAction::RIGHT);
+			
 
 		}
 		catch (...) {

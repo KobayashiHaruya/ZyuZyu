@@ -683,4 +683,98 @@ namespace basecross {
 
 		void ChangeCharacterStatus(CharacterType type);
 	};
+
+
+	//------------------------------------------------------------------------------------------------
+	//PinPアスペクト : enum
+	//------------------------------------------------------------------------------------------------
+
+	enum PinPAspectType {
+		SQUARE = 0,
+		HD     = 1,
+		SD     = 2
+	};
+
+
+	//------------------------------------------------------------------------------------------------
+	//PinPアクション : enum
+	//------------------------------------------------------------------------------------------------
+
+	enum PinPAction {
+		LEFT  = 0,
+		RIGHT = 1,
+		TOP   = 2,
+		UNDER = 3,
+		NONE  = 4
+	};
+
+	//--------------------------------------------------------------------------------------
+	//	ゲームステージクラス
+	//--------------------------------------------------------------------------------------
+	class TestStage : public Stage {
+
+	public:
+		//構築と破棄
+		TestStage() :
+			Stage()
+		{}
+		virtual ~TestStage() {}
+		//初期化
+		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+	};
+
+
+	//------------------------------------------------------------------------------------------------
+	//PinP : Class
+	//------------------------------------------------------------------------------------------------
+
+	class PinP :public GameObject {
+		shared_ptr<Camera> m_camera;
+		PinPAspectType m_aspectType;
+		float m_scale;
+		Vec2 m_centerPos;
+		Vec2 m_endPos;
+		Vec2 m_startPos;
+
+		PinPAction m_action;
+		bool m_active;
+
+		int m_viewIndex;
+
+		Viewport m_view;
+
+		Vec2 GetResolution();
+		void CreateCamera();
+		Vec2 GetStartPos();
+
+		void SetView(Vec2 pos);
+
+		void Move();
+		
+	public:
+		PinP(const shared_ptr<Stage>& StagePtr,
+			const PinPAspectType aspectType,
+			const float scale,
+			const Vec2& topLeftPos
+		) :
+			GameObject(StagePtr),
+			m_aspectType(aspectType),
+			m_scale(scale),
+			m_centerPos(Vec2(0.0f)),
+			m_endPos(topLeftPos),
+			m_startPos(Vec2(0.0f)),
+			m_action(PinPAction::NONE),
+			m_active(false),
+			m_view({}),
+			m_viewIndex(0)
+		{}
+		~PinP() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+		void In(PinPAction action);
+		void Out(PinPAction action);
+	};
 }
