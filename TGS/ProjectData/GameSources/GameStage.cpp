@@ -41,6 +41,15 @@ namespace basecross {
 
 	void GameStage::CreateUI() {
 		m_pause = AddGameObject<UI_The_World>(5);
+
+
+	}
+
+	void GameStage::CreateTime() {
+		// HPバー
+		AddGameObject<Time>(L"0.png",
+			Vec2(250.0f, 250.0f),
+			Vec2(0.0f, -400.0f));
 	}
 
 
@@ -50,6 +59,7 @@ namespace basecross {
 			//ビューとライトの作成
 			CreateViewLight();
 			CreateUI();
+			CreateTime();
 			AddGameObject<Object>(
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),

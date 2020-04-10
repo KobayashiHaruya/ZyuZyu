@@ -11,21 +11,18 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	///	éûä‘
 	//--------------------------------------------------------------------------------------
-
-	class Time : public Sprite {
-
+	class Time : public GameObject {
+	protected:
+		wstring m_TextureKey;
+		Vec2 m_StartScale;
+		Vec2 m_StartPos;
 	public:
-		Time(const shared_ptr<Stage>& StagePtr,
-			const wstring& TextureKey,
+		Time(const shared_ptr<Stage>& stagePtr,
+			const wstring& textureKey,
 			const Vec2& startScale,
 			const Vec2& startPos);
-
-		virtual ~Time() {}
-
-		//èâä˙âª
-		virtual void OnCreate() override;
-		virtual void OnUpdate()override;
-
+		virtual ~Time() {};
+		virtual void OnCreate()override;
 	};
 
 }

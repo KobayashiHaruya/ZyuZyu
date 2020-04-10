@@ -25,6 +25,8 @@ namespace basecross {
 
 		void ShowPause();
 
+		void CreateTime();
+
 	public:
 		//\’z‚Æ”jŠü
 		GameStage() :

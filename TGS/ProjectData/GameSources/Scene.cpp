@@ -9,36 +9,15 @@
 
 namespace basecross{
 
+
+
 	void Scene::CreateResourses() {
 
 		wstring dataDir;
 		//mediaディレクトリ取得用
 		App::GetApp()->GetAssetsDirectory(dataDir);
 
-		struct TexPair
-		{
-			wstring key;
-			wstring fileNname;
-		};
 
-		struct AuPair
-		{
-			wstring key;
-			wstring fileNname;
-		};
-
-      ///----------------------------------------
-      ///テクスチャ関連
-      ///----------------------------------------
-
-		TexPair txPairs[] =
-		{
-
-			//number
-         {L"0_TX", L"Texters\\0.png"},
-         {L"1_TX", L"Texters\\1.png"},
-
-		};
 
 		wstring mediaDir;
 		App::GetApp()->GetDataDirectory(mediaDir);
