@@ -181,9 +181,27 @@ namespace basecross{
 				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
 				m_rot,
 				Vec3(1.0f, 1.0f, 1.0f),
-				50.0f, 10.0f
+				50.0f, 10.0f, ID
 				);
 		}
+
+		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl['E'])) {
+			GetStage()->AddGameObject<Grenade>(
+				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
+				m_rot,
+				Vec3(1.0f, 1.0f, 1.0f),
+				50.0f, 10.0f, true, ID
+				);
+		}
+		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl['Q'])) {
+			GetStage()->AddGameObject<Grenade>(
+				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
+				m_rot,
+				Vec3(1.0f, 1.0f, 1.0f),
+				50.0f, 10.0f, false, ID
+				);
+		}
+
 	}
 
 	void Character::AttackHit(Vec3 rot) {
@@ -194,13 +212,20 @@ namespace basecross{
 		float x = cos(rad);
 		float z = sin(rad);
 
-		Vec3 vecForce = (Vec3(x, 2.0f, z)) * m_force;
-
+		Vec3 vecForce = (Vec3(x, 1.0f, z)) * m_force.x;
+		vecForce.y = m_force.y;
 		grav->StartJump(vecForce);
 
 	}
 
 	void Character::OnCollisionEnter(shared_ptr<GameObject>& Other) {
+		if (Other->FindTag(L"Object")) {
+			m_jump = true;
+			auto grav = GetComponent<Gravity>();
+			grav->SetGravityVerocityZero();
+		}
+
+
 		if (Other->FindTag(L"Bullet")) {
 			auto rot = Other->GetComponent<Transform>()->GetRotation();
 			AttackHit(rot);
@@ -210,6 +235,17 @@ namespace basecross{
 	void Character::OnCollisionExcute(shared_ptr<GameObject>& Other) {
 		if (Other->FindTag(L"Object")) {
 			m_jump = true;
+			auto grav = GetComponent<Gravity>();
+			grav->SetGravityVerocityZero();
+		}
+
+		if (Other->FindTag(L"Torimoti")) {
+
+		}
+
+		if (Other->FindTag(L"Explosion")) {
+			auto rot = Other->GetComponent<Transform>()->GetRotation();
+			AttackHit(rot);
 		}
 
 	}

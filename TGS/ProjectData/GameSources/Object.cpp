@@ -31,4 +31,10 @@ namespace basecross {
 		Draw();
 	}
 
+	void Object::OnUpdate() {
+		auto ptr = GetComponent<Transform>();
+
+		ptr->SetPosition(m_pos);
+	}
+
 }

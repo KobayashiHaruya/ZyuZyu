@@ -83,7 +83,7 @@ namespace basecross {
 				Vec3(0.0f, 2.0f, 15.0f),
 				rot,
 				Vec3(1.0f, 1.0f, 1.0f),
-				50.0f, 10.0f
+				50.0f, 10.0f, 0
 				);
 		}
 

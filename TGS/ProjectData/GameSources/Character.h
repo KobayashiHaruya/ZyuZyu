@@ -18,7 +18,7 @@ namespace basecross {
 		float m_jumpPower;
 		int ID;
 
-		float m_force = 5.0f;
+		Vec2 m_force = Vec2(10.0f, 10.0f);
 		bool m_jump = true;
 
 	public:
