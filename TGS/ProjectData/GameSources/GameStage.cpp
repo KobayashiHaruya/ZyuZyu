@@ -60,6 +60,12 @@ namespace basecross {
 		AddGameObject<Time10>(L"0.png",
 			Vec2(250.0f, 250.0f),
 			Vec2(-25.0f, -400.0f));
+
+		// ŽžŠÔ
+		AddGameObject<Time100>(L"0.png",
+			Vec2(250.0f, 250.0f),
+			Vec2(-50.0f, -400.0f));
+
 	}
 
 
