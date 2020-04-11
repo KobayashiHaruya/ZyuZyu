@@ -47,11 +47,21 @@ namespace basecross {
 	void GameStage::CreateUI() {
 		m_pause = AddGameObject<UI_The_World>(5);
 
-
 	}
 
 	void GameStage::CreateTime() {
 		
+		AddGameObject<Time01>(L"0.png",
+			Vec2(200.0f, 200.0f),
+			Vec2(0.0f, -300.0f));
+
+		AddGameObject<Time10>(L"0.png",
+		    Vec2(200.0f, 200.0f),
+			Vec2(-30.0f, -300.0f));
+
+		AddGameObject<Time100>(L"0.png",
+		    Vec2(200.0f, 200.0f),
+			Vec2(-60.0f, -300.0f));
 
 	}
 

@@ -47,7 +47,7 @@ namespace basecross {
 		ptrDraw->SetTextureResource(m_TextureKey);
 		ptrDraw->SetSamplerState(SamplerState::LinearWrap);
 
-		AddTag(L"Time01");
+		//AddTag(L"Time01");
 	}
 
 	void Time01::OnUpdate() {
