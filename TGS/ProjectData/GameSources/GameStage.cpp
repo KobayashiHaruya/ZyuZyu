@@ -127,7 +127,10 @@ namespace basecross {
 
 
 		}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 
 		//とりあえずPinPのカメラがプレイヤーを追尾する
 		auto playerTrans = m_player->GetComponent<Transform>();
@@ -162,7 +165,10 @@ namespace basecross {
 			//引数は現在ポーズ画面がアクティブかどうかを取得してそのフラグを反転させることで表示非表示を切り替えている
 			m_pause->Show(!(m_pause->GetShowing()));
 		}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 	}
 
 }

@@ -122,7 +122,10 @@ namespace basecross {
 		{}
 		~UI_Static_Image() {}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 		virtual void OnCreate() override;
 
 		void Draw();
@@ -130,7 +133,10 @@ namespace basecross {
 		void SetTexture(const wstring& texture, Vec2& vertex);
 		void SetTexture(const wstring& texture, Vec2& vertex, const Vec3& scale);
 		void Hidden(bool e);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 	};
 
 	class Title_UI : public UI_Base {
@@ -186,7 +192,10 @@ namespace basecross {
 		virtual void OnCreate() override;
 	};
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 
 	//------------------------------------------------------------------------------------------------
 	//水平なスプライト画像 : Class
@@ -218,6 +227,15 @@ namespace basecross {
 	public:
 
 		UI_Horizontal_Sprite_Image(const shared_ptr<Stage>& StagePtr,
+<<<<<<< HEAD
+=======
+
+	class Result_UI : public UI_Base {
+	public:
+
+		Result_UI(const shared_ptr<Stage>& StagePtr,
+
+>>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 			const Vec2& vertex,
 			const Vec3& pos,
 			const Vec3& scale,
@@ -225,6 +243,10 @@ namespace basecross {
 			const Col4& color,
 			const wstring& textures
 		) :
+<<<<<<< HEAD
+=======
+
+>>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 			GameObject(StagePtr),
 			m_vertex(vertex),
 			m_pos(pos),
@@ -265,12 +287,15 @@ namespace basecross {
 		int GetMaxIndex() {
 			return m_vertex.x / m_cutOut.x;
 		}
+<<<<<<< HEAD
 	};
 
 	class Result_UI : public UI_Base {
 	public:
 
 		Result_UI(const shared_ptr<Stage>& StagePtr,
+=======
+>>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 			UI_Base(
 				StagePtr,
 				vertex,
@@ -284,6 +309,10 @@ namespace basecross {
 		~Result_UI() {}
 
 		virtual void OnCreate() override;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 	};
 
 	class Score_UI : public GameObject {
