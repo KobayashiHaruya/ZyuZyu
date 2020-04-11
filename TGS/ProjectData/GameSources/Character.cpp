@@ -219,26 +219,69 @@ namespace basecross {
 	}
 
 	void Character::Respawn() {
+		srand((unsigned int)time(NULL));
+		int Rand = rand() % 5;
 		const float activeY = 25.0f;
 		auto PtrTransform = GetComponent<Transform>();
+
 		if (abs(PtrTransform->GetPosition().y) > activeY) {
 			m_des = true;
 			if (m_des) {
-				auto PlayerPtr = GetStage()->AddGameObject<TestPlayer>(
-					Vec3(0.0f, 3.0f, 0.0f),
-					Vec3(0.0f, 0.0f, 0.0f),
-					Vec3(1.0f, 1.0f, 1.0f),
-					0.15f, 10.0f, 5.0f
-					);
-
+				//ƒ‰ƒ“ƒ_ƒ€‚Éo‚·‚æ‚¤‚É
+				switch (Rand) {
+				case 0:
+					GetStage()->AddGameObject<TestPlayer>(
+						Vec3(0.0f, 3.0f, 0.0f),
+						Vec3(0.0f, 0.0f, 0.0f),
+						Vec3(1.0f, 1.0f, 1.0f),
+						0.15f, 10.0f, 5.0f
+						);
+					break;
+				case 1:
+					GetStage()->AddGameObject<TestPlayer>(
+						Vec3(-50.0f, 3.0f, 50.0f),
+						Vec3(0.0f, 0.0f, 0.0f),
+						Vec3(1.0f, 1.0f, 1.0f),
+						0.15f, 10.0f, 5.0f
+						);
+					break;
+				case 2:
+					GetStage()->AddGameObject<TestPlayer>(
+						Vec3(50.0f, 3.0f, 50.0f),
+						Vec3(0.0f, 0.0f, 0.0f),
+						Vec3(1.0f, 1.0f, 1.0f),
+						0.15f, 10.0f, 5.0f
+						);
+					break;
+				case 3:
+					GetStage()->AddGameObject<TestPlayer>(
+						Vec3(50.0f, 3.0f, -50.0f),
+						Vec3(0.0f, 0.0f, 0.0f),
+						Vec3(1.0f, 1.0f, 1.0f),
+						0.15f, 10.0f, 5.0f
+						);
+					break;
+				case 4:
+					GetStage()->AddGameObject<TestPlayer>(
+						Vec3(-50.0f, 3.0f, -50.0f),
+						Vec3(0.0f, 0.0f, 0.0f),
+						Vec3(1.0f, 1.0f, 1.0f),
+						0.15f, 10.0f, 5.0f
+						);
+					break;
+				default:
+					GetStage()->AddGameObject<TestPlayer>(
+						Vec3(0.0f, 3.0f, 0.0f),
+						Vec3(0.0f, 0.0f, 0.0f),
+						Vec3(1.0f, 1.0f, 1.0f),
+						0.15f, 10.0f, 5.0f
+						);
+					break;
+				}
 				GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
 				m_des = false;
 			}
-
 		}
-
-
-
 	}
 
 
