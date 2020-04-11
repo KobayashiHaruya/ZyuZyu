@@ -122,6 +122,7 @@ namespace basecross {
 		{}
 		~UI_Static_Image() {}
 
+
 		virtual void OnCreate() override;
 
 		void Draw();
@@ -129,6 +130,7 @@ namespace basecross {
 		void SetTexture(const wstring& texture, Vec2& vertex);
 		void SetTexture(const wstring& texture, Vec2& vertex, const Vec3& scale);
 		void Hidden(bool e);
+
 	};
 
 	class Title_UI : public UI_Base {
@@ -183,6 +185,7 @@ namespace basecross {
 
 		virtual void OnCreate() override;
 	};
+
 
 
 	//------------------------------------------------------------------------------------------------
@@ -264,6 +267,69 @@ namespace basecross {
 		}
 	};
 
+	class Result_UI : public UI_Base {
+	public:
+
+		Result_UI(const shared_ptr<Stage>& StagePtr,
+			UI_Base(
+				StagePtr,
+				vertex,
+				pos,
+				scale,
+				layer,
+				color,
+				textures
+			)
+		{}
+		~Result_UI() {}
+
+		virtual void OnCreate() override;
+	};
+
+	class Score_UI : public GameObject {
+		int m_place;	//位
+		int m_Score;	//スコア
+		std::vector<VertexPositionColorTexture> vertices;
+		std::vector<uint16_t> indices;
+
+		Vec2 m_vertex;
+		float m_size;
+		Vec3 m_pos;
+		Vec3 m_scale;
+		Col4 m_color;
+		int m_layer;
+		wstring m_textures;
+
+
+	public:
+		Score_UI(const shared_ptr<Stage>& StagePtr,
+			const Vec2& vertex,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int& layer,
+			const Col4& color,
+			const wstring& textures,
+			int place,
+			int score
+
+		)
+			: GameObject(StagePtr),
+			m_vertex(vertex),
+			m_pos(pos),
+			m_scale(scale),
+			m_layer(layer),
+			m_color(color),
+			m_textures(textures),
+			m_place(static_cast<int>(place)),
+			m_Score(score)
+
+		{
+		}
+		~Score_UI() {}
+
+
+		void OnCreate() override;
+	};
 
 	//------------------------------------------------------------------------------------------------
 	//キャラクターセレクトの選択マスク : Class

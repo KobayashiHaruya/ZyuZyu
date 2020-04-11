@@ -6,7 +6,7 @@
 #include "stdafx.h"
 #include "Project.h"
 
-namespace basecross{
+namespace basecross {
 
 	void Character::Draw() {
 		vector<VertexPositionNormalTexture> vertices;
@@ -148,7 +148,7 @@ namespace basecross{
 
 		auto vec = angle;
 		auto ptrPs = GetComponent<RigidbodyCapsule>();
-				
+
 		Vec3 speed = Vec3(0.0f, 0.0f, 0.0f);
 
 		if (vec.x != 0) {
@@ -205,8 +205,9 @@ namespace basecross{
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
 		auto ptr = GetComponent<Transform>();
-		
+
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl['F'])) {
+
 			auto bullet = GetStage()->AddGameObject<Bullet>(
 				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
 				ptr->GetRotation(),
@@ -220,10 +221,77 @@ namespace basecross{
 		}
 	}
 
+	void Character::Respawn() {
+		srand((unsigned int)time(NULL));
+		int Rand = rand() % 5;
+		const float activeY = 25.0f;
+		auto PtrTransform = GetComponent<Transform>();
+
+		if (abs(PtrTransform->GetPosition().y) > activeY) {
+			m_des = true;
+			if (m_des) {
+				//ƒ‰ƒ“ƒ_ƒ€‚Éo‚·‚æ‚¤‚É
+				switch (Rand) {
+				case 0:
+					GetStage()->AddGameObject<TestPlayer>(
+						Vec3(0.0f, 3.0f, 0.0f),
+						Vec3(0.0f, 0.0f, 0.0f),
+						Vec3(1.0f, 1.0f, 1.0f),
+						0.15f, 10.0f, 5.0f
+						);
+					break;
+				case 1:
+					GetStage()->AddGameObject<TestPlayer>(
+						Vec3(-50.0f, 3.0f, 50.0f),
+						Vec3(0.0f, 0.0f, 0.0f),
+						Vec3(1.0f, 1.0f, 1.0f),
+						0.15f, 10.0f, 5.0f
+						);
+					break;
+				case 2:
+					GetStage()->AddGameObject<TestPlayer>(
+						Vec3(50.0f, 3.0f, 50.0f),
+						Vec3(0.0f, 0.0f, 0.0f),
+						Vec3(1.0f, 1.0f, 1.0f),
+						0.15f, 10.0f, 5.0f
+						);
+					break;
+				case 3:
+					GetStage()->AddGameObject<TestPlayer>(
+						Vec3(50.0f, 3.0f, -50.0f),
+						Vec3(0.0f, 0.0f, 0.0f),
+						Vec3(1.0f, 1.0f, 1.0f),
+						0.15f, 10.0f, 5.0f
+						);
+					break;
+				case 4:
+					GetStage()->AddGameObject<TestPlayer>(
+						Vec3(-50.0f, 3.0f, -50.0f),
+						Vec3(0.0f, 0.0f, 0.0f),
+						Vec3(1.0f, 1.0f, 1.0f),
+						0.15f, 10.0f, 5.0f
+						);
+					break;
+				default:
+					GetStage()->AddGameObject<TestPlayer>(
+						Vec3(0.0f, 3.0f, 0.0f),
+						Vec3(0.0f, 0.0f, 0.0f),
+						Vec3(1.0f, 1.0f, 1.0f),
+						0.15f, 10.0f, 5.0f
+						);
+					break;
+				}
+				GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
+				m_des = false;
+			}
+		}
+	}
+
+
 	void Character::AttackHit(Vec3 rot) {
 		auto ptrPs = GetComponent<RigidbodyCapsule>();
 
-		
+
 
   //      float rad = rot.y * Mathf.Deg2Rad;
 
@@ -320,7 +388,9 @@ namespace basecross{
 		PlayerMove();
 		PlayerRotMove();
 		BulletFire();
+		Respawn();
 	}
+
 
 
 	void TestEnemy::OnCreate() {
@@ -328,6 +398,7 @@ namespace basecross{
 	}
 
 	void TestEnemy::OnUpdate() {
+
 	}
 
 }

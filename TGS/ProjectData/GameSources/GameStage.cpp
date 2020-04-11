@@ -119,6 +119,7 @@ namespace basecross {
 		}
 	}
 
+
 	void GameStage::OnUpdate() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
@@ -126,6 +127,7 @@ namespace basecross {
 
 
 		}
+
 
 		//とりあえずPinPのカメラがプレイヤーを追尾する
 		auto playerTrans = m_player->GetComponent<Transform>();
@@ -160,6 +162,7 @@ namespace basecross {
 			//引数は現在ポーズ画面がアクティブかどうかを取得してそのフラグを反転させることで表示非表示を切り替えている
 			m_pause->Show(!(m_pause->GetShowing()));
 		}
+
 	}
 
 }
