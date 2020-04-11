@@ -20,6 +20,7 @@ namespace basecross{
 		float m_jumpPower;
 
 		float m_force = 1.0f;
+		bool m_des = false;
 		bool m_jump = true;
 
 		CharacterStatus_s m_myData;
@@ -58,6 +59,8 @@ namespace basecross{
 		void PlayerMove();
 		void PlayerRotMove();
 		void BulletFire();
+		void Respawn();
+
 		void AttackHit(Vec3 rot);
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
@@ -107,7 +110,6 @@ namespace basecross{
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
-
 	};
 
 
