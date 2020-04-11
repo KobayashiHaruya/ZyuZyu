@@ -66,10 +66,6 @@ namespace basecross{
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
 		virtual void OnCollisionExit(shared_ptr<GameObject>& Other) override;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 		void TouchOil();
 		void DroppedIntoOil(const CharacterStatus_s& status);
 
@@ -81,11 +77,6 @@ namespace basecross{
 		void SetLevel(const unsigned int level);
 		void AddKill(const int kill);
 		void AddDeath(const int death);
-	
-<<<<<<< HEAD
-
-=======
->>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 	};
 
 

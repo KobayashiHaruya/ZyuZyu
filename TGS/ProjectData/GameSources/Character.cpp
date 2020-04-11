@@ -237,7 +237,10 @@ namespace basecross {
 						Vec3(0.0f, 3.0f, 0.0f),
 						Vec3(0.0f, 0.0f, 0.0f),
 						Vec3(1.0f, 1.0f, 1.0f),
-						0.15f, 10.0f, 5.0f
+						0.15f, 10.0f, 5.0f,
+						CharacterType::CHICKEN,
+						true,
+						0
 						);
 					break;
 				case 1:
@@ -245,7 +248,10 @@ namespace basecross {
 						Vec3(-50.0f, 3.0f, 50.0f),
 						Vec3(0.0f, 0.0f, 0.0f),
 						Vec3(1.0f, 1.0f, 1.0f),
-						0.15f, 10.0f, 5.0f
+						0.15f, 10.0f, 5.0f,
+						CharacterType::CHICKEN,
+						true,
+						0
 						);
 					break;
 				case 2:
@@ -253,7 +259,10 @@ namespace basecross {
 						Vec3(50.0f, 3.0f, 50.0f),
 						Vec3(0.0f, 0.0f, 0.0f),
 						Vec3(1.0f, 1.0f, 1.0f),
-						0.15f, 10.0f, 5.0f
+						0.15f, 10.0f, 5.0f,
+						CharacterType::CHICKEN,
+						true,
+						0
 						);
 					break;
 				case 3:
@@ -261,7 +270,10 @@ namespace basecross {
 						Vec3(50.0f, 3.0f, -50.0f),
 						Vec3(0.0f, 0.0f, 0.0f),
 						Vec3(1.0f, 1.0f, 1.0f),
-						0.15f, 10.0f, 5.0f
+						0.15f, 10.0f, 5.0f,
+						CharacterType::CHICKEN,
+						true,
+						0
 						);
 					break;
 				case 4:
@@ -269,7 +281,10 @@ namespace basecross {
 						Vec3(-50.0f, 3.0f, -50.0f),
 						Vec3(0.0f, 0.0f, 0.0f),
 						Vec3(1.0f, 1.0f, 1.0f),
-						0.15f, 10.0f, 5.0f
+						0.15f, 10.0f, 5.0f,
+						CharacterType::CHICKEN,
+						true,
+						0
 						);
 					break;
 				default:
@@ -277,7 +292,10 @@ namespace basecross {
 						Vec3(0.0f, 3.0f, 0.0f),
 						Vec3(0.0f, 0.0f, 0.0f),
 						Vec3(1.0f, 1.0f, 1.0f),
-						0.15f, 10.0f, 5.0f
+						0.15f, 10.0f, 5.0f,
+						CharacterType::CHICKEN,
+						true,
+						0
 						);
 					break;
 				}

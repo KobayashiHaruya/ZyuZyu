@@ -954,6 +954,7 @@ namespace basecross {
 		m_camera = ObjectFactory::Create<Camera>();
 		m_camera->SetViewPort(m_view);
 		m_camera->CalculateMatrix();
+		m_camera->SetPers(!m_camera->GetPers());
 
 		auto viewPort = dynamic_pointer_cast<MultiView>(GetStage()->GetView());
 		m_viewIndex = viewPort->AddView(m_view, m_camera);

@@ -51,20 +51,7 @@ namespace basecross {
 	}
 
 	void GameStage::CreateTime() {
-		// 時間
-		AddGameObject<Time01>(L"0.png",
-			Vec2(250.0f, 250.0f),
-			Vec2(0.0f, -400.0f));
-
-		// 時間
-		AddGameObject<Time10>(L"0.png",
-			Vec2(250.0f, 250.0f),
-			Vec2(-25.0f, -400.0f));
-
-		// 時間
-		AddGameObject<Time100>(L"0.png",
-			Vec2(250.0f, 250.0f),
-			Vec2(-50.0f, -400.0f));
+		
 
 	}
 
@@ -127,10 +114,6 @@ namespace basecross {
 
 
 		}
-<<<<<<< HEAD
-
-=======
->>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 
 		//とりあえずPinPのカメラがプレイヤーを追尾する
 		auto playerTrans = m_player->GetComponent<Transform>();
@@ -144,10 +127,10 @@ namespace basecross {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 
 		//Rキーもしくはパッドのスタートボタンを押したらポーズ画面を表示する
-		if (KeyState.m_bPressedKeyTbl['R'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_START) {
+		if (KeyState.m_bPressedKeyTbl['P'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_START) {
 
 			//ポーズ中にPinPがあるとそこにもUIを表示してしまうので非表示にする
-			if(m_pause->GetShowing())
+			if (m_pause->GetShowing())
 				m_pinp->In(PinPAction::LEFT);
 			else
 				m_pinp->Hidden();
@@ -165,10 +148,6 @@ namespace basecross {
 			//引数は現在ポーズ画面がアクティブかどうかを取得してそのフラグを反転させることで表示非表示を切り替えている
 			m_pause->Show(!(m_pause->GetShowing()));
 		}
-<<<<<<< HEAD
-
-=======
->>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 	}
 
 }

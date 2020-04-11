@@ -19,10 +19,6 @@ namespace basecross {
 	}
 
 	void TitleStage::CreateUI() {
-<<<<<<< HEAD
-=======
-
->>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 		//AddGameObject<Title_UI>(
 		//	Vec2(1920.0f, 1080.0f),	//vertex
 		//	Vec3(0.0f, 0.0f, 0.0f),	//pos
@@ -92,10 +88,6 @@ namespace basecross {
 			Col4(1.0f, 1.0f, 1.0f, 1.0f),
 			L"Operation.png"
 			);
-<<<<<<< HEAD
-
-=======
->>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 	}
 
 	void TitleStage::OnCreate() {
@@ -114,14 +106,7 @@ namespace basecross {
 		if (KeyState.m_bPressedKeyTbl[VK_SPACE] || KeyState.m_bPushKeyTbl['W'] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
 		}
-<<<<<<< HEAD
 
-
-
-=======
-	}
-
->>>>>>> 69926f9430785b7b9747f213cd0d3e34f935e481
 
 		//マウス右,Bボタンを押したとき操作説明を出す,もう一度同じボタンを押したらcharSelectに移動
 		if (KeyState.m_bPressedKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
@@ -131,12 +116,11 @@ namespace basecross {
 			CreateOperationUI();
 			m_Update = true;
 		}
+	}
 
-		int TitleStage::RandGenerator() {
-			srand((unsigned int)time(NULL));
-			m_Rand = rand() % 4;
-			return m_Rand;
-		}
-
+	int TitleStage::RandGenerator() {
+		srand((unsigned int)time(NULL));
+		m_Rand = rand() % 4;
+		return m_Rand;
 	}
 }
