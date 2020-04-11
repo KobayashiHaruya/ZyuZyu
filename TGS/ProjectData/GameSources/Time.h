@@ -54,6 +54,13 @@ namespace basecross {
 			const wstring& textureKey,
 			const Vec2& startScale,
 			const Vec2& startPos);
+		int time01 = 0;
+
+		int time02 = 0;
+
+		int time03 = 0;
+
+		int time04 = 0;
 		virtual ~Time10() {};
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
@@ -72,6 +79,15 @@ namespace basecross {
 			const wstring& textureKey,
 			const Vec2& startScale,
 			const Vec2& startPos);
+		int time01 = 0;
+
+		int time02 = 0;
+
+		int time03 = 0;
+
+		int time04 = 0;
+
+		int time05 = 0;
 		virtual ~Time100() {};
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;

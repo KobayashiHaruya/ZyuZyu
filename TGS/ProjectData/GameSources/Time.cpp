@@ -84,6 +84,17 @@ namespace basecross {
 			time02 -= 10;
 		}
 
+		if (time03 == 10)
+		{
+			time03 -= 10;
+		}
+
+		if (time03 == 0)
+		{
+			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
+			ptrDraw->SetTextureResource(L"0.png");
+		}
+
 		if (time03 == 1)
 		{
 			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
@@ -204,14 +215,67 @@ namespace basecross {
 
 		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
 
-//		//timeの取得
-//		int time03 = GetStage()->GetSharedGameObject<Time01>(L"Time01")->GetTime03();
 
-		//if (time03 == 10)
-		//{
-		//	
-		//}
+		if (time01 == 10)
+		{
+			time02 += 1;
+			time01 -= 10;
+		}
 
+		if (time02 == 10)
+		{
+			time03 += 1;
+			time02 -= 10;
+		}
+
+		if (time03 == 10)
+		{
+			time04 += 1;
+			time03 -= 10;
+		}
+
+		if (time04 == 6)
+		{
+			time04 -= 6;
+		}
+
+		if (time04 == 0)
+		{
+			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
+			ptrDraw->SetTextureResource(L"0.png");
+		}
+
+		if (time04 == 1)
+		{
+			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
+			ptrDraw->SetTextureResource(L"1.png");
+		}
+
+		if (time04 == 2)
+		{
+			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
+			ptrDraw->SetTextureResource(L"2.png");
+		}
+
+		if (time04 == 3)
+		{
+			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
+			ptrDraw->SetTextureResource(L"3.png");
+		}
+
+		if (time04 == 4)
+		{
+			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
+			ptrDraw->SetTextureResource(L"4.png");
+		}
+
+		if (time04 == 5)
+		{
+			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
+			ptrDraw->SetTextureResource(L"5.png");
+		}
+
+		time01 += 1;
 		
 	}
 
@@ -258,7 +322,82 @@ namespace basecross {
 
 	void Time100::OnUpdate() {
 
+		auto transComp = GetComponent<Transform>();
+		auto scale = transComp->GetScale();
+		//ここにscale - Player_HP
+		scale.x = scale.x;
+		//透過処理
+		SetAlphaActive(true);
 
+		float helfSize = 1.0f;
+		//頂点配列(縦横5個ずつ表示)
+		vector<VertexPositionColorTexture> vertices = {
+			{ VertexPositionColorTexture(Vec3(-0, helfSize, 0),Col4(1.0f,1.0f,1.0f,1.0f), Vec2(0.0f, 0.0f)) },
+			{ VertexPositionColorTexture(Vec3(helfSize*2.0f, helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, 0.0f)) },
+			{ VertexPositionColorTexture(Vec3(-0, -helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(0.0f, 1.0f)) },
+			{ VertexPositionColorTexture(Vec3(helfSize*2.0f, -helfSize, 0), Col4(1.0f, 01.0f, 1.0f, 1.0f), Vec2(1.0f, 1.0f)) },
+		};
+		//インデックス配列
+		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
+
+		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
+
+
+		if (time01 == 10)
+		{
+			time02 += 1;
+			time01 -= 10;
+		}
+
+		if (time02 == 10)
+		{
+			time03 += 1;
+			time02 -= 10;
+		}
+
+		if (time03 == 10)
+		{
+			time04 += 1;
+			time03 -= 10;
+		}
+
+		if (time04 == 6)
+		{
+			time05 += 1;
+			time04 -= 6;
+			
+		}
+
+		if (time05 == 3)
+		{
+
+		}
+
+		if (time05 == 0)
+		{
+			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
+			ptrDraw->SetTextureResource(L"0.png");
+		}
+
+		if (time05 == 1)
+		{
+			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
+			ptrDraw->SetTextureResource(L"1.png");
+		}
+
+		if (time05 == 2)
+		{
+			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
+			ptrDraw->SetTextureResource(L"2.png");
+		}
+
+		if (time05 == 3)
+		{
+			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
+			ptrDraw->SetTextureResource(L"3.png");
+		}
+
+		time01 += 1;
 	}
 
 }
