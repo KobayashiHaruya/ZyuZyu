@@ -1165,7 +1165,7 @@ namespace basecross{
 			m_totalTicks(0),
 			m_leftOverTicks(0),
 			m_frameCount(0),
-			m_framesPerSecond(0),
+			m_framesPerSecond(60),
 			m_framesThisSecond(0),
 			m_qpcSecondCounter(0),
 			m_isFixedTimeStep(false),
@@ -1298,7 +1298,7 @@ namespace basecross{
 			}
 
 			m_leftOverTicks = 0;
-			m_framesPerSecond = 0;
+			m_framesPerSecond = 60;
 			m_framesThisSecond = 0;
 			m_qpcSecondCounter = 0;
 		}

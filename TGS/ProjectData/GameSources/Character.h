@@ -5,7 +5,6 @@
 
 #pragma once
 #include "stdafx.h"
-
 #include "Weapon.h"
 
 namespace basecross{
@@ -15,11 +14,12 @@ namespace basecross{
 		Vec3 m_rot;
 		Vec3 m_scale;
 		float m_moveSpeed;
-		float m_rotSpeed = 1.0f;
+		float m_rotSpeed = 2.0f;
 		float m_gravityScale;
 		float m_jumpPower;
+		int ID;
 
-		float m_force = 1.0f;
+		Vec2 m_force = Vec2(10.0f, 10.0f);
 		bool m_des = false;
 		bool m_jump = true;
 
@@ -39,7 +39,8 @@ namespace basecross{
 			const float& jump,
 			const CharacterType type,
 			const bool isPlayer,
-			const unsigned int unique
+			const unsigned int unique,
+			const int& id
 		) :
 			GameObject(StagePtr),
 			m_pos(pos),
@@ -50,7 +51,8 @@ namespace basecross{
 			m_jumpPower(jump),
 			m_myData({ type, 1, NULL, NULL, NULL, isPlayer, unique }),
 			m_killCharacters(vector<CharacterKillDetails_s>(NULL)),
-			m_touchOil(NULL)
+			m_touchOil(NULL),
+			ID(id)
 		{}
 		~Character() {}
 
@@ -64,6 +66,7 @@ namespace basecross{
 		void AttackHit(Vec3 rot);
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
+		virtual void OnCollisionExcute(shared_ptr<GameObject>& Other) override;
 		virtual void OnCollisionExit(shared_ptr<GameObject>& Other) override;
 
 		void TouchOil();
@@ -91,7 +94,8 @@ namespace basecross{
 			const float& jump,
 			const CharacterType type,
 			const bool isPlayer,
-			const int unique
+			const int unique,
+			const int& id
 		) :
 			Character(StagePtr,
 			pos,
@@ -102,8 +106,8 @@ namespace basecross{
 			jump,
 			type,
 			isPlayer,
-			unique
-			)
+			unique,
+				id
 		{}
 		~TestPlayer() {}
 

@@ -90,7 +90,7 @@ namespace basecross {
 				0.15f, 10.0f, 5.0f,
 				CharacterType::CHICKEN,
 				true,
-				0
+				0,1
 				);
 			m_enemy = AddGameObject<TestEnemy>(
 				Vec3(0.0f, 3.0f, 50.0f),
@@ -99,7 +99,7 @@ namespace basecross {
 				0.15f, 10.0f, 5.0f,
 				CharacterType::POTATO,
 				false,
-				1
+				1,1
 				);
 
 			m_pinp = AddGameObject<PinP>(
@@ -121,8 +121,14 @@ namespace basecross {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
 		if (KeyState.m_bPressedKeyTbl['E']) {
-
-
+			Vec3 rot;
+			rot.y = (180.0f * 3.14f) / 180.0f;
+			AddGameObject<Bullet>(
+				Vec3(0.0f, 2.0f, 15.0f),
+				rot,
+				Vec3(1.0f, 1.0f, 1.0f),
+				50.0f, 10.0f, 0
+				);
 		}
 
 		//とりあえずPinPのカメラがプレイヤーを追尾する
