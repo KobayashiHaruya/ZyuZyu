@@ -185,6 +185,7 @@ namespace basecross {
 				m_myData.unique,
 				ID
 				);
+
 			bullet->AddEvent([this](const CharacterStatus_s status) {
 				DroppedIntoOil(status);
 			});
@@ -292,6 +293,7 @@ namespace basecross {
 		}
 
 	}
+
 
 	void Character::AttackHit(Vec3 rot) {
 		auto grav = GetComponent<Gravity>();

@@ -108,6 +108,7 @@ namespace basecross{
 			isPlayer,
 			unique,
 				id
+			)
 		{}
 		~TestPlayer() {}
 

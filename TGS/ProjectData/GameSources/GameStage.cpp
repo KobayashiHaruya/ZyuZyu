@@ -99,7 +99,8 @@ namespace basecross {
 				0.15f, 10.0f, 5.0f,
 				CharacterType::POTATO,
 				false,
-				1,1
+				1,
+				0
 				);
 
 			m_pinp = AddGameObject<PinP>(
