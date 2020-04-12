@@ -128,7 +128,8 @@ namespace basecross{
 			const float& jump,
 			const CharacterType type,
 			const bool isPlayer,
-			const int unique
+			const int unique,
+			const int& id
 		) :
 			Character(StagePtr,
 				pos,
@@ -139,7 +140,8 @@ namespace basecross{
 				jump,
 				type,
 				isPlayer,
-				unique
+				unique,
+				id
 			)
 		{}
 		~TestEnemy() {}

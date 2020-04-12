@@ -51,17 +51,17 @@ namespace basecross {
 
 	void GameStage::CreateTime() {
 		
-		AddGameObject<Time01>(L"0.png",
-			Vec2(200.0f, 200.0f),
-			Vec2(0.0f, -300.0f));
+		//AddGameObject<Time01>(L"0.png",
+		//	Vec2(200.0f, 200.0f),
+		//	Vec2(0.0f, -300.0f));
 
-		AddGameObject<Time10>(L"0.png",
-		    Vec2(200.0f, 200.0f),
-			Vec2(-30.0f, -300.0f));
+		//AddGameObject<Time10>(L"0.png",
+		//    Vec2(200.0f, 200.0f),
+		//	Vec2(-30.0f, -300.0f));
 
-		AddGameObject<Time100>(L"0.png",
-		    Vec2(200.0f, 200.0f),
-			Vec2(-60.0f, -300.0f));
+		//AddGameObject<Time100>(L"0.png",
+		//    Vec2(200.0f, 200.0f),
+		//	Vec2(-60.0f, -300.0f));
 
 	}
 
@@ -87,7 +87,7 @@ namespace basecross {
 				Vec3(0.0f, 3.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f),
-				0.15f, 10.0f, 5.0f,
+				5.0f, 10.0f, 5.0f,
 				CharacterType::CHICKEN,
 				true,
 				0,1
@@ -96,7 +96,7 @@ namespace basecross {
 				Vec3(0.0f, 3.0f, 50.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f),
-				0.15f, 10.0f, 5.0f,
+				5.0f, 10.0f, 5.0f,
 				CharacterType::POTATO,
 				false,
 				1,
@@ -128,7 +128,9 @@ namespace basecross {
 				Vec3(0.0f, 2.0f, 15.0f),
 				rot,
 				Vec3(1.0f, 1.0f, 1.0f),
-				50.0f, 10.0f, 0
+				50.0f, 10.0f,
+				0,
+				0
 				);
 		}
 

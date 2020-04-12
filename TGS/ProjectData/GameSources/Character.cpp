@@ -84,7 +84,8 @@ namespace basecross {
 			//ç∂
 			fThumbLX = -1.0f;
 		}
-			auto ptrTransform = GetComponent<Transform>();
+
+		auto ptrTransform = GetComponent<Transform>();
 		if (fThumbLX != 0 || fThumbLY != 0) {
 			auto ptrCamera = OnGetDrawCamera();
 			//êiçsï˚å¸ÇÃå¸Ç´ÇåvéZ
@@ -190,10 +191,28 @@ namespace basecross {
 				DroppedIntoOil(status);
 			});
 		}
+
+		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl['E'])) {
+			GetStage()->AddGameObject<Grenade>(
+				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
+				m_rot,
+				Vec3(1.0f, 1.0f, 1.0f),
+				50.0f, 10.0f, true, ID
+				);
+		}
+		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl['Q'])) {
+			GetStage()->AddGameObject<Grenade>(
+				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
+				m_rot,
+				Vec3(1.0f, 1.0f, 1.0f),
+				50.0f, 10.0f, false, ID
+				);
+		}
+
 	}
 
 	void Character::Respawn() {
-		srand((unsigned int)time(NULL));
+		//srand((unsigned int)time(NULL));
 		int Rand = rand() % 5;
 		const float activeY = 25.0f;
 		auto PtrTransform = GetComponent<Transform>();
@@ -274,30 +293,11 @@ namespace basecross {
 				m_des = false;
 			}
 		}
-
-		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl['E'])) {
-			GetStage()->AddGameObject<Grenade>(
-				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
-				m_rot,
-				Vec3(1.0f, 1.0f, 1.0f),
-				50.0f, 10.0f, true, ID
-				);
-		}
-		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl['Q'])) {
-			GetStage()->AddGameObject<Grenade>(
-				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
-				m_rot,
-				Vec3(1.0f, 1.0f, 1.0f),
-				50.0f, 10.0f, false, ID
-				);
-		}
-
 	}
 
 
 	void Character::AttackHit(Vec3 rot) {
 		auto grav = GetComponent<Gravity>();
-		grav->SetGravityVerocityZero();
 
 		float rad = (rot.y * 180.0f) / 3.14f;
 
@@ -313,8 +313,8 @@ namespace basecross {
 	void Character::OnCollisionEnter(shared_ptr<GameObject>& Other) {
 		if (Other->FindTag(L"Object")) {
 			m_jump = true;
-			auto grav = GetComponent<Gravity>();
-			grav->SetGravityVerocityZero();
+			//auto grav = GetComponent<Gravity>();
+			//grav->SetGravityVerocityZero();
 		}
 
 

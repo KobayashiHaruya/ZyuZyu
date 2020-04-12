@@ -991,7 +991,7 @@ namespace basecross {
 			//イベント配送クラス
 			m_EventDispatcher = make_shared<EventDispatcher>();
 			//乱数の初期化
-			srand((unsigned)time(nullptr));
+			//srand((unsigned)time(nullptr));
 
 		}
 		catch (...) {

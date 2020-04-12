@@ -119,7 +119,7 @@ namespace basecross {
 	}
 
 	int TitleStage::RandGenerator() {
-		srand((unsigned int)time(NULL));
+		//srand((unsigned int)time(NULL));
 		m_Rand = rand() % 4;
 		return m_Rand;
 	}
