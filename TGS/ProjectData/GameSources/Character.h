@@ -5,20 +5,21 @@
 
 #pragma once
 #include "stdafx.h"
-
 #include "Weapon.h"
 
-namespace basecross{
+namespace basecross {
 
 	class Character : public GameObject {
 		Vec3 m_pos;
 		Vec3 m_rot;
 		Vec3 m_scale;
 		float m_moveSpeed;
-		float m_rotSpeed = 1.0f;
+		float m_rotSpeed = 2.0f;
 		float m_gravityScale;
 		float m_jumpPower;
+		int ID;
 
+		Vec2 m_force = Vec2(10.0f, 10.0f);
 		float m_force = 1.0f;
 		bool m_des = false;
 		bool m_jump = true;
@@ -39,7 +40,8 @@ namespace basecross{
 			const float& jump,
 			const CharacterType type,
 			const bool isPlayer,
-			const unsigned int unique
+			const unsigned int unique,
+			const int& id
 		) :
 			GameObject(StagePtr),
 			m_pos(pos),
@@ -50,7 +52,8 @@ namespace basecross{
 			m_jumpPower(jump),
 			m_myData({ type, 1, NULL, NULL, NULL, isPlayer, unique }),
 			m_killCharacters(vector<CharacterKillDetails_s>(NULL)),
-			m_touchOil(NULL)
+			m_touchOil(NULL),
+			ID(id)
 		{}
 		~Character() {}
 
@@ -64,7 +67,9 @@ namespace basecross{
 		void AttackHit(Vec3 rot);
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
+		virtual void OnCollisionExcute(shared_ptr<GameObject>& Other) override;
 		virtual void OnCollisionExit(shared_ptr<GameObject>& Other) override;
+
 
 		void TouchOil();
 		void DroppedIntoOil(const CharacterStatus_s& status);
@@ -91,19 +96,21 @@ namespace basecross{
 			const float& jump,
 			const CharacterType type,
 			const bool isPlayer,
-			const int unique
+			const int unique,
+			const int& id
 		) :
 			Character(StagePtr,
-			pos,
-			rot,
-			scale,
-			speed,
-			gravity,
-			jump,
-			type,
-			isPlayer,
-			unique
-			)
+				pos,
+				rot,
+				scale,
+				speed,
+				gravity,
+				jump,
+				type,
+				isPlayer,
+				unique,
+				id
+			) :
 		{}
 		~TestPlayer() {}
 

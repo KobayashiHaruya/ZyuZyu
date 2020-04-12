@@ -17,17 +17,12 @@ namespace basecross {
 
 		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
 		PtrDraw->SetMeshResource(L"DEFAULT_CUBE");
-
+		PtrDraw->SetColorAndAlpha(Flt4(0.5f, 1.0f, 1.0f, 1.0f));
 
 		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetAfterCollision(AfterCollision::None);
-
-		PsBoxParam param(ptr->GetWorldMatrix(), 0.0f, true, PsMotionType::MotionTypeFixed);
-		auto PsPtr = AddComponent<RigidbodyBox>(param);
-		PsPtr->SetDrawActive(true);
-		PsPtr->SetAutoTransform(false);
-
-
+		ptrColl->SetAfterCollision(AfterCollision::Auto);
+		ptrColl->SetDrawActive(true);
+		
 		AddTag(L"Object");
 
 	}
@@ -36,6 +31,11 @@ namespace basecross {
 		Draw();
 	}
 
+	void Object::OnUpdate() {
+		auto ptr = GetComponent<Transform>();
+
+		ptr->SetPosition(m_pos);
+	}
 
 	void Oil::OnCreate() {
 		Object::OnCreate();
