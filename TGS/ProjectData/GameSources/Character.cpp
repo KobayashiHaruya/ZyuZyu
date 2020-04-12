@@ -206,6 +206,7 @@ namespace basecross{
 
 	void Character::AttackHit(Vec3 rot) {
 		auto grav = GetComponent<Gravity>();
+		grav->SetGravityVerocityZero();
 
 		float rad = (rot.y * 180.0f) / 3.14f;
 
