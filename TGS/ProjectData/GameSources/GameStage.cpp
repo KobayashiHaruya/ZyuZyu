@@ -74,26 +74,31 @@ namespace basecross {
 			CreateUI();
 			CreateTime();
 			AddGameObject<Object>(
+				Vec3(0.0f, -25.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(100.0f, 0.5f, 100.0f)
+				Vec3(50.0f, 50.0f, 50.0f)
 				);
 			AddGameObject<Oil>(
-				Vec3(0.0f, -10.0f, 0.0f),
+				Vec3(0.0f, -60.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(150.0f, 0.1f, 150.0f)
+				Vec3(50.0f, 50.0f, 50.0f)
+				);
+			AddGameObject<Nabe>(
+				Vec3(0.0f, -60.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(50.0f, 50.0f, 50.0f)
 				);
 			m_player = AddGameObject<TestPlayer>(
 				Vec3(0.0f, 3.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f),
-				5.0f, 10.0f, 5.0f,
+				10.0f, 10.0f, 5.0f,
 				CharacterType::CHICKEN,
 				true,
 				0,1
 				);
 			m_enemy = AddGameObject<TestEnemy>(
-				Vec3(0.0f, 3.0f, 50.0f),
+				Vec3(0.0f, 3.0f, 10.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f),
 				5.0f, 10.0f, 5.0f,
@@ -102,6 +107,7 @@ namespace basecross {
 				1,
 				0
 				);
+
 
 			m_pinp = AddGameObject<PinP>(
 				PinPAspectType::HD,

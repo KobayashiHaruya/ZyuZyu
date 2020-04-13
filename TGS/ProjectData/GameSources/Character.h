@@ -10,9 +10,14 @@
 namespace basecross{
 
 	class Character : public GameObject {
+		wstring m_modelName;
 		Vec3 m_pos;
 		Vec3 m_rot;
 		Vec3 m_scale;
+		Vec3 m_modelPos;
+		Vec3 m_modelRot;
+		Vec3 m_modelScale;
+
 		float m_moveSpeed;
 		float m_rotSpeed = 2.0f;
 		float m_gravityScale;
@@ -56,6 +61,7 @@ namespace basecross{
 		{}
 		~Character() {}
 
+		virtual void BmfDateRead(wstring model, Vec3 mpos, Vec3 mrot, Vec3 mscale);
 		void Draw();
 		void PlayerCamera();
 		void PlayerMove();

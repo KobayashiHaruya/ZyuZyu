@@ -8,24 +8,54 @@
 
 namespace basecross {
 
+	void Character::BmfDateRead(wstring model, Vec3 mpos, Vec3 mrot, Vec3 mscale) {
+		Mat4x4 m_spanMat;
+		mrot.y = mrot.y * 3.14f / 180.0f;
+		m_spanMat.affineTransformation(
+			mscale,
+			Vec3(0.0f, 0.0f, 0.0f),
+			mrot,
+			mpos
+		);
+
+		//影をつけるa
+		auto ptrShadow = AddComponent<Shadowmap>();
+		ptrShadow->SetMeshResource(model);
+		ptrShadow->SetMeshToTransformMatrix(m_spanMat);
+
+		auto ptrDraw = AddComponent<PNTStaticModelDraw>();
+		ptrDraw->SetMeshResource(model);
+		ptrDraw->SetMeshToTransformMatrix(m_spanMat);
+		ptrDraw->SetOwnShadowActive(true);
+		ptrDraw->SetDrawActive(true);
+
+		SetAlphaActive(true);
+
+	}
+
 	void Character::Draw() {
+		//auto ptrTrans = GetComponent<Transform>();
+		//ptrTrans->SetPosition(m_pos);
+		//ptrTrans->SetScale(Vec3(1.0f));
+		//ptrTrans->SetRotation(m_rot);
+
+		////影をつける
+		//auto ptrShadow = AddComponent<Shadowmap>();
+		//ptrShadow->SetMeshResource(L"DEFAULT_CAPSULE");
+
+		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		//ptrDraw->SetFogEnabled(true);
+		//ptrDraw->SetMeshResource(L"DEFAULT_CAPSULE");
+		//ptrDraw->SetOwnShadowActive(true);
+
+		//ptrDraw->SetMeshResource(L"DEFAULT_CAPSULE");
+		//ptrDraw->SetTextureResource(L"trace.png");
+		//SetAlphaActive(true);
+
 		auto ptrTrans = GetComponent<Transform>();
 		ptrTrans->SetPosition(m_pos);
 		ptrTrans->SetScale(Vec3(1.0f));
 		ptrTrans->SetRotation(m_rot);
-
-		//影をつける
-		auto ptrShadow = AddComponent<Shadowmap>();
-		ptrShadow->SetMeshResource(L"DEFAULT_CAPSULE");
-
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetFogEnabled(true);
-		ptrDraw->SetMeshResource(L"DEFAULT_CAPSULE");
-		ptrDraw->SetOwnShadowActive(true);
-
-		ptrDraw->SetMeshResource(L"DEFAULT_CAPSULE");
-		ptrDraw->SetTextureResource(L"trace.png");
-		SetAlphaActive(true);
 
 		//各パフォーマンスを得る
 		GetStage()->SetCollisionPerformanceActive(true);
@@ -214,85 +244,36 @@ namespace basecross {
 	void Character::Respawn() {
 		//srand((unsigned int)time(NULL));
 		int Rand = rand() % 5;
-		const float activeY = 25.0f;
+		//m_des = true;
+		const float activeY = -25.0f;
 		auto PtrTransform = GetComponent<Transform>();
-
-		if (abs(PtrTransform->GetPosition().y) > activeY) {
-			m_des = true;
-			if (m_des) {
+		//if (abs(PtrTransform->GetPosition().y) > activeY) {
+			//if (m_des) {
 				//ランダムに出すように
 				switch (Rand) {
 				case 0:
-					GetStage()->AddGameObject<TestPlayer>(
-						Vec3(0.0f, 3.0f, 0.0f),
-						Vec3(0.0f, 0.0f, 0.0f),
-						Vec3(1.0f, 1.0f, 1.0f),
-						0.15f, 10.0f, 5.0f,
-						CharacterType::CHICKEN,
-						true,
-						0,1
-						);
+					PtrTransform->SetPosition(Vec3(0.0f, 3.0f, 0.0f));
 					break;
 				case 1:
-					GetStage()->AddGameObject<TestPlayer>(
-						Vec3(-50.0f, 3.0f, 50.0f),
-						Vec3(0.0f, 0.0f, 0.0f),
-						Vec3(1.0f, 1.0f, 1.0f),
-						0.15f, 10.0f, 5.0f,
-						CharacterType::CHICKEN,
-						true,
-						0, 1
-						);
+					PtrTransform->SetPosition(Vec3(-50.0f, 3.0f, 50.0f));
 					break;
 				case 2:
-					GetStage()->AddGameObject<TestPlayer>(
-						Vec3(50.0f, 3.0f, 50.0f),
-						Vec3(0.0f, 0.0f, 0.0f),
-						Vec3(1.0f, 1.0f, 1.0f),
-						0.15f, 10.0f, 5.0f,
-						CharacterType::CHICKEN,
-						true,
-						0, 1
-						);
+					PtrTransform->SetPosition(Vec3(50.0f, 3.0f, 50.0f));
 					break;
 				case 3:
-					GetStage()->AddGameObject<TestPlayer>(
-						Vec3(50.0f, 3.0f, -50.0f),
-						Vec3(0.0f, 0.0f, 0.0f),
-						Vec3(1.0f, 1.0f, 1.0f),
-						0.15f, 10.0f, 5.0f,
-						CharacterType::CHICKEN,
-						true,
-						0, 1
-						);
+					PtrTransform->SetPosition(Vec3(50.0f, 3.0f, -50.0f));
 					break;
 				case 4:
-					GetStage()->AddGameObject<TestPlayer>(
-						Vec3(-50.0f, 3.0f, -50.0f),
-						Vec3(0.0f, 0.0f, 0.0f),
-						Vec3(1.0f, 1.0f, 1.0f),
-						0.15f, 10.0f, 5.0f,
-						CharacterType::CHICKEN,
-						true,
-						0,1
-						);
+					PtrTransform->SetPosition(Vec3(-50.0f, 3.0f, -50.0f));
 					break;
 				default:
-					GetStage()->AddGameObject<TestPlayer>(
-						Vec3(0.0f, 3.0f, 0.0f),
-						Vec3(0.0f, 0.0f, 0.0f),
-						Vec3(1.0f, 1.0f, 1.0f),
-						0.15f, 10.0f, 5.0f,
-						CharacterType::CHICKEN,
-						true,
-						0, 1
-						);
+					PtrTransform->SetPosition(Vec3(0.0f, 3.0f, 0.0f));
 					break;
 				}
-				GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
-				m_des = false;
-			}
-		}
+				//GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
+			//	m_des = false;
+			//}
+		//}
 	}
 
 
@@ -328,6 +309,7 @@ namespace basecross {
 		}
 		if (Other->FindTag(L"Oil")) {
 			TouchOil();
+			Respawn();
 		}
 	}
 
@@ -359,8 +341,8 @@ namespace basecross {
 	void Character::TouchOil() {
 		if(m_touchOil) m_touchOil->Run(m_myData);
 		AddDeath(1);
-		SetUpdateActive(false);
-		SetDrawActive(false);
+		SetUpdateActive(true);
+		SetDrawActive(true);
 	}
 
 	//相手を油に落とした時の処理
@@ -405,27 +387,31 @@ namespace basecross {
 	}
 
 
+
+
 	void TestPlayer::OnCreate() {
 		Draw();
 		PlayerCamera();
+		BmfDateRead(L"Potato_ver1.bmf", Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 180.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
 	}
 
 	void TestPlayer::OnUpdate() {
 		PlayerMove();
 		PlayerRotMove();
 		BulletFire();
-		Respawn();
 	}
 
 
 
 	void TestEnemy::OnCreate() {
 		Draw();
+		BmfDateRead(L"Potato_ver1.bmf", Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 180.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
 	}
 
 	void TestEnemy::OnUpdate() {
 
 	}
+
 
 }
 //end basecross
