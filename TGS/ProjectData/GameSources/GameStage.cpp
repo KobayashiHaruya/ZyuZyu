@@ -63,7 +63,7 @@ namespace basecross {
 		    Vec2(500.0f, 500.0f),
 			Vec2(800.0f, 500.0f));
 
-		AddGameObject<Sprite>(L"•ª.jpg",
+		AddGameObject<Sprite>(L"•ª.png",
 			Vec2(50.0f, 50.0f),
 			Vec2(900.0f, 500.0f));
 
