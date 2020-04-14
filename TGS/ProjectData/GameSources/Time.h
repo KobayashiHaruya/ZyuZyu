@@ -22,19 +22,18 @@ namespace basecross {
 			const wstring& textureKey,
 			const Vec2& startScale,
 			const Vec2& startPos);
-		int time01 = 0;
 
-		int time02 = 0;
+		int Maxtime = 10;
 
-		int time03 = 0;
+		int Mintime = 1;
 
-		int GetTime01() {
-			return time01;
-		}
+		int Notime = 0;
 
-		int GetTime03() {
-			return time03;
-		}
+		int time01 = Notime;
+
+		int time02 = Notime;
+
+		int time03 = Notime;
 
 		virtual ~Time01() {};
 		virtual void OnCreate()override;
@@ -54,13 +53,20 @@ namespace basecross {
 			const wstring& textureKey,
 			const Vec2& startScale,
 			const Vec2& startPos);
-		int time01 = 0;
+		int Maxtime = 10;
 
-		int time02 = 0;
+		int Mintime = 1;
 
-		int time03 = 0;
+		int Notime = 0;
 
-		int time04 = 0;
+		int time01 = Notime;
+
+		int time02 = Notime;
+
+		int time03 = Notime;
+
+		int time04 = Notime;
+
 		virtual ~Time10() {};
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
@@ -79,15 +85,23 @@ namespace basecross {
 			const wstring& textureKey,
 			const Vec2& startScale,
 			const Vec2& startPos);
-		int time01 = 0;
 
-		int time02 = 0;
+		int Maxtime = 10;
 
-		int time03 = 0;
+		int Mintime = 1;
 
-		int time04 = 0;
+		int Notime = 0;
 
-		int time05 = 0;
+		int time01 = Notime;
+
+		int time02 = Notime;
+
+		int time03 = Notime;
+
+		int time04 = Notime;
+
+		int time05 = Notime;
+
 		virtual ~Time100() {};
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
