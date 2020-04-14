@@ -275,7 +275,7 @@ namespace basecross {
 			ptrDraw->SetTextureResource(L"5.png");
 		}
 
-		time01 += 1;
+		time01 += Mintime;
 		
 	}
 
@@ -343,22 +343,22 @@ namespace basecross {
 		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
 
 
-		if (time01 == 10)
+		if (time01 == Maxtime)
 		{
-			time02 += 1;
-			time01 -= 10;
+			time02 += Mintime;
+			time01 -= Maxtime;
 		}
 
-		if (time02 == 10)
+		if (time02 == Maxtime)
 		{
-			time03 += 1;
-			time02 -= 10;
+			time03 += Mintime;
+			time02 -= Maxtime;
 		}
 
-		if (time03 == 10)
+		if (time03 == Maxtime)
 		{
-			time04 += 1;
-			time03 -= 10;
+			time04 += Mintime;
+			time03 -= Maxtime;
 		}
 
 		if (time04 == 6)
@@ -397,7 +397,7 @@ namespace basecross {
 			ptrDraw->SetTextureResource(L"3.png");
 		}
 
-		time01 += 1;
+		time01 += Mintime;
 	}
 
 }
