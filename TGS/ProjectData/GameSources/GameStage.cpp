@@ -51,21 +51,17 @@ namespace basecross {
 
 	void GameStage::CreateTime() {
 		
-		AddGameObject<Time01>(L"0.png",
+		AddGameObject<Time01>(L"9.png",
 			Vec2(200.0f, 200.0f),
-			Vec2(0.0f, -300.0f));
+			Vec2(5.0f, -290.0f));
 
-		//AddGameObject<Time10>(L"0.png",
-		//    Vec2(200.0f, 200.0f),
-		//	Vec2(-30.0f, -300.0f));
+		AddGameObject<Time10>(L"5.png",
+		    Vec2(200.0f, 200.0f),
+			Vec2(-30.0f, -290.0f));
 
-		//AddGameObject<Time100>(L"3.png",
-		//    Vec2(500.0f, 500.0f),
-		//	Vec2(800.0f, 500.0f));
-
-		AddGameObject<Sprite>(L"•ª.png",
-			Vec2(50.0f, 50.0f),
-			Vec2(900.0f, 500.0f));
+		AddGameObject<Time100>(L"2.png",
+			Vec2(200.0f, 200.0f),
+			Vec2(-75.0f, -290.0f));
 
 	}
 

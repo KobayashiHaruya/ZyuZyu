@@ -40,72 +40,72 @@ namespace basecross {
 	    virtual void OnUpdate()override;
 	};
 
-	////--------------------------------------------------------------------------------------
-	/////	ŽžŠÔ
-	////--------------------------------------------------------------------------------------
-	//class Time10 : public GameObject {
-	//protected:
-	//	wstring m_TextureKey;
-	//	Vec2 m_StartScale;
-	//	Vec2 m_StartPos;
-	//public:
-	//	Time10(const shared_ptr<Stage>& stagePtr,
-	//		const wstring& textureKey,
-	//		const Vec2& startScale,
-	//		const Vec2& startPos);
-	//	int Maxtime = 10;
+	//--------------------------------------------------------------------------------------
+	///	ŽžŠÔ
+	//--------------------------------------------------------------------------------------
+	class Time10 : public GameObject {
+	protected:
+		wstring m_TextureKey;
+		Vec2 m_StartScale;
+		Vec2 m_StartPos;
+	public:
+		Time10(const shared_ptr<Stage>& stagePtr,
+			const wstring& textureKey,
+			const Vec2& startScale,
+			const Vec2& startPos);
+		int Maxtime = 10;
 
-	//	int Mintime = 1;
+		int Mintime = 1;
 
-	//	int Notime = 0;
+		int Notime = 0;
 
-	//	int time01 = Notime;
+		int time01 = Notime;
 
-	//	int time02 = Notime;
+		int time02 = Notime;
 
-	//	int time03 = Notime;
+		int time03 = Notime;
 
-	//	int time04 = Notime;
+		int time04 = Notime;
 
-	//	virtual ~Time10() {};
-	//	virtual void OnCreate()override;
-	//	virtual void OnUpdate()override;
-	//};
+		virtual ~Time10() {};
+		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+	};
 
-	////--------------------------------------------------------------------------------------
-	/////	ŽžŠÔ
-	////--------------------------------------------------------------------------------------
-	//class Time100 : public GameObject {
-	//protected:
-	//	wstring m_TextureKey;
-	//	Vec2 m_StartScale;
-	//	Vec2 m_StartPos;
-	//public:
-	//	Time100(const shared_ptr<Stage>& stagePtr,
-	//		const wstring& textureKey,
-	//		const Vec2& startScale,
-	//		const Vec2& startPos);
+	//--------------------------------------------------------------------------------------
+	///	ŽžŠÔ
+	//--------------------------------------------------------------------------------------
+	class Time100 : public GameObject {
+	protected:
+		wstring m_TextureKey;
+		Vec2 m_StartScale;
+		Vec2 m_StartPos;
+	public:
+		Time100(const shared_ptr<Stage>& stagePtr,
+			const wstring& textureKey,
+			const Vec2& startScale,
+			const Vec2& startPos);
 
-	//	int Maxtime = 10;
+		int Maxtime = 10;
 
-	//	int Mintime = 1;
+		int Mintime = 1;
 
-	//	int Notime = 0;
+		int Notime = 0;
 
-	//	int time01 = Notime;
+		int time01 = Notime;
 
-	//	int time02 = Notime;
+		int time02 = Notime;
 
-	//	int time03 = Notime;
+		int time03 = Notime;
 
-	//	int time04 = Notime;
+		int time04 = Notime;
 
-	//	int time05 = Notime;
+		int time05 = Notime;
 
-	//	virtual ~Time100() {};
-	//	virtual void OnCreate()override;
-	//	virtual void OnUpdate()override;
-	//};
+		virtual ~Time100() {};
+		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+	};
 
 }
 
