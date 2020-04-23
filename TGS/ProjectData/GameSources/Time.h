@@ -35,6 +35,11 @@ namespace basecross {
 
 		int time03 = Notime;
 
+		int n, m;
+
+		int X = 0;
+		int Y = 0;
+
 		virtual ~Time01() {};
 		virtual void OnCreate()override;
 	    virtual void OnUpdate()override;

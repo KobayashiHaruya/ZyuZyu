@@ -23,12 +23,13 @@ namespace basecross {
 
 	void Time01::OnCreate() {
 		float helfSize = 0.5f;
+
 		//頂点配列(縦横5個ずつ表示)
 		vector<VertexPositionColorTexture> vertices = {
-			{ VertexPositionColorTexture(Vec3(-helfSize,  helfSize, 3.6), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f, -0.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize,  helfSize, -9.0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, -0.0f)) },
-			{ VertexPositionColorTexture(Vec3(-helfSize, -helfSize, 3.6), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f,  1.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize, -helfSize, -9.0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f,  1.0f)) },
+			{ VertexPositionColorTexture(Vec3(-helfSize,  helfSize, 1+X), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f, -0.0f)) },
+			{ VertexPositionColorTexture(Vec3(helfSize,  helfSize, -8+Y), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, -0.0f)) },
+			{ VertexPositionColorTexture(Vec3(-helfSize, -helfSize, 1+X), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f,  1.0f)) },
+			{ VertexPositionColorTexture(Vec3(helfSize, -helfSize, -8+Y), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f,  1.0f)) },
 		};
 		//インデックス配列
 		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
@@ -59,18 +60,31 @@ namespace basecross {
 		//透過処理
 		SetAlphaActive(true);
 
-		float helfSize = 1.0f;
+		float helfSize = 0.5f;
+
 		//頂点配列(縦横5個ずつ表示)
 		vector<VertexPositionColorTexture> vertices = {
-			{ VertexPositionColorTexture(Vec3(-0, helfSize, 0),Col4(1.0f,1.0f,1.0f,1.0f), Vec2(0.0f, 0.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize, helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, 0.0f)) },
-			{ VertexPositionColorTexture(Vec3(-0, -helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(0.0f, 1.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize, -helfSize, 0), Col4(1.0f, 01.0f, 1.0f, 1.0f), Vec2(1.0f, 1.0f)) },
+			{ VertexPositionColorTexture(Vec3(-helfSize,  helfSize, X), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f, -0.0f)) },
+			{ VertexPositionColorTexture(Vec3(helfSize,  helfSize,  Y), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, -0.0f)) },
+			{ VertexPositionColorTexture(Vec3(-helfSize, -helfSize, X), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f,  1.0f)) },
+			{ VertexPositionColorTexture(Vec3(helfSize, -helfSize,  Y), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f,  1.0f)) },
 		};
 		//インデックス配列
 		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
+		//0  1
+		//2  3
+		//
+		SetAlphaActive(true);
 
-		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);	
+		auto ptrTransform = GetComponent<Transform>();
+		ptrTransform->SetScale(m_StartScale.x, m_StartScale.y, 1.0f);
+		ptrTransform->SetRotation(0, 0, 0);
+		ptrTransform->SetPosition(m_StartPos.x, m_StartPos.y, 0.0f);
+
+		//頂点とインデックスを指定してスプライト作成
+		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
+		ptrDraw->SetTextureResource(m_TextureKey);
+		ptrDraw->SetSamplerState(SamplerState::LinearWrap);
 
 
 		//auto GM = GameManager::getInstance();
@@ -97,6 +111,8 @@ namespace basecross {
 
 		//auto Mintime = Mintime2;
 
+
+
 		if (time01 == Maxtime)
 		{
 			time02 += Mintime;
@@ -113,7 +129,7 @@ namespace basecross {
 		{
 			time03 -= Maxtime;
 		}
-
+ 
 		if (time03 == 0)
 		{
 			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
@@ -121,7 +137,7 @@ namespace basecross {
 		}
 
 		if (time03 == 1)
-		{
+		{    	
 			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
 			ptrDraw->SetTextureResource(L"0_9.png");
 		}
