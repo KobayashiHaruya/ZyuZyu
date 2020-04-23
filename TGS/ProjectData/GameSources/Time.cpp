@@ -25,10 +25,10 @@ namespace basecross {
 		float helfSize = 0.5f;
 		//頂点配列(縦横5個ずつ表示)
 		vector<VertexPositionColorTexture> vertices = {
-			{ VertexPositionColorTexture(Vec3(-helfSize,  helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f, -0.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize,  helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, -0.0f)) },
-			{ VertexPositionColorTexture(Vec3(-helfSize, -helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f,  1.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize, -helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f,  1.0f)) },
+			{ VertexPositionColorTexture(Vec3(-helfSize,  helfSize, 3.6), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f, -0.0f)) },
+			{ VertexPositionColorTexture(Vec3(helfSize,  helfSize, -9.0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, -0.0f)) },
+			{ VertexPositionColorTexture(Vec3(-helfSize, -helfSize, 3.6), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f,  1.0f)) },
+			{ VertexPositionColorTexture(Vec3(helfSize, -helfSize, -9.0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f,  1.0f)) },
 		};
 		//インデックス配列
 		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
@@ -53,9 +53,9 @@ namespace basecross {
 	void Time01::OnUpdate() {
 
 		auto transComp = GetComponent<Transform>();
-		auto scale = transComp->GetScale();
-		//ここにscale - Player_HP
-		scale.x = scale.x;
+		//auto scale = transComp->GetScale();
+		////ここにscale - Player_HP
+		//scale.x = scale.x;
 		//透過処理
 		SetAlphaActive(true);
 
@@ -63,14 +63,39 @@ namespace basecross {
 		//頂点配列(縦横5個ずつ表示)
 		vector<VertexPositionColorTexture> vertices = {
 			{ VertexPositionColorTexture(Vec3(-0, helfSize, 0),Col4(1.0f,1.0f,1.0f,1.0f), Vec2(0.0f, 0.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize*2.0f, helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, 0.0f)) },
+			{ VertexPositionColorTexture(Vec3(helfSize, helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, 0.0f)) },
 			{ VertexPositionColorTexture(Vec3(-0, -helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(0.0f, 1.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize*2.0f, -helfSize, 0), Col4(1.0f, 01.0f, 1.0f, 1.0f), Vec2(1.0f, 1.0f)) },
+			{ VertexPositionColorTexture(Vec3(helfSize, -helfSize, 0), Col4(1.0f, 01.0f, 1.0f, 1.0f), Vec2(1.0f, 1.0f)) },
 		};
 		//インデックス配列
 		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
 
 		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);	
+
+
+		//auto GM = GameManager::getInstance();
+
+		//auto Maxtime2 = GM->GetMaxtime();
+
+		//auto Mintime2 = GM->GetMintime();
+
+		//auto Notime2 = GM->GetNotime();
+
+		//auto time01_2 = GM->Gettime01();
+
+		//auto time02_2 = GM->Gettime02();
+
+		//auto time03_2 = GM->Gettime03();
+
+		//auto time01 = time01_2;
+
+		//auto time02 = time02_2;
+
+		//auto time03 = time03_2;
+
+		//auto Maxtime = Maxtime2;
+
+		//auto Mintime = Mintime2;
 
 		if (time01 == Maxtime)
 		{
@@ -92,37 +117,37 @@ namespace basecross {
 		if (time03 == 0)
 		{
 			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"9.png");
+			ptrDraw->SetTextureResource(L"0_9.png");
 		}
 
 		if (time03 == 1)
 		{
 			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"8.png");
+			ptrDraw->SetTextureResource(L"0_9.png");
 		}
 
 		if (time03 == 2)
 		{
 			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"7.png");
+			ptrDraw->SetTextureResource(L"0_9.png");
 		}
 
 		if (time03 == 3)
 		{
 			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"6.png");
+			ptrDraw->SetTextureResource(L"0_9.png");
 		}
 
 		if (time03 == 4)
 		{
 			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"5.png");
+			ptrDraw->SetTextureResource(L"0_9.png");
 		}
 
 		if (time03 == 5)
 		{
 			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"4.png");
+			ptrDraw->SetTextureResource(L"0_9.png");
 		}
 
 		if (time03 == 6)
