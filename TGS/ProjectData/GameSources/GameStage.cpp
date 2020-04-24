@@ -51,9 +51,9 @@ namespace basecross {
 
 	void GameStage::CreateTime() {
 		
-		/*AddGameObject<Time01>(L"0_9.png",
-			Vec2(110.0f, 60.0f),
-			Vec2(5.0f, -290.0f));*/
+		AddGameObject<Time01>(L"0_9.png",
+			Vec2(256.0f, 32.0f),
+			Vec2(925.0f, 500.0f));
 
 		//AddGameObject<Time10>(L"5.png",
 		//    Vec2(200.0f, 200.0f),

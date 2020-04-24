@@ -22,5 +22,5 @@
 #include "Sprite.h"
 #include "MyGameObject.h"
 #include "GameManager.h"
-#include "Time.h"
+#include "Time_new.h"
 
