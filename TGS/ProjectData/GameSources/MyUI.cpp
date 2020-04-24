@@ -932,8 +932,8 @@ namespace basecross {
 		m_action = action;
 		m_hideViewTopLeftPos = GetHideTopLeftPos(action);
 
-		UpdateEdge(Vec2(m_hideViewTopLeftPos.x, m_hideViewTopLeftPos.y));
-		if(m_edgeImage) m_edgeImage->Hidden(false);
+		//UpdateEdge(Vec2(m_hideViewTopLeftPos.x, m_hideViewTopLeftPos.y));
+		//if(m_edgeImage) m_edgeImage->Hidden(false);
 
 		SetViewTopLeftPos(m_hideViewTopLeftPos);
 	}
@@ -947,18 +947,14 @@ namespace basecross {
 	}
 
 	void PinP::Hidden(const bool e) {
-		m_active = false;
-		//if (m_action && m_useCharacter.unique) In(m_action);
+		m_active = !e;
 		auto& app = App::GetApp();
-		SetViewTopLeftPos(Vec2(app->GetGameWidth(), app->GetGameHeight()));
-		if (e) {
-			auto& app = App::GetApp();
+		m_edgeImage->Hidden(e);
+
+		if (e) 
 			SetViewTopLeftPos(Vec2(app->GetGameWidth(), app->GetGameHeight()));
-		}
 		else
-		{
-			//if (m_useCharacter.unique != 0) In(m_action);
-		}
+			if (m_useCharacter.unique != 0) In(m_action);
 	}
 
 	void PinP::SetAt(const Vec3& at) {
@@ -993,7 +989,7 @@ namespace basecross {
 		m_edgeImage = GetStage()->AddGameObject<UI_Static_Image>(
 			resolution,
 			Vec3(0.0f),
-			Vec3(1.02f),
+			Vec3(m_edgeScale),
 			m_edgeLayer,
 			m_edgeColor,
 			m_edgeImageName
@@ -1002,7 +998,8 @@ namespace basecross {
 	}
 
 	void PinP::UpdateEdge(const Vec2& pos) {
-		if (!m_edgeImage) return;
+		if (!m_edgeImage || !m_active) return;
+		if (!m_edgeImage->GetDrawActive()) m_edgeImage->Hidden(false);
 		auto& app = App::GetApp();
 		auto halfGame = Vec2(app->GetGameWidth() / 2.0f, app->GetGameHeight() / 2.0f);
 

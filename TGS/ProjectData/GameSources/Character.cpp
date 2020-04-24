@@ -350,6 +350,7 @@ namespace basecross {
 		if(m_touchOil) m_touchOil->Run(m_myData);
 		AddDeath(1);
 
+		//PinPで表示しているのが自身だったらPinPを非表示にする
 		auto pinp = GetStage()->GetSharedGameObject<PinP>(L"BlownPinP");
 		if (m_myData.unique == pinp->GetUse().unique) {
 			pinp->DeleteUse();
@@ -368,6 +369,7 @@ namespace basecross {
 		AddKill(1);
 	}
 
+	//PinPに自身を指定して表示する
 	void Character::ShowMyPinP() {
 		auto pinp = GetStage()->GetSharedGameObject<PinP>(L"BlownPinP");
 		auto& trans = GetComponent<Transform>();

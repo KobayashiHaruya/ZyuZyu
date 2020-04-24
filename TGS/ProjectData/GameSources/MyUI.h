@@ -829,7 +829,11 @@ namespace basecross {
 		PinP(const shared_ptr<Stage>& StagePtr,
 			const PinPAspectType aspectType,
 			const float scale,
-			const Vec2& topLeftPos
+			const Vec2& topLeftPos,
+			const bool isEdge,
+			const Col4& edgeColor,
+			const float edgeScale,
+			const float edgeLayer
 		) :
 			GameObject(StagePtr),
 			m_aspectType(aspectType),
@@ -843,12 +847,12 @@ namespace basecross {
 			m_showViewTopLeftPos(topLeftPos),
 			m_hideViewTopLeftPos(Vec2(0.0f)),
 			m_useCharacter({}),
-			m_isEdge(false),
+			m_isEdge(isEdge),
 			m_edgeImageName(L"dot.png"),
 			m_edgeImage(NULL),
-			m_edgeColor(Col4(0.00f, 0.24f, 0.64f, 1.00f)),
-			m_edgeScale(1.2f),
-			m_edgeLayer(0),
+			m_edgeColor(edgeColor),
+			m_edgeScale(edgeScale),
+			m_edgeLayer(edgeLayer),
 			m_offset(3.0f)
 		{}
 		~PinP() {}
@@ -870,13 +874,6 @@ namespace basecross {
 		}
 		void DeleteUse() {
 			m_useCharacter = {};
-		}
-		void SetEdge(const bool e) {
-			m_isEdge = e;
-		}
-		void SetEdge(const bool e, const Col4& color) {
-			m_isEdge = e;
-			m_edgeColor = color;
 		}
 		bool GetActive() {
 			return m_active;

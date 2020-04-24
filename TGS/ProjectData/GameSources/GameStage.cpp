@@ -142,7 +142,7 @@ namespace basecross {
 		//Rキーもしくはパッドのスタートボタンを押したらポーズ画面を表示する
 		if (KeyState.m_bPressedKeyTbl['P'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_START) {
 
-			m_pinp->Hidden(!m_pinp->GetActive());
+			m_pinp->Hidden(m_pinp->GetActive());
 
 			//ここでは毎回配列を生成してステータスを設定しているが実際には１度だけ処理してChangeStatusをする
 			vector<CharacterStatus_s> statuses;
@@ -163,9 +163,12 @@ namespace basecross {
 		m_pinp = AddGameObject<PinP>(
 			PinPAspectType::HD,
 			35.0f,
-			Vec2(10.0f, 10.0f)
+			Vec2(10.0f, 10.0f),
+			true,
+			Col4(1.0f, 0.0f, 0.0f, 1.0f),
+			1.02f,
+			10
 			);
-		m_pinp->SetEdge(true);
 		SetSharedGameObject(L"BlownPinP", m_pinp);  //shareObjectとしてPinPを登録
 	}
 
