@@ -32,6 +32,7 @@ namespace basecross{
 		vector<CharacterKillDetails_s> m_killCharacters;  //自身がキルした相手のキャラクタータイプとレベルを持つ
 
 		shared_ptr<ObstacleEvent<const CharacterStatus_s>> m_touchOil;
+		CharacterStatus_s m_opponent;  //自身を攻撃してきた相手のステータスを持つ
 
 	public:
 
@@ -57,7 +58,8 @@ namespace basecross{
 			m_myData({ type, 1, NULL, NULL, NULL, isPlayer, unique }),
 			m_killCharacters(vector<CharacterKillDetails_s>(NULL)),
 			m_touchOil(NULL),
-			ID(id)
+			ID(id),
+			m_opponent({})
 		{}
 		~Character() {}
 
@@ -77,6 +79,8 @@ namespace basecross{
 
 		void TouchOil();
 		void DroppedIntoOil(const CharacterStatus_s& status);
+		void ShowMyPinP();
+		void PinPUpdate();
 
 		vector<CharacterKillDetails_s> GetKillCharacters();
 		void AddKillCharacter(const CharacterKillDetails_s& data);

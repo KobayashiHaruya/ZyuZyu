@@ -214,10 +214,11 @@ namespace basecross {
 				Vec3(1.0f, 1.0f, 1.0f),
 				50.0f, 10.0f,
 				m_myData.unique,
-				ID
+				ID,
+				m_myData
 				);
 
-			bullet->AddEvent([this](const CharacterStatus_s status) {
+			bullet->AddEvent([&](const CharacterStatus_s status) {
 				DroppedIntoOil(status);
 			});
 		}
@@ -287,8 +288,10 @@ namespace basecross {
 
 		Vec3 vecForce = (Vec3(x, 1.0f, z)) * m_force.x;
 		vecForce.y = m_force.y;
-		grav->StartJump(vecForce);
+		grav->StartJump(vecForce * 1.2f);
 
+		//ここで一定の条件（吹っ飛び率、自身をふっとばしたのはプレイヤーか）などで自身を表示するPinPを表示する
+		/*if(m_opponent.isPlayer) */ShowMyPinP();
 	}
 
 	void Character::OnCollisionEnter(shared_ptr<GameObject>& Other) {
@@ -300,9 +303,14 @@ namespace basecross {
 
 
 		if (Other->FindTag(L"Bullet")) {
+			auto bullet = dynamic_pointer_cast<Bullet>(Other);
+			if (bullet) {
+				m_touchOil = dynamic_pointer_cast<ObstacleEvent<const CharacterStatus_s>>(Other);
+				m_opponent = bullet->GetFrome();
+			}
 			auto rot = Other->GetComponent<Transform>()->GetRotation();
 			AttackHit(rot);
-			m_touchOil = dynamic_pointer_cast<ObstacleEvent<const CharacterStatus_s>>(Other);
+
 		}
 		if (Other->FindTag(L"Weapon")) {
 
@@ -341,6 +349,14 @@ namespace basecross {
 	void Character::TouchOil() {
 		if(m_touchOil) m_touchOil->Run(m_myData);
 		AddDeath(1);
+
+		//PinPで表示しているのが自身だったらPinPを非表示にする
+		auto pinp = GetStage()->GetSharedGameObject<PinP>(L"BlownPinP");
+		if (m_myData.unique == pinp->GetUse().unique) {
+			pinp->DeleteUse();
+			pinp->Out(PinPAction::LEFT);
+		}
+
 		SetUpdateActive(true);
 		SetDrawActive(true);
 	}
@@ -351,6 +367,27 @@ namespace basecross {
 		auto kill = CharacterKillDetails_s({ status.type, status.level });
 		AddKillCharacter(kill);
 		AddKill(1);
+	}
+
+	//PinPに自身を指定して表示する
+	void Character::ShowMyPinP() {
+		auto pinp = GetStage()->GetSharedGameObject<PinP>(L"BlownPinP");
+		auto& trans = GetComponent<Transform>();
+		auto& pos = trans->GetPosition();
+		pinp->SetUse(m_myData);
+		//pinp->SetEye(pos + Vec3(0.0f, 15.0f, 30.0f));
+		auto hoge = trans->GetForword();
+		pinp->SetEye(Vec3(hoge.x * 80, 50.0f, hoge.z * 80));
+		pinp->SetAt(pos);
+		pinp->In(PinPAction::LEFT);
+	}
+
+	void Character::PinPUpdate() {
+		auto pinp = GetStage()->GetSharedGameObject<PinP>(L"BlownPinP");
+		if (pinp->GetUse().unique != m_myData.unique) return;
+		auto& trans = GetComponent<Transform>();
+		auto& pos = trans->GetPosition();
+		pinp->SetAt(pos);
 	}
 
 	vector<CharacterKillDetails_s> Character::GetKillCharacters() {
@@ -409,7 +446,7 @@ namespace basecross {
 	}
 
 	void TestEnemy::OnUpdate() {
-
+		PinPUpdate();
 	}
 
 
