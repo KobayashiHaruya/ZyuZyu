@@ -56,6 +56,8 @@ namespace basecross {
 
 		int m_fromUnique;
 
+		CharacterStatus_s m_frome;
+
 	public:
 
 		BulletBase(const shared_ptr<Stage>& StagePtr,
@@ -65,7 +67,8 @@ namespace basecross {
 			const float& speed,
 			const float& gravity,
 			const unsigned int fromUnique,
-			const int& id
+			const int& id,
+			const CharacterStatus_s& frome
 		) :
 			GameObject(StagePtr),
 			m_pos(pos),
@@ -74,7 +77,8 @@ namespace basecross {
 			m_moveSpeed(speed),
 			m_gravityScale(gravity),
 			m_fromUnique(fromUnique),
-			ID(id)
+			ID(id),
+			m_frome(frome)
 		{}
 		~BulletBase() {}
 
@@ -84,6 +88,10 @@ namespace basecross {
 
 		unsigned int GetFromUnique() {
 			return m_fromUnique;
+		}
+
+		CharacterStatus_s GetFrome() {
+			return m_frome;
 		}
 	};
 
@@ -198,7 +206,8 @@ namespace basecross {
 			const float& speed,
 			const float& gravity,
 			const unsigned int fromUnique,
-			const int& id
+			const int& id,
+			const CharacterStatus_s frome
 		) :
 			BulletBase(StagePtr,
 				pos,
@@ -207,7 +216,8 @@ namespace basecross {
 				speed,
 				gravity,
 				fromUnique,
-				id
+				id,
+				frome
 			)
 		{}
 		virtual ~Bullet() {}
