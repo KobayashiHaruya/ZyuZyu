@@ -113,10 +113,20 @@ namespace basecross {
 	}
 
 	void UI_Static_Image::SetTexture(const wstring& texture, Vec2& vertex, const Vec3& scale) {
+		SetScale(scale);
+		SetTexture(texture, vertex);
+	}
+
+	void UI_Static_Image::SetPosition(const Vec3& pos) {
+		m_pos = pos;
+		auto ptrTrans = GetComponent<Transform>();
+		ptrTrans->SetPosition(pos);
+	}
+
+	void UI_Static_Image::SetScale(const Vec3& scale) {
 		m_scale = scale;
 		auto ptrTrans = GetComponent<Transform>();
-		ptrTrans->SetScale(m_scale);
-		SetTexture(texture, vertex);
+		ptrTrans->SetScale(scale);
 	}
 
 	void UI_Static_Image::Hidden(bool e) {
@@ -832,9 +842,9 @@ namespace basecross {
 		if (m_index == 3 && (KeyState.m_bPressedKeyTbl['E'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
 		}
-		if (KeyState.m_bPressedKeyTbl['P'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X) {
+		/*if (KeyState.m_bPressedKeyTbl['P'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X) {
 			Show(false);
-		}
+		}*/
 	}
 
 
@@ -894,10 +904,12 @@ namespace basecross {
 
 	void PinP::OnCreate() {
 		CreateCamera();
-		Hidden();
+		if (m_isEdge && !m_edgeImage) CreateEdge();
+		Hidden(true);
 	}
 
 	void PinP::OnUpdate() {
+		if (m_isEdge && !m_edgeImage) CreateEdge();
 		m_camera->OnUpdate();
 		Move();
 	}
@@ -919,6 +931,10 @@ namespace basecross {
 		m_active = true;
 		m_action = action;
 		m_hideViewTopLeftPos = GetHideTopLeftPos(action);
+
+		UpdateEdge(Vec2(m_hideViewTopLeftPos.x, m_hideViewTopLeftPos.y));
+		if(m_edgeImage) m_edgeImage->Hidden(false);
+
 		SetViewTopLeftPos(m_hideViewTopLeftPos);
 	}
 
@@ -930,10 +946,19 @@ namespace basecross {
 		SetViewTopLeftPos(m_showViewTopLeftPos);
 	}
 
-	void PinP::Hidden() {
+	void PinP::Hidden(const bool e) {
 		m_active = false;
+		//if (m_action && m_useCharacter.unique) In(m_action);
 		auto& app = App::GetApp();
 		SetViewTopLeftPos(Vec2(app->GetGameWidth(), app->GetGameHeight()));
+		if (e) {
+			auto& app = App::GetApp();
+			SetViewTopLeftPos(Vec2(app->GetGameWidth(), app->GetGameHeight()));
+		}
+		else
+		{
+			//if (m_useCharacter.unique != 0) In(m_action);
+		}
 	}
 
 	void PinP::SetAt(const Vec3& at) {
@@ -954,10 +979,44 @@ namespace basecross {
 		m_camera = ObjectFactory::Create<Camera>();
 		m_camera->SetViewPort(m_view);
 		m_camera->CalculateMatrix();
-		m_camera->SetPers(!m_camera->GetPers());
+		m_camera->SetNear(2);
 
 		auto viewPort = dynamic_pointer_cast<MultiView>(GetStage()->GetView());
 		m_viewIndex = viewPort->AddView(m_view, m_camera);
+	}
+
+	void PinP::CreateEdge() {
+		auto resolution = GetResolution();
+		resolution.x *= m_scale;
+		resolution.y *= m_scale;
+
+		m_edgeImage = GetStage()->AddGameObject<UI_Static_Image>(
+			resolution,
+			Vec3(0.0f),
+			Vec3(1.02f),
+			m_edgeLayer,
+			m_edgeColor,
+			m_edgeImageName
+			);
+		m_edgeImage->Hidden(true);
+	}
+
+	void PinP::UpdateEdge(const Vec2& pos) {
+		if (!m_edgeImage) return;
+		auto& app = App::GetApp();
+		auto halfGame = Vec2(app->GetGameWidth() / 2.0f, app->GetGameHeight() / 2.0f);
+
+		auto resolution = GetResolution();
+		resolution.x *= m_scale;
+		resolution.y *= m_scale;
+		auto halfResolution = Vec2(resolution.x / 2.0f, resolution.y / 2.0f);
+
+		auto movePos = Vec3(0.0f);
+		if (pos.x <= halfGame.x) movePos.x = (pos.x + halfResolution.x) - halfGame.x;
+		if (pos.x >= halfGame.x) movePos.x = halfGame.x + pos.x;
+		if (pos.y <= halfGame.y) movePos.y = halfGame.y - (pos.y + halfResolution.y);
+		if (pos.y >= halfGame.y) movePos.y = pos.y + halfGame.y;
+		m_edgeImage->SetPosition(movePos);
 	}
 
 	Vec2 PinP::GetHideTopLeftPos(const PinPAction action) {
@@ -1003,11 +1062,13 @@ namespace basecross {
 		if (m_active && m_mode) {
 			movePos = easing.Linear(Vec2(nowTopLeftPos.x, nowTopLeftPos.y), m_showViewTopLeftPos, time, 0.4);
 			SetViewTopLeftPos(movePos);
+			UpdateEdge(movePos);
 		}
 		
 		if(m_active && !m_mode) {
 			movePos = easing.Linear(Vec2(nowTopLeftPos.x, nowTopLeftPos.y), m_hideViewTopLeftPos, time, 0.4);
 			SetViewTopLeftPos(movePos);
+			UpdateEdge(movePos);
 		}
 	}
 }

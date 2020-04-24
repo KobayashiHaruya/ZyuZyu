@@ -125,9 +125,20 @@ namespace basecross {
 		virtual void OnCreate() override;
 
 		void Draw();
+
 		void SetTexture(const wstring& texture);
 		void SetTexture(const wstring& texture, Vec2& vertex);
 		void SetTexture(const wstring& texture, Vec2& vertex, const Vec3& scale);
+		void SetPosition(const Vec3& pos);
+		void SetScale(const Vec3& scale);
+
+		Vec3 GetPosition() {
+			return m_pos;
+		}
+		Vec3 GetScale() {
+			return m_scale;
+		}
+
 		void Hidden(bool e);
 	};
 
@@ -794,8 +805,21 @@ namespace basecross {
 		bool m_mode;
 		bool m_active;
 
+		bool m_isEdge;
+		wstring m_edgeImageName;
+		shared_ptr<UI_Static_Image> m_edgeImage;
+		Col4 m_edgeColor;
+		float m_edgeScale;
+		int m_edgeLayer;
+
+		float m_offset;
+
+		CharacterStatus_s m_useCharacter;
+
 		Vec2 GetResolution();
 		void CreateCamera();
+		void CreateEdge();
+		void UpdateEdge(const Vec2& pos);
 		Vec2 GetHideTopLeftPos(const PinPAction action);
 		Viewport GetView();
 		void SetViewTopLeftPos(Vec2& pos);
@@ -817,7 +841,15 @@ namespace basecross {
 			m_view({}),
 			m_viewIndex(NULL),
 			m_showViewTopLeftPos(topLeftPos),
-			m_hideViewTopLeftPos(Vec2(0.0f))
+			m_hideViewTopLeftPos(Vec2(0.0f)),
+			m_useCharacter({}),
+			m_isEdge(false),
+			m_edgeImageName(L"dot.png"),
+			m_edgeImage(NULL),
+			m_edgeColor(Col4(0.00f, 0.24f, 0.64f, 1.00f)),
+			m_edgeScale(1.2f),
+			m_edgeLayer(0),
+			m_offset(3.0f)
 		{}
 		~PinP() {}
 
@@ -826,9 +858,28 @@ namespace basecross {
 
 		void In(const PinPAction action);
 		void Out(const PinPAction action);
-		void Hidden();
+		void Hidden(const bool e);
 
 		void SetAt(const Vec3& at);
 		void SetEye(const Vec3& eye);
+		void SetUse(const CharacterStatus_s& status) {
+			m_useCharacter = status;
+		}
+		CharacterStatus_s GetUse() {
+			return m_useCharacter;
+		}
+		void DeleteUse() {
+			m_useCharacter = {};
+		}
+		void SetEdge(const bool e) {
+			m_isEdge = e;
+		}
+		void SetEdge(const bool e, const Col4& color) {
+			m_isEdge = e;
+			m_edgeColor = color;
+		}
+		bool GetActive() {
+			return m_active;
+		}
 	};
 }

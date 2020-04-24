@@ -95,7 +95,7 @@ namespace basecross {
 				10.0f, 10.0f, 5.0f,
 				CharacterType::CHICKEN,
 				true,
-				0,1
+				10,1
 				);
 			m_enemy = AddGameObject<TestEnemy>(
 				Vec3(0.0f, 3.0f, 10.0f),
@@ -107,16 +107,7 @@ namespace basecross {
 				1,
 				0
 				);
-
-
-			m_pinp = AddGameObject<PinP>(
-				PinPAspectType::HD,
-				35.0f,
-				Vec2(10.0f, 10.0f)
-				);
-			m_pinp->SetEye(Vec3(0.0f, 10.0f, 100.0f));
-			m_pinp->In(PinPAction::UNDER);
-
+			CreatePinP();
 		}
 		catch (...) {
 			throw;
@@ -136,13 +127,10 @@ namespace basecross {
 				Vec3(1.0f, 1.0f, 1.0f),
 				50.0f, 10.0f,
 				0,
-				0
+				0,
+				CharacterStatus_s({})
 				);
 		}
-
-		//とりあえずPinPのカメラがプレイヤーを追尾する
-		auto playerTrans = m_player->GetComponent<Transform>();
-		m_pinp->SetAt(playerTrans->GetPosition());
 
 		ShowPause();
 	}
@@ -154,11 +142,7 @@ namespace basecross {
 		//Rキーもしくはパッドのスタートボタンを押したらポーズ画面を表示する
 		if (KeyState.m_bPressedKeyTbl['P'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_START) {
 
-			//ポーズ中にPinPがあるとそこにもUIを表示してしまうので非表示にする
-			if (m_pause->GetShowing())
-				m_pinp->In(PinPAction::LEFT);
-			else
-				m_pinp->Hidden();
+			m_pinp->Hidden(!m_pinp->GetActive());
 
 			//ここでは毎回配列を生成してステータスを設定しているが実際には１度だけ処理してChangeStatusをする
 			vector<CharacterStatus_s> statuses;
@@ -173,6 +157,16 @@ namespace basecross {
 			//引数は現在ポーズ画面がアクティブかどうかを取得してそのフラグを反転させることで表示非表示を切り替えている
 			m_pause->Show(!(m_pause->GetShowing()));
 		}
+	}
+
+	void GameStage::CreatePinP() {
+		m_pinp = AddGameObject<PinP>(
+			PinPAspectType::HD,
+			35.0f,
+			Vec2(10.0f, 10.0f)
+			);
+		m_pinp->SetEdge(true);
+		SetSharedGameObject(L"BlownPinP", m_pinp);  //shareObjectとしてPinPを登録
 	}
 
 }

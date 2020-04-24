@@ -28,6 +28,8 @@ namespace basecross {
 
 		void CreateTime();
 
+		void CreatePinP();
+
 	public:
 		//\’z‚Æ”jŠü
 		GameStage() :
