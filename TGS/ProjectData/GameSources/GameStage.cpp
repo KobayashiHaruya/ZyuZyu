@@ -51,9 +51,11 @@ namespace basecross {
 
 	void GameStage::CreateTime() {
 		
-		AddGameObject<Time01>(L"0_9.png",
-			Vec2(256.0f, 32.0f),
-			Vec2(925.0f, 500.0f));
+		AddGameObject<Time01>(4,
+			L"0_9.png",
+			true,
+			Vec2(320.0f, 80.0f),
+			Vec3(700.0f, 500.0f, 0.0f));
 
 		//AddGameObject<Time10>(L"5.png",
 		//    Vec2(200.0f, 200.0f),
@@ -119,6 +121,16 @@ namespace basecross {
 
 	void GameStage::OnUpdate() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+
+		float TimeEat = App::GetApp()->GetElapsedTime();
+		TimeEat = 0.01;
+		m_TotalTime -= TimeEat;
+		if (m_TotalTime <= 000.0f) {
+			m_TotalTime = 300.0f;
+		}
+		//スコアを更新する
+		auto ptrScor = GetSharedGameObject<Time01>(L"ScoreSprite");
+		ptrScor->SetScore(m_TotalTime);
 
 		if (KeyState.m_bPressedKeyTbl['E']) {
 			Vec3 rot;

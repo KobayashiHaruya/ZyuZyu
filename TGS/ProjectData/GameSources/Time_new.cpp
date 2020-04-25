@@ -9,436 +9,110 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	///	時間
+	///	スコア表示のスプライト
 	//--------------------------------------------------------------------------------------
-	Time01::Time01(const shared_ptr<Stage>& stagePtr,
-		const wstring& textureKey,
-		const Vec2& startScale,
-		const Vec2& startPos) :
-		GameObject(stagePtr),
-		m_TextureKey(textureKey),
-		m_StartScale(startScale),
-		m_StartPos(startPos)
+	Time01::Time01(const shared_ptr<Stage>& StagePtr, UINT NumberOfDigits,
+		const wstring& TextureKey, bool Trace,
+		const Vec2& StartScale, const Vec3& StartPos) :
+		GameObject(StagePtr),
+		m_NumberOfDigits(NumberOfDigits),
+		m_TextureKey(TextureKey),
+		m_Trace(Trace),
+		m_StartScale(StartScale),
+		m_StartPos(StartPos),
+		m_Score(0.0f)
 	{}
 
 	void Time01::OnCreate() {
+		float xPiecesize = 1.0f / (float)m_NumberOfDigits;
 		float helfSize = 0.5f;
 
-		//頂点配列(縦横5個ずつ表示)
-		vector<VertexPositionColorTexture> vertices = {
-			{ VertexPositionColorTexture(Vec3(-helfSize,  helfSize, 1 + X), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f, -0.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize,  helfSize, -8 + Y), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, -0.0f)) },
-			{ VertexPositionColorTexture(Vec3(-helfSize, -helfSize, 1 + X), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f,  1.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize, -helfSize, -8 + Y), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f,  1.0f)) },
-		};
 		//インデックス配列
-		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
-		//0  1
-		//2  3
-		//
-		SetAlphaActive(true);
+		vector<uint16_t> indices;
+		for (UINT i = 0; i < m_NumberOfDigits; i++) {
+			float vertex0 = -helfSize + xPiecesize * (float)i;
+			float vertex1 = vertex0 + xPiecesize;
+			//0
+			m_BackupVertices.push_back(
+				VertexPositionTexture(Vec3(vertex0, helfSize, 0), Vec2(0.0f, 0.0f))
+			);
+			//1
+			m_BackupVertices.push_back(
+				VertexPositionTexture(Vec3(vertex1, helfSize, 0), Vec2(0.1f, 0.0f))
+			);
+			//2
+			m_BackupVertices.push_back(
+				VertexPositionTexture(Vec3(vertex0, -helfSize, 0), Vec2(0.0f, 1.0f))
+			);
+			//3
+			m_BackupVertices.push_back(
+				VertexPositionTexture(Vec3(vertex1, -helfSize, 0), Vec2(0.1f, 1.0f))
+			);
+			indices.push_back(i * 4 + 0);
+			indices.push_back(i * 4 + 1);
+			indices.push_back(i * 4 + 2);
+			indices.push_back(i * 4 + 1);
+			indices.push_back(i * 4 + 3);
+			indices.push_back(i * 4 + 2);
+		}
 
-		auto ptrTransform = GetComponent<Transform>();
-		ptrTransform->SetScale(m_StartScale.x, m_StartScale.y, 1.0f);
-		ptrTransform->SetRotation(0, 0, 0);
-		ptrTransform->SetPosition(m_StartPos.x, m_StartPos.y, 0.0f);
-
+		SetAlphaActive(m_Trace);
+		auto ptrTrans = GetComponent<Transform>();
+		ptrTrans->SetScale(m_StartScale.x, m_StartScale.y, 1.0f);
+		ptrTrans->SetRotation(0, 0, 0);
+		ptrTrans->SetPosition(m_StartPos.x, m_StartPos.y, 0.0f);
 		//頂点とインデックスを指定してスプライト作成
-		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
+		auto ptrDraw = AddComponent<PTSpriteDraw>(m_BackupVertices, indices);
 		ptrDraw->SetTextureResource(m_TextureKey);
-		ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-
-		//AddTag(L"Time01");
+		GetStage()->SetSharedGameObject(L"ScoreSprite", GetThis<Time01>());
 	}
 
 	void Time01::OnUpdate() {
+		vector<VertexPositionTexture> newVertices;
+		UINT num;
+		int verNum = 0;
+		for (UINT i = m_NumberOfDigits; i > 0; i--) {
+			UINT base = (UINT)pow(10, i);
+			num = ((UINT)m_Score) % base;
+			num = num / (base / 10);
+			Vec2 uv0 = m_BackupVertices[verNum].textureCoordinate;
+			uv0.x = (float)num / 10.0f;
+			auto v = VertexPositionTexture(
+				m_BackupVertices[verNum].position,
+				uv0
+			);
+			newVertices.push_back(v);
 
-		auto transComp = GetComponent<Transform>();
-		//auto scale = transComp->GetScale();
-		////ここにscale - Player_HP
-		//scale.x = scale.x;
-		//透過処理
-		SetAlphaActive(true);
+			Vec2 uv1 = m_BackupVertices[verNum + 1].textureCoordinate;
+			uv1.x = uv0.x + 0.1f;
+			v = VertexPositionTexture(
+				m_BackupVertices[verNum + 1].position,
+				uv1
+			);
+			newVertices.push_back(v);
 
-		float helfSize = 0.5f;
+			Vec2 uv2 = m_BackupVertices[verNum + 2].textureCoordinate;
+			uv2.x = uv0.x;
 
-		//頂点配列(縦横5個ずつ表示)
-		vector<VertexPositionColorTexture> vertices = {
-			{ VertexPositionColorTexture(Vec3(-helfSize,  helfSize, X), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f, -0.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize,  helfSize,  Y), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, -0.0f)) },
-			{ VertexPositionColorTexture(Vec3(-helfSize, -helfSize, X), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f,  1.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize, -helfSize,  Y), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f,  1.0f)) },
-		};
-		//インデックス配列
-		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
-		//0  1
-		//2  3
-		//
-		SetAlphaActive(true);
+			v = VertexPositionTexture(
+				m_BackupVertices[verNum + 2].position,
+				uv2
+			);
+			newVertices.push_back(v);
 
-		auto ptrTransform = GetComponent<Transform>();
-		ptrTransform->SetScale(m_StartScale.x, m_StartScale.y, 1.0f);
-		ptrTransform->SetRotation(0, 0, 0);
-		ptrTransform->SetPosition(m_StartPos.x, m_StartPos.y, 0.0f);
+			Vec2 uv3 = m_BackupVertices[verNum + 3].textureCoordinate;
+			uv3.x = uv0.x + 0.1f;
 
-		//頂点とインデックスを指定してスプライト作成
-		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
-		ptrDraw->SetTextureResource(m_TextureKey);
-		ptrDraw->SetSamplerState(SamplerState::LinearWrap);
+			v = VertexPositionTexture(
+				m_BackupVertices[verNum + 3].position,
+				uv3
+			);
+			newVertices.push_back(v);
 
-
-		//auto GM = GameManager::getInstance();
-
-		//auto Maxtime2 = GM->GetMaxtime();
-
-		//auto Mintime2 = GM->GetMintime();
-
-		//auto Notime2 = GM->GetNotime();
-
-		//auto time01_2 = GM->Gettime01();
-
-		//auto time02_2 = GM->Gettime02();
-
-		//auto time03_2 = GM->Gettime03();
-
-		//auto time01 = time01_2;
-
-		//auto time02 = time02_2;
-
-		//auto time03 = time03_2;
-
-		//auto Maxtime = Maxtime2;
-
-		//auto Mintime = Mintime2;
-
-
-
-		if (time01 == Maxtime)
-		{
-			time02 += Mintime;
-			time01 -= Maxtime;
+			verNum += 4;
 		}
-
-		if (time02 == Maxtime)
-		{
-			time03 += Mintime;
-			time02 -= Maxtime;
-		}
-
-		if (time03 == Maxtime)
-		{
-			time03 -= Maxtime;
-		}
-
-		if (time03 == 0)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"0_9.png");
-		}
-
-		if (time03 == 1)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"0_9.png");
-		}
-
-		if (time03 == 2)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"0_9.png");
-		}
-
-		if (time03 == 3)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"0_9.png");
-		}
-
-		if (time03 == 4)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"0_9.png");
-		}
-
-		if (time03 == 5)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"0_9.png");
-		}
-
-		if (time03 == 6)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"0_9.png");
-		}
-
-		if (time03 == 7)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"2.png");
-		}
-
-		if (time03 == 8)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"1.png");
-		}
-
-		if (time03 == 9)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"0.png");
-		}
-
-		time01 += Mintime;
-	}
-
-	//--------------------------------------------------------------------------------------
-	///	時間
-	//--------------------------------------------------------------------------------------
-	Time10::Time10(const shared_ptr<Stage>& stagePtr,
-		const wstring& textureKey,
-		const Vec2& startScale,
-		const Vec2& startPos) :
-		GameObject(stagePtr),
-		m_TextureKey(textureKey),
-		m_StartScale(startScale),
-		m_StartPos(startPos)
-	{}
-
-	void Time10::OnCreate() {
-		float helfSize = 0.5f;
-		//頂点配列(縦横5個ずつ表示)
-		vector<VertexPositionColorTexture> vertices = {
-			{ VertexPositionColorTexture(Vec3(-helfSize,  helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f, -0.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize,  helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, -0.0f)) },
-			{ VertexPositionColorTexture(Vec3(-helfSize, -helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f,  1.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize, -helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f,  1.0f)) },
-		};
-		//インデックス配列
-		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
-		//0  1
-		//2  3
-		//
-		SetAlphaActive(true);
-
-		auto ptrTransform = GetComponent<Transform>();
-		ptrTransform->SetScale(m_StartScale.x, m_StartScale.y, 1.0f);
-		ptrTransform->SetRotation(0, 0, 0);
-		ptrTransform->SetPosition(m_StartPos.x, m_StartPos.y, 0.0f);
-
-		//頂点とインデックスを指定してスプライト作成
-		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
-		ptrDraw->SetTextureResource(m_TextureKey);
-		ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-
-	}
-
-	void Time10::OnUpdate() {
-
-		auto transComp = GetComponent<Transform>();
-		auto scale = transComp->GetScale();
-		//ここにscale - Player_HP
-		scale.x = scale.x;
-		//透過処理
-		SetAlphaActive(true);
-
-		float helfSize = 1.0f;
-		//頂点配列(縦横5個ずつ表示)
-		vector<VertexPositionColorTexture> vertices = {
-			{ VertexPositionColorTexture(Vec3(-0, helfSize, 0),Col4(1.0f,1.0f,1.0f,1.0f), Vec2(0.0f, 0.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize*2.0f, helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, 0.0f)) },
-			{ VertexPositionColorTexture(Vec3(-0, -helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(0.0f, 1.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize*2.0f, -helfSize, 0), Col4(1.0f, 01.0f, 1.0f, 1.0f), Vec2(1.0f, 1.0f)) },
-		};
-		//インデックス配列
-		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
-
-		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
-
-
-		if (time01 == -Maxtime)
-		{
-			time02 -= Mintime;
-			time01 += Maxtime;
-		}
-
-		if (time02 == -Maxtime)
-		{
-			time03 -= Mintime;
-			time02 += Maxtime;
-		}
-
-		if (time03 == -Maxtime)
-		{
-			time04 -= Mintime;
-			time03 += Maxtime;
-		}
-
-		if (time04 == -6)
-		{
-			time04 += 6;
-		}
-
-		if (time04 == 0)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"5.png");
-		}
-
-		if (time04 == -1)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"4.png");
-		}
-
-		if (time04 == -2)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"3.png");
-		}
-
-		if (time04 == -3)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"2.png");
-		}
-
-		if (time04 == -4)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"1.png");
-		}
-
-		if (time04 == -5)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"0.png");
-		}
-
-		if (time04 == -6)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"0.png");
-		}
-
-		time01 -= Mintime;
-
-	}
-
-	//--------------------------------------------------------------------------------------
-	///	時間
-	//--------------------------------------------------------------------------------------
-	Time100::Time100(const shared_ptr<Stage>& stagePtr,
-		const wstring& textureKey,
-		const Vec2& startScale,
-		const Vec2& startPos) :
-		GameObject(stagePtr),
-		m_TextureKey(textureKey),
-		m_StartScale(startScale),
-		m_StartPos(startPos)
-	{}
-
-	void Time100::OnCreate() {
-		float helfSize = 0.5f;
-		//頂点配列(縦横5個ずつ表示)
-		vector<VertexPositionColorTexture> vertices = {
-			{ VertexPositionColorTexture(Vec3(-helfSize,  helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f, -0.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize,  helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, -0.0f)) },
-			{ VertexPositionColorTexture(Vec3(-helfSize, -helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(-0.0f,  1.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize, -helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f,  1.0f)) },
-		};
-		//インデックス配列
-		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
-		//0  1
-		//2  3
-		//
-		SetAlphaActive(true);
-
-		auto ptrTransform = GetComponent<Transform>();
-		ptrTransform->SetScale(m_StartScale.x, m_StartScale.y, 1.0f);
-		ptrTransform->SetRotation(0, 0, 0);
-		ptrTransform->SetPosition(m_StartPos.x, m_StartPos.y, 0.0f);
-
-		//頂点とインデックスを指定してスプライト作成
-		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
-		ptrDraw->SetTextureResource(m_TextureKey);
-		ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-
-	}
-
-	void Time100::OnUpdate() {
-
-		auto transComp = GetComponent<Transform>();
-		auto scale = transComp->GetScale();
-		//ここにscale - Player_HP
-		scale.x = scale.x;
-		//透過処理
-		SetAlphaActive(true);
-
-		float helfSize = 1.0f;
-		//頂点配列(縦横5個ずつ表示)
-		vector<VertexPositionColorTexture> vertices = {
-			{ VertexPositionColorTexture(Vec3(-0, helfSize, 0),Col4(1.0f,1.0f,1.0f,1.0f), Vec2(0.0f, 0.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize*2.0f, helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, 0.0f)) },
-			{ VertexPositionColorTexture(Vec3(-0, -helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(0.0f, 1.0f)) },
-			{ VertexPositionColorTexture(Vec3(helfSize*2.0f, -helfSize, 0), Col4(1.0f, 01.0f, 1.0f, 1.0f), Vec2(1.0f, 1.0f)) },
-		};
-		//インデックス配列
-		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
-
-		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
-
-
-		if (time01 == Maxtime)
-		{
-			time02 += Mintime;
-			time01 -= Maxtime;
-		}
-
-		if (time02 == Maxtime)
-		{
-			time03 += Mintime;
-			time02 -= Maxtime;
-		}
-
-		if (time03 == Maxtime)
-		{
-			time04 += Mintime;
-			time03 -= Maxtime;
-		}
-
-		if (time04 == 6)
-		{
-			time05 += 1;
-			time04 -= 6;
-
-		}
-
-		if (time05 == 3)
-		{
-
-		}
-
-		if (time05 == 0)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"2.png");
-		}
-
-		if (time05 == 1)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"1.png");
-		}
-
-		if (time05 == 2)
-		{
-			ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-			ptrDraw->SetTextureResource(L"0.png");
-		}
-
-		time01 += Mintime;
+		auto ptrDraw = GetComponent<PTSpriteDraw>();
+		ptrDraw->UpdateVertices(newVertices);
 	}
 
 }

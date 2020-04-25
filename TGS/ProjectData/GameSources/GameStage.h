@@ -30,6 +30,9 @@ namespace basecross {
 
 		void CreatePinP();
 
+		//トータル時間
+		float m_TotalTime;
+
 	public:
 		//構築と破棄
 		GameStage() :
