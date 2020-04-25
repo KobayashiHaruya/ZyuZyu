@@ -512,41 +512,41 @@ namespace basecross {
 			);
 		line.name = text;
 
-		text = stage->AddGameObject<UI_Sprite_Text>(
-			m_fontName,
-			m_lineFontSize,
-			m_white,
-			Rect2D<float>(i + (iPlus * 1), t + (index * space), 1000.0f, b + (index * space)),
-			StringSprite::TextAlignment::m_Center,
-			to_wstring(status.kill),
-			m_layer,
-			false
+		auto number = stage->AddGameObject<UI_Number>(
+			Vec2(-110.0f, 180.0f - (index * 80.0f)),
+			5,
+			Col4(0.0f, 0.0f, 1.0f, 1.0f),
+			Number::NumberAlign::CENTER,
+			10.0f,
+			Vec2(0.4f),
+			m_layer
 			);
-		line.kill = text;
+		number->SetValue(status.kill);
+		line.kill = number;
 
-		text = stage->AddGameObject<UI_Sprite_Text>(
-			m_fontName,
-			m_lineFontSize,
-			m_white,
-			Rect2D<float>(i + (iPlus * 2), t + (index * space), 1300.0f, b + (index * space)),
-			StringSprite::TextAlignment::m_Center,
-			to_wstring(status.death),
-			m_layer,
-			false
+		number = stage->AddGameObject<UI_Number>(
+			Vec2(210.0f, 180.0f - (index * 80.0f)),
+			5,
+			Col4(1.0f, 0.0f, 0.0f, 1.0f),
+			Number::NumberAlign::CENTER,
+			10.0f,
+			Vec2(0.4f),
+			m_layer
 			);
-		line.death = text;
+		number->SetValue(status.death);
+		line.death = number;
 
-		text = stage->AddGameObject<UI_Sprite_Text>(
-			m_fontName,
-			m_lineFontSize,
-			m_white,
-			Rect2D<float>(i + (iPlus * 3), t + (index * space), 1580.0f, b + (index * space)),
-			StringSprite::TextAlignment::m_Center,
-			to_wstring(status.score),
-			m_layer,
-			false
+		number = stage->AddGameObject<UI_Number>(
+			Vec2(520.0f, 180.0f - (index * 80.0f)),
+			5,
+			Col4(1.0f, 1.0f, 0.0f, 1.0f),
+			Number::NumberAlign::CENTER,
+			10.0f,
+			Vec2(0.4f),
+			m_layer
 			);
-		line.score = text;
+		number->SetValue(status.score);
+		line.score = number;
 		
 		m_lines.push_back(line);
 	}
@@ -558,9 +558,9 @@ namespace basecross {
 			auto& status = m_characterStatuses[i];
 			auto& line = m_lines[i];
 			line.name->UpdateText(GetCharacterTypeToString(status.type));
-			line.kill->UpdateText(to_wstring(status.kill));
-			line.death->UpdateText(to_wstring(status.death));
-			line.score->UpdateText(to_wstring(status.score));
+			line.kill->SetValue(status.kill);
+			line.death->SetValue(status.death);
+			line.score->SetValue(status.score);
 			line.playerBadge->Hidden(!status.isPlayer);
 		}
 	}
@@ -575,9 +575,9 @@ namespace basecross {
 		for (auto& text : m_headerTexts) text->SetDrawActive(!e);
 		for (auto& line : m_lines) {
 			line.name->SetDrawActive(!e);
-			line.kill->SetDrawActive(!e);
-			line.death->SetDrawActive(!e);
-			line.score->SetDrawActive(!e);
+			line.kill->Hidden(e);
+			line.death->Hidden(e);
+			line.score->Hidden(e);
 			line.playerBadge->SetDrawActive(!e);
 			line.separator->SetDrawActive(!e);
 		}
@@ -1110,6 +1110,14 @@ namespace basecross {
 		UpdateNumberImagies();
 	}
 
+	void UI_Number::Hidden(const bool e) {
+		for (auto& image : m_numberImagies) {
+			image->Hidden(e);
+		}
+		SetDrawActive(!e);
+		SetUpdateActive(!e);
+	}
+
 	void UI_Number::CreateNumberImagies() {
 		auto stage = GetStage();
 		for (int i = 0; i < m_digit; i++) {
@@ -1143,7 +1151,7 @@ namespace basecross {
 		if (m_align == Number::NumberAlign::LEFT || m_align == Number::NumberAlign::CENTER || m_align == Number::NumberAlign::RIGHT) {
 			auto zeroEndIndex = 0;
 			for (auto& image : m_numberImagies) {
-				if (!image->GetIndex()) {
+				if (!image->GetIndex() && zeroEndIndex + 1 != m_numberImagies.size()) {
 					image->Hidden(true);
 					zeroEndIndex++;
 				}
@@ -1176,7 +1184,7 @@ namespace basecross {
 	}
 
 	Vec2 UI_Number::GetImagePosition(const unsigned int digit, const unsigned int index, const Vec2& startPosition, const Number::NumberAlign align) {
-		auto res = Vec2(0.0f, startPosition.y);
+		auto res = Vec2(startPosition.x, startPosition.y);
 		float c, d, t, e;
 		switch (align)
 		{
@@ -1186,7 +1194,7 @@ namespace basecross {
 			d = c * m_cutOut.x;
 			t = index * m_cutOut.x + (m_space * index);
 			e = t - d;
-			res.x = (e * m_scale.x) - (m_space * c * (m_scale.x));
+			res.x += (e * m_scale.x) - (m_space * c * (m_scale.x));
 			break;
 		case Number::NumberAlign::CENTER:
 		case Number::NumberAlign::ZERO_CENTER:
@@ -1194,11 +1202,11 @@ namespace basecross {
 			d = c * m_cutOut.x;
 			t = index * m_cutOut.x + (m_space * index);
 			e = t - d;
-			res.x = (e * m_scale.x) - (m_space * c * (m_scale.x));
+			res.x += (e * m_scale.x) - (m_space * c * (m_scale.x));
 			break;
 		case Number::NumberAlign::RIGHT:
 		case Number::NumberAlign::ZERO_RIGHT:
-			res.x = ((m_cutOut.x + m_space) * m_scale.x) * index;
+			res.x += ((m_cutOut.x + m_space) * m_scale.x) * index;
 			break;
 		}
 
