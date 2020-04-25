@@ -276,6 +276,86 @@ namespace basecross {
 		void Hidden(const bool e);
 	};
 
+
+
+
+	//------------------------------------------------------------------------------------------------
+	//êîéöAlign : enum
+	//------------------------------------------------------------------------------------------------
+
+	namespace Number {
+		enum NumberAlign
+		{
+			LEFT = 0,
+			CENTER = 1,
+			RIGHT = 2,
+			ZERO_LEFT = 3,
+			ZERO_CENTER = 4,
+			ZERO_RIGHT = 5
+		};
+	}
+
+
+	//------------------------------------------------------------------------------------------------
+	//êîéö : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_Number :public GameObject {
+		Vec2 m_position;
+		unsigned int m_digit;
+		Col4 m_color;
+		Number::NumberAlign m_align;
+		float m_space;
+		Vec2 m_scale;
+		float m_layer;
+
+		wstring m_numberImageName;
+		Vec2 m_vertex;
+		Vec2 m_cutOut;
+		vector<shared_ptr<UI_Horizontal_Sprite_Image>> m_numberImagies;
+
+		unsigned int m_value;
+
+		void CreateNumberImagies();
+		void UpdateNumberImagies();
+		unsigned int CheckDigit(const unsigned int value);
+		Vec2 GetImagePosition(const unsigned int digit, const unsigned int index, const Vec2& startPosition, const Number::NumberAlign align);
+		unsigned int GetNumber(const unsigned int value, const unsigned int index);
+
+	public:
+		UI_Number(const shared_ptr<Stage>& StagePtr,
+			const Vec2& position,
+			const unsigned int digit,
+			const Col4& color,
+			const Number::NumberAlign align,
+			const float space,
+			const Vec2 scale,
+			const float layer
+		) :
+			GameObject(StagePtr),
+			m_position(position),
+			m_digit(digit),
+			m_color(color),
+			m_align(align),
+			m_space(space),
+			m_scale(scale),
+			m_layer(layer),
+			m_numberImageName(L"Share_Number.png"),
+			m_vertex(Vec2(640.0f, 128.0f)),
+			m_cutOut(Vec2(64.0f, 128.0f)),
+			m_numberImagies(NULL),
+			m_value(NULL)
+		{}
+		~UI_Number() {}
+
+		virtual void OnCreate() override;
+
+		void SetValue(const unsigned int value);
+		void SetColor(const Col4& color);
+		void Hidden(const bool e);
+	};
+
+
 	class Result_UI : public UI_Base {
 	public:
 
@@ -405,9 +485,9 @@ namespace basecross {
 
 	typedef struct ScoreTableLine {
 		shared_ptr<UI_Sprite_Text> name;
-		shared_ptr<UI_Sprite_Text> kill;
-		shared_ptr<UI_Sprite_Text> death;
-		shared_ptr<UI_Sprite_Text> score;
+		shared_ptr<UI_Number> kill;
+		shared_ptr<UI_Number> death;
+		shared_ptr<UI_Number> score;
 		shared_ptr<UI_Static_Image> playerBadge;
 		shared_ptr<UI_Static_Image> separator;
 	} ScoreTableLine_s;
@@ -884,81 +964,5 @@ namespace basecross {
 		bool GetActive() {
 			return m_active;
 		}
-	};
-
-
-	//------------------------------------------------------------------------------------------------
-	//êîéöAlign : enum
-	//------------------------------------------------------------------------------------------------
-
-	namespace Number {
-		enum NumberAlign
-		{
-			LEFT = 0,
-			CENTER = 1,
-			RIGHT = 2,
-			ZERO_LEFT = 3,
-			ZERO_CENTER = 4,
-			ZERO_RIGHT = 5
-		};
-	}
-
-
-	//------------------------------------------------------------------------------------------------
-	//êîéö : Class
-	//------------------------------------------------------------------------------------------------
-
-	class UI_Number :public GameObject {
-		Vec2 m_position;
-		unsigned int m_digit;
-		Col4 m_color;
-		Number::NumberAlign m_align;
-		float m_space;
-		Vec2 m_scale;
-		float m_layer;
-
-		wstring m_numberImageName;
-		Vec2 m_vertex;
-		Vec2 m_cutOut;
-		vector<shared_ptr<UI_Horizontal_Sprite_Image>> m_numberImagies;
-
-		unsigned int m_value;
-
-		void CreateNumberImagies();
-		void UpdateNumberImagies();
-		unsigned int CheckDigit(const unsigned int value);
-		Vec2 GetImagePosition(const unsigned int digit, const unsigned int index, const Vec2& startPosition, const Number::NumberAlign align);
-		unsigned int GetNumber(const unsigned int value, const unsigned int index);
-
-	public:
-		UI_Number(const shared_ptr<Stage>& StagePtr,
-			const Vec2& position,
-			const unsigned int digit,
-			const Col4& color,
-			const Number::NumberAlign align,
-			const float space,
-			const Vec2 scale,
-			const float layer
-			):
-			GameObject(StagePtr),
-			m_position(position),
-			m_digit(digit),
-			m_color(color),
-			m_align(align),
-			m_space(space),
-			m_scale(scale),
-			m_layer(layer),
-			m_numberImageName(L"Share_Number.png"),
-			m_vertex(Vec2(640.0f, 128.0f)),
-			m_cutOut(Vec2(64.0f, 128.0f)),
-			m_numberImagies(NULL),
-			m_value(NULL)
-		{}
-		~UI_Number() {}
-
-		virtual void OnCreate() override;
-
-		void SetValue(const unsigned int value);
-		void SetColor(const Col4& color);
 	};
 }
