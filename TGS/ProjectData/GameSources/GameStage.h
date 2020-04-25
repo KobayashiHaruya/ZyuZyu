@@ -33,6 +33,12 @@ namespace basecross {
 		//トータル時間
 		float m_TotalTime;
 
+		//トータル時間
+		float m_TotalTime2;
+
+		//トータル時間
+		float m_TotalTime3;
+
 	public:
 		//構築と破棄
 		GameStage() :

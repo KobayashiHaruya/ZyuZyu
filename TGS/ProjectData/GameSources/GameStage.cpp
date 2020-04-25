@@ -51,19 +51,22 @@ namespace basecross {
 
 	void GameStage::CreateTime() {
 		
-		AddGameObject<Time01>(4,
-			L"0_9.png",
-			true,
-			Vec2(320.0f, 80.0f),
-			Vec3(700.0f, 500.0f, 0.0f));
+		AddGameObject<Time01>(1,L"0_9.png",true,
+			Vec2(25.0f, 25.0f),
+			Vec3(900.0f, 500.0f, 0.0f));
 
-		//AddGameObject<Time10>(L"5.png",
-		//    Vec2(200.0f, 200.0f),
-		//	Vec2(-30.0f, -290.0f));
+		AddGameObject<Time10>(1, L"0_9.png", true,
+			Vec2(25.0f, 25.0f),
+			Vec3(850.0f, 500.0f, 0.0f));
 
-		//AddGameObject<Time100>(L"2.png",
-		//	Vec2(200.0f, 200.0f),
-		//	Vec2(-75.0f, -290.0f));
+		AddGameObject<Time100>(1, L"0_9.png", true,
+			Vec2(25.0f, 25.0f),
+			Vec3(750.0f, 500.0f, 0.0f));
+
+		AddGameObject<Sprite>(L"Colon.png",
+			Vec2(25.0f, 25.0f),
+			Vec2(800.0f, 500.0f));
+
 
 	}
 
@@ -123,14 +126,39 @@ namespace basecross {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
 		float TimeEat = App::GetApp()->GetElapsedTime();
+		float TimeEat2 = App::GetApp()->GetElapsedTime();
+		float TimeEat3 = App::GetApp()->GetElapsedTime();
+
 		TimeEat = 0.01;
 		m_TotalTime -= TimeEat;
+		TimeEat2 = 0.001;
+		m_TotalTime2 -= TimeEat2;
+		TimeEat3 = 0.00016653;
+		m_TotalTime3 -= TimeEat3;
 		if (m_TotalTime <= 000.0f) {
-			m_TotalTime = 300.0f;
+			m_TotalTime = 9.999f;
 		}
+		if (m_TotalTime2 <= 000.0f) {
+			m_TotalTime2 = 5.999f;
+		}
+		if (m_TotalTime3 <= 000.0f) {
+			m_TotalTime3 = 2.999f;
+		}
+		//else if (m_TotalTime3 > 1.98f && m_TotalTime3 <= 0.98)
+		//{
+		//	m_TotalTime3 = 1.579f;
+		//}
 		//スコアを更新する
-		auto ptrScor = GetSharedGameObject<Time01>(L"ScoreSprite");
+		auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
 		ptrScor->SetScore(m_TotalTime);
+
+		//スコアを更新する
+		auto ptrScor2 = GetSharedGameObject<Time10>(L"Time10");
+		ptrScor2->SetScore(m_TotalTime2);
+
+		//スコアを更新する
+		auto ptrScor3 = GetSharedGameObject<Time100>(L"Time100");
+		ptrScor3->SetScore(m_TotalTime3);
 
 		if (KeyState.m_bPressedKeyTbl['E']) {
 			Vec3 rot;
