@@ -159,6 +159,7 @@ namespace basecross {
 		ptrTrans->SetScale(m_scale);
 
 		SetAlphaActive(true);
+		UpdateVertices();
 	}
 
 	void UI_Horizontal_Sprite_Image::SetIndex(int index) {
@@ -176,6 +177,16 @@ namespace basecross {
 
 		auto ptrDraw = GetComponent<PCTSpriteDraw>();
 		ptrDraw->UpdateVertices(m_vertices);
+	}
+
+	void UI_Horizontal_Sprite_Image::SetColor(const Col4& color) {
+		auto ptrDraw = GetComponent<PCTSpriteDraw>();
+		ptrDraw->SetDiffuse(color);
+	}
+
+	void UI_Horizontal_Sprite_Image::Hidden(const bool e) {
+		SetDrawActive(!e);
+		SetUpdateActive(!e);
 	}
 
 
@@ -501,41 +512,41 @@ namespace basecross {
 			);
 		line.name = text;
 
-		text = stage->AddGameObject<UI_Sprite_Text>(
-			m_fontName,
-			m_lineFontSize,
-			m_white,
-			Rect2D<float>(i + (iPlus * 1), t + (index * space), 1000.0f, b + (index * space)),
-			StringSprite::TextAlignment::m_Center,
-			to_wstring(status.kill),
-			m_layer,
-			false
+		auto number = stage->AddGameObject<UI_Number>(
+			Vec2(-110.0f, 180.0f - (index * 80.0f)),
+			5,
+			Col4(0.0f, 0.0f, 1.0f, 1.0f),
+			Number::NumberAlign::CENTER,
+			10.0f,
+			Vec2(0.4f),
+			m_layer
 			);
-		line.kill = text;
+		number->SetValue(status.kill);
+		line.kill = number;
 
-		text = stage->AddGameObject<UI_Sprite_Text>(
-			m_fontName,
-			m_lineFontSize,
-			m_white,
-			Rect2D<float>(i + (iPlus * 2), t + (index * space), 1300.0f, b + (index * space)),
-			StringSprite::TextAlignment::m_Center,
-			to_wstring(status.death),
-			m_layer,
-			false
+		number = stage->AddGameObject<UI_Number>(
+			Vec2(210.0f, 180.0f - (index * 80.0f)),
+			5,
+			Col4(1.0f, 0.0f, 0.0f, 1.0f),
+			Number::NumberAlign::CENTER,
+			10.0f,
+			Vec2(0.4f),
+			m_layer
 			);
-		line.death = text;
+		number->SetValue(status.death);
+		line.death = number;
 
-		text = stage->AddGameObject<UI_Sprite_Text>(
-			m_fontName,
-			m_lineFontSize,
-			m_white,
-			Rect2D<float>(i + (iPlus * 3), t + (index * space), 1580.0f, b + (index * space)),
-			StringSprite::TextAlignment::m_Center,
-			to_wstring(status.score),
-			m_layer,
-			false
+		number = stage->AddGameObject<UI_Number>(
+			Vec2(520.0f, 180.0f - (index * 80.0f)),
+			5,
+			Col4(1.0f, 1.0f, 0.0f, 1.0f),
+			Number::NumberAlign::CENTER,
+			10.0f,
+			Vec2(0.4f),
+			m_layer
 			);
-		line.score = text;
+		number->SetValue(status.score);
+		line.score = number;
 		
 		m_lines.push_back(line);
 	}
@@ -547,9 +558,9 @@ namespace basecross {
 			auto& status = m_characterStatuses[i];
 			auto& line = m_lines[i];
 			line.name->UpdateText(GetCharacterTypeToString(status.type));
-			line.kill->UpdateText(to_wstring(status.kill));
-			line.death->UpdateText(to_wstring(status.death));
-			line.score->UpdateText(to_wstring(status.score));
+			line.kill->SetValue(status.kill);
+			line.death->SetValue(status.death);
+			line.score->SetValue(status.score);
 			line.playerBadge->Hidden(!status.isPlayer);
 		}
 	}
@@ -564,9 +575,9 @@ namespace basecross {
 		for (auto& text : m_headerTexts) text->SetDrawActive(!e);
 		for (auto& line : m_lines) {
 			line.name->SetDrawActive(!e);
-			line.kill->SetDrawActive(!e);
-			line.death->SetDrawActive(!e);
-			line.score->SetDrawActive(!e);
+			line.kill->Hidden(e);
+			line.death->Hidden(e);
+			line.score->Hidden(e);
 			line.playerBadge->SetDrawActive(!e);
 			line.separator->SetDrawActive(!e);
 		}
@@ -905,6 +916,9 @@ namespace basecross {
 	void PinP::OnCreate() {
 		CreateCamera();
 		if (m_isEdge && !m_edgeImage) CreateEdge();
+
+		m_oldShowViewTopLeftPos = m_showViewTopLeftPos;
+		m_oldHideViewTopLeftPos = m_hideViewTopLeftPos;
 		Hidden(true);
 	}
 
@@ -930,6 +944,7 @@ namespace basecross {
 		m_mode = true;
 		m_active = true;
 		m_action = action;
+		m_showViewTopLeftPos = m_oldShowViewTopLeftPos;
 		m_hideViewTopLeftPos = GetHideTopLeftPos(action);
 
 		//UpdateEdge(Vec2(m_hideViewTopLeftPos.x, m_hideViewTopLeftPos.y));
@@ -942,6 +957,7 @@ namespace basecross {
 		m_mode = false;
 		m_active = true;
 		m_action = action;
+		m_showViewTopLeftPos = m_oldShowViewTopLeftPos;
 		m_hideViewTopLeftPos = GetHideTopLeftPos(action);
 		SetViewTopLeftPos(m_showViewTopLeftPos);
 	}
@@ -951,10 +967,16 @@ namespace basecross {
 		auto& app = App::GetApp();
 		m_edgeImage->Hidden(e);
 
-		if (e) 
-			SetViewTopLeftPos(Vec2(app->GetGameWidth(), app->GetGameHeight()));
+		if (e) {
+			auto zero = Vec2(app->GetGameWidth(), app->GetGameHeight());
+			m_showViewTopLeftPos = zero;
+			m_hideViewTopLeftPos = zero;
+			SetViewTopLeftPos(zero);
+		}
 		else
+		{
 			if (m_useCharacter.unique != 0) In(m_action);
+		}
 	}
 
 	void PinP::SetAt(const Vec3& at) {
@@ -1067,5 +1089,134 @@ namespace basecross {
 			SetViewTopLeftPos(movePos);
 			UpdateEdge(movePos);
 		}
+	}
+
+
+	//------------------------------------------------------------------------------------------------
+	//”Žš : Class
+	//------------------------------------------------------------------------------------------------
+
+	void UI_Number::OnCreate() {
+		CreateNumberImagies();
+	}
+
+	void UI_Number::SetValue(const unsigned int value) {
+		m_value = value;
+		UpdateNumberImagies();
+	}
+
+	void UI_Number::SetColor(const Col4& color) {
+		m_color = color;
+		UpdateNumberImagies();
+	}
+
+	void UI_Number::Hidden(const bool e) {
+		for (auto& image : m_numberImagies) {
+			image->Hidden(e);
+		}
+		SetDrawActive(!e);
+		SetUpdateActive(!e);
+	}
+
+	void UI_Number::CreateNumberImagies() {
+		auto stage = GetStage();
+		for (int i = 0; i < m_digit; i++) {
+			auto pos = GetImagePosition(m_digit, i, m_position, m_align);
+			auto number = GetNumber(m_value, (m_digit - 1) - i);
+			auto image = stage->AddGameObject<UI_Horizontal_Sprite_Image>(
+				m_vertex,
+				Vec3(pos),
+				Vec3(m_scale),
+				m_layer,
+				m_color,
+				m_numberImageName,
+				m_cutOut
+				);
+			image->Draw();
+			image->SetIndex(number);
+			m_numberImagies.push_back(image);
+		}
+		UpdateNumberImagies();
+	}
+
+	void UI_Number::UpdateNumberImagies() {
+		for (int i = 0; i < m_numberImagies.size(); i++) {
+			auto number = GetNumber(m_value, (m_digit - 1) - i);
+			auto image = m_numberImagies[i];
+			image->SetColor(m_color);
+			image->SetIndex(number);
+			image->Hidden(false);
+		}
+
+		if (m_align == Number::NumberAlign::LEFT || m_align == Number::NumberAlign::CENTER || m_align == Number::NumberAlign::RIGHT) {
+			auto zeroEndIndex = 0;
+			for (auto& image : m_numberImagies) {
+				if (!image->GetIndex() && zeroEndIndex + 1 != m_numberImagies.size()) {
+					image->Hidden(true);
+					zeroEndIndex++;
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			if (m_align == Number::NumberAlign::CENTER || m_align == Number::NumberAlign::RIGHT) {
+
+				for (int i = zeroEndIndex, j = 0; i < m_numberImagies.size(); i++, j++) {
+					auto image = m_numberImagies[i];
+					auto trans = image->GetComponent<Transform>();
+					auto pos = GetImagePosition(m_digit - zeroEndIndex ,j, m_position, m_align);
+					trans->SetPosition(Vec3(pos));
+				}
+			}
+		}
+	}
+
+	unsigned int UI_Number::CheckDigit(const unsigned int value) {
+		unsigned int digit = 0;
+		unsigned int target = value;
+		while (target) {
+			target /= 10;
+			digit++;
+		}
+		return digit;
+	}
+
+	Vec2 UI_Number::GetImagePosition(const unsigned int digit, const unsigned int index, const Vec2& startPosition, const Number::NumberAlign align) {
+		auto res = Vec2(startPosition.x, startPosition.y);
+		float c, d, t, e;
+		switch (align)
+		{
+		case Number::NumberAlign::LEFT:
+		case Number::NumberAlign::ZERO_LEFT:
+			c = (digit - 1);
+			d = c * m_cutOut.x;
+			t = index * m_cutOut.x + (m_space * index);
+			e = t - d;
+			res.x += (e * m_scale.x) - (m_space * c * (m_scale.x));
+			break;
+		case Number::NumberAlign::CENTER:
+		case Number::NumberAlign::ZERO_CENTER:
+			c = ((digit - 1) / 2.0f);
+			d = c * m_cutOut.x;
+			t = index * m_cutOut.x + (m_space * index);
+			e = t - d;
+			res.x += (e * m_scale.x) - (m_space * c * (m_scale.x));
+			break;
+		case Number::NumberAlign::RIGHT:
+		case Number::NumberAlign::ZERO_RIGHT:
+			res.x += ((m_cutOut.x + m_space) * m_scale.x) * index;
+			break;
+		}
+
+		return res;
+	}
+
+	unsigned int UI_Number::GetNumber(const unsigned int value, const unsigned int index) {
+		auto res = 0;
+		res = (value / pow(10, index));
+		res %= 10;
+		return res;
 	}
 }

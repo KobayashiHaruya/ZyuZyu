@@ -195,6 +195,7 @@ namespace basecross {
 		virtual void OnCreate() override;
 	};
 
+
 	//------------------------------------------------------------------------------------------------
 	//水平なスプライト画像 : Class
 	//------------------------------------------------------------------------------------------------
@@ -217,10 +218,6 @@ namespace basecross {
 		vector<VertexPositionColorTexture> m_vertices;
 
 		void UpdateVertices();
-
-	protected:
-
-		void SetIndex(int index);
 
 	public:
 
@@ -269,10 +266,94 @@ namespace basecross {
 
 		void Draw();
 
+		void SetIndex(int index);
+		int GetIndex() {
+			return m_index;
+		}
 		int GetMaxIndex() {
 			return m_vertex.x / m_cutOut.x;
 		}
+		void SetColor(const Col4& color);
+		void Hidden(const bool e);
 	};
+
+
+	//------------------------------------------------------------------------------------------------
+	//数字Align : enum
+	//------------------------------------------------------------------------------------------------
+
+	namespace Number {
+		enum NumberAlign
+		{
+			LEFT = 0,
+			CENTER = 1,
+			RIGHT = 2,
+			ZERO_LEFT = 3,
+			ZERO_CENTER = 4,
+			ZERO_RIGHT = 5
+		};
+	}
+
+
+	//------------------------------------------------------------------------------------------------
+	//数字 : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_Number :public GameObject {
+		Vec2 m_position;
+		unsigned int m_digit;
+		Col4 m_color;
+		Number::NumberAlign m_align;
+		float m_space;
+		Vec2 m_scale;
+		float m_layer;
+
+		wstring m_numberImageName;
+		Vec2 m_vertex;
+		Vec2 m_cutOut;
+		vector<shared_ptr<UI_Horizontal_Sprite_Image>> m_numberImagies;
+
+		unsigned int m_value;
+
+		void CreateNumberImagies();
+		void UpdateNumberImagies();
+		unsigned int CheckDigit(const unsigned int value);
+		Vec2 GetImagePosition(const unsigned int digit, const unsigned int index, const Vec2& startPosition, const Number::NumberAlign align);
+		unsigned int GetNumber(const unsigned int value, const unsigned int index);
+
+	public:
+		UI_Number(const shared_ptr<Stage>& StagePtr,
+			const Vec2& position,
+			const unsigned int digit,
+			const Col4& color,
+			const Number::NumberAlign align,
+			const float space,
+			const Vec2 scale,
+			const float layer
+		) :
+			GameObject(StagePtr),
+			m_position(position),
+			m_digit(digit),
+			m_color(color),
+			m_align(align),
+			m_space(space),
+			m_scale(scale),
+			m_layer(layer),
+			m_numberImageName(L"Share_Number.png"),
+			m_vertex(Vec2(640.0f, 128.0f)),
+			m_cutOut(Vec2(64.0f, 128.0f)),
+			m_numberImagies(NULL),
+			m_value(NULL)
+		{}
+		~UI_Number() {}
+
+		virtual void OnCreate() override;
+
+		void SetValue(const unsigned int value);
+		void SetColor(const Col4& color);
+		void Hidden(const bool e);
+	};
+
 
 	class Result_UI : public UI_Base {
 	public:
@@ -403,9 +484,9 @@ namespace basecross {
 
 	typedef struct ScoreTableLine {
 		shared_ptr<UI_Sprite_Text> name;
-		shared_ptr<UI_Sprite_Text> kill;
-		shared_ptr<UI_Sprite_Text> death;
-		shared_ptr<UI_Sprite_Text> score;
+		shared_ptr<UI_Number> kill;
+		shared_ptr<UI_Number> death;
+		shared_ptr<UI_Number> score;
 		shared_ptr<UI_Static_Image> playerBadge;
 		shared_ptr<UI_Static_Image> separator;
 	} ScoreTableLine_s;
@@ -497,7 +578,7 @@ namespace basecross {
 				Vec2(3072.0f, 256.0f),
 				pos,
 				scale,
-				5,
+				layer,
 				Col4(1.0f, 1.0f, 1.0f, 1.0f),
 				L"PS_Characteres_Level_Sprite.png",
 				Vec2(256.0f, 256.0f)
@@ -802,6 +883,8 @@ namespace basecross {
 		PinPAction m_action;          //PinPの動き
 		Vec2 m_showViewTopLeftPos;    //PinPが見えているときの上側の左の頂点のポジション
 		Vec2 m_hideViewTopLeftPos;    //PinPが見えていないときの上側の左の頂点のポジション
+		Vec2 m_oldShowViewTopLeftPos;
+		Vec2 m_oldHideViewTopLeftPos;
 		bool m_mode;
 		bool m_active;
 
@@ -845,7 +928,9 @@ namespace basecross {
 			m_view({}),
 			m_viewIndex(NULL),
 			m_showViewTopLeftPos(topLeftPos),
-			m_hideViewTopLeftPos(Vec2(0.0f)),
+			m_hideViewTopLeftPos(Vec2(NULL)),
+			m_oldShowViewTopLeftPos(topLeftPos),
+			m_oldHideViewTopLeftPos(Vec2(NULL)),
 			m_useCharacter({}),
 			m_isEdge(isEdge),
 			m_edgeImageName(L"dot.png"),
