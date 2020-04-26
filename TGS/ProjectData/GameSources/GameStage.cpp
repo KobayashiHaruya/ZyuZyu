@@ -80,35 +80,33 @@ namespace basecross {
 			CreateUI();
 			CreateTime();
 			AddGameObject<Object>(
-				Vec3(0.0f, -25.0f, 0.0f),
+				Vec3(0.0f, -10.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(50.0f, 50.0f, 50.0f)
+				Vec3(60.0f, 60.0f, 60.0f)
 				);
 			AddGameObject<Oil>(
-				Vec3(0.0f, -60.0f, 0.0f),
+				Vec3(0.0f, -40.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(50.0f, 50.0f, 50.0f)
+				Vec3(60.0f, 60.0f, 60.0f)
 				);
 			AddGameObject<Nabe>(
-				Vec3(0.0f, -60.0f, 0.0f),
+				Vec3(0.0f, -80.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(50.0f, 50.0f, 50.0f)
+				Vec3(60.0f, 60.0f, 60.0f)
 				);
 			m_player = AddGameObject<TestPlayer>(
-				Vec3(0.0f, 3.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f),
-				10.0f, 10.0f, 5.0f,
-				CharacterType::CHICKEN,
+				CharacterType::SHRIMP,
 				true,
 				10,1
 				);
 			m_enemy = AddGameObject<TestEnemy>(
-				Vec3(0.0f, 3.0f, 10.0f),
+				Vec3(0.0f, 0.0f, 10.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f),
-				5.0f, 10.0f, 5.0f,
-				CharacterType::POTATO,
+				CharacterType::CHICKEN,
 				false,
 				1,
 				0
@@ -160,14 +158,13 @@ namespace basecross {
 		auto ptrScor3 = GetSharedGameObject<Time100>(L"Time100");
 		ptrScor3->SetScore(m_TotalTime3);
 
-		if (KeyState.m_bPressedKeyTbl['E']) {
+		if (KeyState.m_bPressedKeyTbl['F']) {
 			Vec3 rot;
 			rot.y = (180.0f * 3.14f) / 180.0f;
 			AddGameObject<Bullet>(
-				Vec3(0.0f, 2.0f, 15.0f),
-				rot,
-				Vec3(1.0f, 1.0f, 1.0f),
-				50.0f, 10.0f,
+				Vec3(0.0f, -8.0f, 15.0f),
+				Quat(0.0f, 0.0f, 0.0f, 0.0f),
+				BulletS::Assault,
 				0,
 				0,
 				CharacterStatus_s({})

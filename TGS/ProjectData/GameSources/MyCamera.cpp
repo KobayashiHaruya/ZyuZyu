@@ -9,7 +9,7 @@ namespace basecross {
 		m_RadY(0.5f),
 		m_RadXZ(0),
 		m_CameraUpDownSpeed(0.5f),
-		m_CameraUnderRot(0.1f),
+		m_CameraUnderRot(-60.0f),
 		m_ArmLen(5.0f),
 		m_MaxArm(1000.0f),
 		m_MinArm(2.0f),
@@ -167,7 +167,33 @@ namespace basecross {
 			fThumbRX = -1.0f;
 		}
 
-		armVec.y = sin(m_RadY);
+
+		if (fThumbRY < 0.0f || keyData.m_bPushKeyTbl[VK_DOWN]) {
+			if (IsUDBaseMode()) {
+				m_RadY += m_CameraUpDownSpeed * elapsedTime;
+			}
+			else {
+				m_RadY -= m_CameraUpDownSpeed * elapsedTime;
+			}
+		}
+		else if (fThumbRY > 0.0f || keyData.m_bPushKeyTbl[VK_UP]) {
+			if (IsUDBaseMode()) {
+				m_RadY -= m_CameraUpDownSpeed * elapsedTime;
+			}
+			else {
+				m_RadY += m_CameraUpDownSpeed * elapsedTime;
+			}
+		}
+
+		//if (m_RadY > XM_PI * 4 / 9.0f) {
+		//	m_RadY = XM_PI * 4 / 9.0f;
+		//}
+		//else if (m_RadY <= m_CameraUnderRot) {
+		//	m_RadY = m_CameraUnderRot;
+		//}
+
+		armVec.y = m_RadY;
+
 		//‚±‚±‚ÅYŽ²‰ñ“]‚ðì¬
 		if (fThumbRX != 0) {
 			//‰ñ“]ƒXƒs[ƒh‚ð”½‰f

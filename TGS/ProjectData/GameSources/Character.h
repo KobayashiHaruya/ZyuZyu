@@ -10,7 +10,6 @@
 namespace basecross{
 
 	class Character : public GameObject {
-		wstring m_modelName;
 		Vec3 m_pos;
 		Vec3 m_rot;
 		Vec3 m_scale;
@@ -18,13 +17,42 @@ namespace basecross{
 		Vec3 m_modelRot;
 		Vec3 m_modelScale;
 
+		wstring m_modelName;
+
+		BulletS m_weaponO;
+		BulletS m_weaponT;
+
+		bool m_weapon = true;
+		bool m_barrageO;
+		bool m_barrageT;
+
+		int m_ammoO;
+		int m_maxAmmoO;
+		int m_reAmmoO;
+		float m_intTimeO;
+		float m_maxIntTimeO;
+		float m_reTimeO;
+		float m_maxreTimeO;
+
+		int m_ammoT;
+		int m_maxAmmoT;
+		int m_reAmmoT;
+		float m_intTimeT;
+		float m_maxIntTimeT;
+		float m_reTimeT;
+		float m_maxreTimeT;
+
+		bool m_fire = true;
+		bool m_reload = false;
+
 		float m_moveSpeed;
+		float m_defaultSpeed;
 		float m_rotSpeed = 2.0f;
 		float m_gravityScale;
 		float m_jumpPower;
 		int ID;
 
-		Vec2 m_force = Vec2(10.0f, 10.0f);
+		Vec2 m_force;
 		bool m_des = false;
 		bool m_jump = true;
 
@@ -40,9 +68,6 @@ namespace basecross{
 			const Vec3& pos,
 			const Vec3& rot,
 			const Vec3& scale,
-			const float& speed,
-			const float& gravity,
-			const float& jump,
 			const CharacterType type,
 			const bool isPlayer,
 			const unsigned int unique,
@@ -52,9 +77,6 @@ namespace basecross{
 			m_pos(pos),
 			m_rot(rot),
 			m_scale(scale),
-			m_moveSpeed(speed),
-			m_gravityScale(gravity),
-			m_jumpPower(jump),
 			m_myData({ type, 1, NULL, NULL, NULL, isPlayer, unique }),
 			m_killCharacters(vector<CharacterKillDetails_s>(NULL)),
 			m_touchOil(NULL),
@@ -63,13 +85,29 @@ namespace basecross{
 		{}
 		~Character() {}
 
-		virtual void BmfDateRead(wstring model, Vec3 mpos, Vec3 mrot, Vec3 mscale);
+		virtual void BmfDateRead(wstring model);
 		void Draw();
 		void PlayerCamera();
 		void PlayerMove();
 		void PlayerRotMove();
-		void BulletFire();
 		void Respawn();
+		void Weapons();
+		void BulletDamage(int state, Vec3 rot);
+		void BulletFire();
+		void BulletState(BulletS state,bool weapon);
+		void CharaState();
+
+		void DrawString();
+
+		void Torimoti(bool hit) {
+			if (hit) {
+				m_defaultSpeed = m_moveSpeed / 2.0f;
+			}
+			else {
+				m_defaultSpeed = m_moveSpeed;
+			}
+
+		}
 
 		void AttackHit(Vec3 rot);
 
@@ -99,9 +137,6 @@ namespace basecross{
 			const Vec3& pos,
 			const Vec3& rot,
 			const Vec3& scale,
-			const float& speed,
-			const float& gravity,
-			const float& jump,
 			const CharacterType type,
 			const bool isPlayer,
 			const int unique,
@@ -111,9 +146,6 @@ namespace basecross{
 			pos,
 			rot,
 			scale,
-			speed,
-			gravity,
-			jump,
 			type,
 			isPlayer,
 			unique,
@@ -133,9 +165,6 @@ namespace basecross{
 			const Vec3& pos,
 			const Vec3& rot,
 			const Vec3& scale,
-			const float& speed,
-			const float& gravity,
-			const float& jump,
 			const CharacterType type,
 			const bool isPlayer,
 			const int unique,
@@ -145,9 +174,6 @@ namespace basecross{
 				pos,
 				rot,
 				scale,
-				speed,
-				gravity,
-				jump,
 				type,
 				isPlayer,
 				unique,

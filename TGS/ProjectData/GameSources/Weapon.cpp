@@ -3,46 +3,83 @@
 
 namespace basecross {
 
-	void Weapon::Draw() {
-		auto ptr = GetComponent<Transform>();
+	void Bullet::BulletState(BulletS state) {
+		float speed;
+		float grav;
+		float time;
+		Vec3 scale;
+		wstring tag;
 
-		ptr->SetPosition(m_pos);
-		ptr->SetRotation(m_rot);
-		ptr->SetScale(m_scale);
+		switch (state)
+		{
+		case BulletS::None:
+			break;
+		case BulletS::Assault:
+			speed = 50.0f;
+			grav = 5.0f;
+			time = 1.0f;
+			scale = Vec3(1.0f);
+			break;
+		case BulletS::Hand:
+			speed = 50.0f;
+			grav = 5.0f;
+			time = 1.0f;
+			scale = Vec3(1.0f);
+			break;
+		case BulletS::Shot:
+			speed = 50.0f;
+			grav = 5.0f;
+			time = 1.0f;
+			scale = Vec3(1.0f);
+			break;
+		case BulletS::SMG:
+			speed = 50.0f;
+			grav = 1.0f;
+			time = 3.0f;
+			scale = Vec3(1.0f);
+			break;
+		case BulletS::Rocket:
+			speed = 50.0f;
+			grav = 5.0f;
+			time = 1.0f;
+			scale = Vec3(1.0f);
+			break;
+		case BulletS::Sniper:
+			speed = 50.0f;
+			grav = 5.0f;
+			time = 1.0f;
+			scale = Vec3(1.0f);
+			break;
+		case BulletS::Laser:
+			speed = 50.0f;
+			grav = 5.0f;
+			time = 1.0f;
+			scale = Vec3(1.0f);
+			break;
+		case BulletS::Wind:
+			speed = 50.0f;
+			grav = 5.0f;
+			time = 1.0f;
+			scale = Vec3(1.0f);
+			break;
+		default:
+			break;
+		}
 
-
-		//影をつける
-		auto ShadowPtr = AddComponent<Shadowmap>();
-		ShadowPtr->SetMeshResource(L"DEFAULT_Sphere");
-
-		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
-		PtrDraw->SetMeshResource(L"DEFAULT_Sphere");
-		//PtrDraw->SetDiffuse(m_color);
-
-
-		auto ptrColl = AddComponent<CollisionSphere>();
-		//ptrColl->SetAfterCollision(AfterCollision::None);
-
-		//各パフォーマンスを得る
-		GetStage()->SetCollisionPerformanceActive(true);
-		GetStage()->SetUpdatePerformanceActive(true);
-		GetStage()->SetDrawPerformanceActive(true);
-
-		AddTag(L"Weapon");
+		m_scale = scale;
+		m_moveSpeed = speed;
+		m_gravityScale = grav;
+		m_time = time;
 
 	}
 
-	void Weapon::OnCreate() {
-		Draw();
-	}
+	void Bullet::Draw() {
+		BulletState(m_type);
 
-
-
-	void BulletBase::Draw() {
 		auto ptr = GetComponent<Transform>();
 
 		ptr->SetPosition(m_pos);
-		ptr->SetRotation(Vec3(0.0f, m_rot.y, 0.0f));
+		ptr->SetQuaternion(m_rot);
 		ptr->SetScale(m_scale);
 
 		//影をつける
@@ -62,40 +99,58 @@ namespace basecross {
 		auto gravity = AddComponent<Gravity>();
 		gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
 
+
+		SetID(ID);
+		SetBulletType(m_type);
+
 		AddTag(L"Bullet");
 
-		//WorldMatrixをもとにRigidbodySphereのパラメータを作成
-		PsSphereParam param(ptr->GetWorldMatrix(), 10.0f, false, PsMotionType::MotionTypeActive);
-		auto psPtr = AddComponent<RigidbodySphere>(param);
-		psPtr->SetAutoTransform(true);
-
-		psPtr->SetAutoGravity(0.0f);
 	}
 
-	void BulletBase::Move() {
-		auto psPtr = GetComponent<RigidbodySphere>();
+	void Bullet::Move() {
 		auto trans = GetComponent<Transform>();
-		auto rot = trans->GetRotation();
-
-		auto time = App::GetApp()->GetElapsedTime();
+		auto grav = GetComponent<Gravity>();
 
 		Vec3 force = trans->GetForword() * m_moveSpeed;
 
-		psPtr->SetLinearVelocity(force);
-		//psPtr->ApplyForce(Vec3(0.0f, -m_gravityScale, 0.0f));
+		grav->StartJump(force);
 	}
 
-	void BulletBase::Destroy() {
+	void Bullet::Timer() {
+		auto time = App::GetApp()->GetElapsedTime();
+
+		m_time -= time;
+
+		if (m_time <= 0.0f) {
+			Destroy();
+		}
+
+	}
+
+	void Bullet::Destroy() {
 		GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
 	}
+
+	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& Other) {
+		if (Other->GetID() != ID && !Other->FindTag(L"Bullet")) {
+			Destroy();
+		}
+	}
+
+	void Bullet::OnCreate() {
+		Draw();
+		Move();
+	}
+
+	void Bullet::OnUpdate() {
+		Timer();
+	}
+
 
 
 	void Grenade::Move() {
 		auto trans = GetComponent<Transform>();
 		auto grav = GetComponent<Gravity>();
-		auto rot = trans->GetRotation();
-
-		auto time = App::GetApp()->GetElapsedTime();
 
 		Vec3 force = trans->GetForword() * m_moveSpeed;
 
@@ -106,26 +161,27 @@ namespace basecross {
 		auto ptr = GetComponent<Transform>();
 
 		ptr->SetPosition(m_pos);
-		ptr->SetRotation(m_rot);
-		ptr->SetScale(m_scale);
+		ptr->SetQuaternion(m_rot);
+		ptr->SetScale(Vec3(0.5f));
 
 		//影をつける
 		auto ShadowPtr = AddComponent<Shadowmap>();
-		ShadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
+		ShadowPtr->SetMeshResource(L"DEFAULT_CAPSULE");
 
 		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
-		PtrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+		PtrDraw->SetMeshResource(L"DEFAULT_CAPSULE");
 
 		PtrDraw->SetTextureResource(L"trace.png");
 		SetAlphaActive(true);
 
-		auto ptrColl = AddComponent<CollisionSphere>();
+		auto ptrColl = AddComponent<CollisionCapsule>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 
 
 		auto gravity = AddComponent<Gravity>();
-		//gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
+		gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
 
+		SetID(ID);
 		AddTag(L"Grenade");
 
 
@@ -133,7 +189,7 @@ namespace basecross {
 	}
 
 	void Grenade::OnCollisionEnter(shared_ptr<GameObject>& Other) {
-		if (!Other->FindTag(L"Grenade")) {
+		if (Other->GetID() != ID && !Other->FindTag(L"Grenade")) {
 			auto ptr = GetComponent<Transform>();
 			if (m_grenade) {
 				GetStage()->AddGameObject<SmokeGrenade>(
@@ -169,7 +225,7 @@ namespace basecross {
 		auto ptr = GetComponent<Transform>();
 
 		ptr->SetPosition(m_pos);
-		ptr->SetRotation(m_rot);
+		ptr->SetQuaternion(m_rot);
 		ptr->SetScale(m_scale);
 
 		//影をつける
@@ -185,8 +241,6 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 
-		//gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
-
 		AddTag(L"Grenade");
 		AddTag(L"Smoke");
 
@@ -200,7 +254,9 @@ namespace basecross {
 
 	void SmokeGrenade::OnCollisionEnter(shared_ptr<GameObject>& Other) {
 		if (Other->FindTag(L"Bullet")) {
+			SetID(Other->GetID());
 			AddTag(L"Explosion");
+			RemoveTag(L"Smoke");
 			m_time = 0.2f;
 		}
 	}
@@ -232,7 +288,7 @@ namespace basecross {
 		PtrDraw->SetTextureResource(L"trace.png");
 		SetAlphaActive(true);
 
-		auto ptrColl = AddComponent<CollisionRect>();
+		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 		ptrColl->SetDrawActive(true);
 
@@ -250,19 +306,6 @@ namespace basecross {
 	}
 
 
-	void Bullet::OnCreate() {
-		Draw();
-		Move();
-	}
-
-	void Bullet::OnUpdate() {
-	}
-
-	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& Other) {
-		if (!Other->FindTag(L"Bullet")) {
-			Destroy();
-		}
-	}
 
 
 }

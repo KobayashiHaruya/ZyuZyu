@@ -35,13 +35,6 @@ namespace basecross {
 		ptr->SetRotation(m_rot);
 		ptr->SetScale(m_scale);
 
-		////‰e‚ð‚Â‚¯‚é
-		//auto ShadowPtr = AddComponent<Shadowmap>();
-		//ShadowPtr->SetMeshResource(L"DEFAULT_CUBE");
-
-		//auto PtrDraw = AddComponent<BcPNTStaticDraw>();
-		//PtrDraw->SetMeshResource(L"DEFAULT_CUBE");
-
 		
 		AddTag(L"Object");
 
@@ -51,11 +44,11 @@ namespace basecross {
 		Draw();
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
-		ptrColl->SetMakedSize(Vec3(1.0f, 1.0f, 1.0f));
-		ptrColl->SetDrawActive(true);
-		BmfDateRead(L"Stage_floor.bmf", Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 0.7f, 1.0f));
+		ptrColl->SetMakedSize(Vec3(1.2f, 0.08f, 1.2f));
+		//ptrColl->SetDrawActive(true);
+		BmfDateRead(L"Stage_floor.bmf", Vec3(0.0f, -0.725f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
 	}
-
+	
 	void Object::OnUpdate() {
 		auto ptr = GetComponent<Transform>();
 
@@ -66,9 +59,9 @@ namespace basecross {
 		Draw();
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
-		ptrColl->SetMakedSize(Vec3(3.0f, 1.0f, 3.0f));
-		ptrColl->SetDrawActive(true);
-		BmfDateRead(L"Stage_oil.bmf", Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
+		ptrColl->SetMakedSize(Vec3(3.0f, 0.825f, 3.0f));
+		//ptrColl->SetDrawActive(true);
+		BmfDateRead(L"Stage_oil.bmf", Vec3(0.0f, -0.7f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
 		AddTag(L"Oil");
 	}
 

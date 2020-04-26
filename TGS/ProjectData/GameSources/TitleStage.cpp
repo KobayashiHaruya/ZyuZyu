@@ -81,8 +81,8 @@ namespace basecross {
 	void TitleStage::CreateOperationUI() {
 		//‘€ìà–¾‰æ‘œ
 		AddGameObject<Operation_UI>(
-			Vec2(1280.0f, 920.0f),
-			Vec3(100.0f, 0.0f, 0.0f),
+			Vec2(1920.0f, 1080.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(1.0f, 1.0f, 1.0f),
 			2,
 			Col4(1.0f, 1.0f, 1.0f, 1.0f),
