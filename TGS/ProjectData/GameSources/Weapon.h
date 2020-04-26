@@ -186,39 +186,4 @@ namespace basecross {
 
 	};
 
-
-<<<<<<< HEAD
-	class Bullet :public BulletBase {
-	public:
-		Bullet(const shared_ptr<Stage>& StagePtr,
-			const Vec3& pos,
-			const Vec3& rot,
-			const Vec3& scale,
-			const float& speed,
-			const float& gravity,
-			const unsigned int fromUnique,
-			const int& id,
-			const CharacterStatus_s frome
-		) :
-			BulletBase(StagePtr,
-				pos,
-				rot,
-				scale,
-				speed,
-				gravity,
-				fromUnique,
-				id,
-				frome
-			)
-		{}
-		virtual ~Bullet() {}
-
-		virtual void OnCreate() override;
-		virtual void OnUpdate() override;
-
-		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
-	};
-
-=======
->>>>>>> Ko
 }

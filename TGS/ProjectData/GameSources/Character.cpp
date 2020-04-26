@@ -279,27 +279,8 @@ namespace basecross {
 
 		auto ptr = GetComponent<Transform>();
 
-<<<<<<< HEAD
-		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPressedKeyTbl[VK_LBUTTON])) {
-			auto bullet = GetStage()->AddGameObject<Bullet>(
-				ptr->GetPosition() + Vec3(0.0f, 0.0f, 2.0f),
-				m_rot,
-				Vec3(1.0f, 1.0f, 1.0f),
-				50.0f, 10.0f,
-				m_myData.unique,
-				ID,
-				m_myData
-				);
-
-			bullet->AddEvent([&](const CharacterStatus_s status) {
-				DroppedIntoOil(status);
-			});
-		}
-=======
 		BulletFire();
 		
->>>>>>> Ko
-
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) || KeyState.m_bPressedKeyTbl['E'])) {
 			GetStage()->AddGameObject<Grenade>(
 				ptr->GetPosition(),
@@ -358,18 +339,9 @@ namespace basecross {
 
 		Vec2 force = m_force * 2.0f;
 
-<<<<<<< HEAD
-		float x = cos(rad);
-		float z = sin(rad);
-
-		Vec3 vecForce = (Vec3(x, 1.0f, z)) * m_force.x;
-		vecForce.y = m_force.y;
-		grav->StartJump(vecForce * 1.2f);
-=======
 		Vec3 vecForce = rot * force.x;
 		vecForce.y = force.y;
 		grav->StartJump(vecForce);
->>>>>>> Ko
 
 		//ここで一定の条件（吹っ飛び率、自身をふっとばしたのはプレイヤーか）などで自身を表示するPinPを表示する
 		/*if(m_opponent.isPlayer) */ShowMyPinP();
@@ -385,21 +357,14 @@ namespace basecross {
 		}
 
 		if (Other->FindTag(L"Bullet")) {
-<<<<<<< HEAD
 			auto bullet = dynamic_pointer_cast<Bullet>(Other);
 			if (bullet) {
 				m_touchOil = dynamic_pointer_cast<ObstacleEvent<const CharacterStatus_s>>(Other);
 				m_opponent = bullet->GetFrome();
 			}
-			auto rot = Other->GetComponent<Transform>()->GetRotation();
-			AttackHit(rot);
-
-=======
 			if (Other->GetID() != ID) {
 				BulletDamage(Other->GetBulletType(), Other->GetComponent<Transform>()->GetForword());
-				m_touchOil = dynamic_pointer_cast<ObstacleEvent<const CharacterStatus_s>>(Other);
 			}
->>>>>>> Ko
 		}
 		if (Other->FindTag(L"Weapon")) {
 
@@ -550,7 +515,7 @@ namespace basecross {
 			break;
 		case BulletS::SMG:
 			maxAmmo = 100;
-			reloadAmmo = 20000;
+			reloadAmmo = 20;
 			interval = 3.0f;
 			reload = 60;
 			barrage = true;
@@ -664,7 +629,8 @@ namespace basecross {
 								ptr->GetQuaternion(),
 								m_weaponO,
 								m_myData.unique,
-								ID
+								ID,
+								m_myData
 								);
 
 							bullet->AddEvent([this](const CharacterStatus_s status) {
@@ -680,7 +646,8 @@ namespace basecross {
 							ptr->GetQuaternion(),
 							m_weaponO,
 							m_myData.unique,
-							ID
+							ID,
+							m_myData
 							);
 
 						bullet->AddEvent([this](const CharacterStatus_s status) {
@@ -754,7 +721,8 @@ namespace basecross {
 								ptr->GetQuaternion(),
 								m_weaponT,
 								m_myData.unique,
-								ID
+								ID,
+								m_myData
 								);
 
 							bullet->AddEvent([this](const CharacterStatus_s status) {
@@ -770,7 +738,8 @@ namespace basecross {
 							ptr->GetQuaternion(),
 							m_weaponT,
 							m_myData.unique,
-							ID
+							ID,
+							m_myData
 							);
 
 						bullet->AddEvent([this](const CharacterStatus_s status) {
@@ -956,10 +925,7 @@ namespace basecross {
 	}
 
 	void TestEnemy::OnUpdate() {
-<<<<<<< HEAD
 		PinPUpdate();
-=======
->>>>>>> Ko
 	}
 
 
