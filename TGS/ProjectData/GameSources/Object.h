@@ -30,6 +30,7 @@ namespace basecross {
 
 	};
 
+
 	class Oil :public Object {
 	public:
 

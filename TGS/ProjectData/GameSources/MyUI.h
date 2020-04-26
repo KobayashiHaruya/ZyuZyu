@@ -258,7 +258,7 @@ namespace basecross {
 
 		void Draw();
 
-		int GetMaxIndex() {
+		float GetMaxIndex() {
 			return m_vertex.x / m_cutOut.x;
 		}
 	};

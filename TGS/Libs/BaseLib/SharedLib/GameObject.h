@@ -20,6 +20,8 @@ namespace basecross {
 		bool m_SpriteDraw = false;	//スプライトとして描画するかどうか
 
 		int m_DrawLayer = 0;	//描画レイヤー
+		int m_ID = 0;
+		int m_bulletT = 0;
 		set<wstring> m_TagSet;	//タグのセット
 		set<int> m_NumTagSet;	//数字タグのセット
 
@@ -82,12 +84,22 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual ~GameObject();
-		//--------------------------------------------------------------------------------------
-		/*!
-		@brief	更新処理が有効かどうかを得る
-		@return	更新処理が有効ならtrue
-		*/
-		//--------------------------------------------------------------------------------------
+
+		int GetID() const {
+			return m_ID;
+		}
+		void  SetID(int l) {
+			m_ID = l;
+		}
+
+		int GetBulletType() const {
+			return m_bulletT;
+		}
+		void  SetBulletType(int t) {
+			m_bulletT = t;
+		}
+
+
 		bool IsUpdateActive() const {
 			return m_UpdateActive;
 		}

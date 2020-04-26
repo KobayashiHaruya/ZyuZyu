@@ -20,67 +20,60 @@ namespace basecross {
 	};
 
 
-	class Weapon :public GameObject {
-		Vec3 m_pos;
-		Vec3 m_rot;
-		Vec3 m_scale;
-
-	public:
-
-		Weapon(const shared_ptr<Stage>& StagePtr,
-			const Vec3& pos,
-			const Vec3& rot,
-			const Vec3& scale
-		) :
-			GameObject(StagePtr),
-			m_pos(pos),
-			m_rot(rot),
-			m_scale(scale)
-
-		{}
-		~Weapon() {}
-
-		virtual void OnCreate() override;
-		void Draw();
-
+	enum BulletS {
+		None,
+		Assault,
+		Hand,
+		Shot,
+		SMG,
+		Rocket,
+		Sniper,
+		Laser,
+		Wind
 	};
 
-
-	class BulletBase :public GameObject, public ObstacleEvent<const CharacterStatus_s> {
+	class Bullet :public GameObject, public ObstacleEvent<const CharacterStatus_s> {
 		Vec3 m_pos;
-		Vec3 m_rot;
+		Quat m_rot;
 		Vec3 m_scale;
+
+		BulletS m_type;
+
 		float m_moveSpeed;
 		float m_gravityScale;
+		float m_time;
 		int ID;
 
 		int m_fromUnique;
 
 	public:
 
-		BulletBase(const shared_ptr<Stage>& StagePtr,
+		Bullet(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos,
-			const Vec3& rot,
-			const Vec3& scale,
-			const float& speed,
-			const float& gravity,
+			const Quat& rot,
+			const BulletS& type,
 			const unsigned int fromUnique,
 			const int& id
 		) :
 			GameObject(StagePtr),
 			m_pos(pos),
 			m_rot(rot),
-			m_scale(scale),
-			m_moveSpeed(speed),
-			m_gravityScale(gravity),
+			m_type(type),
 			m_fromUnique(fromUnique),
 			ID(id)
 		{}
-		~BulletBase() {}
+		~Bullet() {}
 
 		void Draw();
 		void Move();
+		void Timer();
 		void Destroy();
+		void BulletState(BulletS state);
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
 
 		unsigned int GetFromUnique() {
 			return m_fromUnique;
@@ -90,8 +83,7 @@ namespace basecross {
 
 	class Grenade :public GameObject {
 		Vec3 m_pos;
-		Vec3 m_rot;
-		Vec3 m_scale;
+		Quat m_rot;
 		float m_moveSpeed;
 		float m_gravityScale;
 		int ID;
@@ -101,8 +93,7 @@ namespace basecross {
 	public:
 		Grenade(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos,
-			const Vec3& rot,
-			const Vec3& scale,
+			const Quat& rot,
 			const float& speed,
 			const float& gravity,
 			const bool& grenade,
@@ -111,7 +102,6 @@ namespace basecross {
 			GameObject(StagePtr),
 			m_pos(pos),
 			m_rot(rot),
-			m_scale(scale),
 			m_moveSpeed(speed),
 			m_gravityScale(gravity),
 			m_grenade(grenade),
@@ -129,7 +119,7 @@ namespace basecross {
 
 	class SmokeGrenade :public GameObject {
 		Vec3 m_pos;
-		Vec3 m_rot;
+		Quat m_rot;
 		Vec3 m_scale;
 		int ID;
 
@@ -138,7 +128,7 @@ namespace basecross {
 	public:
 		SmokeGrenade(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos,
-			const Vec3& rot,
+			const Quat& rot,
 			const Vec3& scale,
 			const int& id
 		) :
@@ -161,7 +151,7 @@ namespace basecross {
 
 	class TorimotiGrenade :public GameObject {
 		Vec3 m_pos;
-		Vec3 m_rot;
+		Quat m_rot;
 		Vec3 m_scale;
 		int ID;
 
@@ -170,7 +160,7 @@ namespace basecross {
 	public:
 		TorimotiGrenade(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos,
-			const Vec3& rot,
+			const Quat& rot,
 			const Vec3& scale,
 			const int& id
 		) :
@@ -188,34 +178,5 @@ namespace basecross {
 
 	};
 
-
-	class Bullet :public BulletBase {
-	public:
-		Bullet(const shared_ptr<Stage>& StagePtr,
-			const Vec3& pos,
-			const Vec3& rot,
-			const Vec3& scale,
-			const float& speed,
-			const float& gravity,
-			const unsigned int fromUnique,
-			const int& id
-		) :
-			BulletBase(StagePtr,
-				pos,
-				rot,
-				scale,
-				speed,
-				gravity,
-				fromUnique,
-				id
-			)
-		{}
-		virtual ~Bullet() {}
-
-		virtual void OnCreate() override;
-		virtual void OnUpdate() override;
-
-		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
-	};
 
 }
