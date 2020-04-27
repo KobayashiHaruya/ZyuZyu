@@ -1470,7 +1470,7 @@ namespace basecross {
 		ptrDraw->UpdateVertices(newVertices);
 	}
 
-	void UI_TestTimeTime::OnCreate() {
+	void UI_CountdownTimer::OnCreate() {
 		auto stage = GetStage();
 		auto pos = Vec2(60.0f * m_scale.x, 0.0f * m_scale.y);
 		m_second = stage->AddGameObject<UI_Number>(
@@ -1503,7 +1503,7 @@ namespace basecross {
 		UpdateTime();
 	}
 
-	void UI_TestTimeTime::OnUpdate2() {
+	void UI_CountdownTimer::OnUpdate2() {
 		auto eTime = App::GetApp()->GetElapsedTime();
 		m_count += eTime;
 
@@ -1514,7 +1514,7 @@ namespace basecross {
 		}
 	}
 
-	void UI_TestTimeTime::UpdateTime() {
+	void UI_CountdownTimer::UpdateTime() {
 		auto a = m_time / 60;
 		auto b = m_time % 60;
 		m_second->SetValue(b);

@@ -51,7 +51,7 @@ namespace basecross {
 
 	void GameStage::CreateTime() {
 		
-		AddGameObject<Time01>(1,L"0_9.png",true,
+		/*AddGameObject<Time01>(1,L"0_9.png",true,
 			Vec2(25.0f, 25.0f),
 			Vec3(900.0f, 500.0f, 0.0f));
 
@@ -65,7 +65,7 @@ namespace basecross {
 
 		AddGameObject<Sprite>(L"Colon.png",
 			Vec2(25.0f, 25.0f),
-			Vec2(800.0f, 500.0f));
+			Vec2(800.0f, 500.0f));*/
 
 
 	}
@@ -108,7 +108,7 @@ namespace basecross {
 				);
 			CreatePinP();
 
-			AddGameObject<UI_TestTimeTime>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
+			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
 		}
 
 		catch (...) {
@@ -124,7 +124,7 @@ namespace basecross {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
 		}
 
-		float TimeEat = App::GetApp()->GetElapsedTime();
+		/*float TimeEat = App::GetApp()->GetElapsedTime();
 		float TimeEat2 = App::GetApp()->GetElapsedTime();
 		float TimeEat3 = App::GetApp()->GetElapsedTime();
 
@@ -142,22 +142,22 @@ namespace basecross {
 		}
 		if (m_TotalTime3 <= 000.0f) {
 			m_TotalTime3 = 2.999f;
-		}
+		}*/
 		//else if (m_TotalTime3 > 1.98f && m_TotalTime3 <= 0.98)
 		//{
 		//	m_TotalTime3 = 1.579f;
 		//}
 		//スコアを更新する
-		auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
-		ptrScor->SetScore(m_TotalTime);
+		//auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
+		//ptrScor->SetScore(m_TotalTime);
 
-		//スコアを更新する
-		auto ptrScor2 = GetSharedGameObject<Time10>(L"Time10");
-		ptrScor2->SetScore(m_TotalTime2);
+		////スコアを更新する
+		//auto ptrScor2 = GetSharedGameObject<Time10>(L"Time10");
+		//ptrScor2->SetScore(m_TotalTime2);
 
-		//スコアを更新する
-		auto ptrScor3 = GetSharedGameObject<Time100>(L"Time100");
-		ptrScor3->SetScore(m_TotalTime3);
+		////スコアを更新する
+		//auto ptrScor3 = GetSharedGameObject<Time100>(L"Time100");
+		//ptrScor3->SetScore(m_TotalTime3);
 
 		ShowPause();
 	}

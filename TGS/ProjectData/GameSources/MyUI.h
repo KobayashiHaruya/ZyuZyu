@@ -1104,7 +1104,7 @@ namespace basecross {
 		virtual void OnUpdate()override;
 	};
 
-	class UI_TestTimeTime :public GameObject {
+	class UI_CountdownTimer :public GameObject {
 		shared_ptr<UI_Number> m_second;
 		shared_ptr<UI_Number> m_minute;
 		shared_ptr<UI_Static_Image> m_colon;
@@ -1123,7 +1123,7 @@ namespace basecross {
 		void UpdateTime();
 
 	public:
-		UI_TestTimeTime(const shared_ptr<Stage>& StagePtr,
+		UI_CountdownTimer(const shared_ptr<Stage>& StagePtr,
 			const unsigned int time,
 			const Vec2& pos,
 			const Vec2& scale,
@@ -1144,7 +1144,7 @@ namespace basecross {
 			m_digit(2),
 			m_space(10.0f)
 		{}
-		~UI_TestTimeTime() {}
+		~UI_CountdownTimer() {}
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate2() override;
