@@ -112,7 +112,7 @@ namespace basecross {
 	void CharSelectStage::Select() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-		if (KeyState.m_bPressedKeyTbl[VK_SPACE] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) {
+		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || KeyState.m_bPressedKeyTbl[VK_SPACE] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) {
 			//ここにゲームステージへ遷移する処理を書く
 			//GetIndex()で選択したキャラクターのIndexを取得できます
 			int index = GetIndex();

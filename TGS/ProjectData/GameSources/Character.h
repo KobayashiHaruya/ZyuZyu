@@ -10,9 +10,6 @@
 namespace basecross{
 
 	class Character : public GameObject {
-		Vec3 m_pos;
-		Vec3 m_rot;
-		Vec3 m_scale;
 		Vec3 m_modelPos;
 		Vec3 m_modelRot;
 		Vec3 m_modelScale;
@@ -42,8 +39,16 @@ namespace basecross{
 		float m_reTimeT;
 		float m_maxreTimeT;
 
+		float m_Gtime = 4.0f;
+		float m_smokeGtime = 4.0f;
+		float m_toriGtime = 4.0f;
+		bool m_smokeG = true;
+		bool m_toriG = true;
+
 		bool m_fire = true;
 		bool m_reload = false;
+
+		float m_damage = 0.0f;
 
 		float m_moveSpeed;
 		float m_defaultSpeed;
@@ -51,10 +56,12 @@ namespace basecross{
 		float m_gravityScale;
 		float m_jumpPower;
 		int ID;
-
+		float t;
 		Vec2 m_force;
 		bool m_des = false;
-		bool m_jump = true;
+		bool m_jump = false;
+
+		Vec3 m_movePoint;
 
 		CharacterStatus_s m_myData;
 		vector<CharacterKillDetails_s> m_killCharacters;  //自身がキルした相手のキャラクタータイプとレベルを持つ
@@ -65,18 +72,12 @@ namespace basecross{
 	public:
 
 		Character(const shared_ptr<Stage>& StagePtr,
-			const Vec3& pos,
-			const Vec3& rot,
-			const Vec3& scale,
 			const CharacterType type,
 			const bool isPlayer,
 			const unsigned int unique,
 			const int& id
 		) :
 			GameObject(StagePtr),
-			m_pos(pos),
-			m_rot(rot),
-			m_scale(scale),
 			m_myData({ type, 1, NULL, NULL, NULL, isPlayer, unique }),
 			m_killCharacters(vector<CharacterKillDetails_s>(NULL)),
 			m_touchOil(NULL),
@@ -90,12 +91,19 @@ namespace basecross{
 		void PlayerCamera();
 		void PlayerMove();
 		void PlayerRotMove();
+		void PlayerUI();
+
+		void EnemyMove();
+		Vec3 EnemyMovePoint();
+
 		void Respawn();
 		void Weapons();
+		void GrenadeFire();
 		void BulletDamage(int state, Vec3 rot);
 		void BulletFire();
 		void BulletState(BulletS state,bool weapon);
 		void CharaState();
+		void AttackHit(Vec3 rot);
 
 		void DrawString();
 
@@ -108,8 +116,30 @@ namespace basecross{
 			}
 
 		}
-
-		void AttackHit(Vec3 rot);
+		int GetAmmoO() {
+			return m_ammoO;
+		}
+		int GetAmmoT() {
+			return m_ammoT;
+		}
+		int GetDAmmoO() {
+			return m_maxAmmoO;
+		}
+		int GetDAmmoT() {
+			return m_maxAmmoT;
+		}
+		bool GetGun() {
+			return m_weapon;
+		}
+		float GetSGTime() {
+			return m_smokeGtime;
+		}
+		float GetTGTime() {
+			return m_toriGtime;
+		}
+		float GetDamage() {
+			return m_damage;
+		}
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
 		virtual void OnCollisionExcute(shared_ptr<GameObject>& Other) override;
@@ -130,57 +160,44 @@ namespace basecross{
 		void AddDeath(const int death);
 	};
 
-
-	class TestPlayer : public Character {
+	class Player :public Character {
 	public:
-		TestPlayer(const shared_ptr<Stage>& StagePtr,
-			const Vec3& pos,
-			const Vec3& rot,
-			const Vec3& scale,
+		Player(const shared_ptr<Stage>& StagePtr,
 			const CharacterType type,
 			const bool isPlayer,
 			const int unique,
 			const int& id
 		) :
 			Character(StagePtr,
-			pos,
-			rot,
-			scale,
 			type,
 			isPlayer,
 			unique,
 				id
 			)
 		{}
-		~TestPlayer() {}
+		~Player() {}
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 	};
 
 
-	class TestEnemy : public Character {
+	class Enemy : public Character {
 	public:
-		TestEnemy(const shared_ptr<Stage>& StagePtr,
-			const Vec3& pos,
-			const Vec3& rot,
-			const Vec3& scale,
+		Enemy(const shared_ptr<Stage>& StagePtr,
 			const CharacterType type,
 			const bool isPlayer,
 			const int unique,
 			const int& id
 		) :
 			Character(StagePtr,
-				pos,
-				rot,
-				scale,
 				type,
 				isPlayer,
 				unique,
 				id
 			)
 		{}
-		~TestEnemy() {}
+		~Enemy() {}
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;

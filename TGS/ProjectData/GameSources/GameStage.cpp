@@ -94,22 +94,17 @@ namespace basecross {
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(60.0f, 60.0f, 60.0f)
 				);
-			m_player = AddGameObject<TestPlayer>(
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f),
+			m_player = AddGameObject<Player>(
 				CharacterType::SHRIMP,
 				true,
 				10,1
 				);
-			m_enemy = AddGameObject<TestEnemy>(
-				Vec3(0.0f, 0.0f, 10.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f),
+			SetSharedGameObject(L"Player", m_player);
+
+			m_enemy = AddGameObject<Enemy>(
 				CharacterType::CHICKEN,
 				false,
-				1,
-				0
+				1,0
 				);
 			CreatePinP();
 		}
@@ -122,6 +117,10 @@ namespace basecross {
 
 	void GameStage::OnUpdate() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+
+		if (KeyState.m_bPressedKeyTbl['Z']) {
+			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
+		}
 
 		float TimeEat = App::GetApp()->GetElapsedTime();
 		float TimeEat2 = App::GetApp()->GetElapsedTime();
@@ -157,19 +156,6 @@ namespace basecross {
 		//スコアを更新する
 		auto ptrScor3 = GetSharedGameObject<Time100>(L"Time100");
 		ptrScor3->SetScore(m_TotalTime3);
-
-		if (KeyState.m_bPressedKeyTbl['F']) {
-			Vec3 rot;
-			rot.y = (180.0f * 3.14f) / 180.0f;
-			AddGameObject<Bullet>(
-				Vec3(0.0f, -8.0f, 15.0f),
-				Quat(0.0f, 0.0f, 0.0f, 0.0f),
-				BulletS::Assault,
-				0,
-				0,
-				CharacterStatus_s({})
-				);
-		}
 
 		ShowPause();
 	}

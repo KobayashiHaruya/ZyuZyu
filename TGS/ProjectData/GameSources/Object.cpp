@@ -59,7 +59,7 @@ namespace basecross {
 		Draw();
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
-		ptrColl->SetMakedSize(Vec3(3.0f, 0.825f, 3.0f));
+		ptrColl->SetMakedSize(Vec3(4.0f, 0.825f, 4.0f));
 		//ptrColl->SetDrawActive(true);
 		BmfDateRead(L"Stage_oil.bmf", Vec3(0.0f, -0.7f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
 		AddTag(L"Oil");

@@ -964,4 +964,145 @@ namespace basecross {
 			return m_active;
 		}
 	};
+
+
+
+	//------------------------------------------------------------------------------------------------
+	//ÉvÉåÉCÉÑÅ[UI : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_PlayerGun : public UI_Base {
+		int m_layer;
+		int m_weapon;
+	public:
+		UI_PlayerGun(const shared_ptr<Stage>& StagePtr,
+			const Vec2& vertex,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int& layer,
+			const Col4& color,
+			const wstring& textures,
+			const int& weapon
+		) :
+			UI_Base(
+				StagePtr,
+				vertex,
+				pos,
+				scale,
+				layer,
+				color,
+				textures
+			),
+			m_weapon(weapon),
+			m_layer(layer)
+		{}
+		~UI_PlayerGun() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+	};
+
+	class UI_PlayerGrenade : public UI_Base {
+		Vec2 m_Vertex;
+		float m_time;
+		bool m_type;
+		Vec2 X;
+		float Y;
+	public:
+		UI_PlayerGrenade(const shared_ptr<Stage>& StagePtr,
+			const Vec2& vertex,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int& layer,
+			const Col4& color,
+			const wstring& textures,
+			const bool& type,
+			const float& time
+		) :
+			UI_Base(
+				StagePtr,
+				vertex,
+				pos,
+				scale,
+				layer,
+				color,
+				textures
+			),
+			m_Vertex(vertex),
+			m_type(type),
+			m_time(time)
+		{}
+		~UI_PlayerGrenade() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+	};
+
+	class UI_PlayerAmmo : public GameObject {
+		Vec3 m_pos;
+		Vec3 m_scale;
+		wstring m_TextureKey;
+		int m_layer;
+		bool m_rem;
+
+		int m_ammoO;
+		int m_ammoT;
+		bool m_gun;
+
+		UINT m_NumberOfDigits;
+
+		vector<VertexPositionTexture> m_BackupVertices;
+	public:
+		UI_PlayerAmmo(const shared_ptr<Stage>& StagePtr,
+			UINT NumberOfDigits,
+			const wstring& TextureKey,
+			const Vec3& StartPos,
+			const Vec3& StartScale,
+			const bool& rem
+		) :
+			GameObject(StagePtr),
+			m_NumberOfDigits(NumberOfDigits),
+			m_TextureKey(TextureKey),
+			m_pos(StartPos),
+			m_scale(StartScale),
+			m_rem(rem)
+		{}
+
+		virtual ~UI_PlayerAmmo() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate()override;
+	};
+
+	class UI_PlayerDamage : public GameObject {
+		Vec3 m_pos;
+		Vec3 m_scale;
+		wstring m_TextureKey;
+		int m_layer;
+
+		float m_damage;
+
+		UINT m_NumberOfDigits;
+
+		vector<VertexPositionTexture> m_BackupVertices;
+	public:
+		UI_PlayerDamage(const shared_ptr<Stage>& StagePtr,
+			UINT NumberOfDigits,
+			const wstring& TextureKey,
+			const Vec3& StartPos,
+			const Vec3& StartScale
+		) :
+			GameObject(StagePtr),
+			m_NumberOfDigits(NumberOfDigits),
+			m_TextureKey(TextureKey),
+			m_pos(StartPos),
+			m_scale(StartScale)
+		{}
+
+		virtual ~UI_PlayerDamage() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate()override;
+	};
+
 }

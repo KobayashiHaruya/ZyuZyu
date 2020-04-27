@@ -57,9 +57,9 @@ namespace basecross {
 			scale = Vec3(1.0f);
 			break;
 		case BulletS::Wind:
-			speed = 50.0f;
+			speed = 80.0f;
 			grav = 5.0f;
-			time = 1.0f;
+			time = 0.1f;
 			scale = Vec3(1.0f);
 			break;
 		default:
@@ -89,8 +89,8 @@ namespace basecross {
 		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
 		PtrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
-		PtrDraw->SetTextureResource(L"trace.png");
-		SetAlphaActive(true);
+		//PtrDraw->SetTextureResource(L"trace.png");
+		//SetAlphaActive(true);
 
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetAfterCollision(AfterCollision::None);

@@ -1219,4 +1219,257 @@ namespace basecross {
 		res %= 10;
 		return res;
 	}
+
+
+
+	//------------------------------------------------------------------------------------------------
+	//ƒvƒŒƒCƒ„[UI : Class
+	//------------------------------------------------------------------------------------------------
+
+
+	void UI_PlayerGun::OnCreate() {
+		Draw();
+	}
+
+	void UI_PlayerGun::OnUpdate() {
+		bool weapon = GetStage()->GetSharedGameObject<Player>(L"Player")->GetGun();
+		if (weapon) {
+			switch (m_weapon)
+			{
+			case 0:
+				break;
+			case 1:
+				SetDrawLayer(m_layer + 1);
+				break;
+			case 2:
+				SetDrawLayer(m_layer);
+				break;
+			}
+		}
+		else {
+			switch (m_weapon)
+			{
+			case 0:
+				break;
+			case 1:
+				SetDrawLayer(m_layer);
+				break;
+			case 2:
+				SetDrawLayer(m_layer + 1);
+				break;
+			}
+		}
+
+	}
+
+	void UI_PlayerGrenade::OnCreate() {
+		Draw();
+		X = Vec2(1.0f,-1.0f) * m_Vertex.x / 2.0f;
+		Y = m_Vertex.y / 2.0f;
+
+	}
+
+	void UI_PlayerGrenade::OnUpdate() {
+
+		float time;
+		if (m_type) {
+			time = GetStage()->GetSharedGameObject<Player>(L"Player")->GetSGTime();
+
+		}
+		else {
+			time = GetStage()->GetSharedGameObject<Player>(L"Player")->GetTGTime();
+		}
+
+		if (time < m_time) {
+			X.y = time / m_time;
+			X.y = (m_Vertex.x * X.y) - X.x;
+
+			vector<VertexPositionColorTexture> vertices;
+			Col4 color = Col4(1.0f, 1.0f, 1.0f, 1.0f);
+			vertices.push_back(VertexPositionColorTexture(Vec3(-X.y, Y, 0), color, Vec2(0.0f, 0.0f)));
+			vertices.push_back(VertexPositionColorTexture(Vec3(X.x, Y, 0), color, Vec2(1.0f, 0.0f)));
+			vertices.push_back(VertexPositionColorTexture(Vec3(-X.y, -Y, 0), color, Vec2(0.0f, 1.0f)));
+			vertices.push_back(VertexPositionColorTexture(Vec3(X.x, -Y, 0), color, Vec2(1.0f, 1.0f)));
+
+			auto ptrDraw = GetComponent<PCTSpriteDraw>();
+			ptrDraw->UpdateVertices(vertices);
+		}
+	}
+
+	void UI_PlayerAmmo::OnCreate() {
+		float xPiecesize = 1.0f / (float)m_NumberOfDigits;
+		float helfSize = 0.5f;
+
+		vector<uint16_t> indices;
+		for (UINT i = 0; i < m_NumberOfDigits; i++) {
+			float vertex0 = -helfSize + xPiecesize * (float)i;
+			float vertex1 = vertex0 + xPiecesize;
+			m_BackupVertices.push_back(VertexPositionTexture(Vec3(vertex0, helfSize, 0), Vec2(0.0f, 0.0f)));
+			m_BackupVertices.push_back(VertexPositionTexture(Vec3(vertex1, helfSize, 0), Vec2(0.1f, 0.0f)));
+			m_BackupVertices.push_back(VertexPositionTexture(Vec3(vertex0, -helfSize, 0), Vec2(0.0f, 1.0f)));
+			m_BackupVertices.push_back(VertexPositionTexture(Vec3(vertex1, -helfSize, 0), Vec2(0.1f, 1.0f)));
+			indices.push_back(i * 4 + 0);
+			indices.push_back(i * 4 + 1);
+			indices.push_back(i * 4 + 2);
+			indices.push_back(i * 4 + 1);
+			indices.push_back(i * 4 + 3);
+			indices.push_back(i * 4 + 2);
+		}
+
+		auto ptrTrans = GetComponent<Transform>();
+		ptrTrans->SetPosition(m_pos);
+		ptrTrans->SetScale(m_scale);
+
+		auto ptrDraw = AddComponent<PTSpriteDraw>(m_BackupVertices, indices);
+		ptrDraw->SetTextureResource(m_TextureKey);
+
+		ptrDraw->SetDiffuse(Col4(1.0f, 1.0f, 1.0f, 1.0f));
+
+		SetDrawLayer(12);
+	
+		SetAlphaActive(true);		
+
+	}
+
+	void UI_PlayerAmmo::OnUpdate() {
+		vector<VertexPositionTexture> newVertices;
+		UINT num;
+		int verNum = 0;
+		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+		float ammo;
+		m_gun = player->GetGun();
+		if (m_rem) {
+			if (m_gun) {
+				ammo = player->GetAmmoO();
+			}
+			else {
+				ammo = player->GetAmmoT();
+			}
+		}
+		else {
+			if (m_gun) {
+				ammo = player->GetDAmmoO();
+			}
+			else {
+				ammo = player->GetDAmmoT();
+			}
+		}
+
+		//if (ammo < 10) {
+		//	m_NumberOfDigits = 1;
+		//}
+		//else if (ammo < 100){
+		//	m_NumberOfDigits = 2;
+		//}
+		//else {
+		//	m_NumberOfDigits = 3;
+		//}
+
+
+		for (UINT i = m_NumberOfDigits; i > 0; i--) {
+			UINT base = (UINT)pow(10, i);
+			num = ((UINT)ammo) % base;
+			num = num / (base / 10);
+			Vec2 uv0 = m_BackupVertices[verNum].textureCoordinate;
+			uv0.x = (float)num / 10.0f;
+			auto v = VertexPositionTexture(m_BackupVertices[verNum].position, uv0);
+			newVertices.push_back(v);
+
+			Vec2 uv1 = m_BackupVertices[verNum + 1].textureCoordinate;
+			uv1.x = uv0.x + 0.1f;
+			v = VertexPositionTexture(m_BackupVertices[verNum + 1].position, uv1);
+			newVertices.push_back(v);
+
+			Vec2 uv2 = m_BackupVertices[verNum + 2].textureCoordinate;
+			uv2.x = uv0.x;
+
+			v = VertexPositionTexture(m_BackupVertices[verNum + 2].position, uv2);
+			newVertices.push_back(v);
+
+			Vec2 uv3 = m_BackupVertices[verNum + 3].textureCoordinate;
+			uv3.x = uv0.x + 0.1f;
+
+			v = VertexPositionTexture(m_BackupVertices[verNum + 3].position, uv3);
+			newVertices.push_back(v);
+
+			verNum += 4;
+		}
+		auto ptrDraw = GetComponent<PTSpriteDraw>();
+		ptrDraw->UpdateVertices(newVertices);
+	}
+
+	void UI_PlayerDamage::OnCreate() {
+		float xPiecesize = 1.0f / (float)m_NumberOfDigits;
+		float helfSize = 0.5f;
+
+		vector<uint16_t> indices;
+		for (UINT i = 0; i < m_NumberOfDigits; i++) {
+			float vertex0 = -helfSize + xPiecesize * (float)i;
+			float vertex1 = vertex0 + xPiecesize;
+			m_BackupVertices.push_back(VertexPositionTexture(Vec3(vertex0, helfSize, 0), Vec2(0.0f, 0.0f)));
+			m_BackupVertices.push_back(VertexPositionTexture(Vec3(vertex1, helfSize, 0), Vec2(0.1f, 0.0f)));
+			m_BackupVertices.push_back(VertexPositionTexture(Vec3(vertex0, -helfSize, 0), Vec2(0.0f, 1.0f)));
+			m_BackupVertices.push_back(VertexPositionTexture(Vec3(vertex1, -helfSize, 0), Vec2(0.1f, 1.0f)));
+			indices.push_back(i * 4 + 0);
+			indices.push_back(i * 4 + 1);
+			indices.push_back(i * 4 + 2);
+			indices.push_back(i * 4 + 1);
+			indices.push_back(i * 4 + 3);
+			indices.push_back(i * 4 + 2);
+		}
+
+		auto ptrTrans = GetComponent<Transform>();
+		ptrTrans->SetPosition(m_pos);
+		ptrTrans->SetScale(m_scale);
+
+		auto ptrDraw = AddComponent<PTSpriteDraw>(m_BackupVertices, indices);
+		ptrDraw->SetTextureResource(m_TextureKey);
+
+		ptrDraw->SetDiffuse(Col4(1.0f, 1.0f, 1.0f, 1.0f));
+
+		SetDrawLayer(12);
+
+		SetAlphaActive(true);
+
+	}
+
+	void UI_PlayerDamage::OnUpdate() {
+		vector<VertexPositionTexture> newVertices;
+		UINT num;
+		int verNum = 0;
+		int damage = GetStage()->GetSharedGameObject<Player>(L"Player")->GetDamage();
+
+		for (UINT i = m_NumberOfDigits; i > 0; i--) {
+			UINT base = (UINT)pow(10, i);
+			num = ((UINT)damage) % base;
+			num = num / (base / 10);
+			Vec2 uv0 = m_BackupVertices[verNum].textureCoordinate;
+			uv0.x = (float)num / 10.0f;
+			auto v = VertexPositionTexture(m_BackupVertices[verNum].position, uv0);
+			newVertices.push_back(v);
+
+			Vec2 uv1 = m_BackupVertices[verNum + 1].textureCoordinate;
+			uv1.x = uv0.x + 0.1f;
+			v = VertexPositionTexture(m_BackupVertices[verNum + 1].position, uv1);
+			newVertices.push_back(v);
+
+			Vec2 uv2 = m_BackupVertices[verNum + 2].textureCoordinate;
+			uv2.x = uv0.x;
+
+			v = VertexPositionTexture(m_BackupVertices[verNum + 2].position, uv2);
+			newVertices.push_back(v);
+
+			Vec2 uv3 = m_BackupVertices[verNum + 3].textureCoordinate;
+			uv3.x = uv0.x + 0.1f;
+
+			v = VertexPositionTexture(m_BackupVertices[verNum + 3].position, uv3);
+			newVertices.push_back(v);
+
+			verNum += 4;
+		}
+		auto ptrDraw = GetComponent<PTSpriteDraw>();
+		ptrDraw->UpdateVertices(newVertices);
+	}
+
+
 }
