@@ -107,6 +107,8 @@ namespace basecross {
 				1,0
 				);
 			CreatePinP();
+
+			AddGameObject<UI_TestTimeTime>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
 		}
 
 		catch (...) {

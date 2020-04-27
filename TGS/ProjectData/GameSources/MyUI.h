@@ -966,7 +966,6 @@ namespace basecross {
 	};
 
 
-
 	//------------------------------------------------------------------------------------------------
 	//ÉvÉåÉCÉÑÅ[UI : Class
 	//------------------------------------------------------------------------------------------------
@@ -1105,4 +1104,53 @@ namespace basecross {
 		virtual void OnUpdate()override;
 	};
 
+	class UI_TestTimeTime :public GameObject {
+		shared_ptr<UI_Number> m_second;
+		shared_ptr<UI_Number> m_minute;
+		shared_ptr<UI_Static_Image> m_colon;
+
+		unsigned int m_time;
+		Vec2 m_pos;
+		Vec2 m_scale;
+		Col4 m_color;
+		int m_layer;
+		float m_count;
+
+		wstring m_colonImageName;
+		unsigned int m_digit;
+		float m_space;
+
+		void UpdateTime();
+
+	public:
+		UI_TestTimeTime(const shared_ptr<Stage>& StagePtr,
+			const unsigned int time,
+			const Vec2& pos,
+			const Vec2& scale,
+			const Col4& color,
+			const int layer
+		) :
+			GameObject(StagePtr),
+			m_time(time > 5999 ? 5999 : time),
+			m_pos(pos),
+			m_scale(scale),
+			m_color(color),
+			m_layer(layer),
+			m_second(NULL),
+			m_minute(NULL),
+			m_colon(NULL),
+			m_count(NULL),
+			m_colonImageName(L"Colon.png"),
+			m_digit(2),
+			m_space(10.0f)
+		{}
+		~UI_TestTimeTime() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate2() override;
+
+		unsigned int GetTime() {
+			return m_time;
+		}
+	};
 }
