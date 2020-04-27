@@ -515,7 +515,7 @@ namespace basecross {
 		auto number = stage->AddGameObject<UI_Number>(
 			Vec2(-110.0f, 180.0f - (index * 80.0f)),
 			5,
-			Col4(0.0f, 0.0f, 1.0f, 1.0f),
+			Col4(0.0f, 1.0f, 0.0f, 1.0f),
 			Number::NumberAlign::CENTER,
 			10.0f,
 			Vec2(0.4f),
@@ -1218,5 +1218,56 @@ namespace basecross {
 		res = (value / pow(10, index));
 		res %= 10;
 		return res;
+	}
+
+	void UI_TestTimeTime::OnCreate() {
+		auto stage = GetStage();
+		auto pos = Vec2(60.0f * m_scale.x, 0.0f * m_scale.y);
+		m_second = stage->AddGameObject<UI_Number>(
+			m_pos + pos,
+			m_digit,
+			m_color,
+			Number::NumberAlign::ZERO_RIGHT,
+			m_space,
+			m_scale,
+			m_layer
+			);
+		m_minute = stage->AddGameObject<UI_Number>(
+			m_pos - pos,
+			m_digit,
+			m_color,
+			Number::NumberAlign::ZERO_LEFT,
+			m_space,
+			m_scale,
+			m_layer
+			);
+		m_colon = stage->AddGameObject<UI_Static_Image>(
+			Vec2(64.0f, 128.0f),
+			Vec3(m_pos),
+			Vec3(m_scale),
+			m_layer,
+			m_color,
+			m_colonImageName
+			);
+
+		UpdateTime();
+	}
+
+	void UI_TestTimeTime::OnUpdate2() {
+		auto eTime = App::GetApp()->GetElapsedTime();
+		m_count += eTime;
+
+		if (m_count >= 1.0f && m_time > 0) {
+			m_count = NULL;
+			m_time--;
+			UpdateTime();
+		}
+	}
+
+	void UI_TestTimeTime::UpdateTime() {
+		auto a = m_time / 60;
+		auto b = m_time % 60;
+		m_second->SetValue(b);
+		m_minute->SetValue(a);
 	}
 }
