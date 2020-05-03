@@ -1105,4 +1105,45 @@ namespace basecross {
 		virtual void OnUpdate()override;
 	};
 
+
+	//------------------------------------------------------------------------------------------------
+	//ÉvÉåÉCÉÑÅ[UI : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_Kill_Icon :public UI_Horizontal_Sprite_Image {
+		CharacterType m_type;
+		int m_level;
+		Col4 m_color = Col4(1.0f);
+
+		float m_disTime = 0.5f;
+
+	public:
+		UI_Kill_Icon(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int layer,
+			const CharacterType type,
+			const int level
+		) :
+			UI_Horizontal_Sprite_Image(
+				StagePtr,
+				Vec2(3072.0f, 256.0f),
+				pos,
+				scale,
+				layer,
+				Col4(1.0f, 1.0f, 1.0f, 1.0f),
+				L"PS_Characteres_Level_Sprite.png",
+				Vec2(256.0f, 256.0f)
+			),
+			m_type(type),
+			m_level(level)
+		{}
+		~UI_Kill_Icon() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+	};
+
+
 }

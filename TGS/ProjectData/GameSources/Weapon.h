@@ -89,6 +89,26 @@ namespace basecross {
 	};
 
 
+	class Weapon :public GameObject {
+		Vec3 m_pos;
+		Vec3 m_rot;
+		Vec3 m_scale;
+
+		int m_type;
+		wstring text;
+
+	public:
+
+
+		Weapon(const shared_ptr<Stage>& StagePtr) :GameObject(StagePtr){}
+		~Weapon() {}
+
+		void Gun();
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+	};
+
+
 	class Grenade :public GameObject {
 		Vec3 m_pos;
 		Quat m_rot;

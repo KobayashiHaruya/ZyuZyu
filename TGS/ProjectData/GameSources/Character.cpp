@@ -35,12 +35,8 @@ namespace basecross {
 		GetStage()->SetDrawPerformanceActive(true);
 
 		auto ptrColl = AddComponent<CollisionCapsule>();
-		//ptrColl->SetMakedSize(Vec3(1.25f, 1.75f, 1.25f));
-		//ptrColl->SetMakedHeight(4.0f);
-		//ptrColl->SetMakedRadius(1.0f);
 		ptrColl->SetMakedDiameter(2.5f);
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
-		//ptrColl->SetDrawActive(true);
 
 	}
 
@@ -206,7 +202,7 @@ namespace basecross {
 		if (ptrCamera) {
 			//MyCameraに注目するオブジェクト（プレイヤー）の設定
 			ptrCamera->SetTargetObject(GetThis<Character>());
-			ptrCamera->SetTargetToAt(Vec3(0, 0.25f, 0));
+			ptrCamera->SetTargetToAt(Vec3(0.0f, 0.25f, 0));
 		}
 
 	}
@@ -287,45 +283,6 @@ namespace basecross {
 
 	}
 
-	void Character::EnemyMove() {
-		auto ptrTransform = GetComponent<Transform>();
-		//auto  GetStage()->GetSharedGameObject<Player>(L"Player")->GetComponent<Transform>();
-
-		float time = App::GetApp()->GetElapsedTime();
-		auto grav = GetComponent<Gravity>();
-		Vec3 speed = ptrTransform->GetPosition();
-
-		speed += time * m_defaultSpeed;
-		ptrTransform->SetPosition(speed);
-
-		grav->StartJump(Vec3(0.0f, m_jumpPower, 0.0f));
-		m_jump = false;
-	}
-
-	Vec3 Character::EnemyMovePoint() {
-		int ran = rand() % 4;
-		Vec3 point;
-		switch (ran)
-		{
-		case 0:
-			point = Vec3(20.0f, 0.0f, 0.0f);
-			break;
-		case 1:
-			point = Vec3(0.0f, 0.0f, 20.0f);
-			break;
-		case 2:
-			point = Vec3(-20.0f, 0.0f, 0.0f);
-			break;
-		case 3:
-			point = Vec3(0.0f, 0.0f, -20.0f);
-			break;
-		default:
-			break;
-		}
-
-		return point;
-	}
-
 	void Character::PlayerRotMove() {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
@@ -386,7 +343,7 @@ namespace basecross {
 
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) || KeyState.m_bPressedKeyTbl['E']) && m_smokeG) {
 			GetStage()->AddGameObject<Grenade>(
-				ptr->GetPosition(),
+				ptr->GetPosition() + Vec3(2.0f,0.0f,0.0f),
 				ptr->GetQuaternion(),
 				50.0f, 10.0f, true, ID
 				);
@@ -395,7 +352,7 @@ namespace basecross {
 		}
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || KeyState.m_bPressedKeyTbl['Q']) && m_toriG) {
 			GetStage()->AddGameObject<Grenade>(
-				ptr->GetPosition(),
+				ptr->GetPosition() + Vec3(2.0f, 0.0f, 0.0f),
 				ptr->GetQuaternion(),
 				50.0f, 10.0f, false, ID
 				);
@@ -405,7 +362,7 @@ namespace basecross {
 	}
 
 	void Character::Respawn() {
-		int Rand = rand() % 5;
+		int Rand = rand() % 8;
 		const float activeY = -25.0f;
 		auto PtrTransform = GetComponent<Transform>();
 		//ランダムに出すように
@@ -461,6 +418,11 @@ namespace basecross {
 
 		if (Other->FindTag(L"Torimoti")) {
 			Torimoti(true);
+			AddLevel();
+		}
+
+		if (Other->FindTag(L"Smoke")) {
+			AddLevel();
 		}
 
 		if (Other->FindTag(L"Bullet")) {
@@ -473,9 +435,7 @@ namespace basecross {
 				BulletDamage(Other->GetBulletType(), Other->GetComponent<Transform>()->GetForword());
 			}
 		}
-		if (Other->FindTag(L"Weapon")) {
 
-		}
 		if (Other->FindTag(L"Oil")) {
 			TouchOil();
 			Respawn();
@@ -483,12 +443,27 @@ namespace basecross {
 	}
 
 	void Character::OnCollisionExcute(shared_ptr<GameObject>& Other) {
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+
 		if (Other->FindTag(L"Object")) {
 			m_jump = true;
 		}
 
 		if (Other->FindTag(L"Torimoti")) {
 			Torimoti(true);
+		}
+
+		if (Other->FindTag(L"Weapon")) {
+			if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B) || KeyState.m_bPressedKeyTbl['F'])) {
+				if (Other->FindTag(L"SetGun")) {
+
+				}
+				else if (Other->FindTag(L"FallGun")) {
+					PickGun(Other->GetBulletType());
+					GetStage()->RemoveGameObject<GameObject>(Other);
+				}
+			}
 		}
 
 		if (Other->FindTag(L"Explosion")) {
@@ -526,6 +501,14 @@ namespace basecross {
 		auto kill = CharacterKillDetails_s({ status.type, status.level });
 		AddKillCharacter(kill);
 		AddKill(1);
+
+		GetStage()->AddGameObject<UI_Kill_Icon>(
+			Vec3(0.0f, -350.0f, 0.0f),
+			Vec3(0.8f, 0.8f, 1.0f),
+			100,
+			status.type,
+			status.level
+			);
 	}
 
 	//PinPに自身を指定して表示する
@@ -574,6 +557,11 @@ namespace basecross {
 		m_myData.level = level;
 	}
 
+	void Character::AddLevel() {
+		if(m_myData.level < 3)
+		m_myData.level++;
+	}
+
 	void Character::AddKill(const int kill) {
 		m_myData.kill += kill;
 	}
@@ -583,7 +571,7 @@ namespace basecross {
 	}
 
 
-	void Character::BulletState(BulletS state,bool weapon) {
+	void Character::BulletState(int state, bool weapon, bool same) {
 		int maxAmmo;
 		int reloadAmmo;
 		float interval;
@@ -650,7 +638,7 @@ namespace basecross {
 			break;
 		case BulletS::Wind:
 			maxAmmo = 0;
-			reloadAmmo = 900;
+			reloadAmmo = 2000;
 			interval = 0.0f;
 			reload = 1;
 			barrage = true;
@@ -660,28 +648,43 @@ namespace basecross {
 		}
 
 		if (weapon) {
-			m_ammoO = reloadAmmo;
-			m_reAmmoO = reloadAmmo;
-			m_maxAmmoO = maxAmmo;
-			m_intTimeO = 0;
-			m_maxIntTimeO = interval;
-			m_reTimeO = 0;
-			m_maxreTimeO = reload;
-			m_barrageO = barrage;
+			if (same)
+			{
+				m_maxAmmoO += maxAmmo + reloadAmmo;
+				m_barrageO = barrage;
+			}
+			else {
+				m_ammoO = reloadAmmo;
+				m_reAmmoO = reloadAmmo;
+				m_maxAmmoO = maxAmmo;
+				m_intTimeO = 0;
+				m_maxIntTimeO = interval;
+				m_reTimeO = 0;
+				m_maxreTimeO = reload;
+				m_barrageO = barrage;
+				m_weaponO = BulletS(state);
+			}
 		}
 		else {
-			m_ammoT = reloadAmmo;
-			m_reAmmoT = reloadAmmo;
-			m_maxAmmoT = maxAmmo;
-			m_intTimeT = 0;
-			m_maxIntTimeT = interval;
-			m_reTimeT = 0;
-			m_maxreTimeT = reload;
-			m_barrageT = barrage;
+			if (same)
+			{
+				m_maxAmmoT += maxAmmo + reloadAmmo;
+				m_barrageT = barrage;
+			}
+			else {
+				m_ammoT = reloadAmmo;
+				m_reAmmoT = reloadAmmo;
+				m_maxAmmoT = maxAmmo;
+				m_intTimeT = 0;
+				m_maxIntTimeT = interval;
+				m_reTimeT = 0;
+				m_maxreTimeT = reload;
+				m_barrageT = barrage;
+				m_weaponT = BulletS(state);
+			}
 		}
 
 	}
-
 
 	void Character::BulletFire() {
 
@@ -701,11 +704,11 @@ namespace basecross {
 			m_intTimeO = 0;
 			m_intTimeT = 0;
 
-			if (BulletS::None == m_weaponT) {
-				m_weapon = true;
-			}
 		}
 
+		if (BulletS::None == m_weaponT) {
+			m_weapon = true;
+		}
 
 		if (m_weapon) {
 			if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X) || KeyState.m_bPressedKeyTbl['R']) && (m_ammoO != m_reAmmoO) && !m_reload) {
@@ -756,6 +759,8 @@ namespace basecross {
 
 						for (size_t i = 0; i < 20; i++)
 						{
+							//Quat X;
+							//X.x = (i * 3.14f) / 180.0f;
 							auto bullet = GetStage()->AddGameObject<Bullet>(
 								ptr->GetPosition(),
 								ptr->GetQuaternion(),
@@ -944,6 +949,24 @@ namespace basecross {
 
 	}
 
+	void Character::PickGun(int state) {
+		bool same = false;
+		if (BulletS::None == m_weaponT) {
+			BulletState(state, false);
+		}
+		else {
+			if (m_weapon) {
+				if (m_weaponO == state)
+					same = true;
+			}
+			else {
+				if (m_weaponT == state) {
+					same = true;
+				}
+			}
+			BulletState(state, m_weapon, same);
+		}
+	}
 
 	void Character::DrawString() {
 		auto fps = App::GetApp()->GetStepTimer().GetFramesPerSecond();

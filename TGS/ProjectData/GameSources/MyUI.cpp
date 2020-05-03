@@ -1472,4 +1472,45 @@ namespace basecross {
 	}
 
 
+	//------------------------------------------------------------------------------------------------
+	//キルアイコン : Class
+	//------------------------------------------------------------------------------------------------
+
+	void UI_Kill_Icon::OnCreate() {
+		if (m_level < 1) m_level = 1;
+		if (m_level > 3) m_level = 3;
+		m_level = m_level - 1;
+
+		int index = 0;
+		switch (m_type)
+		{
+		case CharacterType::SHRIMP:
+			index = 3;
+			break;
+		case CharacterType::CHICKEN:
+			index = 6;
+			break;
+		case CharacterType::DOUGHNUT:
+			index = 9;
+			break;
+		}
+		index += m_level;
+		Draw();
+		SetIndex(index);
+	}
+
+	void UI_Kill_Icon::OnUpdate() {
+		auto ptrDraw = GetComponent<PCTSpriteDraw>();
+		float time = App::GetApp()->GetElapsedTime();
+		m_disTime -= time;
+		if (m_color.w <= 0.0f) {
+			GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
+		}
+		if (m_disTime <= 0.0f) {
+			m_color.w -= time * 5.0f;
+		}
+		ptrDraw->SetDiffuse(m_color);
+	}
+
+
 }

@@ -59,7 +59,7 @@ namespace basecross {
 		case BulletS::Wind:
 			speed = 80.0f;
 			grav = 5.0f;
-			time = 0.1f;
+			time = 0.2f;
 			scale = Vec3(1.0f);
 			break;
 		default:
@@ -92,7 +92,7 @@ namespace basecross {
 		//PtrDraw->SetTextureResource(L"trace.png");
 		//SetAlphaActive(true);
 
-		auto ptrColl = AddComponent<CollisionSphere>();
+		auto ptrColl = AddComponent<CollisionRect>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 
 
@@ -147,6 +147,86 @@ namespace basecross {
 	}
 
 
+	void Weapon::Gun() {
+		int Rand = rand() % 8 + 1;
+
+		m_pos.x = rand() % 60 + -30;
+		m_pos.y = 0.0f;
+		m_pos.z = rand() % 60 + -30;
+
+		switch (Rand)
+		{
+		case 0:
+			text = L"None.png";
+			break;
+		case 1:
+			text = L"Assault.png";
+			break;
+		case 2:
+			text = L"Hand.png";
+			break;
+		case 3:
+			text = L"Shot.png";
+			break;
+		case 4:
+			text = L"SMG.png";
+			break;
+		case 5:
+			text = L"Rocket.png";
+			break;
+		case 6:
+			text = L"Sniper.png";
+			break;
+		case 7:
+			text = L"Laser.png";
+			break;
+		case 8:
+			text = L"Wind.png";
+			break;
+		default:
+			break;
+		}
+
+		m_type = Rand;
+
+	}
+
+	void Weapon::OnCreate() {
+		auto ptr = GetComponent<Transform>();
+
+		Gun();
+
+		ptr->SetPosition(m_pos);
+		ptr->SetRotation(Vec3(0.0f));
+		ptr->SetScale(Vec3(1.0f));
+
+		//‰e‚ð‚Â‚¯‚é
+		auto ShadowPtr = AddComponent<Shadowmap>();
+		ShadowPtr->SetMeshResource(L"DEFAULT_CUBE");
+
+		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
+		PtrDraw->SetMeshResource(L"DEFAULT_CUBE");
+
+		PtrDraw->SetTextureResource(text);
+		SetAlphaActive(true);
+
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetAfterCollision(AfterCollision::Auto);
+
+		auto gravity = AddComponent<Gravity>();
+
+		SetBulletType(m_type);
+
+		AddTag(L"Weapon");
+		AddTag(L"FallGun");
+
+	}
+
+	void Weapon::OnUpdate() {
+
+	}
+
+
 
 	void Grenade::Move() {
 		auto trans = GetComponent<Transform>();
@@ -171,8 +251,8 @@ namespace basecross {
 		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
 		PtrDraw->SetMeshResource(L"DEFAULT_CAPSULE");
 
-		PtrDraw->SetTextureResource(L"trace.png");
-		SetAlphaActive(true);
+		//PtrDraw->SetTextureResource(L"trace.png");
+		//SetAlphaActive(true);
 
 		auto ptrColl = AddComponent<CollisionCapsule>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
@@ -189,7 +269,7 @@ namespace basecross {
 	}
 
 	void Grenade::OnCollisionEnter(shared_ptr<GameObject>& Other) {
-		if (Other->GetID() != ID && !Other->FindTag(L"Grenade")) {
+		if (/*Other->GetID() != ID && */!Other->FindTag(L"Grenade")) {
 			auto ptr = GetComponent<Transform>();
 			if (m_grenade) {
 				GetStage()->AddGameObject<SmokeGrenade>(
@@ -235,8 +315,8 @@ namespace basecross {
 		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
 		PtrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
-		PtrDraw->SetTextureResource(L"trace.png");
-		SetAlphaActive(true);
+		//PtrDraw->SetTextureResource(L"trace.png");
+		//SetAlphaActive(true);
 
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
@@ -285,8 +365,8 @@ namespace basecross {
 		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
 		PtrDraw->SetMeshResource(L"DEFAULT_CUBE");
 
-		PtrDraw->SetTextureResource(L"trace.png");
-		SetAlphaActive(true);
+		//PtrDraw->SetTextureResource(L"trace.png");
+		//SetAlphaActive(true);
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);

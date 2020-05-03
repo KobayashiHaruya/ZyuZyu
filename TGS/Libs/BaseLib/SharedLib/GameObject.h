@@ -21,7 +21,7 @@ namespace basecross {
 
 		int m_DrawLayer = 0;	//描画レイヤー
 		int m_ID = 0;
-		int m_bulletT = 0;
+		int m_bulletT;
 		set<wstring> m_TagSet;	//タグのセット
 		set<int> m_NumTagSet;	//数字タグのセット
 

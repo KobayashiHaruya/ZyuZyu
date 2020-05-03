@@ -105,7 +105,10 @@ namespace basecross{
 			//ƒŠƒ\[ƒXì¬
 			CreateResourses();
 
-			SetGameStage(GameStageKey::title);
+			SetGameStage(GameStageKey::game);
+	
+			//App::GetApp()->GetStepTimer().GetFramesPerSecond();
+			//App::GetApp()->
 		}
 		catch (...) {
 			throw;

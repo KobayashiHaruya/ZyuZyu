@@ -93,15 +93,14 @@ namespace basecross{
 		void PlayerRotMove();
 		void PlayerUI();
 
-		void EnemyMove();
-		Vec3 EnemyMovePoint();
+		void PickGun(int state);
 
 		void Respawn();
 		void Weapons();
 		void GrenadeFire();
 		void BulletDamage(int state, Vec3 rot);
 		void BulletFire();
-		void BulletState(BulletS state,bool weapon);
+		void BulletState(int state, bool weapon, bool same = false);
 		void CharaState();
 		void AttackHit(Vec3 rot);
 
@@ -156,6 +155,7 @@ namespace basecross{
 		void SetMyData(const CharacterStatus_s& data);
 		void AddScore(const int score);
 		void SetLevel(const unsigned int level);
+		void AddLevel();
 		void AddKill(const int kill);
 		void AddDeath(const int death);
 	};
