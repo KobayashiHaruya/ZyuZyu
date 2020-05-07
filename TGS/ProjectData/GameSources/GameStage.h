@@ -51,11 +51,14 @@ namespace basecross {
 
 		//bool gather = false;
 
-		//float m_time_ON = 0;
-
 
 
 	public:
+
+		float m_time_ON = 0;
+
+		float Get_time_ON() const { return m_time_ON; }
+
 		//\’z‚Æ”jŠü
 		GameStage() :
 			Stage(),

@@ -119,4 +119,28 @@ namespace basecross {
 		virtual void OnUpdate()override;
 	};
 
+//--------------------------------------------------------------------------------------
+///	スタートスイッチ
+//--------------------------------------------------------------------------------------
+
+	class Time_Start : public Sprite {
+
+	public:
+		Time_Start(const shared_ptr<Stage>& StagePtr,
+			const wstring& TextureKey,
+			const Vec2& startScale,
+			const Vec2& startPos);
+
+		virtual ~Time_Start() {}
+
+		float time_ON = 0;
+
+		//初期化
+		virtual void OnCreate() override;
+		virtual void OnUpdate()override;
+
+	};
+
+
+
 }

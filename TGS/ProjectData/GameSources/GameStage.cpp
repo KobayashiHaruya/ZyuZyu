@@ -57,6 +57,11 @@ namespace basecross {
 		Vec2(225.0f, 225.0f),
 		Vec3(0.0f, 0.0f, 0.0f));
 
+	//時間を更新する
+	auto Time = AddGameObject<Time_Start>(L"START.jpg",
+			Vec2(230.0f, 230.0f),
+			Vec2(-110.0f, 0.0f));
+
 		//AddGameObject<Time10>(1, L"0_9.png", true,
 		//	Vec2(25.0f, 25.0f),
 		//	Vec3(850.0f, 500.0f, 0.0f));
@@ -111,11 +116,16 @@ namespace basecross {
 			CreatePinP();
 
 			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
+
 		}
+
+
 
 		catch (...) {
 			throw;
+
 		}
+	
 	}
 
 
@@ -126,79 +136,96 @@ namespace basecross {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
 		}
 
-		//m_time_ON += 0.1;
+		m_time_ON += 0.1;
 
-		//if(m_time_ON > 0.0 && m_time_ON < 0.2 )
-		//{
-		//	if (m_TotalTime <= 000.0f) {
-		//		m_TotalTime = 3.0f;
-		//	}
-		//	//時間を更新する
-		//	auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
-		//	ptrScor->SetScore(m_TotalTime);
+		if(m_time_ON > 0.0 && m_time_ON < 0.2 )
+		{
 
-		//}
+				m_TotalTime = 3.0f;
 
-		//if (m_time_ON > 0.3 && m_time_ON < 0.4)
-		//{
+			//時間を更新する
+			auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
+			ptrScor->SetScore(m_TotalTime);
 
-		//	std::this_thread::sleep_for(std::chrono::seconds(2));      // 2 秒
+		}
 
-		//}
+		if (m_time_ON > 0.3 && m_time_ON < 0.4)
+		{
 
-		//if (m_time_ON > 0.4 && m_time_ON < 0.5)
-		//{
-		//	if (m_TotalTime2 <= 000.0f) {
-		//		m_TotalTime2 = 2.0f;
-		//	}
-		//	//時間を更新する
-		//	auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
-		//	ptrScor->SetScore(m_TotalTime2);
+			std::this_thread::sleep_for(std::chrono::seconds(1));      // 1 秒
 
-		//}
+		}
 
-		//if (m_time_ON > 0.6 && m_time_ON < 0.7)
-		//{
+		if (m_time_ON > 0.4 && m_time_ON < 0.5)
+		{
+				m_TotalTime2 = 2.0f;
 
-		//	std::this_thread::sleep_for(std::chrono::seconds(2));      // 2 秒
+			//時間を更新する
+			auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
+			ptrScor->SetScore(m_TotalTime2);
 
-		//}
+		}
 
-		//if (m_time_ON > 0.7 && m_time_ON < 0.8)
-		//{
-		//	if (m_TotalTime3 <= 000.0f) {
-		//		m_TotalTime3 = 1.0f;
-		//	}
-		//	//時間を更新する
-		//	auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
-		//	ptrScor->SetScore(m_TotalTime3);
+		if (m_time_ON > 0.6 && m_time_ON < 0.7)
+		{
 
-		//}
+			std::this_thread::sleep_for(std::chrono::seconds(1));      // 1 秒
 
-		//if (m_time_ON > 0.9 && m_time_ON < 1.0)
-		//{
+		}
 
-		//	std::this_thread::sleep_for(std::chrono::seconds(2));      // 2 秒
+		if (m_time_ON > 0.7 && m_time_ON < 0.8)
+		{
 
-		//}
+				m_TotalTime3 = 1.0f;
 
-		//if (m_time_ON > 1.0 && m_time_ON < 1.1)
-		//{
-		//	if (m_TotalTime4 <= 000.0f) {
-		//		m_TotalTime4 = 0.0f;
-		//	}
-		//	//時間を更新する
-		//	auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
-		//	ptrScor->SetScore(m_TotalTime4);
+			//時間を更新する
+			auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
+			ptrScor->SetScore(m_TotalTime3);
 
-		//}
+		}
 
-		//if (m_time_ON > 1.1 && m_time_ON < 1.2)
-		//{
-		//	//時間を更新する
-		//	auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
-		//	ptrScor->SetScore(m_TotalTime3);
-		//}
+		if (m_time_ON > 0.9 && m_time_ON < 1.0)
+		{
+
+			std::this_thread::sleep_for(std::chrono::seconds(1));      // 1 秒
+
+		}
+
+		if (m_time_ON > 1.0 && m_time_ON < 1.1)
+		{
+			if (m_TotalTime4 <= 000.0f) {
+				m_TotalTime4 = 0.0f;
+			}
+			//時間を更新する
+			auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
+			ptrScor->SetScore(m_TotalTime4);
+
+			ptrScor->SetDrawActive(false);
+
+		}
+
+		if (m_time_ON > 1.1 && m_time_ON < 1.2)
+		{
+			//時間を更新する
+		//	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+		}
+
+		if (m_time_ON > 1.2 && m_time_ON < 1.3)
+		{
+			//std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		}
+
+		if (m_time_ON > 1.3 && m_time_ON < 1.4)
+		{
+
+
+		}
+
+		if (m_time_ON > 1.5)
+		{	
+			m_time_ON = 10;
+		}
 
 	//float TimeEat = 0.01;
 	//m_TotalTime -= TimeEat;
