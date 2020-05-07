@@ -9,7 +9,6 @@ namespace basecross {
 		float X = m_Vertex.x / 2.0f;
 		float Y = m_Vertex.y / 2.0f;
 
-
 		vector<VertexPositionColorTexture> vertices;
 		Col4 color = Col4(1.0f, 1.0f, 1.0f, 1.0f);
 		vertices.push_back(VertexPositionColorTexture(Vec3(-X, Y, 0), color, Vec2(0.0f, 0.0f)));
@@ -1226,38 +1225,41 @@ namespace basecross {
 	//------------------------------------------------------------------------------------------------
 
 
+	void UI_Player::OnCreate() {
+		Draw();
+	}
+
 	void UI_PlayerGun::OnCreate() {
 		Draw();
 	}
 
 	void UI_PlayerGun::OnUpdate() {
 		bool weapon = GetStage()->GetSharedGameObject<Player>(L"Player")->GetGun();
+		auto trans = GetComponent<Transform>();
 		if (weapon) {
-			switch (m_weapon)
-			{
-			case 0:
-				break;
-			case 1:
-				SetDrawLayer(m_layer + 1);
-				break;
-			case 2:
-				SetDrawLayer(m_layer);
-				break;
-			}
+			trans->SetScale(m_scale);
 		}
 		else {
-			switch (m_weapon)
-			{
-			case 0:
-				break;
-			case 1:
-				SetDrawLayer(m_layer);
-				break;
-			case 2:
-				SetDrawLayer(m_layer + 1);
-				break;
-			}
+			trans->SetScale(Vec3(-m_scale.x, m_scale.y, m_scale.z));
 		}
+
+	}
+
+
+	void UI_PlayerWeapon::OnCreate() {
+		Draw();
+	}
+
+	void UI_PlayerWeapon::OnUpdate() {
+		int index;
+		if (m_weapon) {
+			index = GetStage()->GetSharedGameObject<Player>(L"Player")->GetWeaponO();
+		}
+		else {
+
+			index = GetStage()->GetSharedGameObject<Player>(L"Player")->GetWeaponT();
+		}
+		SetIndex(index);
 
 	}
 
@@ -1324,7 +1326,7 @@ namespace basecross {
 
 		ptrDraw->SetDiffuse(Col4(1.0f, 1.0f, 1.0f, 1.0f));
 
-		SetDrawLayer(12);
+		SetDrawLayer(15);
 	
 		SetAlphaActive(true);		
 
@@ -1520,4 +1522,45 @@ namespace basecross {
 		m_second->SetValue(b);
 		m_minute->SetValue(a);
 	}
+
+	//------------------------------------------------------------------------------------------------
+	//キルアイコン : Class
+	//------------------------------------------------------------------------------------------------
+
+	void UI_Kill_Icon::OnCreate() {
+		if (m_level < 1) m_level = 1;
+		if (m_level > 3) m_level = 3;
+		m_level = m_level - 1;
+
+		int index = 0;
+		switch (m_type)
+		{
+		case CharacterType::SHRIMP:
+			index = 3;
+			break;
+		case CharacterType::CHICKEN:
+			index = 6;
+			break;
+		case CharacterType::DOUGHNUT:
+			index = 9;
+			break;
+		}
+		index += m_level;
+		Draw();
+		SetIndex(index);
+	}
+
+	void UI_Kill_Icon::OnUpdate() {
+		auto ptrDraw = GetComponent<PCTSpriteDraw>();
+		float time = App::GetApp()->GetElapsedTime();
+		m_disTime -= time;
+		if (m_color.w <= 0.0f) {
+			GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
+		}
+		if (m_disTime <= 0.0f) {
+			m_color.w -= time * 5.0f;
+		}
+		ptrDraw->SetDiffuse(m_color);
+	}
+
 }

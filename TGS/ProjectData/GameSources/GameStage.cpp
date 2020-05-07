@@ -12,7 +12,7 @@ namespace basecross {
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
 	void GameStage::CreateViewLight() {
-		const Vec3 eye(0.0f, -10.0f, -15.0f);
+		const Vec3 eye(0.0f, -6.0f, -6.0f);
 		const Vec3 at(0.0f);
 
 		//auto PtrView = CreateView<SingleView>();
@@ -71,6 +71,16 @@ namespace basecross {
 	}
 
 
+	void GameStage::WeaponUpdate() {
+		m_weaponTime -= App::GetApp()->GetElapsedTime();
+
+		if (m_weaponTime <= 0.0f) {
+			AddGameObject<Weapon>();
+			m_weaponTime = 10.0f;
+		}
+
+	}
+
 
 	void GameStage::OnCreate() {
 		try {
@@ -97,15 +107,44 @@ namespace basecross {
 			m_player = AddGameObject<Player>(
 				CharacterType::SHRIMP,
 				true,
-				10,1
+				0, 0
 				);
 			SetSharedGameObject(L"Player", m_player);
 
-			m_enemy = AddGameObject<Enemy>(
-				CharacterType::CHICKEN,
-				false,
-				1,0
-				);
+			for (int i = 1; i < 8; i++) {
+
+				CharacterType p;
+				int Rand = rand() % 5;
+				switch (Rand) {
+				case 0:
+					p = CharacterType::CHICKEN;
+					break;
+				case 1:
+					p = CharacterType::DOUGHNUT;
+					break;
+				case 2:
+					p = CharacterType::POTATO;
+					break;
+				case 3:
+					p = CharacterType::SHRIMP;
+					break;
+				}
+
+				m_enemy = AddGameObject<Enemy>(
+					p,
+					false,
+					i, i
+					);
+			}
+
+			for (int i = 0; i < 5; i++) {
+				AddGameObject<Weapon>();
+			}
+			m_weaponTime = 10.0f;
+
+			AddGameObject<GatlingGun>();
+
+
 			CreatePinP();
 
 			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
@@ -124,41 +163,7 @@ namespace basecross {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
 		}
 
-		/*float TimeEat = App::GetApp()->GetElapsedTime();
-		float TimeEat2 = App::GetApp()->GetElapsedTime();
-		float TimeEat3 = App::GetApp()->GetElapsedTime();
-
-		TimeEat = 0.01;
-		m_TotalTime -= TimeEat;
-		TimeEat2 = 0.001;
-		m_TotalTime2 -= TimeEat2;
-		TimeEat3 = 0.00016653;
-		m_TotalTime3 -= TimeEat3;
-		if (m_TotalTime <= 000.0f) {
-			m_TotalTime = 9.999f;
-		}
-		if (m_TotalTime2 <= 000.0f) {
-			m_TotalTime2 = 5.999f;
-		}
-		if (m_TotalTime3 <= 000.0f) {
-			m_TotalTime3 = 2.999f;
-		}*/
-		//else if (m_TotalTime3 > 1.98f && m_TotalTime3 <= 0.98)
-		//{
-		//	m_TotalTime3 = 1.579f;
-		//}
-		//スコアを更新する
-		//auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
-		//ptrScor->SetScore(m_TotalTime);
-
-		////スコアを更新する
-		//auto ptrScor2 = GetSharedGameObject<Time10>(L"Time10");
-		//ptrScor2->SetScore(m_TotalTime2);
-
-		////スコアを更新する
-		//auto ptrScor3 = GetSharedGameObject<Time100>(L"Time100");
-		//ptrScor3->SetScore(m_TotalTime3);
-
+		WeaponUpdate();
 		ShowPause();
 	}
 

@@ -30,6 +30,9 @@ namespace basecross {
 
 		void CreatePinP();
 
+		float m_weaponTime;
+		void WeaponUpdate();
+
 		//ƒg[ƒ^ƒ‹ŠÔ
 		float m_TotalTime;
 

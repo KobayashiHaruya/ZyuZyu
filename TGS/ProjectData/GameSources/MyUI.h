@@ -970,9 +970,35 @@ namespace basecross {
 	//プレイヤーUI : Class
 	//------------------------------------------------------------------------------------------------
 
+	class UI_Player : public UI_Base {
+	public:
+		UI_Player(const shared_ptr<Stage>& StagePtr,
+			const Vec2& vertex,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int& layer,
+			const Col4& color,
+			const wstring& textures
+		) :
+			UI_Base(
+				StagePtr,
+				vertex,
+				pos,
+				scale,
+				layer,
+				color,
+				textures
+			)
+		{}
+		~UI_Player() {}
+
+		virtual void OnCreate() override;
+	};
+
 	class UI_PlayerGun : public UI_Base {
 		int m_layer;
 		int m_weapon;
+		Vec3 m_scale;
 	public:
 		UI_PlayerGun(const shared_ptr<Stage>& StagePtr,
 			const Vec2& vertex,
@@ -993,12 +1019,41 @@ namespace basecross {
 				textures
 			),
 			m_weapon(weapon),
-			m_layer(layer)
+			m_layer(layer),
+			m_scale(scale)
 		{}
 		~UI_PlayerGun() {}
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
+	};
+
+	class UI_PlayerWeapon :public UI_Horizontal_Sprite_Image {
+		bool m_weapon;
+	public:
+		UI_PlayerWeapon(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int layer,
+			const bool& weapon
+		) :
+			UI_Horizontal_Sprite_Image(
+				StagePtr,
+				Vec2(1287.0f, 95.0f),
+				pos,
+				scale,
+				layer,
+				Col4(1.0f, 1.0f, 1.0f, 1.0f),
+				L"Guns.png",
+				Vec2(143.0f, 95.0f)
+			),
+			m_weapon(weapon)
+		{}
+		~UI_PlayerWeapon() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
 	};
 
 	class UI_PlayerGrenade : public UI_Base {
@@ -1153,4 +1208,44 @@ namespace basecross {
 			return m_time;
 		}
 	};
+
+	//------------------------------------------------------------------------------------------------
+	//プレイヤーUI : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_Kill_Icon :public UI_Horizontal_Sprite_Image {
+		CharacterType m_type;
+		int m_level;
+		Col4 m_color = Col4(1.0f);
+
+		float m_disTime = 0.5f;
+
+	public:
+		UI_Kill_Icon(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int layer,
+			const CharacterType type,
+			const int level
+		) :
+			UI_Horizontal_Sprite_Image(
+				StagePtr,
+				Vec2(3072.0f, 256.0f),
+				pos,
+				scale,
+				layer,
+				Col4(1.0f, 1.0f, 1.0f, 1.0f),
+				L"PS_Characteres_Level_Sprite.png",
+				Vec2(256.0f, 256.0f)
+			),
+			m_type(type),
+			m_level(level)
+		{}
+		~UI_Kill_Icon() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+	};
+
 }
