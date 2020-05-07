@@ -382,14 +382,14 @@ namespace basecross {
 		// ドローコンポーネントを取得
 		auto ptrDraw = GetComponent<PCTSpriteDraw>();
 
-		if (time_ON > 1.15 && time_ON < 2.5) {
+		if (time_ON > 1.15 && time_ON < 10.0) {
 			// スタートに張り替える
             ptrDraw->SetDrawActive(true);
-			ptrDraw->SetTextureResource(L"START.jpg");
+			ptrDraw->SetTextureResource(L"Start.png");
 		}
 		else {
 			// その他は張り替える
-			ptrDraw->SetTextureResource(L"START.jpg");
+			ptrDraw->SetTextureResource(L"Start.png");
 			ptrDraw->SetDrawActive(false);			
 		}
 	}

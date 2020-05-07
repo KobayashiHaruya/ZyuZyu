@@ -58,9 +58,9 @@ namespace basecross {
 		Vec3(0.0f, 0.0f, 0.0f));
 
 	//éûä‘ÇçXêVÇ∑ÇÈ
-	auto Time = AddGameObject<Time_Start>(L"START.jpg",
-			Vec2(230.0f, 230.0f),
-			Vec2(-110.0f, 0.0f));
+	auto Time = AddGameObject<Time_Start>(L"Start.png",
+			Vec2(800.0f, 400.0f),
+			Vec2(-400.0f, 0.0f));
 
 		//AddGameObject<Time10>(1, L"0_9.png", true,
 		//	Vec2(25.0f, 25.0f),
@@ -152,7 +152,7 @@ namespace basecross {
 		if (m_time_ON > 0.3 && m_time_ON < 0.4)
 		{
 
-			std::this_thread::sleep_for(std::chrono::seconds(1));      // 1 ïb
+			std::this_thread::sleep_for(std::chrono::seconds(2));      // 1 ïb
 
 		}
 
@@ -169,7 +169,7 @@ namespace basecross {
 		if (m_time_ON > 0.6 && m_time_ON < 0.7)
 		{
 
-			std::this_thread::sleep_for(std::chrono::seconds(1));      // 1 ïb
+			std::this_thread::sleep_for(std::chrono::seconds(2));      // 1 ïb
 
 		}
 
@@ -187,7 +187,7 @@ namespace basecross {
 		if (m_time_ON > 0.9 && m_time_ON < 1.0)
 		{
 
-			std::this_thread::sleep_for(std::chrono::seconds(1));      // 1 ïb
+			std::this_thread::sleep_for(std::chrono::seconds(2));      // 1 ïb
 
 		}
 
