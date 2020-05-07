@@ -5,6 +5,8 @@
 
 #include "stdafx.h"
 #include "Project.h"
+#include <chrono>
+#include <thread>
 
 namespace basecross {
 
@@ -51,21 +53,26 @@ namespace basecross {
 
 	void GameStage::CreateTime() {
 		
-		/*AddGameObject<Time01>(1,L"0_9.png",true,
-			Vec2(25.0f, 25.0f),
-			Vec3(900.0f, 500.0f, 0.0f));
+	AddGameObject<Time01>(1, L"0_9.png", true,
+		Vec2(225.0f, 225.0f),
+		Vec3(0.0f, 0.0f, 0.0f));
 
-		AddGameObject<Time10>(1, L"0_9.png", true,
-			Vec2(25.0f, 25.0f),
-			Vec3(850.0f, 500.0f, 0.0f));
+	//時間を更新する
+	auto Time = AddGameObject<Time_Start>(L"Start.png",
+			Vec2(800.0f, 400.0f),
+			Vec2(-400.0f, 0.0f));
 
-		AddGameObject<Time100>(1, L"0_9.png", true,
-			Vec2(25.0f, 25.0f),
-			Vec3(750.0f, 500.0f, 0.0f));
+		//AddGameObject<Time10>(1, L"0_9.png", true,
+		//	Vec2(25.0f, 25.0f),
+		//	Vec3(850.0f, 500.0f, 0.0f));
 
-		AddGameObject<Sprite>(L"Colon.png",
-			Vec2(25.0f, 25.0f),
-			Vec2(800.0f, 500.0f));*/
+		//AddGameObject<Time100>(1, L"0_9.png", true,
+		//	Vec2(25.0f, 25.0f),
+		//	Vec3(750.0f, 500.0f, 0.0f));
+
+		//AddGameObject<Sprite>(L"Colon.png",
+		//	Vec2(25.0f, 25.0f),
+		//	Vec2(800.0f, 500.0f));
 
 
 	}
@@ -148,11 +155,16 @@ namespace basecross {
 			CreatePinP();
 
 			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
+
 		}
+
+
 
 		catch (...) {
 			throw;
+
 		}
+	
 	}
 
 
@@ -164,6 +176,154 @@ namespace basecross {
 		}
 
 		WeaponUpdate();
+
+		m_time_ON += 0.1;
+
+		if(m_time_ON > 0.0 && m_time_ON < 0.2 )
+		{
+
+				m_TotalTime = 3.0f;
+
+			//時間を更新する
+			auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
+			ptrScor->SetScore(m_TotalTime);
+
+		}
+
+		if (m_time_ON > 0.3 && m_time_ON < 0.4)
+		{
+
+			std::this_thread::sleep_for(std::chrono::seconds(2));      // 1 秒
+
+		}
+
+		if (m_time_ON > 0.4 && m_time_ON < 0.5)
+		{
+				m_TotalTime2 = 2.0f;
+
+			//時間を更新する
+			auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
+			ptrScor->SetScore(m_TotalTime2);
+
+		}
+
+		if (m_time_ON > 0.6 && m_time_ON < 0.7)
+		{
+
+			std::this_thread::sleep_for(std::chrono::seconds(2));      // 1 秒
+
+		}
+
+		if (m_time_ON > 0.7 && m_time_ON < 0.8)
+		{
+
+				m_TotalTime3 = 1.0f;
+
+			//時間を更新する
+			auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
+			ptrScor->SetScore(m_TotalTime3);
+
+		}
+
+		if (m_time_ON > 0.9 && m_time_ON < 1.0)
+		{
+
+			std::this_thread::sleep_for(std::chrono::seconds(2));      // 1 秒
+
+		}
+
+		if (m_time_ON > 1.0 && m_time_ON < 1.1)
+		{
+			if (m_TotalTime4 <= 000.0f) {
+				m_TotalTime4 = 0.0f;
+			}
+			//時間を更新する
+			auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
+			ptrScor->SetScore(m_TotalTime4);
+
+			ptrScor->SetDrawActive(false);
+
+		}
+
+		if (m_time_ON > 1.1 && m_time_ON < 1.2)
+		{
+			//時間を更新する
+		//	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+		}
+
+		if (m_time_ON > 1.2 && m_time_ON < 1.3)
+		{
+			//std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		}
+
+		if (m_time_ON > 1.3 && m_time_ON < 1.4)
+		{
+
+
+		}
+
+		if (m_time_ON > 1.5)
+		{	
+			m_time_ON = 10;
+		}
+
+	//float TimeEat = 0.01;
+	//m_TotalTime -= TimeEat;
+		//float TimeEat2 = 0.001;
+		//m_TotalTime2 -= TimeEat2;
+		//float TimeEat3 = 0.00016653;
+		//m_TotalTime3 -= TimeEat3;
+	//if (m_TotalTime <= 000.0f) {
+	//	m_TotalTime = 3.999f;
+	//}
+		//if (m_TotalTime2 <= 000.0f) {
+		//	m_TotalTime2 = 5.999f;
+		//}
+		//if (m_TotalTime3 <= 000.0f) {
+		//	m_TotalTime3 = 2.999f;
+		//}
+		//else if (m_TotalTime3 > 1.98f && m_TotalTime3 <= 0.98)
+		//{
+		//	m_TotalTime3 = 1.579f;
+		//}
+		//スコアを更新する
+	//auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
+	//ptrScor->SetScore(m_TotalTime);
+
+		////スコアを更新する
+		//auto ptrScor2 = GetSharedGameObject<Time10>(L"Time10");
+		//ptrScor2->SetScore(m_TotalTime2);
+
+		////スコアを更新する
+		//auto ptrScor3 = GetSharedGameObject<Time100>(L"Time100");
+		//ptrScor3->SetScore(m_TotalTime3);
+
+
+		//(KeyState.m_bPressedKeyTbl[VK_SPACE])
+
+		//if ((KeyState.m_bPressedKeyTbl[VK_SPACE])) {
+		//	auto vec = GetGameObjectVec();
+		//	if (m_Pause) {
+		//		for (auto v : vec) {
+		//			v->SetUpdateActive(true);		
+		//			}
+		//		m_Pause = false;
+		//	}
+		//	 else{
+		//		for (auto v : vec) {
+		//			//// 例外の登録
+		//			if (!v->FindTag(L"Fade")) {
+		//				v->SetUpdateActive(false);
+		//			}
+		//		}
+		//		m_Pause = true;
+		//	}
+		//}
+
+
+
+>>>>>>> 09ee60a6d537974364b8c25bc4757eb0e43c526c
 		ShowPause();
 	}
 
