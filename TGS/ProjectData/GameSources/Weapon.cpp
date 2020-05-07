@@ -62,6 +62,18 @@ namespace basecross {
 			time = 0.2f;
 			scale = Vec3(1.0f);
 			break;
+		case BulletS::Gatling:
+			speed = 80.0f;
+			grav = 5.0f;
+			time = 1.0f;
+			scale = Vec3(1.0f);
+			break;
+		case BulletS::Cannon:
+			speed = 80.0f;
+			grav = 5.0f;
+			time = 1.0f;
+			scale = Vec3(1.0f);
+			break;
 		default:
 			break;
 		}
@@ -269,7 +281,7 @@ namespace basecross {
 	}
 
 	void Grenade::OnCollisionEnter(shared_ptr<GameObject>& Other) {
-		if (/*Other->GetID() != ID && */!Other->FindTag(L"Grenade")) {
+		if ((Other->GetID() != ID && !Other->FindTag(L"Grenade")) || Other->FindTag(L"Object")) {
 			auto ptr = GetComponent<Transform>();
 			if (m_grenade) {
 				GetStage()->AddGameObject<SmokeGrenade>(
@@ -386,6 +398,31 @@ namespace basecross {
 	}
 
 
+	void GatlingGun::OnCreate() {
+		auto ptr = GetComponent<Transform>();
+
+		ptr->SetPosition(Vec3(0.0f, -8.5f, 0.0f));
+		ptr->SetRotation(Vec3(0.0f));
+		ptr->SetScale(Vec3(1.5f, 3.0f, 1.5f));
+
+		//‰e‚ð‚Â‚¯‚é
+		auto ShadowPtr = AddComponent<Shadowmap>();
+		ShadowPtr->SetMeshResource(L"DEFAULT_CUBE");
+
+		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
+		PtrDraw->SetMeshResource(L"DEFAULT_CUBE");
+
+		auto ptrColl = AddComponent<CollisionRect>();
+		ptrColl->SetAfterCollision(AfterCollision::None);
+
+		AddTag(L"SetGun");
+		AddTag(L"GatlingGun");
+
+	}
+
+	void GatlingGun::OnUpdate() {
+
+	}
 
 
 }

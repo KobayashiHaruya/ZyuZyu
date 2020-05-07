@@ -142,6 +142,9 @@ namespace basecross {
 			}
 			m_weaponTime = 10.0f;
 
+			AddGameObject<GatlingGun>();
+
+
 			CreatePinP();
 		}
 

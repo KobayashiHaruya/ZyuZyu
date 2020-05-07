@@ -29,7 +29,9 @@ namespace basecross {
 		Rocket,
 		Sniper,
 		Laser,
-		Wind
+		Wind,
+		Gatling,
+		Cannon
 	};
 
 	class Bullet :public GameObject, public ObstacleEvent<const CharacterStatus_s> {
@@ -100,7 +102,7 @@ namespace basecross {
 	public:
 
 
-		Weapon(const shared_ptr<Stage>& StagePtr) :GameObject(StagePtr){}
+		Weapon(const shared_ptr<Stage>& StagePtr) :GameObject(StagePtr) {}
 		~Weapon() {}
 
 		void Gun();
@@ -203,6 +205,24 @@ namespace basecross {
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 		void Timer();
+
+	};
+
+
+	class GatlingGun :public GameObject {
+		Vec3 m_pos;
+		Quat m_rot;
+		Vec3 m_scale;
+
+	public:
+		GatlingGun(const shared_ptr<Stage>& StagePtr
+		) :
+			GameObject(StagePtr)
+		{}
+		~GatlingGun() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
 
 	};
 

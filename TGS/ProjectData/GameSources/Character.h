@@ -39,6 +39,9 @@ namespace basecross{
 		float m_reTimeT;
 		float m_maxreTimeT;
 
+		int m_gatlingAmmo=1000;
+		float m_intTimeGat = 0.01;
+
 		float m_Gtime = 4.0f;
 		float m_smokeGtime = 4.0f;
 		float m_toriGtime = 4.0f;
@@ -60,8 +63,8 @@ namespace basecross{
 		Vec2 m_force;
 		bool m_des = false;
 		bool m_jump = false;
+		bool m_setGun = false;
 
-		Vec3 m_movePoint;
 
 		CharacterStatus_s m_myData;
 		vector<CharacterKillDetails_s> m_killCharacters;  //自身がキルした相手のキャラクタータイプとレベルを持つ
@@ -92,14 +95,15 @@ namespace basecross{
 		void PlayerMove();
 		void PlayerRotMove();
 		void PlayerUI();
+		void PlayerMovement();
 
 		void PickGun(int state);
 
 		void Respawn();
-		void Weapons();
 		void GrenadeFire();
 		void BulletDamage(int state, Vec3 rot);
 		void BulletFire();
+		void SetWeaponFire();
 		void BulletState(int state, bool weapon, bool same = false);
 		void CharaState();
 		void AttackHit(Vec3 rot);
@@ -129,6 +133,12 @@ namespace basecross{
 		}
 		bool GetGun() {
 			return m_weapon;
+		}
+		int GetWeaponO() {
+			return (int)m_weaponO;
+		}
+		int GetWeaponT() {
+			return (int)m_weaponT;
 		}
 		float GetSGTime() {
 			return m_smokeGtime;

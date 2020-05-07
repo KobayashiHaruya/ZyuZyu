@@ -35,7 +35,6 @@ namespace basecross {
 		ptr->SetRotation(m_rot);
 		ptr->SetScale(m_scale);
 
-		
 		AddTag(L"Object");
 
 	}
