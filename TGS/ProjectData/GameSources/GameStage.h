@@ -8,6 +8,7 @@
 
 #include "MyUI.h"
 #include "Character.h"
+#include "AIchan.h"
 
 namespace basecross {
 
@@ -38,6 +39,8 @@ namespace basecross {
 
 		//トータル時間
 		float m_TotalTime3;
+
+		void CreateAIchan();
 
 	public:
 		//構築と破棄

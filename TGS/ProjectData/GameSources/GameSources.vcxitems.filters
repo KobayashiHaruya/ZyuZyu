@@ -69,6 +69,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Time_new.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AIchan.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -123,6 +126,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Time_new.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AIchan.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>

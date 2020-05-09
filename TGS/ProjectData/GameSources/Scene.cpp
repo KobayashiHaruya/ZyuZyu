@@ -105,7 +105,7 @@ namespace basecross{
 			//ƒŠƒ\[ƒXì¬
 			CreateResourses();
 
-			SetGameStage(GameStageKey::title);
+			SetGameStage(GameStageKey::game);
 		}
 		catch (...) {
 			throw;
