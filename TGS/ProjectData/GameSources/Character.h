@@ -150,13 +150,6 @@ namespace basecross{
 			return m_damage;
 		}
 
-		BulletS GetWeaponO() {
-			return m_weaponO;
-		}
-		BulletS GetWeaponT() {
-			return m_weaponT;
-		}
-
 		int GetId() {
 			return ID;
 		}

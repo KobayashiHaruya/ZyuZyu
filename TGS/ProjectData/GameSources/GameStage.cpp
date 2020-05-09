@@ -118,6 +118,9 @@ namespace basecross {
 				);
 			SetSharedGameObject(L"Player", m_player);
 
+			auto characterGroup = CreateSharedObjectGroup(L"CharacterGroup");
+			characterGroup->IntoGroup(m_player);
+
 			for (int i = 1; i < 8; i++) {
 
 				CharacterType p;
@@ -142,6 +145,8 @@ namespace basecross {
 					false,
 					i, i
 					);
+
+				characterGroup->IntoGroup(m_enemy);
 			}
 
 			for (int i = 0; i < 5; i++) {
@@ -154,17 +159,13 @@ namespace basecross {
 
 			CreatePinP();
 
-			m_enemy = AddGameObject<Enemy>(
+			/*m_enemy = AddGameObject<Enemy>(
 				CharacterType::CHICKEN,
 				false,
 				1,0
-				);
+				);*/
 
-			auto hoge = CreateSharedObjectGroup(L"CharacterGroup");
-			hoge->IntoGroup(m_player);
-			hoge->IntoGroup(m_enemy);
 
-			CreatePinP();
 			CreateAIchan();
 			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
 
@@ -333,9 +334,6 @@ namespace basecross {
 		//	}
 		//}
 
-
-
->>>>>>> 09ee60a6d537974364b8c25bc4757eb0e43c526c
 		ShowPause();
 	}
 
@@ -392,7 +390,7 @@ namespace basecross {
 		AddGameObject<AIchan>(
 			CharacterType::CHICKEN,
 			false,
-			1, 0,
+			1000, 1000,
 			AIparam
 			);
 	}

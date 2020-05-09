@@ -175,7 +175,7 @@ namespace basecross {
 					auto bullet = GetStage()->AddGameObject<Bullet>(
 						trans->GetPosition(),
 						trans->GetQuaternion(),
-						w,
+						(BulletS)w,
 						my.unique,
 						id,
 						my
@@ -191,7 +191,7 @@ namespace basecross {
 				auto bullet = GetStage()->AddGameObject<Bullet>(
 					trans->GetPosition(),
 					trans->GetQuaternion(),
-					w,
+					(BulletS)w,
 					my.unique,
 					id,
 					my
