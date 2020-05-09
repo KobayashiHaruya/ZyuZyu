@@ -154,6 +154,18 @@ namespace basecross {
 
 			CreatePinP();
 
+			m_enemy = AddGameObject<Enemy>(
+				CharacterType::CHICKEN,
+				false,
+				1,0
+				);
+
+			auto hoge = CreateSharedObjectGroup(L"CharacterGroup");
+			hoge->IntoGroup(m_player);
+			hoge->IntoGroup(m_enemy);
+
+			CreatePinP();
+			CreateAIchan();
 			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
 
 		}
@@ -362,6 +374,27 @@ namespace basecross {
 			10
 			);
 		SetSharedGameObject(L"BlownPinP", m_pinp);  //shareObject‚Æ‚µ‚ÄPinP‚ð“o˜^
+	}
+
+	void GameStage::CreateAIchan() {
+		auto AIparam = AIParam_s{
+			vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
+			1.0f,
+			5.0f,
+			15.0f,
+			0.0f,
+			15.0f,
+			15.0f,
+			3,
+			3,
+			true
+		};
+		AddGameObject<AIchan>(
+			CharacterType::CHICKEN,
+			false,
+			1, 0,
+			AIparam
+			);
 	}
 
 }

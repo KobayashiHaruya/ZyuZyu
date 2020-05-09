@@ -150,6 +150,17 @@ namespace basecross{
 			return m_damage;
 		}
 
+		BulletS GetWeaponO() {
+			return m_weaponO;
+		}
+		BulletS GetWeaponT() {
+			return m_weaponT;
+		}
+
+		int GetId() {
+			return ID;
+		}
+
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
 		virtual void OnCollisionExcute(shared_ptr<GameObject>& Other) override;
 		virtual void OnCollisionExit(shared_ptr<GameObject>& Other) override;

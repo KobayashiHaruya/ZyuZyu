@@ -8,6 +8,7 @@
 
 #include "MyUI.h"
 #include "Character.h"
+#include "AIchan.h"
 
 namespace basecross {
 
@@ -53,9 +54,7 @@ namespace basecross {
 		//bool m_PauseFade = false;
 
 		//bool gather = false;
-
-
-
+		void CreateAIchan();
 	public:
 
 		float m_time_ON = 0;
