@@ -108,7 +108,7 @@ namespace basecross {
 			auto obj = v.lock();
 			if (obj) {
 				auto character = dynamic_pointer_cast<Character>(obj);
-				if (character) {
+				if (character && character->GetMyData().unique != GetMyData().unique) {
 					transforms.push_back(character->GetComponent<Transform>());
 				}
 			}
