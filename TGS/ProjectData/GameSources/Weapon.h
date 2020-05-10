@@ -98,6 +98,7 @@ namespace basecross {
 
 		int m_type;
 		wstring text;
+		wstring m_modelName;
 
 	public:
 
@@ -106,8 +107,10 @@ namespace basecross {
 		~Weapon() {}
 
 		void Gun();
+		void BmfDateRead(wstring model);
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
+		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
 	};
 
 
@@ -209,21 +212,49 @@ namespace basecross {
 	};
 
 
-	class GatlingGun :public GameObject {
-		Vec3 m_pos;
-		Quat m_rot;
-		Vec3 m_scale;
+	class SetGun :public GameObject {
+		Vec3 m_pos= Vec3(0.0f, -8.5f, 0.0f);
+		Quat m_quat = Quat(0.0f);
+		Vec3 m_scale = Vec3(3.0f);
+
+		bool m_gun;
 
 	public:
-		GatlingGun(const shared_ptr<Stage>& StagePtr
+		SetGun(const shared_ptr<Stage>& StagePtr,const bool& gun
 		) :
-			GameObject(StagePtr)
+			GameObject(StagePtr),
+			m_gun(gun)
 		{}
-		~GatlingGun() {}
+		~SetGun() {}
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
 	};
+
+	class GunSeat :public GameObject {
+		Vec3 m_pos;
+		Quat m_quat;
+		Vec3 m_scale;
+
+		bool m_gun;
+
+	public:
+		GunSeat(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos,
+			const Quat& quat,
+			const bool& gun
+		) :
+			GameObject(StagePtr),
+			m_pos(pos),
+			m_quat(quat),
+			m_gun(gun)
+		{}
+		~GunSeat() {}
+
+		virtual void OnCreate() override;
+
+	};
+
 
 }

@@ -159,6 +159,39 @@ namespace basecross {
 	}
 
 
+	void Weapon::BmfDateRead(wstring model) {
+		Mat4x4 m_spanMat;
+		m_spanMat.affineTransformation(
+			Vec3(1.0f, 1.0f, 1.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f));
+
+		//影をつけるa
+		auto ptrShadow = AddComponent<Shadowmap>();
+		ptrShadow->SetMeshResource(model);
+		ptrShadow->SetMeshToTransformMatrix(m_spanMat);
+
+		auto ptrDraw = AddComponent<PNTStaticModelDraw>();
+		ptrDraw->SetMeshResource(model);
+		ptrDraw->SetMeshToTransformMatrix(m_spanMat);
+		ptrDraw->SetOwnShadowActive(true);
+		ptrDraw->SetDrawActive(true);
+
+		SetAlphaActive(true);
+
+		//各パフォーマンスを得る
+		GetStage()->SetCollisionPerformanceActive(true);
+		GetStage()->SetUpdatePerformanceActive(true);
+		GetStage()->SetDrawPerformanceActive(true);
+
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetAfterCollision(AfterCollision::Auto);
+		//ptrColl->SetDrawActive(true);
+		ptrColl->AddExcludeCollisionTag(L"Weapon");
+		ptrColl->SetMakedSize(Vec3(1.5f, 1.0f, 1.5f));
+	}
+
 	void Weapon::Gun() {
 		int Rand = rand() % 8 + 1;
 
@@ -169,31 +202,31 @@ namespace basecross {
 		switch (Rand)
 		{
 		case 0:
-			text = L"None.png";
-			break;
+			m_modelName = L"AziAssaultRifle_ver1.bmf";
+			break; 
 		case 1:
-			text = L"Assault.png";
+			m_modelName = L"AziAssaultRifle_ver1.bmf";
 			break;
 		case 2:
-			text = L"Hand.png";
+			m_modelName = L"RenkonRevolver_ver2.bmf";
 			break;
 		case 3:
-			text = L"Shot.png";
+			m_modelName = L"PotatoShotgun_ver1.bmf";
 			break;
 		case 4:
-			text = L"SMG.png";
+			m_modelName = L"ShrimpSMG_ver2.bmf";
 			break;
 		case 5:
-			text = L"Rocket.png";
+			m_modelName = L"ChickenRocketlauncher_ver1.bmf";
 			break;
 		case 6:
-			text = L"Sniper.png";
+			m_modelName = L"DoughnutSniperRifle_ver1.bmf";
 			break;
 		case 7:
-			text = L"Laser.png";
+			m_modelName = L"NasuLaser_ver1.bmf";
 			break;
 		case 8:
-			text = L"Wind.png";
+			m_modelName = L"Potato_ver1.bmf";
 			break;
 		default:
 			break;
@@ -207,23 +240,21 @@ namespace basecross {
 		auto ptr = GetComponent<Transform>();
 
 		Gun();
+		BmfDateRead(m_modelName);
 
 		ptr->SetPosition(m_pos);
 		ptr->SetRotation(Vec3(0.0f));
 		ptr->SetScale(Vec3(1.0f));
 
-		//影をつける
-		auto ShadowPtr = AddComponent<Shadowmap>();
-		ShadowPtr->SetMeshResource(L"DEFAULT_CUBE");
+		////影をつける
+		//auto ShadowPtr = AddComponent<Shadowmap>();
+		//ShadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
-		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
-		PtrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		//auto PtrDraw = AddComponent<BcPNTStaticDraw>();
+		//PtrDraw->SetMeshResource(L"DEFAULT_CUBE");
 
-		PtrDraw->SetTextureResource(text);
-		SetAlphaActive(true);
-
-		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetAfterCollision(AfterCollision::Auto);
+		//PtrDraw->SetTextureResource(text);
+		//SetAlphaActive(true);
 
 		auto gravity = AddComponent<Gravity>();
 
@@ -235,6 +266,18 @@ namespace basecross {
 	}
 
 	void Weapon::OnUpdate() {
+
+	}
+
+	void Weapon::OnCollisionEnter(shared_ptr<GameObject>& Other) {
+		auto grav = GetComponent<Gravity>();
+		auto ptrColl = GetComponent<CollisionObb>();
+		if (Other->FindTag(L"Object")) {
+			ptrColl->SetFixed(false);
+			grav->SetGravityVerocityZero();
+			grav->SetGravityZero();
+			ptrColl->SetAfterCollision(AfterCollision::None);
+		}
 
 	}
 
@@ -398,31 +441,128 @@ namespace basecross {
 	}
 
 
-	void GatlingGun::OnCreate() {
+
+	void SetGun::OnCreate() {
 		auto ptr = GetComponent<Transform>();
 
 		ptr->SetPosition(Vec3(0.0f, -8.5f, 0.0f));
 		ptr->SetRotation(Vec3(0.0f));
-		ptr->SetScale(Vec3(1.5f, 3.0f, 1.5f));
+		ptr->SetScale(Vec3(3.0f, 3.0f, 3.0f));
 
-		//影をつける
-		auto ShadowPtr = AddComponent<Shadowmap>();
-		ShadowPtr->SetMeshResource(L"DEFAULT_CUBE");
+		Mat4x4 m_spanMat;
+		wstring m_modelName;
+		if (m_gun) {
+			m_modelName = L"CornGatling.bmf";
+			m_spanMat.affineTransformation(
+				Vec3(1.0f, 1.0f, 1.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, -0.5f, 0.0f));
+			AddTag(L"GatlingGun");
+		}
+		else {
+			m_modelName = L"TomatoCannon.bmf";
+			m_spanMat.affineTransformation(
+				Vec3(1.0f, 1.0f, 1.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, -1.1f, 0.0f));
+			AddTag(L"Cannon");
+		}
 
-		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
-		PtrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		//影をつけるa
+		auto ptrShadow = AddComponent<Shadowmap>();
+		ptrShadow->SetMeshResource(m_modelName);
+		ptrShadow->SetMeshToTransformMatrix(m_spanMat);
 
-		auto ptrColl = AddComponent<CollisionRect>();
+		auto ptrDraw = AddComponent<PNTStaticModelDraw>();
+		ptrDraw->SetMeshResource(m_modelName);
+		ptrDraw->SetMeshToTransformMatrix(m_spanMat);
+		ptrDraw->SetOwnShadowActive(true);
+		ptrDraw->SetDrawActive(true);
+
+		SetAlphaActive(true);
+
+		//各パフォーマンスを得る
+		GetStage()->SetCollisionPerformanceActive(true);
+		GetStage()->SetUpdatePerformanceActive(true);
+		GetStage()->SetDrawPerformanceActive(true);
+
+		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
+		ptrColl->AddExcludeCollisionTag(L"Weapon");
+		ptrColl->SetMakedSize(Vec3(1.5f, 2.0f, 1.5f));
 
+		AddTag(L"Weapon");
 		AddTag(L"SetGun");
-		AddTag(L"GatlingGun");
+
+		GetStage()->AddGameObject<GunSeat>(
+			m_pos,
+			m_quat,
+			m_gun
+			);
 
 	}
 
-	void GatlingGun::OnUpdate() {
+	void SetGun::OnUpdate() {
 
 	}
 
+	void GunSeat::OnCreate() {
+		auto ptr = GetComponent<Transform>();
+
+		ptr->SetPosition(m_pos);
+		ptr->SetQuaternion(m_quat);
+
+		Mat4x4 m_spanMat;
+		wstring m_modelName;
+
+		if (m_gun) {
+			ptr->SetScale(Vec3(3.0f, 3.0f, 3.0f));
+			m_modelName = L"CornProp.bmf";
+			m_spanMat.affineTransformation(
+				Vec3(1.0f, 1.0f, 1.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, -0.5f, 0.0f));
+			AddTag(L"GatlingGun");
+		}
+		else {
+			ptr->SetScale(Vec3(3.0f, 1.0f, 3.0f));
+			m_modelName = L"TomatoBattery.bmf";
+			m_spanMat.affineTransformation(
+				Vec3(1.0f, 1.0f, 1.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, -1.3f, 0.0f));
+			AddTag(L"Cannon");
+		}
+
+		//影をつけるa
+		auto ptrShadow = AddComponent<Shadowmap>();
+		ptrShadow->SetMeshResource(m_modelName);
+		ptrShadow->SetMeshToTransformMatrix(m_spanMat);
+
+		auto ptrDraw = AddComponent<PNTStaticModelDraw>();
+		ptrDraw->SetMeshResource(m_modelName);
+		ptrDraw->SetMeshToTransformMatrix(m_spanMat);
+		ptrDraw->SetOwnShadowActive(true);
+		ptrDraw->SetDrawActive(true);
+
+		SetAlphaActive(true);
+
+		//各パフォーマンスを得る
+		GetStage()->SetCollisionPerformanceActive(true);
+		GetStage()->SetUpdatePerformanceActive(true);
+		GetStage()->SetDrawPerformanceActive(true);
+
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetAfterCollision(AfterCollision::None);
+		ptrColl->AddExcludeCollisionTag(L"Weapon");
+		ptrColl->SetMakedSize(Vec3(1.5f, 2.0f, 1.5f));
+
+		AddTag(L"Weapon");
+		AddTag(L"SetGun");
+	}
 
 }

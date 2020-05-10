@@ -72,7 +72,7 @@ namespace basecross{
 
 				if (exe == L".bmf") {
 					// 例外の登録,ボーンモデルだから
-					if (!(fileName == L"Chara_R.bmf")) {
+					if (!((fileName == L"Chara_R.bmf") || (fileName == L"CornGatling_Animation.bmf") || (fileName == L"TomatoCannon_Animation.bmf"))) {
 						auto modelMesh = MeshResource::CreateStaticModelMesh(dir, fileName);
 						App::GetApp()->RegisterResource(fileName, modelMesh);
 					}
@@ -105,7 +105,7 @@ namespace basecross{
 			//リソース作成
 			CreateResourses();
 
-			SetGameStage(GameStageKey::game);
+			SetGameStage(GameStageKey::title);
 	
 			//App::GetApp()->GetStepTimer().GetFramesPerSecond();
 			//App::GetApp()->
