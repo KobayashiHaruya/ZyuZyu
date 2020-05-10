@@ -30,7 +30,7 @@ namespace basecross {
 
 		m_characterLogo = AddGameObject<UI_Static_Image>(
 			Vec2(631.0f, 278.0f),
-			Vec3(-25.0f, -380.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(1.0f, 1.0f, 1.0f),
 			m_layer,
 			Col4(1.0f, 1.0f, 1.0f, 1.0f),
@@ -76,7 +76,7 @@ namespace basecross {
 		case 0:
 			m_characterLogo->SetTexture(
 				m_shrimpImageName,
-				Vec2(1845.0f, 287.0f),
+				Vec2(1920.0f, 1080.0f),
 				Vec3(1.0f)
 			);
 			m_characterStatus->ChangeCharacterStatus(CharacterType::SHRIMP);
@@ -84,7 +84,7 @@ namespace basecross {
 		case 1:
 			m_characterLogo->SetTexture(
 				m_chickenImageName,
-				Vec2(1845.0f, 287.0f),
+				Vec2(1920.0f, 1080.0f),
 				Vec3(1.0f)
 			);
 			m_characterStatus->ChangeCharacterStatus(CharacterType::CHICKEN);
@@ -92,7 +92,7 @@ namespace basecross {
 		case 2:
 			m_characterLogo->SetTexture(
 				m_potatoImageName,
-				Vec2(1845.0f, 287.0f),
+				Vec2(1920.0f, 1080.0f),
 				Vec3(1.0f)
 			);
 			m_characterStatus->ChangeCharacterStatus(CharacterType::POTATO);
@@ -100,7 +100,7 @@ namespace basecross {
 		case 3:
 			m_characterLogo->SetTexture(
 				m_doughnutImageName,
-				Vec2(1845.0f, 287.0f),
+				Vec2(1920.0f, 1080.0f),
 				Vec3(1.0f)
 			);
 			m_characterStatus->ChangeCharacterStatus(CharacterType::DOUGHNUT);
