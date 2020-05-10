@@ -195,8 +195,6 @@ namespace basecross {
 
 		CharaState();
 
-		PlayerUI();
-
 		BmfDateRead(m_modelName);
 		BulletState(m_weaponO, true);
 		BulletState(m_weaponT, false);
@@ -784,7 +782,7 @@ namespace basecross {
 							//Quat X;
 							//X.x = (i * 3.14f) / 180.0f;
 							auto bullet = GetStage()->AddGameObject<Bullet>(
-								ptr->GetPosition(),
+								ptr->GetPosition() + Vec3(0.0f, 1.0f, 0.0f),
 								ptr->GetQuaternion(),
 								m_weaponO,
 								m_myData.unique,
@@ -801,7 +799,7 @@ namespace basecross {
 					}
 					else {
 						auto bullet = GetStage()->AddGameObject<Bullet>(
-							ptr->GetPosition(),
+							ptr->GetPosition() + Vec3(0.0f, 1.0f, 0.0f),
 							ptr->GetQuaternion(),
 							m_weaponO,
 							m_myData.unique,
@@ -881,7 +879,7 @@ namespace basecross {
 						for (size_t i = 0; i < 20; i++)
 						{
 							auto bullet = GetStage()->AddGameObject<Bullet>(
-								ptr->GetPosition(),
+								ptr->GetPosition() + Vec3(0.0f, 1.0f, 0.0f),
 								ptr->GetQuaternion(),
 								m_weaponT,
 								m_myData.unique,
@@ -898,7 +896,7 @@ namespace basecross {
 					}
 					else {
 						auto bullet = GetStage()->AddGameObject<Bullet>(
-							ptr->GetPosition(),
+							ptr->GetPosition() + Vec3(0.0f, 1.0f, 0.0f),
 							ptr->GetQuaternion(),
 							m_weaponT,
 							m_myData.unique,
@@ -948,7 +946,7 @@ namespace basecross {
 		if (m_gatlingAmmo > 0 && m_intTimeGat <= 0) {
 			if (fire) {
 				auto bullet = GetStage()->AddGameObject<Bullet>(
-					ptr->GetPosition(),
+					ptr->GetPosition() + Vec3(0.0f,1.0f,0.0f),
 					ptr->GetQuaternion(),
 					BulletS::Gatling,
 					m_myData.unique,
@@ -1106,6 +1104,7 @@ namespace basecross {
 
 	void Player::OnCreate() {
 		Draw();
+		PlayerUI();
 		PlayerCamera();
 	}
 
