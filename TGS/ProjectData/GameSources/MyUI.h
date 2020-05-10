@@ -1248,4 +1248,33 @@ namespace basecross {
 
 	};
 
+
+
+
+
+	class Result_Curtain :public SS5ssae {
+		Vec3 m_pos;
+		Vec3 m_scale;
+		int m_layer;
+
+		int m_count;
+	public:
+		Result_Curtain(const shared_ptr<Stage>& StagePtr,
+			const wstring& BaseDir,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int layer
+		) :
+			SS5ssae(StagePtr, BaseDir, L"Result_Animation.ssae", L"anime_1", true),
+			m_pos(pos),
+			m_scale(scale),
+			m_layer(layer)
+		{}
+		~Result_Curtain() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+	};
+
 }
