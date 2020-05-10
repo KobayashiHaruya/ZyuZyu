@@ -1563,4 +1563,43 @@ namespace basecross {
 		ptrDraw->SetDiffuse(m_color);
 	}
 
+
+
+	void Result_Curtain::OnCreate() {
+		SetDrawLayer(m_layer);
+		Mat4x4 mat;
+		mat.affineTransformation(
+			Vec3(1.0f, 1.0f, 1.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f)
+		);
+		SetToAnimeMatrix(mat);
+
+		auto PtrTrans = GetComponent<Transform>();
+		PtrTrans->SetScale(m_scale);
+		PtrTrans->SetPosition(m_pos);
+		SS5ssae::OnCreate();
+		SetLooped(false);
+	}
+
+	void Result_Curtain::OnUpdate() {
+		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		float time = App::GetApp()->GetElapsedTime();
+		int flame = 70;
+		if (m_count <= flame) {
+			UpdateAnimeTime(time);
+		}
+		else {
+			UpdateAnimeTime(0);
+		}
+		m_count += 1;
+
+		if (KeyState.m_bPressedKeyTbl[VK_SPACE] || KeyState.m_bPushKeyTbl['W'] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) {
+			m_count = -10;
+		}
+
+
+	}
 }
