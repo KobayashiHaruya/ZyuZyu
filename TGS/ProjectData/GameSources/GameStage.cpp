@@ -140,10 +140,24 @@ namespace basecross {
 					break;
 				}
 
-				m_enemy = AddGameObject<Enemy>(
+				auto AIparam = AIParam_s{
+					vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
+					1.0f,
+					5.0f,
+					15.0f,
+					0.0f,
+					15.0f,
+					15.0f,
+					3,
+					3,
+					true
+				};
+
+				m_enemy = AddGameObject<AIchan>(
 					p,
 					false,
-					i, i
+					i, i,
+					AIparam
 					);
 
 				characterGroup->IntoGroup(m_enemy);
@@ -166,7 +180,7 @@ namespace basecross {
 				);*/
 
 
-			CreateAIchan();
+			//CreateAIchan();
 			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
 
 		}
@@ -348,8 +362,18 @@ namespace basecross {
 
 			//ここでは毎回配列を生成してステータスを設定しているが実際には１度だけ処理してChangeStatusをする
 			vector<CharacterStatus_s> statuses;
-			statuses.push_back(m_player->GetMyData());
-			statuses.push_back(m_enemy->GetMyData());
+			//statuses.push_back(m_player->GetMyData());
+			auto group = GetSharedObjectGroup(L"CharacterGroup");
+			auto vec = group->GetGroupVector();
+			for (auto& v : vec) {
+				auto obj = v.lock();
+				if (obj) {
+					auto character = dynamic_pointer_cast<Character>(obj);
+					statuses.push_back(character->GetMyData());
+				}
+
+			}
+			//statuses.push_back(m_enemy->GetMyData());
 			m_pause->SetCharacterStatuses(statuses);
 
 			//キルの情報詳細を表示したいCharacterから情報を取得してポーズ画面に値を渡す

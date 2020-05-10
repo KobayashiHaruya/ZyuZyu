@@ -18,7 +18,7 @@ namespace basecross {
 	class GameStage : public Stage {
 		shared_ptr<UI_The_World> m_pause;
 		shared_ptr<Player> m_player;
-		shared_ptr<Enemy> m_enemy;
+		shared_ptr<AIchan> m_enemy;
 		shared_ptr<PinP> m_pinp;
 
 		//ƒrƒ…[‚Ìì¬
