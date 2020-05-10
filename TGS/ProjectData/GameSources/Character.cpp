@@ -36,8 +36,8 @@ namespace basecross {
 
 		auto ptrColl = AddComponent<CollisionCapsule>();
 		ptrColl->SetMakedDiameter(2.5f);
+		//ptrColl->AddExcludeCollisionTag(L"Weapon");
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
-
 	}
 
 	void Character::CharaState() {
@@ -820,6 +820,11 @@ namespace basecross {
 					m_fire = false;
 				}
 			}
+			else if (m_ammoO <= 0) {
+				m_reload = true;
+				m_fire = false;
+				m_reTimeO = m_maxreTimeO;
+			}
 			else if (m_intTimeO > 0) {
 				float time = App::GetApp()->GetElapsedTime();
 				m_intTimeO -= time;
@@ -912,6 +917,11 @@ namespace basecross {
 					m_fire = false;
 				}
 			}
+			else if (m_ammoT <= 0) {
+				m_reload = true;
+				m_fire = false;
+				m_reTimeT = m_maxreTimeT;
+			}
 			else if (m_intTimeT > 0) {
 				float time = App::GetApp()->GetElapsedTime();
 				m_intTimeT -= time;
@@ -1002,6 +1012,14 @@ namespace basecross {
 			force = Vec2(10.0f, 0.2f);
 			damage = 1.0;
 			break;
+		case BulletS::Gatling:
+			force = Vec2(10.0f, 5.0f);
+			damage = 1.0;
+			break;
+		case BulletS::Cannon:
+			force = Vec2(15.0f, 10.0f);
+			damage = 1.0;
+			break;
 		default:
 			break;
 		}
@@ -1016,14 +1034,6 @@ namespace basecross {
 	void Character::PickGun(int state) {
 		bool same = false;
 		if (BulletS::None == m_weaponT) {
-			GetStage()->AddGameObject<UI_Player>(
-				Vec2(300.0f, 450.0f),
-				Vec3(800.0f, -300.0f, 0.0f),
-				Vec3(-1.0f, 1.0f, 1.0f),
-				11,
-				Col4(1.0f, 1.0f, 1.0f, 1.0f),
-				L"WeaponNabe.png"
-				);
 			BulletState(state, false);
 		}
 		else {

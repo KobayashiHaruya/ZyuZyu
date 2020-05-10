@@ -72,7 +72,7 @@ namespace basecross{
 
 				if (exe == L".bmf") {
 					// —áŠO‚Ì“o˜^,ƒ{[ƒ“ƒ‚ƒfƒ‹‚¾‚©‚ç
-					if (!(fileName == L"Chara_R.bmf")) {
+					if (!((fileName == L"Chara_R.bmf") || (fileName == L"CornGatling_Animation.bmf") || (fileName == L"TomatoCannon_Animation.bmf"))) {
 						auto modelMesh = MeshResource::CreateStaticModelMesh(dir, fileName);
 						App::GetApp()->RegisterResource(fileName, modelMesh);
 					}

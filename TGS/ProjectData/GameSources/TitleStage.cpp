@@ -19,63 +19,63 @@ namespace basecross {
 	}
 
 	void TitleStage::CreateUI() {
-		//AddGameObject<Title_UI>(
-		//	Vec2(1920.0f, 1080.0f),	//vertex
-		//	Vec3(0.0f, 0.0f, 0.0f),	//pos
-		//	Vec3(1.0f, 1.0f, 1.0f),	//scale
-		//	1,	//layer
-		//	Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
-		//	//標準のタイトル画像
-		//	m_Standard	//file(texture)
-		//	);
+		AddGameObject<Title_UI>(
+			Vec2(1920.0f, 1080.0f),	//vertex
+			Vec3(0.0f, 0.0f, 0.0f),	//pos
+			Vec3(1.0f, 1.0f, 1.0f),	//scale
+			1,	//layer
+			Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
+			//標準のタイトル画像
+			L"NewTitle_ver2.png"	//file(texture)
+			);
 
-		switch (RandGenerator()) {
-		case 0:	//エビver
-			AddGameObject<Title_UI>(
-				Vec2(1920.0f, 1080.0f),	//vertex
-				Vec3(0.0f, 0.0f, 0.0f),	//pos
-				Vec3(1.0f, 1.0f, 1.0f),	//scale
-				1,	//layer
-				Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
-				m_Shrimp_Title	//file(texture)
-				);
-			break;
+		//switch (RandGenerator()) {
+		//case 0:	//エビver
+		//	AddGameObject<Title_UI>(
+		//		Vec2(1920.0f, 1080.0f),	//vertex
+		//		Vec3(0.0f, 0.0f, 0.0f),	//pos
+		//		Vec3(1.0f, 1.0f, 1.0f),	//scale
+		//		1,	//layer
+		//		Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
+		//		m_Shrimp_Title	//file(texture)
+		//		);
+		//	break;
 
-		case 1:	//チキンver
-			AddGameObject<Title_UI>(
-				Vec2(1920.0f, 1080.0f),	//vertex
-				Vec3(0.0f, 0.0f, 0.0f),	//pos
-				Vec3(1.0f, 1.0f, 1.0f),	//scale
-				1,	//layer
-				Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
-				m_Chicken_Title	//file(texture)
-				);
-			break;
+		//case 1:	//チキンver
+		//	AddGameObject<Title_UI>(
+		//		Vec2(1920.0f, 1080.0f),	//vertex
+		//		Vec3(0.0f, 0.0f, 0.0f),	//pos
+		//		Vec3(1.0f, 1.0f, 1.0f),	//scale
+		//		1,	//layer
+		//		Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
+		//		m_Chicken_Title	//file(texture)
+		//		);
+		//	break;
 
-		case 2:	//ポテトver
-			AddGameObject<Title_UI>(
-				Vec2(1920.0f, 1080.0f),	//vertex
-				Vec3(0.0f, 0.0f, 0.0f),	//pos
-				Vec3(1.0f, 1.0f, 1.0f),	//scale
-				1,	//layer
-				Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
-				m_Potato_Title	//file(texture)
-				);
-			break;
+		//case 2:	//ポテトver
+		//	AddGameObject<Title_UI>(
+		//		Vec2(1920.0f, 1080.0f),	//vertex
+		//		Vec3(0.0f, 0.0f, 0.0f),	//pos
+		//		Vec3(1.0f, 1.0f, 1.0f),	//scale
+		//		1,	//layer
+		//		Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
+		//		m_Potato_Title	//file(texture)
+		//		);
+		//	break;
 
-		case 3:	//ドーナツver
-			AddGameObject<Title_UI>(
-				Vec2(1920.0f, 1080.0f),	//vertex
-				Vec3(0.0f, 0.0f, 0.0f),	//pos
-				Vec3(1.0f, 1.0f, 1.0f),	//scale
-				1,	//layer
-				Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
-				m_Donut_Title	//file(texture)
-				);
-			break;
-		default:
-			break;
-		}
+		//case 3:	//ドーナツver
+		//	AddGameObject<Title_UI>(
+		//		Vec2(1920.0f, 1080.0f),	//vertex
+		//		Vec3(0.0f, 0.0f, 0.0f),	//pos
+		//		Vec3(1.0f, 1.0f, 1.0f),	//scale
+		//		1,	//layer
+		//		Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
+		//		m_Donut_Title	//file(texture)
+		//		);
+		//	break;
+		//default:
+		//	break;
+		//}
 	}
 
 	void TitleStage::CreateOperationUI() {
@@ -86,7 +86,7 @@ namespace basecross {
 			Vec3(1.0f, 1.0f, 1.0f),
 			2,
 			Col4(1.0f, 1.0f, 1.0f, 1.0f),
-			L"Operation.png"
+			L"Operation_ver3.png"
 			);
 	}
 

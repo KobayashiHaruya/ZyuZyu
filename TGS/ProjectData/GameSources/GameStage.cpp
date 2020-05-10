@@ -83,7 +83,7 @@ namespace basecross {
 
 		if (m_weaponTime <= 0.0f) {
 			AddGameObject<Weapon>();
-			m_weaponTime = 10.0f;
+			m_weaponTime = 2.0f;
 		}
 
 	}
@@ -166,9 +166,9 @@ namespace basecross {
 			for (int i = 0; i < 5; i++) {
 				AddGameObject<Weapon>();
 			}
-			m_weaponTime = 10.0f;
+			m_weaponTime = 2.0f;
 
-			AddGameObject<GatlingGun>();
+			AddGameObject<SetGun>(true);
 
 
 			CreatePinP();
