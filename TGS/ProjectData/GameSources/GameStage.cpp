@@ -83,7 +83,7 @@ namespace basecross {
 
 		if (m_weaponTime <= 0.0f) {
 			AddGameObject<Weapon>();
-			m_weaponTime = 2.0f;
+			m_weaponTime = 10.0f;
 		}
 
 	}
@@ -97,6 +97,36 @@ namespace basecross {
 			CreateUI();
 			CreateTime();
 			AddGameObject<Object>(
+				Vec3(10.0f, -8.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(2.0f, 5.0f, 5.0f)
+				);
+			AddGameObject<Object>(
+				Vec3(10.0f, -8.0f, 5.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(4.0f, 2.0f, 3.0f)
+				);
+			AddGameObject<Object>(
+				Vec3(-5.0f, -8.0f, -10.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(2.0f, 1.0f, 2.5f)
+				);
+			AddGameObject<Object>(
+				Vec3(20.0f, -8.0f, -15.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(5.0f, 1.0f, 10.0f)
+				);
+			AddGameObject<Object>(
+				Vec3(10.0f, -8.0f, 20.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(2.0f, 2.0f, 8.0f)
+				);
+			AddGameObject<Object>(
+				Vec3(20.0f, -8.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(5.0f, 5.0f, 5.0f)
+				);
+			AddGameObject<OilStage>(
 				Vec3(0.0f, -10.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(60.0f, 60.0f, 60.0f)
@@ -121,52 +151,52 @@ namespace basecross {
 			auto characterGroup = CreateSharedObjectGroup(L"CharacterGroup");
 			characterGroup->IntoGroup(m_player);
 
-			for (int i = 1; i < 8; i++) {
+			//for (int i = 1; i < 8; i++) {
 
-				CharacterType p;
-				int Rand = rand() % 5;
-				switch (Rand) {
-				case 0:
-					p = CharacterType::CHICKEN;
-					break;
-				case 1:
-					p = CharacterType::DOUGHNUT;
-					break;
-				case 2:
-					p = CharacterType::POTATO;
-					break;
-				case 3:
-					p = CharacterType::SHRIMP;
-					break;
-				}
+			//	CharacterType p;
+			//	int Rand = rand() % 5;
+			//	switch (Rand) {
+			//	case 0:
+			//		p = CharacterType::CHICKEN;
+			//		break;
+			//	case 1:
+			//		p = CharacterType::DOUGHNUT;
+			//		break;
+			//	case 2:
+			//		p = CharacterType::POTATO;
+			//		break;
+			//	case 3:
+			//		p = CharacterType::SHRIMP;
+			//		break;
+			//	}
 
-				auto AIparam = AIParam_s{
-					vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
-					1.0f,
-					5.0f,
-					15.0f,
-					0.0f,
-					15.0f,
-					15.0f,
-					3,
-					3,
-					true
-				};
+			//	auto AIparam = AIParam_s{
+			//		vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
+			//		1.0f,
+			//		5.0f,
+			//		15.0f,
+			//		0.0f,
+			//		15.0f,
+			//		15.0f,
+			//		3,
+			//		3,
+			//		true
+			//	};
 
-				m_enemy = AddGameObject<AIchan>(
-					p,
-					false,
-					i, i,
-					AIparam
-					);
+			//	m_enemy = AddGameObject<AIchan>(
+			//		p,
+			//		false,
+			//		i, i,
+			//		AIparam
+			//		);
 
-				characterGroup->IntoGroup(m_enemy);
-			}
+			//	characterGroup->IntoGroup(m_enemy);
+			//}
 
 			for (int i = 0; i < 5; i++) {
 				AddGameObject<Weapon>();
 			}
-			m_weaponTime = 2.0f;
+			m_weaponTime = 10.0f;
 
 			AddGameObject<SetGun>(true);
 
