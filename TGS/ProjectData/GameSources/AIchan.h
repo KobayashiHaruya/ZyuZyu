@@ -42,16 +42,20 @@ namespace basecross{
 	//------------------------------------------------------------------------------------------------
 
 	typedef struct AIParam {
-		vector<Vec3> points;          //巡回ポイント
-		float pointAllowable;         //巡回ポイントにどれくらい近づいたら次の巡回ポイントに切り替えるかの値。値が小さいほどポイントに近づかないといけない
-		float pointPatrolMoveSpeed;   //巡回時の移動速度
-		float pointPatrolRotSpeed;    //巡回時の回転速度
-		float pointPatrolWaitTime;    //巡回時に次のポイントに切り替えるまでの待機時間（秒）
-		float SearchRadius;           //索敵範囲（半径）
-		float LoseRadius;             //敵がこの範囲以上離れると見失う（半径）
-		int bulletChangeMaxTime;      //武器をどれくらいの時間で切り替える処理をするかの最大時間（秒）
-		int bulletShotMaxWaitTime;    //撃ってから次の撃つまでの最大待機時間（秒）
-		bool isDebug;                 //有効にすると巡回ポイントを可視化する
+		vector<Vec3> points;             //巡回ポイント
+		float pointAllowable;            //巡回ポイントにどれくらい近づいたら次の巡回ポイントに切り替えるかの値。値が小さいほどポイントに近づかないといけない
+		float pointPatrolMoveSpeed;      //巡回時の移動速度
+		float pointPatrolRotSpeed;       //巡回時の回転速度
+		int pointPatrolMaxWaitTime;      //巡回時に次のポイントに切り替えるまでの最大待機時間（秒）
+		float pointPatrolJumpPower;      //巡回時のジャンプ力
+		int pointPatrolJumpMaxWaitTime;  //巡回時にランダムでジャンプする最大待機時間（秒）
+		float SearchRadius;              //索敵範囲（半径）
+		float LoseRadius;                //敵がこの範囲以上離れると見失う（半径）
+		int bulletChangeMaxTime;         //武器をどれくらいの時間で切り替える処理をするかの最大時間（秒）
+		int bulletShotMaxWaitTime;       //撃ってから次の撃つまでの最大待機時間（秒）
+		int escapeMode;                  //吹っ飛び率が高いときの動き（0: 逃げるか戦うかをランダムで決める, 1: 必ず戦う, 2: 必ず逃げる）
+		float escapeDamage;              //この値になると吹っ飛び率から逃げるか戦うかをescapeModeによって判断する
+		bool isDebug;                    //有効にすると巡回ポイントを可視化する
 	} AIParam_s;
 
 
@@ -67,7 +71,10 @@ namespace basecross{
 		////////巡回に関するメンバ変数 - ここから////////
 		Vec3 m_point;
 		int m_pointIndex;
-		float m_pointWaitTimeCount;
+		float m_pointPatrolWaitTime;
+		float m_pointPatrolWaitTimeCount;
+		float m_pointPatrolJumpWaitTime;
+		float m_pointPatrolJumpWaitTimeCount;
 		////////巡回に関するメンバ変数 - ここまで////////
 
 
@@ -112,7 +119,10 @@ namespace basecross{
 			m_point(NULL),
 			m_pointIndex(NULL),
 			m_debugObjects(NULL),
-			m_pointWaitTimeCount(NULL),
+			m_pointPatrolWaitTime(NULL),
+			m_pointPatrolWaitTimeCount(NULL),
+			m_pointPatrolJumpWaitTime(NULL),
+			m_pointPatrolJumpWaitTimeCount(NULL),
 			m_target(NULL),
 			m_bulletNum(9),
 			m_bulletMaxPossession(2),
@@ -126,17 +136,22 @@ namespace basecross{
 		virtual void OnUpdate() override;
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
+		virtual void OnCollisionExcute(shared_ptr<GameObject>& Other) override;
 
 		void Move(const Vec3& toPos);
-		Vec3 GetNextPoint();
-		void SetNextPoint();
-		bool ThisToTargetAllowable(const Vec3& targetPos);
-		float GetThisToTargetDistance(const Vec3& targetPos);
-		bool WaitCount();
+		void Jump(const Vec3& jumpVelocity);
+		bool ThisToTargetAllowable(const float allowable, const Vec3& target, const bool isPlane = false);
+		float GetThisToTargetDistance(const Vec3& target, const bool isPlane = false);
+		vector<shared_ptr<Character>> GetCharacters();
 		vector<shared_ptr<Transform>> GetCharacterTransforms();
 		shared_ptr<Transform> GetClosestCharacterTransform();
-
+		shared_ptr<Character> GetCharacterByID(const int id);
 		unsigned int RandomNumber(const unsigned int& min, const unsigned int& max);
+
+		Vec3 GetNextPoint();
+		void ChangeNextPoint();
+		bool PointChangePermission();
+		bool pointJumpPermission();
 
 		bool BulletChangePermission();
 		void RandomBulletSelect();
@@ -151,11 +166,32 @@ namespace basecross{
 			return m_stateMachine;
 		}
 
+		Vec3 GetPoint() {
+			return m_point;
+		}
+		void SetPoint(const Vec3& point) {
+			m_point = point;
+		}
+
 		shared_ptr<Transform> GetTarget() {
 			return m_target;
 		}
 		void SetTarget(const shared_ptr<Transform>& trans) {
 			m_target = trans;
+		}
+
+		float GetPointPatrolWaitTime() {
+			return m_pointPatrolWaitTime;
+		}
+		void SetPointPatrolWaitTime(const float pointPatrolWaitTime) {
+			m_pointPatrolWaitTime = pointPatrolWaitTime;
+		}
+
+		float GetPointPatrolJumpWaitTime() {
+			return m_pointPatrolJumpWaitTime;
+		}
+		void SetPointPatrolJumpWaitTime(const float pointPatrolJumpWaitTime) {
+			m_pointPatrolJumpWaitTime = pointPatrolJumpWaitTime;
 		}
 
 		float GetBulletChangeTime() {
@@ -189,13 +225,27 @@ namespace basecross{
 
 
 	//------------------------------------------------------------------------------------------------
-	//アイちゃんポイント敵発見ステート : Class
+	//アイちゃん敵発見ステート : Class
 	//------------------------------------------------------------------------------------------------
 
 	class SeekDiscoveryState : public ObjState<AIchan> {
 		SeekDiscoveryState() {}
 	public:
 		static shared_ptr<SeekDiscoveryState> Instance();
+		virtual void Enter(const shared_ptr<AIchan>& Obj)override;
+		virtual void Execute(const shared_ptr<AIchan>& Obj)override;
+		virtual void Exit(const shared_ptr<AIchan>& Obj)override;
+	};
+
+
+	//------------------------------------------------------------------------------------------------
+	//アイちゃん逃げるステート : Class
+	//------------------------------------------------------------------------------------------------
+
+	class SeekEscapeState : public ObjState<AIchan> {
+		SeekEscapeState() {}
+	public:
+		static shared_ptr<SeekEscapeState> Instance();
 		virtual void Enter(const shared_ptr<AIchan>& Obj)override;
 		virtual void Execute(const shared_ptr<AIchan>& Obj)override;
 		virtual void Exit(const shared_ptr<AIchan>& Obj)override;

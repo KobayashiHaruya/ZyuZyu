@@ -142,14 +142,9 @@ namespace basecross {
 
 				auto AIparam = AIParam_s{
 					vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
-					1.0f,
-					5.0f,
-					15.0f,
-					0.0f,
-					15.0f,
-					15.0f,
-					3,
-					3,
+					1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
+					3, 3,
+					0,
 					true
 				};
 
@@ -401,14 +396,9 @@ namespace basecross {
 	void GameStage::CreateAIchan() {
 		auto AIparam = AIParam_s{
 			vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
-			1.0f,
-			5.0f,
-			15.0f,
-			0.0f,
-			15.0f,
-			15.0f,
-			3,
-			3,
+			1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
+			3, 3,
+			0,
 			true
 		};
 		AddGameObject<AIchan>(

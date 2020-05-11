@@ -31,8 +31,26 @@ namespace basecross {
 
 	void AIchan::OnCollisionEnter(shared_ptr<GameObject>& Other) {
 		Character::OnCollisionEnter(Other);
-		if (Other->FindTag(L"Character")) {
-			//m_stateMachine->ChangeState(SeekDiscoveryState::Instance());
+
+		//もしあったらオブジェクトがBulletタグのついたオブジェクトだったら
+		if (Other->FindTag(L"Bullet")) {
+			auto bullet = dynamic_pointer_cast<Bullet>(Other);
+			if (bullet) {
+				auto character = GetCharacterByID(bullet->GetFromUnique());
+				if (character) {
+					SetTarget(character->GetComponent<Transform>());
+					m_stateMachine->ChangeState(SeekDiscoveryState::Instance());
+				}
+			}
+		}
+	}
+
+	void AIchan::OnCollisionExcute(shared_ptr<GameObject>& Other) {
+		Character::OnCollisionExcute(Other);
+
+		if (Other->FindTag(L"FallGun")) {
+			PickGun(Other->GetBulletType());
+			GetStage()->RemoveGameObject<GameObject>(Other);
 		}
 	}
 
@@ -49,59 +67,31 @@ namespace basecross {
 		auto ptr = GetBehavior<UtilBehavior>();
 		ptr->RotToHead(rot, time * m_aiParam.pointPatrolRotSpeed);
 	}
-
-	Vec3 AIchan::GetNextPoint() {
-		if (m_aiParam.points.size() - 1 > m_pointIndex) {
-			m_pointIndex++;
-			return m_aiParam.points[m_pointIndex];
-		}
-		m_pointIndex = 0;
-		return m_aiParam.points[m_pointIndex];
+	void AIchan::Jump(const Vec3& jumpVelocity) {
+		auto gravity = GetComponent<Gravity>();
+		gravity->StartJump(jumpVelocity);
 	}
-
-	void AIchan::SetNextPoint() {
-		if (ThisToTargetAllowable(m_point) && WaitCount()) {
-			m_point = GetNextPoint();
-		}
-		else
-		{
-			m_point = m_aiParam.points[m_pointIndex];
-		}
-		Move(m_point);
-	}
-
-	bool AIchan::ThisToTargetAllowable(const Vec3& target) {
+	bool AIchan::ThisToTargetAllowable(const float allowable, const Vec3& target, const bool isPlane) {
 		Vec3& thisPos = GetComponent<Transform>()->GetPosition();
 		Vec3 targetPos = target;
-		thisPos.y = 0.0f;
-		targetPos.y = 0.0f;
+		if (isPlane) {
+			thisPos.y = 0.0f;
+			targetPos.y = 0.0f;
+		}
 		float distance = (targetPos - thisPos).length();
-		return (distance < m_aiParam.pointAllowable) ? true : false;
+		return (distance < allowable) ? true : false;
 	}
-
-	float AIchan::GetThisToTargetDistance(const Vec3& targetPos) {
+	float AIchan::GetThisToTargetDistance(const Vec3& target, const bool isPlane) {
 		Vec3& thisPos = GetComponent<Transform>()->GetPosition();
+		Vec3 targetPos = target;
+		if (isPlane) {
+			thisPos.y = 0.0f;
+			targetPos.y = 0.0f;
+		}
 		return (targetPos - thisPos).length();
 	}
-
-	bool AIchan::WaitCount() {
-		if (m_aiParam.pointPatrolWaitTime != 0.0f) {
-			m_pointWaitTimeCount += App::GetApp()->GetElapsedTime();
-
-			if (m_aiParam.pointPatrolWaitTime <= m_pointWaitTimeCount) {
-				m_pointWaitTimeCount = 0.0f;
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-
-	vector<shared_ptr<Transform>> AIchan::GetCharacterTransforms() {
-		vector<shared_ptr<Transform>> transforms;
+	vector<shared_ptr<Character>> AIchan::GetCharacters() {
+		vector<shared_ptr<Character>> characters;
 		auto group = GetStage()->GetSharedObjectGroup(L"CharacterGroup");
 		auto vec = group->GetGroupVector();
 		for (auto& v : vec) {
@@ -109,14 +99,20 @@ namespace basecross {
 			if (obj) {
 				auto character = dynamic_pointer_cast<Character>(obj);
 				if (character && character->GetMyData().unique != GetMyData().unique) {
-					transforms.push_back(character->GetComponent<Transform>());
+					characters.push_back(character);
 				}
 			}
-			
+		}
+		return characters;
+	}
+	vector<shared_ptr<Transform>> AIchan::GetCharacterTransforms() {
+		vector<shared_ptr<Transform>> transforms;
+		auto characters = GetCharacters();
+		for (auto& character : characters) {
+			transforms.push_back(character->GetComponent<Transform>());
 		}
 		return transforms;
 	}
-
 	shared_ptr<Transform> AIchan::GetClosestCharacterTransform() {
 		auto transforms = GetCharacterTransforms();
 		if (transforms.size() <= 0) return NULL;
@@ -131,11 +127,47 @@ namespace basecross {
 		}
 		return closestTransform;
 	}
-
+	shared_ptr<Character> AIchan::GetCharacterByID(const int id) {
+		auto characters = GetCharacters();
+		for (auto& character : characters) {
+			if (character->GetMyData().unique == id) return character;
+		}
+		return NULL;
+	}
 	unsigned int AIchan::RandomNumber(const unsigned int& min, const unsigned int& max) {
 		mt19937_64 mt{ random_device{}() };
 		uniform_int_distribution<unsigned int> dist(min, max);
 		return dist(mt);
+	}
+
+	Vec3 AIchan::GetNextPoint() {
+		if (m_aiParam.points.size() - 1 > m_pointIndex) {
+			m_pointIndex++;
+			return m_aiParam.points[m_pointIndex];
+		}
+		m_pointIndex = 0;
+		return m_aiParam.points[m_pointIndex];
+	}
+	void AIchan::ChangeNextPoint() {
+		m_point = GetNextPoint();
+	}
+	bool AIchan::PointChangePermission() {
+		float time = App::GetApp()->GetElapsedTime();
+		m_pointPatrolWaitTimeCount += time;
+		if (m_pointPatrolWaitTime <= m_pointPatrolWaitTimeCount) {
+			m_pointPatrolWaitTimeCount = 0.0f;
+			return true;
+		}
+		return false;
+	}
+	bool AIchan::pointJumpPermission() {
+		float time = App::GetApp()->GetElapsedTime();
+		m_pointPatrolJumpWaitTimeCount += time;
+		if (m_pointPatrolJumpWaitTime <= m_pointPatrolJumpWaitTimeCount) {
+			m_pointPatrolJumpWaitTimeCount = 0.0f;
+			return true;
+		}
+		return false;
 	}
 
 	bool AIchan::BulletChangePermission() {
@@ -147,12 +179,10 @@ namespace basecross {
 		}
 		return false;
 	}
-
 	void AIchan::RandomBulletSelect() {
 		m_oldBulletNum = m_newBulletNum;
 		m_newBulletNum = RandomNumber(1, m_bulletMaxPossession);
 	}
-
 	bool AIchan::BulletShotPermission() {
 		float time = App::GetApp()->GetElapsedTime();
 		m_bulletShotWaitTimeCount += time;
@@ -162,7 +192,6 @@ namespace basecross {
 		}
 		return false;
 	}
-
 	void AIchan::RandomBulletShot() {
 		auto trans = GetComponent<Transform>();
 		auto my = GetMyData();
@@ -203,7 +232,39 @@ namespace basecross {
 			}
 		}
 		else if (m_newBulletNum == 2) {
-			
+			auto w = GetWeaponT();
+			if (w == BulletS::Shot) {
+				for (size_t i = 0; i < 1; i++)
+				{
+					auto bullet = GetStage()->AddGameObject<Bullet>(
+						trans->GetPosition(),
+						trans->GetQuaternion(),
+						(BulletS)w,
+						my.unique,
+						id,
+						my
+						);
+
+					bullet->AddEvent([this](const CharacterStatus_s status) {
+						DroppedIntoOil(status);
+						});
+				}
+			}
+			else
+			{
+				auto bullet = GetStage()->AddGameObject<Bullet>(
+					trans->GetPosition(),
+					trans->GetQuaternion(),
+					(BulletS)w,
+					my.unique,
+					id,
+					my
+					);
+
+				bullet->AddEvent([this](const CharacterStatus_s status) {
+					DroppedIntoOil(status);
+					});
+			}
 		}
 	}
 
@@ -213,7 +274,6 @@ namespace basecross {
 			m_debugObjects.push_back(stage->AddGameObject<PointObject>(point, Vec3(1.0f)));
 		}
 	}
-
 	void AIchan::UpdateDebugObject() {
 		auto red = Col4(1.0f, 0.0f, 0.0f, 1.0f);
 		auto blue = Col4(0.0f, 0.0f, 1.0f, 1.0f);
@@ -235,16 +295,37 @@ namespace basecross {
 	}
 
 	void SeekPatrolState::Enter(const shared_ptr<AIchan>& Obj) {
-
+		auto param = Obj->GetAiParam();
+		Obj->SetPointPatrolWaitTime(Obj->RandomNumber(0, param.pointPatrolMaxWaitTime));
+		Obj->SetPointPatrolJumpWaitTime(Obj->RandomNumber(0, param.pointPatrolJumpMaxWaitTime));
 	}
 
 	void SeekPatrolState::Execute(const shared_ptr<AIchan>& Obj) {
-		Obj->SetNextPoint();
-		auto aiParam = Obj->GetAiParam();
+		auto param = Obj->GetAiParam();
+
+		//決められたポイントを順番に巡回する
+		if (Obj->ThisToTargetAllowable(param.pointAllowable, Obj->GetPoint(), true)) {
+			if (Obj->PointChangePermission()) {
+				Obj->SetPointPatrolWaitTime(Obj->RandomNumber(0, param.pointPatrolMaxWaitTime));
+				Obj->ChangeNextPoint();
+			}
+		}
+		else
+		{
+			Obj->Move(Obj->GetPoint());
+		}
+
+		if (Obj->pointJumpPermission()) {
+			Obj->Jump(Vec3(0.0f, param.pointPatrolJumpPower, 0.0f));
+			Obj->SetPointPatrolJumpWaitTime(Obj->RandomNumber(0, param.pointPatrolJumpMaxWaitTime));
+		}
+
+
+		//キャラクタが一定の距離近づいてきたらSeekDiscoveryStateに移行する
 		auto closest = Obj->GetClosestCharacterTransform();
 		if (closest) {
 			auto distance = Obj->GetThisToTargetDistance(closest->GetPosition());
-			if (distance < aiParam.SearchRadius) {
+			if (distance < param.SearchRadius) {
 				Obj->SetTarget(closest);
 				Obj->GetStateMachine()->ChangeState(SeekDiscoveryState::Instance());
 			}
@@ -257,7 +338,7 @@ namespace basecross {
 
 
 	//------------------------------------------------------------------------------------------------
-	//アイちゃんポイント敵発見ステート : Class
+	//アイちゃん敵発見ステート : Class
 	//------------------------------------------------------------------------------------------------
 
 	shared_ptr<SeekDiscoveryState> SeekDiscoveryState::Instance() {
@@ -267,6 +348,12 @@ namespace basecross {
 
 	void SeekDiscoveryState::Enter(const shared_ptr<AIchan>& Obj) {
 		auto param = Obj->GetAiParam();
+		//もし自身の吹っ飛び率が高い場合に戦うか逃げるかの判断
+		if (Obj->GetDamage() >= param.escapeDamage) {
+			auto m = 0;
+			//switch()
+		}
+
 		Obj->SetBulletChangeTime(Obj->RandomNumber(0, param.bulletChangeMaxTime));
 		Obj->SetBulletShotWaitTime(Obj->RandomNumber(0, param.bulletShotMaxWaitTime));
 	}
@@ -275,9 +362,9 @@ namespace basecross {
 		auto target = Obj->GetTarget();
 		if (target) {
 			Obj->Move(target->GetPosition());
-			auto aiParam = Obj->GetAiParam();
+			auto param = Obj->GetAiParam();
 			auto distance = Obj->GetThisToTargetDistance(target->GetPosition());
-			if (distance >= aiParam.LoseRadius) {
+			if (distance >= param.LoseRadius) {
 				Obj->SetTarget(NULL);
 				Obj->GetStateMachine()->ChangeState(SeekPatrolState::Instance());
 			}
@@ -294,6 +381,28 @@ namespace basecross {
 	}
 
 	void SeekDiscoveryState::Exit(const shared_ptr<AIchan>& Obj) {
+
+	}
+
+
+	//------------------------------------------------------------------------------------------------
+	//アイちゃん逃げるステート : Class
+	//------------------------------------------------------------------------------------------------
+
+	shared_ptr<SeekEscapeState> SeekEscapeState::Instance() {
+		static shared_ptr<SeekEscapeState> instance(new SeekEscapeState);
+		return instance;
+	}
+
+	void SeekEscapeState::Enter(const shared_ptr<AIchan>& Obj) {
+		
+	}
+
+	void SeekEscapeState::Execute(const shared_ptr<AIchan>& Obj) {
+		
+	}
+
+	void SeekEscapeState::Exit(const shared_ptr<AIchan>& Obj) {
 
 	}
 
