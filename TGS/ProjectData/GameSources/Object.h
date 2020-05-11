@@ -3,14 +3,14 @@
 
 namespace basecross {
 
-	class Object :public GameObject {
+	class ObjectBase :public GameObject {
 		Vec3 m_pos;
 		Vec3 m_rot;
 		Vec3 m_scale;
 
 	public:
 
-		Object(const shared_ptr<Stage>& StagePtr,
+		ObjectBase(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos,
 			const Vec3& rot,
 			const Vec3& scale
@@ -21,17 +21,59 @@ namespace basecross {
 			m_scale(scale)
 
 		{}
-		~Object() {}
+		~ObjectBase() {}
 
-		virtual void OnCreate() override;
-		virtual void OnUpdate() override;
 		void BmfDateRead(wstring model, Vec3 mpos, Vec3 mrot, Vec3 mscale);
 		void Draw();
 
 	};
 
+	class Object :public ObjectBase {
+	public:
 
-	class Oil :public Object {
+		Object(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos,
+			const Vec3& rot,
+			const Vec3& scale
+		) :
+			ObjectBase(
+				StagePtr,
+				pos,
+				rot,
+				scale
+			)
+		{}
+		~Object() {}
+
+		virtual void OnCreate() override;
+
+	};
+
+	class OilStage :public ObjectBase {
+		Vec3 m_pos;
+	public:
+
+		OilStage(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos,
+			const Vec3& rot,
+			const Vec3& scale
+		) :
+			ObjectBase(
+				StagePtr,
+				pos,
+				rot,
+				scale
+			),
+			m_pos(pos)
+		{}
+		~OilStage() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+	};
+
+	class Oil :public ObjectBase {
 	public:
 
 		Oil(const shared_ptr<Stage>& StagePtr,
@@ -39,7 +81,7 @@ namespace basecross {
 			const Vec3& rot,
 			const Vec3& scale
 		) :
-			Object(
+			ObjectBase(
 				StagePtr,
 				pos,
 				rot,
@@ -52,7 +94,7 @@ namespace basecross {
 
 	};
 
-	class Nabe :public Object {
+	class Nabe :public ObjectBase {
 	public:
 
 		Nabe(const shared_ptr<Stage>& StagePtr,
@@ -60,7 +102,7 @@ namespace basecross {
 			const Vec3& rot,
 			const Vec3& scale
 		) :
-			Object(
+			ObjectBase(
 				StagePtr,
 				pos,
 				rot,

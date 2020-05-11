@@ -1588,16 +1588,17 @@ namespace basecross {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		float time = App::GetApp()->GetElapsedTime();
 		int flame = 70;
-		if (m_count <= flame) {
+		if (m_time <= 70.0f / 60.0f) {
 			UpdateAnimeTime(time);
 		}
 		else {
 			UpdateAnimeTime(0);
 		}
 		m_count += 1;
+		m_time += time;
 
 		if (KeyState.m_bPressedKeyTbl[VK_SPACE] || KeyState.m_bPushKeyTbl['W'] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) {
-			m_count = -10;
+			m_time = -10;
 		}
 
 

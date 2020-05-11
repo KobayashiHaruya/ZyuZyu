@@ -83,7 +83,7 @@ namespace basecross {
 
 		if (m_weaponTime <= 0.0f) {
 			AddGameObject<Weapon>();
-			m_weaponTime = 2.0f;
+			m_weaponTime = 10.0f;
 		}
 
 	}
@@ -97,6 +97,36 @@ namespace basecross {
 			CreateUI();
 			CreateTime();
 			AddGameObject<Object>(
+				Vec3(10.0f, -8.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(2.0f, 5.0f, 5.0f)
+				);
+			AddGameObject<Object>(
+				Vec3(10.0f, -8.0f, 5.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(4.0f, 2.0f, 3.0f)
+				);
+			AddGameObject<Object>(
+				Vec3(-5.0f, -8.0f, -10.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(2.0f, 1.0f, 2.5f)
+				);
+			AddGameObject<Object>(
+				Vec3(20.0f, -8.0f, -15.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(5.0f, 1.0f, 10.0f)
+				);
+			AddGameObject<Object>(
+				Vec3(10.0f, -8.0f, 20.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(2.0f, 2.0f, 8.0f)
+				);
+			AddGameObject<Object>(
+				Vec3(20.0f, -8.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(5.0f, 5.0f, 5.0f)
+				);
+			AddGameObject<OilStage>(
 				Vec3(0.0f, -10.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(60.0f, 60.0f, 60.0f)
@@ -161,7 +191,7 @@ namespace basecross {
 			for (int i = 0; i < 5; i++) {
 				AddGameObject<Weapon>();
 			}
-			m_weaponTime = 2.0f;
+			m_weaponTime = 10.0f;
 
 			AddGameObject<SetGun>(true);
 

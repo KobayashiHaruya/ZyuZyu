@@ -3,7 +3,13 @@
 
 namespace basecross {
 
-	void Object::BmfDateRead(wstring model, Vec3 mpos, Vec3 mrot, Vec3 mscale) {
+	void ObjectBase::BmfDateRead(wstring model, Vec3 mpos, Vec3 mrot, Vec3 mscale) {
+		auto ptr = GetComponent<Transform>();
+
+		ptr->SetPosition(m_pos);
+		ptr->SetRotation(m_rot);
+		ptr->SetScale(m_scale);
+
 		Mat4x4 m_spanMat;
 		mrot.y = mrot.y * 3.14f / 180.0f;
 		m_spanMat.affineTransformation(
@@ -13,34 +19,65 @@ namespace basecross {
 			mpos
 		);
 
-		//‰e‚ð‚Â‚¯‚éa
 		auto ptrShadow = AddComponent<Shadowmap>();
 		ptrShadow->SetMeshResource(model);
 		ptrShadow->SetMeshToTransformMatrix(m_spanMat);
 
-		auto ptrDraw = AddComponent<PNTStaticModelDraw>();
+		auto ptrDraw = AddComponent<BcPNTStaticModelDraw>();
 		ptrDraw->SetMeshResource(model);
 		ptrDraw->SetMeshToTransformMatrix(m_spanMat);
 		ptrDraw->SetOwnShadowActive(true);
 		ptrDraw->SetDrawActive(true);
 
+
 		SetAlphaActive(true);
+
+		AddTag(L"Object");
+
+		//auto PtrDraw = AddComponent<BcPNTStaticDraw>();
+		//PtrDraw->SetFogEnabled(true);
+		//PtrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		//PtrDraw->SetOwnShadowActive(true);
+		//PtrDraw->SetTextureResource(L"SKY_TX");
 
 	}
 
-	void Object::Draw() {
+	void ObjectBase::Draw() {
 		auto ptr = GetComponent<Transform>();
 
 		ptr->SetPosition(m_pos);
 		ptr->SetRotation(m_rot);
 		ptr->SetScale(m_scale);
 
-		AddTag(L"Object");
+		////‰e‚ð‚Â‚¯‚é
+		//auto ShadowPtr = AddComponent<Shadowmap>();
+		//ShadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
+
+		//‰e‚ð‚Â‚¯‚éa
+		auto ptrShadow = AddComponent<Shadowmap>();
+		ptrShadow->SetMeshResource(L"DEFAULT_CUBE");
+
+		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
+		PtrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		PtrDraw->SetOwnShadowActive(true);
+		PtrDraw->SetDrawActive(true);
+
+		SetAlphaActive(true);
+
+		//PtrDraw->SetTextureResource(L"trace.png");
+
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetAfterCollision(AfterCollision::Auto);
+
+		AddTag(L"Object");
 	}
 
 	void Object::OnCreate() {
 		Draw();
+	}
+
+	void OilStage::OnCreate() {
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
 		ptrColl->SetMakedSize(Vec3(1.2f, 0.08f, 1.2f));
@@ -48,14 +85,13 @@ namespace basecross {
 		BmfDateRead(L"Stage_floor.bmf", Vec3(0.0f, -0.725f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
 	}
 	
-	void Object::OnUpdate() {
+	void OilStage::OnUpdate() {
 		auto ptr = GetComponent<Transform>();
 
 		ptr->SetPosition(m_pos);
 	}
 
 	void Oil::OnCreate() {
-		Draw();
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
 		ptrColl->SetMakedSize(Vec3(4.0f, 0.825f, 4.0f));
@@ -65,7 +101,6 @@ namespace basecross {
 	}
 
 	void Nabe::OnCreate() {
-		Draw();
 		BmfDateRead(L"Stage_nabe.bmf", Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
 	}
 

@@ -1256,6 +1256,7 @@ namespace basecross {
 		Vec3 m_pos;
 		Vec3 m_scale;
 		int m_layer;
+		float m_time;
 
 		int m_count;
 	public:

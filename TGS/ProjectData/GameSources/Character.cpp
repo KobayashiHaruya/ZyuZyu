@@ -16,6 +16,11 @@ namespace basecross {
 			Vec3(0.0f, 3.14f, 0.0f),
 			Vec3(0.0f, -1.5f, 0.0f));
 
+		auto ptrColl = AddComponent<CollisionCapsule>();
+		ptrColl->SetMakedDiameter(2.5f);
+		//ptrColl->AddExcludeCollisionTag(L"Weapon");
+		ptrColl->SetAfterCollision(AfterCollision::Auto);
+			
 		//影をつけるa
 		auto ptrShadow = AddComponent<Shadowmap>();
 		ptrShadow->SetMeshResource(model);
@@ -27,17 +32,16 @@ namespace basecross {
 		ptrDraw->SetOwnShadowActive(true);
 		ptrDraw->SetDrawActive(true);
 
-		SetAlphaActive(true);
-
 		//各パフォーマンスを得る
 		GetStage()->SetCollisionPerformanceActive(true);
 		GetStage()->SetUpdatePerformanceActive(true);
 		GetStage()->SetDrawPerformanceActive(true);
 
-		auto ptrColl = AddComponent<CollisionCapsule>();
-		ptrColl->SetMakedDiameter(2.5f);
-		//ptrColl->AddExcludeCollisionTag(L"Weapon");
-		ptrColl->SetAfterCollision(AfterCollision::Auto);
+		SetAlphaActive(true);
+
+		////Rigidbodyをつける
+		//auto PtrRedid = AddComponent<Rigidbody>();
+
 	}
 
 	void Character::CharaState() {
@@ -469,7 +473,12 @@ namespace basecross {
 
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B) || KeyState.m_bPressedKeyTbl['F'])) {
 			if (Other->FindTag(L"SetGun")) {
-				m_setGun = true;
+				if (m_setGun) {
+					m_setGun = false;
+				}
+				else {
+					m_setGun = true;
+				}
 			}
 			else if (Other->FindTag(L"FallGun")) {
 				PickGun(Other->GetBulletType());
