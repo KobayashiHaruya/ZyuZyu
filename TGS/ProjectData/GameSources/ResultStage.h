@@ -16,7 +16,6 @@ namespace basecross {
 
 		void CreateViewLight();
 		void CreateUI();
-		void CreateSara();
 		void CreateIcon();
 	public:
 		ResultStage() :Stage(),

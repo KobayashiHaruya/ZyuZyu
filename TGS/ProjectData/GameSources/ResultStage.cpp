@@ -53,17 +53,7 @@ namespace basecross {
 		m_Cartain = AddGameObject<Result_Curtain>(mediaDir + L"Texters/ResultImagis/ResultAnimation/SpriteStadio/", Vec3(0.0f, 0.0f, 0.0f), Vec3(32.0f), m_layer);
 	}
 
-	void ResultStage::CreateSara() {
-		//AddGameObject<Sara>(
-		//	Vec3(0.0f, 0.0f, 0.0f),
-		//	Vec3(0.0f, 0.0f, 0.0f),
-		//	Vec3(15.0f, 15.0f, 15.0f)
-		//	);
-	}
-
 	void ResultStage::CreateIcon() {
-		//ÉAÉCÉRÉìÇÃç~Ç¡ÇƒÇ≠ÇÈÇ‚Ç¬
-
 
 
 	}
@@ -71,7 +61,6 @@ namespace basecross {
 	void ResultStage::OnCreate() {
 		try {
 			CreateViewLight();
-			CreateSara();
 			CreateUI();
 		}
 		catch (...) {
