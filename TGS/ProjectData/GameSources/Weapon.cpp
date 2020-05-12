@@ -109,9 +109,10 @@ namespace basecross {
 		//PtrDraw->SetTextureResource(L"trace.png");
 		//SetAlphaActive(true);
 
-		auto ptrColl = AddComponent<CollisionRect>();
+		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
-
+		ptrColl->AddExcludeCollisionTag(L"Bullet");
+		ptrColl->AddExcludeCollisionTag(L"SetGun");
 
 		auto gravity = AddComponent<Gravity>();
 		gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
@@ -139,18 +140,14 @@ namespace basecross {
 		m_time -= time;
 
 		if (m_time <= 0.0f) {
-			Destroy();
+			GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
 		}
 
 	}
 
-	void Bullet::Destroy() {
-		GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
-	}
-
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& Other) {
-		if (Other->GetID() != ID && !Other->FindTag(L"Bullet")) {
-			Destroy();
+		if (Other->GetID() != ID && !Other->FindTag(L"Bullet") || Other->FindTag(L"Object")) {
+			GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
 		}
 	}
 
@@ -496,7 +493,10 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 		ptrColl->AddExcludeCollisionTag(L"Weapon");
-		ptrColl->SetMakedSize(Vec3(1.5f, 2.0f, 1.5f));
+		ptrColl->AddExcludeCollisionTag(L"Bullet");
+		ptrColl->SetMakedSize(Vec3(0.5f, 1.0f, 0.5f));
+		ptrColl->SetDrawActive(true);
+
 
 		AddTag(L"Weapon");
 		AddTag(L"SetGun");
@@ -564,7 +564,7 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 		ptrColl->AddExcludeCollisionTag(L"Weapon");
-		ptrColl->SetMakedSize(Vec3(1.5f, 2.0f, 1.5f));
+		ptrColl->SetMakedSize(Vec3(0.5f, 1.0f, 0.5f));
 
 		AddTag(L"Weapon");
 		AddTag(L"SetGun");

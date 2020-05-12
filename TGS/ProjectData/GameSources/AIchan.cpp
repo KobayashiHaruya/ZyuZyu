@@ -26,6 +26,7 @@ namespace basecross {
 	void AIchan::OnUpdate() {
 		m_stateMachine->Update();
 
+		AddLevel();
 		if (m_aiParam.isDebug) UpdateDebugObject();
 	}
 

@@ -99,6 +99,8 @@ namespace basecross {
 		m_gravityScale = grav;
 		m_jumpPower = jump;
 
+		BulletState(m_weaponO, true);
+		BulletState(m_weaponT, false);
 	}
 
 	void Character::PlayerUI() {
@@ -200,8 +202,6 @@ namespace basecross {
 		CharaState();
 
 		BmfDateRead(m_modelName);
-		BulletState(m_weaponO, true);
-		BulletState(m_weaponT, false);
 
 		Respawn();
 
@@ -434,23 +434,28 @@ namespace basecross {
 		}
 
 		if (Other->FindTag(L"Torimoti")) {
-			Torimoti(true);
-			AddLevel();
+			m_torimoti = true;
 		}
 
 		if (Other->FindTag(L"Smoke")) {
-			AddLevel();
+			m_smoke = true;
 		}
 
 		if (Other->FindTag(L"Bullet")) {
-			auto bullet = dynamic_pointer_cast<Bullet>(Other);
-			if (bullet) {
-				m_touchOil = dynamic_pointer_cast<ObstacleEvent<const CharacterStatus_s>>(Other);
-				m_opponent = bullet->GetFrome();
-			}
 			if (Other->GetID() != ID) {
 				BulletDamage(Other->GetBulletType(), Other->GetComponent<Transform>()->GetForword());
+				auto bullet = dynamic_pointer_cast<Bullet>(Other);
+				if (bullet) {
+					m_touchOil = dynamic_pointer_cast<ObstacleEvent<const CharacterStatus_s>>(Other);
+					m_opponent = bullet->GetFrome();
+				}
+				GetStage()->RemoveGameObject<GameObject>(Other);
 			}
+		}
+
+		if (Other->FindTag(L"Explosion")) {
+			auto rot = Other->GetComponent<Transform>()->GetRotation();
+			AttackHit(rot);
 		}
 
 		if (Other->FindTag(L"Oil")) {
@@ -468,23 +473,33 @@ namespace basecross {
 		}
 
 		if (Other->FindTag(L"Torimoti")) {
+			m_torimoti = true;
 			Torimoti(true);
+			m_toriIn = true;
+		}
+		else {
+			Torimoti(false);
+			m_toriIn = false;
 		}
 
-		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B) || KeyState.m_bPressedKeyTbl['F'])) {
-			if (Other->FindTag(L"SetGun")) {
-				if (m_setGun) {
-					m_setGun = false;
-				}
-				else {
+		if (Other->FindTag(L"Smoke")) {
+			m_smoke = true;
+			m_smokeIn = true;
+		}
+		else {
+			m_smokeIn = false;
+		}
+
+		if (!m_setGun)
+			if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B) || KeyState.m_bPressedKeyTbl['F'])) {
+				if (Other->FindTag(L"SetGun")) {
 					m_setGun = true;
 				}
+				else if (Other->FindTag(L"FallGun")) {
+					PickGun(Other->GetBulletType());
+					GetStage()->RemoveGameObject<GameObject>(Other);
+				}
 			}
-			else if (Other->FindTag(L"FallGun")) {
-				PickGun(Other->GetBulletType());
-				GetStage()->RemoveGameObject<GameObject>(Other);
-			}
-		}
 
 		if (Other->FindTag(L"Explosion")) {
 			auto rot = Other->GetComponent<Transform>()->GetRotation();
@@ -510,7 +525,7 @@ namespace basecross {
 
 	//–û‚ÉG‚ê‚½‚Ìˆ—
 	void Character::TouchOil() {
-		if(m_touchOil) m_touchOil->Run(m_myData);
+		if (m_touchOil) m_touchOil->Run(m_myData);
 		AddDeath(1);
 
 		//PinP‚Å•\¦‚µ‚Ä‚¢‚é‚Ì‚ª©g‚¾‚Á‚½‚çPinP‚ğ”ñ•\¦‚É‚·‚é
@@ -522,6 +537,12 @@ namespace basecross {
 
 		SetUpdateActive(true);
 		SetDrawActive(true);
+
+		CharaState();
+		m_smoke = false;
+		m_torimoti = false;
+		m_myData.level = 1;
+
 	}
 
 	//‘Šè‚ğ–û‚É—‚Æ‚µ‚½‚Ìˆ—
@@ -587,8 +608,15 @@ namespace basecross {
 	}
 
 	void Character::AddLevel() {
-		if(m_myData.level < 3)
-		m_myData.level++;
+		int level = 1;
+		if (m_torimoti)
+			level = 2;
+		if (m_smoke)
+			level = 2;
+		if (m_smoke && m_torimoti)
+			level = 3;
+
+		m_myData.level = level;
 	}
 
 	void Character::AddKill(const int kill) {
@@ -791,7 +819,7 @@ namespace basecross {
 							//Quat X;
 							//X.x = (i * 3.14f) / 180.0f;
 							auto bullet = GetStage()->AddGameObject<Bullet>(
-								ptr->GetPosition() + Vec3(0.0f, 1.0f, 0.0f),
+								ptr->GetPosition(),
 								ptr->GetQuaternion(),
 								m_weaponO,
 								m_myData.unique,
@@ -808,7 +836,7 @@ namespace basecross {
 					}
 					else {
 						auto bullet = GetStage()->AddGameObject<Bullet>(
-							ptr->GetPosition() + Vec3(0.0f, 1.0f, 0.0f),
+							ptr->GetPosition(),
 							ptr->GetQuaternion(),
 							m_weaponO,
 							m_myData.unique,
@@ -888,7 +916,7 @@ namespace basecross {
 						for (size_t i = 0; i < 20; i++)
 						{
 							auto bullet = GetStage()->AddGameObject<Bullet>(
-								ptr->GetPosition() + Vec3(0.0f, 1.0f, 0.0f),
+								ptr->GetPosition(),
 								ptr->GetQuaternion(),
 								m_weaponT,
 								m_myData.unique,
@@ -905,7 +933,7 @@ namespace basecross {
 					}
 					else {
 						auto bullet = GetStage()->AddGameObject<Bullet>(
-							ptr->GetPosition() + Vec3(0.0f, 1.0f, 0.0f),
+							ptr->GetPosition(),
 							ptr->GetQuaternion(),
 							m_weaponT,
 							m_myData.unique,
@@ -943,6 +971,7 @@ namespace basecross {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
+
 		auto ptr = GetComponent<Transform>();
 
 		bool fire = false;
@@ -955,7 +984,7 @@ namespace basecross {
 		if (m_gatlingAmmo > 0 && m_intTimeGat <= 0) {
 			if (fire) {
 				auto bullet = GetStage()->AddGameObject<Bullet>(
-					ptr->GetPosition() + Vec3(0.0f,1.0f,0.0f),
+					ptr->GetPosition() + Vec3(0.0f, 0.8f, 0.0f),
 					ptr->GetQuaternion(),
 					BulletS::Gatling,
 					m_myData.unique,
@@ -974,10 +1003,6 @@ namespace basecross {
 		else if (m_intTimeGat > 0) {
 			float time = App::GetApp()->GetElapsedTime();
 			m_intTimeGat -= time;
-		}
-
-		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B) || KeyState.m_bPressedKeyTbl['F'])) {
-			m_setGun = false;
 		}
 	}
 
@@ -1058,6 +1083,8 @@ namespace basecross {
 	}
 
 	void Character::PlayerMovement() {
+		AddLevel();
+
 		if (m_setGun) {
 			SetWeaponFire();
 		}
@@ -1129,6 +1156,7 @@ namespace basecross {
 	}
 
 	void Enemy::OnUpdate() {
+		AddLevel();
 		PinPUpdate();
 	}
 

@@ -73,7 +73,6 @@ namespace basecross {
 		void Draw();
 		void Move();
 		void Timer();
-		void Destroy();
 		void BulletState(BulletS state);
 
 		virtual void OnCreate() override;

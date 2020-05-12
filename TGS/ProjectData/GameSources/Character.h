@@ -41,6 +41,10 @@ namespace basecross{
 
 		int m_gatlingAmmo=1000;
 		float m_intTimeGat = 0.01;
+		bool m_torimoti = false;
+		bool m_smoke = false;
+		bool m_toriIn = false;
+		bool m_smokeIn = false;
 
 		float m_Gtime = 4.0f;
 		float m_smokeGtime = 4.0f;
@@ -64,7 +68,6 @@ namespace basecross{
 		bool m_des = false;
 		bool m_jump = false;
 		bool m_setGun = false;
-
 
 		CharacterStatus_s m_myData;
 		vector<CharacterKillDetails_s> m_killCharacters;  //自身がキルした相手のキャラクタータイプとレベルを持つ
@@ -112,12 +115,11 @@ namespace basecross{
 
 		void Torimoti(bool hit) {
 			if (hit) {
-				m_defaultSpeed = m_moveSpeed / 2.0f;
+				m_defaultSpeed = 0.0f;
 			}
 			else {
 				m_defaultSpeed = m_moveSpeed;
 			}
-
 		}
 		int GetAmmoO() {
 			return m_ammoO;
