@@ -33,31 +33,7 @@ namespace basecross {
 		//トータル時間
 		float m_TotalTime;
 
-		//トータル時間
-		float m_TotalTime2;
-
-		//トータル時間
-		float m_TotalTime3;
-
-		//トータル時間
-		float m_TotalTime4;
-
-		//トータル時間
-		float m_TotalTime5;
-
-		////ポーズに必要
-		//bool m_Pause = false;
-		//bool m_PauseFade = false;
-
-		//bool gather = false;
-
-
-
 	public:
-
-		float m_time_ON = 0;
-
-		float Get_time_ON() const { return m_time_ON; }
 
 		//構築と破棄
 		GameStage() :
