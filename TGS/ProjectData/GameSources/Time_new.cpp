@@ -170,6 +170,8 @@ namespace basecross {
 			m_TotalTime = 3.999f;
 		}
 
+
+
 		// ドローコンポーネントを取得
 		auto ptrDraw = GetComponent<PCTSpriteDraw>();
 
@@ -183,7 +185,7 @@ namespace basecross {
 			ptrDraw->SetTextureResource(L"Start.png");
 			ptrDraw->SetDrawActive(false);			
 		}
-		if (m_TotalTime < 0.001)
+		if (m_TotalTime < 0.01)
 		{
 			m_TotalTime = 100;
 		}
