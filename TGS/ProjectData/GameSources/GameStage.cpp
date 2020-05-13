@@ -129,12 +129,12 @@ namespace basecross {
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(60.0f, 60.0f, 60.0f)
 				);
-			m_player = AddGameObject<Player>(
-				CharacterType::SHRIMP,
-				true,
-				0, 0,
-				10, 1
-				);
+			//m_player = AddGameObject<Player>(
+			//	CharacterType::SHRIMP
+			//	//true
+			//	//0, 0,
+			//	//10, 1
+			//	);
 			SetSharedGameObject(L"Player", m_player);
 
 			auto characterGroup = CreateSharedObjectGroup(L"CharacterGroup");
@@ -177,12 +177,12 @@ namespace basecross {
 			//	characterGroup->IntoGroup(m_enemy);
 			//}
 
-			AddGameObject<Enemy>(
-				CharacterType::CHICKEN,
-				false,
-				1, 1,
-				1, 0
-				);
+			//AddGameObject<Enemy>(
+			//	CharacterType::CHICKEN
+			//	//false
+			//	//1, 1,
+			//	//1, 0
+			//	);
 
 			characterGroup->IntoGroup(m_enemy);
 
