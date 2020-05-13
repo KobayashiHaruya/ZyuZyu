@@ -163,11 +163,11 @@ namespace basecross {
 
 	void Time_Start::OnUpdate() {
 
-		float TimeEat = 0.0166;
+		float TimeEat = 0.036;
 		m_TotalTime -= TimeEat;
 
 		if (m_TotalTime < 0.0f) {
-			m_TotalTime = 3.984f;
+			m_TotalTime = 3.999f;
 		}
 
 		// ドローコンポーネントを取得
