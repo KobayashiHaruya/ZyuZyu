@@ -228,6 +228,14 @@ namespace basecross {
 
 //		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
+		float TimeEat = 0.036;
+		m_TotalTime -= TimeEat;
+
+		if (m_TotalTime < 0.0f) {
+			m_TotalTime = 3.999f;
+		}
+
+
 		if (KeyState.m_bPressedKeyTbl['Z']) {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
 		}
