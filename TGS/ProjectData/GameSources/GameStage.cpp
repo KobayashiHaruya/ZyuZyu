@@ -132,7 +132,7 @@ namespace basecross {
 			m_player = AddGameObject<Player>(
 				CharacterType::SHRIMP,
 				true,
-				0, 0
+				0, 0,
 				10, 1
 				);
 			SetSharedGameObject(L"Player", m_player);
@@ -180,7 +180,7 @@ namespace basecross {
 			AddGameObject<Enemy>(
 				CharacterType::CHICKEN,
 				false,
-				1, 1
+				1, 1,
 				1, 0
 				);
 
@@ -224,9 +224,9 @@ namespace basecross {
 
 		WeaponUpdate();
 
-		m_time_ON += 0.1;
+		//m_time_ON += 0.1;
 
-		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+//		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
 		if (KeyState.m_bPressedKeyTbl['Z']) {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
