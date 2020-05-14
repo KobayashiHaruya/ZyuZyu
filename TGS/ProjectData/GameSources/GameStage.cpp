@@ -232,7 +232,7 @@ namespace basecross {
 		m_TotalTime -= TimeEat;
 
 		if (m_TotalTime < 0.0f) {
-			m_TotalTime = 3.999f;
+			m_TotalTime = 3.996f;
 		}
 
 
@@ -244,13 +244,13 @@ namespace basecross {
 		{
 			//時間を更新する
 			auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
-			ptrScor->SetScore(m_TotalTime);
+			ptrScor->SetTime(m_TotalTime);
 		}
 		else
 		{
 			//時間を更新する
 			auto ptrtime = GetSharedGameObject<Time01>(L"Time01");
-			ptrtime->SetScore(m_TotalTime);
+			ptrtime->SetTime(m_TotalTime);
 			ptrtime->SetDrawActive(false);
 		}
 

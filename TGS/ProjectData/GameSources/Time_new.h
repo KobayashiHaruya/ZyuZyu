@@ -16,7 +16,7 @@ namespace basecross {
 		Vec2 m_StartScale;
 		Vec3 m_StartPos;
 		wstring m_TextureKey;
-		float m_Score;
+		float m_Time;
 		//桁数
 		UINT m_NumberOfDigits;
 		//バックアップ頂点データ
@@ -37,8 +37,8 @@ namespace basecross {
 			const wstring& TextureKey, bool Trace,
 			const Vec2& StartScale, const Vec3& StartPos);
 		virtual ~Time01() {}
-		void SetScore(float f) {
-			m_Score = f;
+		void SetTime(float f) {
+			m_Time = f;
 		}
 
 		//トータル時間

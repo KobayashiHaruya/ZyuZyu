@@ -20,7 +20,7 @@ namespace basecross {
 		m_Trace(Trace),
 		m_StartScale(StartScale),
 		m_StartPos(StartPos),
-		m_Score(0.0f)
+		m_Time(0.0f)
 	{}
 
 	void Time01::OnCreate() {
@@ -73,7 +73,7 @@ namespace basecross {
 		int verNum = 0;
 		for (UINT i = m_NumberOfDigits; i > 0; i--) {
 			UINT base = (UINT)pow(10, i);
-			num = ((UINT)m_Score) % base;
+			num = ((UINT)m_Time) % base;
 			num = num / (base / 10);
 			Vec2 uv0 = m_BackupVertices[verNum].textureCoordinate;
 			uv0.x = (float)num / 10.0f;
@@ -171,11 +171,10 @@ namespace basecross {
 		}
 
 
-
 		// ドローコンポーネントを取得
 		auto ptrDraw = GetComponent<PCTSpriteDraw>();
 
-		if (m_TotalTime < 1.001 && m_TotalTime > 0.0f) {
+		if (m_TotalTime < 0.900 && m_TotalTime > 0.0f) {
 			// スタートに張り替える
             ptrDraw->SetDrawActive(true);
 			ptrDraw->SetTextureResource(L"Start.png");
@@ -185,7 +184,7 @@ namespace basecross {
 			ptrDraw->SetTextureResource(L"Start.png");
 			ptrDraw->SetDrawActive(false);			
 		}
-		if (m_TotalTime < 0.01)
+		if (m_TotalTime <= 0.01f)
 		{
 			m_TotalTime = 100;
 		}
