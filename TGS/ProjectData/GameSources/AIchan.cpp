@@ -39,10 +39,13 @@ namespace basecross {
 				auto character = GetCharacterByID(bullet->GetFromUnique());
 				if (character) {
 					SetTarget(character->GetComponent<Transform>());
+					SetTargetType(AIChan::AITargetType::IS_FAR);
 					m_stateMachine->ChangeState(SeekDiscoveryState::Instance());
 				}
 			}
 		}
+
+		
 	}
 
 	void AIchan::OnCollisionExcute(shared_ptr<GameObject>& Other) {
@@ -51,6 +54,10 @@ namespace basecross {
 		if (Other->FindTag(L"FallGun")) {
 			PickGun(Other->GetBulletType());
 			GetStage()->RemoveGameObject<GameObject>(Other);
+		}
+
+		if (Other->FindTag(L"Object")) {
+			ObstacleJump();
 		}
 	}
 
@@ -89,6 +96,29 @@ namespace basecross {
 			targetPos.y = 0.0f;
 		}
 		return (targetPos - thisPos).length();
+	}
+	unsigned int AIchan::RandomNumber(const unsigned int& min, const unsigned int& max) {
+		mt19937_64 mt{ random_device{}() };
+		uniform_int_distribution<unsigned int> dist(min, max);
+		return dist(mt);
+	}
+	void AIchan::UpdateEscapeMode() {
+		if (GetDamage() >= m_aiParam.escapeDamage) {
+			switch (m_aiParam.escapeMode)
+			{
+			case 0:
+				m_escapeMode = RandomNumber(0, 1);
+				break;
+			case 1:
+				m_escapeMode = true;
+				break;
+			case 2:
+				m_escapeMode = false;
+				break;
+			default:
+				break;
+			}
+		}
 	}
 	vector<shared_ptr<Character>> AIchan::GetCharacters() {
 		vector<shared_ptr<Character>> characters;
@@ -134,10 +164,58 @@ namespace basecross {
 		}
 		return NULL;
 	}
-	unsigned int AIchan::RandomNumber(const unsigned int& min, const unsigned int& max) {
-		mt19937_64 mt{ random_device{}() };
-		uniform_int_distribution<unsigned int> dist(min, max);
-		return dist(mt);
+	vector<shared_ptr<GameObject>> AIchan::GetObstacles() {
+		vector<shared_ptr<GameObject>> obstacles;
+		auto group = GetStage()->GetSharedObjectGroup(L"ObstacleGroup");
+		auto vec = group->GetGroupVector();
+		for (auto& v : vec) {
+			auto obj = v.lock();
+			obstacles.push_back(obj);
+		}
+		return obstacles;
+	}
+	vector<shared_ptr<Transform>> AIchan::GetObstacleTransforms() {
+		vector<shared_ptr<Transform>> transforms;
+		auto obstacles = GetObstacles();
+		for (auto& obstacle : obstacles) {
+			transforms.push_back(obstacle->GetComponent<Transform>());
+		}
+		return transforms;
+	}
+	shared_ptr<Transform> AIchan::GetClosestObstacleTransform() {
+		auto transforms = GetObstacleTransforms();
+		if (transforms.size() <= 0) return NULL;
+
+		float closestDistance = GetThisToTargetDistance(transforms[0]->GetPosition(), true) - (transforms[0]->GetScale().getX() / 2.0f);
+		shared_ptr<Transform> closestTransform(transforms[0]);
+		for (auto& transform : transforms) {
+			auto distance = GetThisToTargetDistance(transform->GetPosition(), true) - (transform->GetScale().getX() / 2.0f);
+			if (closestDistance > distance) {
+				closestDistance = distance;
+				closestTransform = transform;
+			}
+		}
+
+
+		/*
+		float closestDistance = GetThisToTargetDistance(transforms[0]->GetPosition(), true) + (transforms[0]->GetScale().getX() / 2.0f);
+		shared_ptr<Transform> closestTransform(transforms[0]);
+		for (auto& transform : transforms) {
+			auto distance = GetThisToTargetDistance(transform->GetPosition(), true) + (transform->GetScale().getX() / 2.0f);
+			if (closestDistance > distance) {
+				closestDistance = distance;
+				closestTransform = transform;
+			}
+		}*/
+		return closestTransform;
+	}
+	void AIchan::ObstacleJump() {
+		auto obstacleTrans = GetClosestObstacleTransform();
+		auto scale = obstacleTrans->GetScale();
+		auto pos = obstacleTrans->GetPosition();
+		if ((GetThisToTargetDistance(pos, true) - (scale.getX() / 2.0f)) <= 3.0f) {
+			Jump(Vec3(0.0f, GetJumpPower(), 0.0f));
+		}
 	}
 
 	Vec3 AIchan::GetNextPoint() {
@@ -316,8 +394,8 @@ namespace basecross {
 		}
 
 		if (Obj->pointJumpPermission()) {
-			Obj->Jump(Vec3(0.0f, param.pointPatrolJumpPower, 0.0f));
-			Obj->SetPointPatrolJumpWaitTime(Obj->RandomNumber(0, param.pointPatrolJumpMaxWaitTime));
+			//Obj->Jump(Vec3(0.0f, param.pointPatrolJumpPower, 0.0f));
+			//Obj->SetPointPatrolJumpWaitTime(Obj->RandomNumber(0, param.pointPatrolJumpMaxWaitTime));
 		}
 
 
@@ -327,9 +405,12 @@ namespace basecross {
 			auto distance = Obj->GetThisToTargetDistance(closest->GetPosition());
 			if (distance < param.SearchRadius) {
 				Obj->SetTarget(closest);
+				Obj->SetTargetType(AIChan::AITargetType::IS_NEAR);
 				Obj->GetStateMachine()->ChangeState(SeekDiscoveryState::Instance());
 			}
 		}
+
+		//Obj->ObstacleJump();
 	}
 
 	void SeekPatrolState::Exit(const shared_ptr<AIchan>& Obj) {
@@ -350,8 +431,11 @@ namespace basecross {
 		auto param = Obj->GetAiParam();
 		//もし自身の吹っ飛び率が高い場合に戦うか逃げるかの判断
 		if (Obj->GetDamage() >= param.escapeDamage) {
-			auto m = 0;
-			//switch()
+			Obj->UpdateEscapeMode();
+			if (!Obj->GetEscapeMode()) {
+				Obj->SetTarget(NULL);
+				Obj->GetStateMachine()->ChangeState(SeekEscapeState::Instance());
+			}
 		}
 
 		Obj->SetBulletChangeTime(Obj->RandomNumber(0, param.bulletChangeMaxTime));
@@ -362,11 +446,15 @@ namespace basecross {
 		auto target = Obj->GetTarget();
 		if (target) {
 			Obj->Move(target->GetPosition());
-			auto param = Obj->GetAiParam();
-			auto distance = Obj->GetThisToTargetDistance(target->GetPosition());
-			if (distance >= param.LoseRadius) {
-				Obj->SetTarget(NULL);
-				Obj->GetStateMachine()->ChangeState(SeekPatrolState::Instance());
+
+			//もしターゲットのタイプが近くにいた場合
+			if (Obj->GetTargetType() == AIChan::AITargetType::IS_NEAR) {
+				auto param = Obj->GetAiParam();
+				auto distance = Obj->GetThisToTargetDistance(target->GetPosition());
+				if (distance >= param.LoseRadius) {
+					Obj->SetTarget(NULL);
+					Obj->GetStateMachine()->ChangeState(SeekPatrolState::Instance());
+				}
 			}
 		}
 
@@ -378,6 +466,8 @@ namespace basecross {
 		if (sP) {
 			Obj->RandomBulletShot();
 		}
+
+		//Obj->ObstacleJump();
 	}
 
 	void SeekDiscoveryState::Exit(const shared_ptr<AIchan>& Obj) {
@@ -426,5 +516,22 @@ namespace basecross {
 		ptrDraw->SetEmissive(color);
 	}
 
+
+	//------------------------------------------------------------------------------------------------
+	//テスト障害物 : Class
+	//------------------------------------------------------------------------------------------------
+
+	void TestObstacle::OnCreate() {
+		auto trans = GetComponent<Transform>();
+		trans->SetPosition(m_pos);
+		trans->SetScale(m_scale);
+
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetAfterCollision(AfterCollision::Auto);
+
+		auto ptrDraw = AddComponent<PNTStaticDraw>();
+		ptrDraw->SetEmissive(Col4(0.0f, 1.0f, 0.0f, 1.0f));
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+	}
 }
 //end basecross

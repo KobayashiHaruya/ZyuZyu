@@ -145,6 +145,7 @@ namespace basecross {
 					1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
 					3, 3,
 					0,
+					15.0f,
 					true
 				};
 
@@ -178,6 +179,10 @@ namespace basecross {
 			//CreateAIchan();
 			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
 
+
+			auto obstacleGroup = CreateSharedObjectGroup(L"ObstacleGroup");
+			auto obstacle = AddGameObject<TestObstacle>(Vec3(10.0f, -8.0f, 0.0f), Vec3(4.5f));
+			obstacleGroup->IntoGroup(obstacle);
 		}
 
 
@@ -399,6 +404,7 @@ namespace basecross {
 			1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
 			3, 3,
 			0,
+			10.0f,
 			true
 		};
 		AddGameObject<AIchan>(

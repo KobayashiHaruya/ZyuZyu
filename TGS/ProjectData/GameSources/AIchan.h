@@ -37,6 +37,20 @@ namespace basecross{
 		void SetColor(const Col4& color);
 	};
 
+
+	//------------------------------------------------------------------------------------------------
+	//ターゲットのタイプ : enum
+	//------------------------------------------------------------------------------------------------
+
+	namespace AIChan {
+		enum AITargetType {
+			NONE    = 0,
+			IS_FAR  = 1,
+			IS_NEAR = 2
+		};
+	}
+
+
 	//------------------------------------------------------------------------------------------------
 	//アイちゃん用 : struct
 	//------------------------------------------------------------------------------------------------
@@ -54,7 +68,8 @@ namespace basecross{
 		int bulletChangeMaxTime;         //武器をどれくらいの時間で切り替える処理をするかの最大時間（秒）
 		int bulletShotMaxWaitTime;       //撃ってから次の撃つまでの最大待機時間（秒）
 		int escapeMode;                  //吹っ飛び率が高いときの動き（0: 逃げるか戦うかをランダムで決める, 1: 必ず戦う, 2: 必ず逃げる）
-		float escapeDamage;              //この値になると吹っ飛び率から逃げるか戦うかをescapeModeによって判断する
+		float escapeDamage;              //このダメージ値になると吹っ飛び率から逃げるか戦うかをescapeModeによって判断する
+		float obstacleJumpPower;         //障害物を避けるときのジャンプ力
 		bool isDebug;                    //有効にすると巡回ポイントを可視化する
 	} AIParam_s;
 
@@ -80,6 +95,7 @@ namespace basecross{
 
 		////////キャラクタを追いかけるに関するメンバ変数 - ここから////////
 		shared_ptr<Transform> m_target;
+		AIChan::AITargetType m_targetType;
 		////////キャラクタを追いかけるに関するメンバ変数 - ここまで////////
 
 
@@ -93,6 +109,11 @@ namespace basecross{
 		float m_bulletShotWaitTime;
 		float m_bulletShotWaitTimeCount;
 		////////武器に関するメンバ変数 - ここまで////////
+
+
+		////////逃げるに関するメンバ変数 - ここから////////
+		bool m_escapeMode;
+		////////逃げるに関するメンバ変数 - ここまで////////
 
 
 		////////デバッグに関するメンバ変数と関数 - ここから////////
@@ -124,11 +145,13 @@ namespace basecross{
 			m_pointPatrolJumpWaitTime(NULL),
 			m_pointPatrolJumpWaitTimeCount(NULL),
 			m_target(NULL),
+			m_targetType(AIChan::AITargetType::NONE),
 			m_bulletNum(9),
 			m_bulletMaxPossession(2),
 			m_newBulletNum(NULL),
 			m_oldBulletNum(NULL),
-			m_bulletChangeTimeCount(NULL)
+			m_bulletChangeTimeCount(NULL),
+			m_escapeMode(false)
 		{}
 		~AIchan() {}
 
@@ -142,11 +165,16 @@ namespace basecross{
 		void Jump(const Vec3& jumpVelocity);
 		bool ThisToTargetAllowable(const float allowable, const Vec3& target, const bool isPlane = false);
 		float GetThisToTargetDistance(const Vec3& target, const bool isPlane = false);
+		unsigned int RandomNumber(const unsigned int& min, const unsigned int& max);
+		void UpdateEscapeMode();
 		vector<shared_ptr<Character>> GetCharacters();
 		vector<shared_ptr<Transform>> GetCharacterTransforms();
 		shared_ptr<Transform> GetClosestCharacterTransform();
 		shared_ptr<Character> GetCharacterByID(const int id);
-		unsigned int RandomNumber(const unsigned int& min, const unsigned int& max);
+		vector<shared_ptr<GameObject>> GetObstacles();
+		vector<shared_ptr<Transform>> GetObstacleTransforms();
+		shared_ptr<Transform> GetClosestObstacleTransform();
+		void ObstacleJump();
 
 		Vec3 GetNextPoint();
 		void ChangeNextPoint();
@@ -180,6 +208,13 @@ namespace basecross{
 			m_target = trans;
 		}
 
+		AIChan::AITargetType GetTargetType() {
+			return m_targetType;
+		}
+		void SetTargetType(const AIChan::AITargetType targetType) {
+			m_targetType = targetType;
+		}
+
 		float GetPointPatrolWaitTime() {
 			return m_pointPatrolWaitTime;
 		}
@@ -206,6 +241,13 @@ namespace basecross{
 		}
 		void SetBulletShotWaitTime(const float bulletShotWaitTime) {
 			m_bulletShotWaitTime = bulletShotWaitTime;
+		}
+
+		bool GetEscapeMode() {
+			return m_escapeMode;
+		}
+		void SetEscapeMode(const bool escapeMode) {
+			m_escapeMode = escapeMode;
 		}
 	};
 
@@ -249,6 +291,29 @@ namespace basecross{
 		virtual void Enter(const shared_ptr<AIchan>& Obj)override;
 		virtual void Execute(const shared_ptr<AIchan>& Obj)override;
 		virtual void Exit(const shared_ptr<AIchan>& Obj)override;
+	};
+
+
+	//------------------------------------------------------------------------------------------------
+	//テスト障害物 : Class
+	//------------------------------------------------------------------------------------------------
+
+	class TestObstacle : public GameObject {
+		Vec3 m_pos;
+		Vec3 m_scale;
+
+	public:
+		TestObstacle(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos,
+			const Vec3& scale
+		) :
+			GameObject(StagePtr),
+			m_pos(pos),
+			m_scale(scale)
+		{}
+		~TestObstacle() {}
+
+		virtual void OnCreate() override;
 	};
 }
 //end basecross

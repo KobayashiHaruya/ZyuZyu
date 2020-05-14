@@ -149,6 +149,9 @@ namespace basecross{
 		float GetDamage() {
 			return m_damage;
 		}
+		float GetJumpPower() {
+			return m_jumpPower;
+		}
 
 		int GetId() {
 			return ID;
