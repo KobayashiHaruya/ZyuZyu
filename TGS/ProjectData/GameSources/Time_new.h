@@ -43,9 +43,11 @@ namespace basecross {
 
 		//トータル時間
 		float m_TotalTime;
+		float m_Count = 0;
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate()override;
+		virtual void OnUpdate2()override;
 	};
 
 
@@ -71,9 +73,50 @@ namespace basecross {
 		//初期化
 		virtual void OnCreate() override;
 		virtual void OnUpdate()override;
+		
 
 	};
 
+	//--------------------------------------------------------------------------------------
+	///	時間
+	//--------------------------------------------------------------------------------------
+	class EndTime : public GameObject {
+		bool m_Trace;
+		Vec2 m_StartScale;
+		Vec3 m_StartPos;
+		wstring m_TextureKey;
+		float m_Time;
+		//桁数
+		UINT m_NumberOfDigits;
+		//バックアップ頂点データ
+		vector<VertexPositionTexture> m_BackupVertices;
+	public:
+		//--------------------------------------------------------------------------------------
+		/*!
+		@brief コンストラクタ
+		@param[in]	StagePtr	ステージ
+		@param[in]	NumberOfDigits	桁数
+		@param[in]	TextureKey	テクスチャキー
+		@param[in]	Trace	透明処理するかどうか
+		@param[in]	StartScale	初期スケール
+		@param[in]	StartPos	初期位置
+		*/
+		//--------------------------------------------------------------------------------------
+		EndTime(const shared_ptr<Stage>& StagePtr, UINT NumberOfDigits,
+			const wstring& TextureKey, bool Trace,
+			const Vec2& StartScale, const Vec3& StartPos);
+		virtual ~EndTime() {}
+		void SetTime(float f) {
+			m_Time = f;
+		}
 
+		//トータル時間
+		float m_TotalTime;
+		float m_Count = 0;
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate()override;
+		virtual void OnUpdate2()override;
+	};
 
 }

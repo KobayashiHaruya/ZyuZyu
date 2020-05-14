@@ -57,14 +57,19 @@ namespace basecross {
 			Vec2(225.0f, 225.0f),
 			Vec3(0.0f, 0.0f, 0.0f));
 
+
+
 		//時間を更新する
 		auto Time = AddGameObject<Time_Start>(L"Start.png",
 			Vec2(800.0f, 400.0f),
 			Vec2(-400.0f, 0.0f));
 
 	}
-
-
+	void GameStage::CreateEndTime() {
+		    AddGameObject<EndTime>(1, L"0_9.png", true,
+				 Vec2(225.0f, 225.0f),
+				 Vec3(600.0f, 0.0f, 0.0f));
+	}
 
 	void GameStage::WeaponUpdate() {
 		m_weaponTime -= App::GetApp()->GetElapsedTime();
@@ -203,7 +208,7 @@ namespace basecross {
 				);*/
 
 
-			//CreateAIchan();
+				//CreateAIchan();
 			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
 
 		}
@@ -224,34 +229,10 @@ namespace basecross {
 
 		WeaponUpdate();
 
-		//m_time_ON += 0.1;
-
 //		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
-
-		float TimeEat = 0.036;
-		m_TotalTime -= TimeEat;
-
-		if (m_TotalTime < 0.0f) {
-			m_TotalTime = 3.996f;
-		}
-
 
 		if (KeyState.m_bPressedKeyTbl['Z']) {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
-		}
-
-		if (m_TotalTime > 1.001 && m_TotalTime < 4.0f)
-		{
-			//時間を更新する
-			auto ptrScor = GetSharedGameObject<Time01>(L"Time01");
-			ptrScor->SetTime(m_TotalTime);
-		}
-		else
-		{
-			//時間を更新する
-			auto ptrtime = GetSharedGameObject<Time01>(L"Time01");
-			ptrtime->SetTime(m_TotalTime);
-			ptrtime->SetDrawActive(false);
 		}
 
 		ShowPause();

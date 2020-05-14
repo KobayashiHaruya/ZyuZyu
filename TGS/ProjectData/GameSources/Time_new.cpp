@@ -115,6 +115,31 @@ namespace basecross {
 		ptrDraw->UpdateVertices(newVertices);
 
 	}
+	void Time01::OnUpdate2() {
+
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float TimeEat = elapsedTime;
+        m_TotalTime -= TimeEat;
+		m_Count = elapsedTime;
+
+        if (m_TotalTime < 0.0f) {
+        	m_TotalTime = 3.999999f;
+        }
+
+		if (m_TotalTime > 1.0f && m_TotalTime < 4.0f)
+        {
+        	//時間を更新する
+        	SetTime(m_TotalTime);
+        }
+		else
+		{
+			//時間を更新する
+           SetTime(m_TotalTime);
+		   SetDrawActive(false);
+		}
+
+
+	}
 
 
 
@@ -149,7 +174,7 @@ namespace basecross {
 		//頂点とインデックスを指定してスプライト作成
 		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
 		ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-		ptrDraw->SetTextureResource(L"START.jpg");
+		ptrDraw->SetTextureResource(L"Start.png");
 
 		AddTag(L"Time_new");
 
@@ -163,30 +188,162 @@ namespace basecross {
 
 	void Time_Start::OnUpdate() {
 
-		float TimeEat = 0.036;
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float TimeEat = elapsedTime;
 		m_TotalTime -= TimeEat;
 
 		if (m_TotalTime < 0.0f) {
-			m_TotalTime = 3.999f;
+			m_TotalTime = 3.999999f;
 		}
-
 
 		// ドローコンポーネントを取得
 		auto ptrDraw = GetComponent<PCTSpriteDraw>();
 
-		if (m_TotalTime < 0.900 && m_TotalTime > 0.0f) {
+		if (m_TotalTime < 0.9f && m_TotalTime > 0.0f) {
 			// スタートに張り替える
             ptrDraw->SetDrawActive(true);
-			ptrDraw->SetTextureResource(L"Start.png");
 		}
 		else {
 			// その他は張り替える
-			ptrDraw->SetTextureResource(L"Start.png");
 			ptrDraw->SetDrawActive(false);			
 		}
-		if (m_TotalTime <= 0.01f)
+		if (m_TotalTime <= 0.1f)
 		{
 			m_TotalTime = 100;
 		}
 	}
+
+//--------------------------------------------------------------------------------------
+///	時間
+//--------------------------------------------------------------------------------------
+	EndTime::EndTime(const shared_ptr<Stage>& StagePtr, UINT NumberOfDigits,
+		const wstring& TextureKey, bool Trace,
+		const Vec2& StartScale, const Vec3& StartPos) :
+		GameObject(StagePtr),
+		m_NumberOfDigits(NumberOfDigits),
+		m_TextureKey(TextureKey),
+		m_Trace(Trace),
+		m_StartScale(StartScale),
+		m_StartPos(StartPos),
+		m_Time(0.0f)
+	{}
+
+	void EndTime::OnCreate() {
+		float xPiecesize = 1.0f / (float)m_NumberOfDigits;
+		float helfSize = 0.5f;
+
+		//インデックス配列
+		vector<uint16_t> indices;
+		for (UINT i = 0; i < m_NumberOfDigits; i++) {
+			float vertex0 = -helfSize + xPiecesize * (float)i;
+			float vertex1 = vertex0 + xPiecesize;
+			//0
+			m_BackupVertices.push_back(
+				VertexPositionTexture(Vec3(vertex0, helfSize, 0), Vec2(0.0f, 0.0f))
+			);
+			//1
+			m_BackupVertices.push_back(
+				VertexPositionTexture(Vec3(vertex1, helfSize, 0), Vec2(0.1f, 0.0f))
+			);
+			//2
+			m_BackupVertices.push_back(
+				VertexPositionTexture(Vec3(vertex0, -helfSize, 0), Vec2(0.0f, 1.0f))
+			);
+			//3
+			m_BackupVertices.push_back(
+				VertexPositionTexture(Vec3(vertex1, -helfSize, 0), Vec2(0.1f, 1.0f))
+			);
+			indices.push_back(i * 4 + 0);
+			indices.push_back(i * 4 + 1);
+			indices.push_back(i * 4 + 2);
+			indices.push_back(i * 4 + 1);
+			indices.push_back(i * 4 + 3);
+			indices.push_back(i * 4 + 2);
+		}
+
+		SetAlphaActive(m_Trace);
+		auto ptrTrans = GetComponent<Transform>();
+		ptrTrans->SetScale(m_StartScale.x, m_StartScale.y, 1.0f);
+		ptrTrans->SetRotation(0, 0, 0);
+		ptrTrans->SetPosition(m_StartPos.x, m_StartPos.y, 0.0f);
+		//頂点とインデックスを指定してスプライト作成
+		auto ptrDraw = AddComponent<PTSpriteDraw>(m_BackupVertices, indices);
+		ptrDraw->SetTextureResource(m_TextureKey);
+		GetStage()->SetSharedGameObject(L"Time01", GetThis<Time01>());
+	}
+
+	void EndTime::OnUpdate() {
+		vector<VertexPositionTexture> newVertices;
+		UINT num;
+		int verNum = 0;
+		for (UINT i = m_NumberOfDigits; i > 0; i--) {
+			UINT base = (UINT)pow(10, i);
+			num = ((UINT)m_Time) % base;
+			num = num / (base / 10);
+			Vec2 uv0 = m_BackupVertices[verNum].textureCoordinate;
+			uv0.x = (float)num / 10.0f;
+			auto v = VertexPositionTexture(
+				m_BackupVertices[verNum].position,
+				uv0
+			);
+			newVertices.push_back(v);
+
+			Vec2 uv1 = m_BackupVertices[verNum + 1].textureCoordinate;
+			uv1.x = uv0.x + 0.1f;
+			v = VertexPositionTexture(
+				m_BackupVertices[verNum + 1].position,
+				uv1
+			);
+			newVertices.push_back(v);
+
+			Vec2 uv2 = m_BackupVertices[verNum + 2].textureCoordinate;
+			uv2.x = uv0.x;
+
+			v = VertexPositionTexture(
+				m_BackupVertices[verNum + 2].position,
+				uv2
+			);
+			newVertices.push_back(v);
+
+			Vec2 uv3 = m_BackupVertices[verNum + 3].textureCoordinate;
+			uv3.x = uv0.x + 0.1f;
+
+			v = VertexPositionTexture(
+				m_BackupVertices[verNum + 3].position,
+				uv3
+			);
+			newVertices.push_back(v);
+
+			verNum += 4;
+		}
+		auto ptrDraw = GetComponent<PTSpriteDraw>();
+		ptrDraw->UpdateVertices(newVertices);
+
+	}
+	void EndTime::OnUpdate2() {
+
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float TimeEat = elapsedTime;
+		m_TotalTime -= TimeEat;
+		m_Count = elapsedTime;
+
+		if (m_TotalTime < 0.0f) {
+			m_TotalTime = 180.0f;
+		}
+
+		if (m_TotalTime > 1.0f && m_TotalTime < 180.0f)
+		{
+			//時間を更新する
+			SetTime(m_TotalTime);
+		}
+		else
+		{
+			//時間を更新する
+			SetTime(m_TotalTime);
+			SetDrawActive(false);
+		}
+
+
+	}
+
 }
