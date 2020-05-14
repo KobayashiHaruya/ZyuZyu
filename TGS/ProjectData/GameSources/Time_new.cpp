@@ -269,7 +269,7 @@ namespace basecross {
 		//頂点とインデックスを指定してスプライト作成
 		auto ptrDraw = AddComponent<PTSpriteDraw>(m_BackupVertices, indices);
 		ptrDraw->SetTextureResource(m_TextureKey);
-		GetStage()->SetSharedGameObject(L"Time01", GetThis<Time01>());
+		GetStage()->SetSharedGameObject(L"EndTime", GetThis<EndTime>());
 	}
 
 	void EndTime::OnUpdate() {
@@ -331,7 +331,7 @@ namespace basecross {
 			m_TotalTime = 180.0f;
 		}
 
-		if (m_TotalTime > 1.0f && m_TotalTime < 180.0f)
+		if (m_TotalTime > 1.0f && m_TotalTime < 180.0000001f)
 		{
 			//時間を更新する
 			SetTime(m_TotalTime);
@@ -339,8 +339,8 @@ namespace basecross {
 		else
 		{
 			//時間を更新する
-			SetTime(m_TotalTime);
-			SetDrawActive(false);
+		//	SetTime(m_TotalTime);
+		//	SetDrawActive(false);
 		}
 
 
