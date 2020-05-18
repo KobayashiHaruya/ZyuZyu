@@ -593,7 +593,6 @@ namespace basecross {
 		void SetCharacter(CharacterType type, int level);
 	};
 
-
 	//------------------------------------------------------------------------------------------------
 	//スコア表 : Class
 	//------------------------------------------------------------------------------------------------
@@ -1276,5 +1275,34 @@ namespace basecross {
 		virtual void OnUpdate() override;
 
 	};
+
+	class Result_Icon_UI :public UI_Horizontal_Sprite_Image {
+		int m_level;
+
+	public:
+		Result_Icon_UI(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int layer
+		) :
+			UI_Horizontal_Sprite_Image(
+				StagePtr,
+				Vec2(3072.0f, 256.0f),
+				pos,
+				scale,
+				layer,
+				Col4(1.0f, 1.0f, 1.0f, 1.0f),
+				L"PS_Characteres_Level_Sprite.png",
+				Vec2(256.0f, 256.0f)
+			),
+			m_level(0)
+		{}
+		~Result_Icon_UI() {}
+
+		virtual void OnCreate() override;
+
+		//void SetCharacter(int level);
+	};
+
 
 }

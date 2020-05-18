@@ -48,14 +48,10 @@ namespace basecross {
 			trans->SetPosition(300.0f * 0.5f - n * 64.0f - 64.0f, -500.0f * 0.5f, 0.0f);
 		}
 
+
 		wstring mediaDir;
 		App::GetApp()->GetDataDirectory(mediaDir);
 		m_Cartain = AddGameObject<Result_Curtain>(mediaDir + L"Texters/ResultImagis/ResultAnimation/SpriteStadio/", Vec3(0.0f, 0.0f, 0.0f), Vec3(32.0f), m_layer);
-	}
-
-	void ResultStage::CreateIcon() {
-
-
 	}
 
 	void ResultStage::OnCreate() {

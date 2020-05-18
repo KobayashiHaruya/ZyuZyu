@@ -14,9 +14,6 @@ namespace basecross {
 		shared_ptr<Result_Curtain> m_Cartain;
 
 
-		void CreateViewLight();
-		void CreateUI();
-		void CreateIcon();
 	public:
 		ResultStage() :Stage(),
 			m_layer(5),
@@ -27,6 +24,9 @@ namespace basecross {
 			m_Amount(5)
 		{}
 		virtual ~ResultStage() {}
+
+		void CreateViewLight();
+		void CreateUI();
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
