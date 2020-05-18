@@ -1128,6 +1128,31 @@ namespace basecross {
 		virtual void OnUpdate()override;
 	};
 
+	class UI_PlayerGatlingAmmo : public GameObject {
+		Vec3 m_pos;
+		Vec3 m_scale;
+		wstring m_TextureKey = L"Share_Number.png";
+		int m_layer;
+
+		UINT m_NumberOfDigits = 3;
+
+		vector<VertexPositionTexture> m_BackupVertices;
+	public:
+		UI_PlayerGatlingAmmo(const shared_ptr<Stage>& StagePtr,
+			const Vec3& StartPos,
+			const Vec3& StartScale
+		) :
+			GameObject(StagePtr),
+			m_pos(StartPos),
+			m_scale(StartScale)
+		{}
+
+		virtual ~UI_PlayerGatlingAmmo() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate()override;
+	};
+
 	class UI_PlayerDamage : public GameObject {
 		Vec3 m_pos;
 		Vec3 m_scale;

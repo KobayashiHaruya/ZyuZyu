@@ -39,8 +39,18 @@ namespace basecross{
 		float m_reTimeT;
 		float m_maxreTimeT;
 
-		int m_gatlingAmmo=1000;
+		int m_gatlingAmmo = 150;
+		int m_gatlingPickAmmo = 30;
+		int m_gatlingBombAmmo = 150;
+		float m_gatlingShotAmmo;
+		float m_gatlingCoolMaxTime = 5.0f;
+		float m_gatlingCoolTime = 0.0f;
 		float m_intTimeGat = 0.01;
+		bool m_setGun = false;
+		bool m_cannonAmmo = false;
+		bool m_setGunType;
+		Vec3 m_setGunPos;
+
 		bool m_torimoti = false;
 		bool m_smoke = false;
 		bool m_toriIn = false;
@@ -67,7 +77,6 @@ namespace basecross{
 		Vec2 m_force;
 		bool m_des = false;
 		bool m_jump = false;
-		bool m_setGun = false;
 
 		CharacterStatus_s m_myData;
 		vector<CharacterKillDetails_s> m_killCharacters;  //自身がキルした相手のキャラクタータイプとレベルを持つ
@@ -132,6 +141,9 @@ namespace basecross{
 		}
 		int GetDAmmoT() {
 			return m_maxAmmoT;
+		}
+		int GetGatlingAmmo() {
+			return m_gatlingAmmo;
 		}
 		bool GetGun() {
 			return m_weapon;
