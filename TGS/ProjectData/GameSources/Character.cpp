@@ -502,8 +502,11 @@ namespace basecross {
 
 		if (Other->FindTag(L"GatlingAmmo")) {
 			m_gatlingAmmo += m_gatlingPickAmmo;
+			if (m_gatlingAmmo > 999)
+				m_gatlingAmmo = 999;
 			GetStage()->RemoveGameObject<GameObject>(Other);
 		}
+
 
 		if (Other->FindTag(L"Oil")) {
 			TouchOil();
@@ -532,7 +535,7 @@ namespace basecross {
 						m_gatlingShotAmmo = 0;
 						m_gatlingCoolTime = 0.0f;
 					}
-					else if (Other->FindTag(L"Cannon")) {
+					else if (Other->FindTag(L"Cannon") && m_cannonAmmo) {
 						m_setGunType = false;
 					}
 
@@ -545,6 +548,10 @@ namespace basecross {
 				PickGun(Other->GetBulletType());
 				GetStage()->RemoveGameObject<GameObject>(Other);
 			}
+			else if (Other->FindTag(L"CannonAmmoBox")) {
+				m_cannonAmmo = true;
+			}
+
 		}
 
 		if (Other->FindTag(L"Object")) {
@@ -1271,6 +1278,11 @@ namespace basecross {
 		strFps += L"\n";
 
 		strFps += Util::FloatToWStr(m_gatlingShotAmmo);
+		strFps += L"\n";
+		strFps += Util::FloatToWStr(m_gatlingAmmo);
+		strFps += L"\n";
+
+		strFps += Util::FloatToWStr(GetTypeStage<GameStage>()->bomb);
 		strFps += L"\n";
 
 		auto string = GetComponent<StringSprite>();

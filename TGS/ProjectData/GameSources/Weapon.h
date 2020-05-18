@@ -97,7 +97,7 @@ namespace basecross {
 		Vec3 m_pos;
 		Vec3 m_rot;
 		Vec3 m_scale;
-
+		float m_time = 15.0f;
 		int m_type;
 		wstring text;
 		wstring m_modelName;
@@ -227,6 +227,8 @@ namespace basecross {
 		Quat m_qua;
 		Vec3 m_scale = Vec3(1.0f);
 
+		float m_time = 10.0f;
+
 		wstring m_modelName = L"CornGatling.bmf";
 
 	public:
@@ -241,6 +243,30 @@ namespace basecross {
 		virtual void BmfDateRead(wstring model);
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
+		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
+
+	};
+
+	class CannonAmmoBox :public GameObject {
+		Vec3 m_pos;
+		Quat m_qua;
+		Vec3 m_scale = Vec3(1.0f);
+
+		float m_time = 10.0f;
+
+		wstring m_modelName = L"TomatoCannon.bmf";
+
+	public:
+		CannonAmmoBox(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos
+		) :
+			GameObject(StagePtr),
+			m_pos(pos)
+		{}
+		~CannonAmmoBox() {}
+
+		virtual void BmfDateRead(wstring model);
+		virtual void OnCreate() override;
 
 	};
 
