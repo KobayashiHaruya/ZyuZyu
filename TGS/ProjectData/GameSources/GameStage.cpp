@@ -64,9 +64,9 @@ namespace basecross {
 			Vec2(800.0f, 400.0f),
 			Vec2(-400.0f, 0.0f));
 
-		   // AddGameObject<EndTime>(1, L"0_9.png", true,
-				 //Vec2(225.0f, 225.0f),
-				 //Vec3(600.0f, 0.0f, 0.0f));
+		    AddGameObject<EndTime>(1, L"0_9.png", true,
+				 Vec2(225.0f, 225.0f),
+				 Vec3(600.0f, 0.0f, 0.0f));
 	}
 	void GameStage::CreateEndTime() {
 

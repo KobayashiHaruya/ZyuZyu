@@ -209,7 +209,7 @@ namespace basecross {
 		}
 		if (m_TotalTime <= 0.1f)
 		{
-			m_TotalTime = 100;
+			m_TotalTime = 100000;
 		}
 	}
 
@@ -328,19 +328,19 @@ namespace basecross {
 		m_Count = elapsedTime;
 
 		if (m_TotalTime < 0.0f) {
-			m_TotalTime = 180.0f;
+			m_TotalTime = 185.268f;
 		}
 
-		if (m_TotalTime > 1.0f && m_TotalTime < 180.0000001f)
+		if (m_TotalTime > 1.01f && m_TotalTime < 3.9999f)
 		{
+			SetDrawActive(true);
 			//時間を更新する
 			SetTime(m_TotalTime);
 		}
+
 		else
 		{
-			//時間を更新する
-		//	SetTime(m_TotalTime);
-		//	SetDrawActive(false);
+			SetDrawActive(false);
 		}
 
 
