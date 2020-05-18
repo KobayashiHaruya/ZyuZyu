@@ -43,6 +43,7 @@ namespace basecross {
 
 	public:
 		bool m_start = false;
+		int bomb;
 
 		//\’z‚Æ”jŠü
 		GameStage() :

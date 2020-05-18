@@ -153,7 +153,7 @@ namespace basecross {
 				Vec3(60.0f, 60.0f, 60.0f)
 				);
 			AddGameObject<Oil>(
-				Vec3(0.0f, -40.0f, 0.0f),
+				Vec3(0.0f, -100.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(60.0f, 60.0f, 60.0f)
 				);
@@ -226,6 +226,10 @@ namespace basecross {
 				false
 				);
 
+			AddGameObject<CannonAmmoBox>(
+				Vec3(0.0f, -8.0f, 5.0f)
+				);
+
 			CreatePinP();
 
 			//m_enemy = AddGameObject<Enemy>(
@@ -239,9 +243,9 @@ namespace basecross {
 			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
 
 
-			PlaySE(L"爆発_色々01.wav", 0.5f);
-			PlayBGM(L"title_bgm.wav", 0.5f);
-			//StopBGM();
+			StopBGM();
+			//PlaySE(L"爆発_色々01.wav", 0.5f);
+			//PlayBGM(L"title_bgm.wav", 0.5f);
 		}
 		catch (...) {
 			throw;

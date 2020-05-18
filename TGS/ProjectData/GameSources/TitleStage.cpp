@@ -125,6 +125,7 @@ namespace basecross {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || KeyState.m_bPressedKeyTbl[VK_SPACE] || KeyState.m_bPushKeyTbl['W'] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) {
+			StopBGM();
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
 		}
 
@@ -132,6 +133,7 @@ namespace basecross {
 		//マウス右,Bボタンを押したとき操作説明を出す,もう一度同じボタンを押したらcharSelectに移動
 		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
 			if (m_Update) {
+				StopBGM();
 				App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
 			}
 			CreateOperationUI();

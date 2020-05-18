@@ -1661,9 +1661,9 @@ namespace basecross {
 	void Result_Curtain::OnUpdate() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-		float time = App::GetApp()->GetElapsedTime();
+		float time = App::GetApp()->GetElapsedTime()*2.5f;
 		int flame = 70;
-		if (m_time <= 70.0f / 60.0f) {
+		if (m_time <= 32.0f / 24.0f) {
 			UpdateAnimeTime(time);
 		}
 		else {
