@@ -328,7 +328,7 @@ namespace basecross {
 		m_Count = elapsedTime;
 
 		if (m_TotalTime < 0.0f) {
-			m_TotalTime = 185.268f;
+			m_TotalTime = 185.2684f;
 		}
 
 		if (m_TotalTime > 1.01f && m_TotalTime < 3.9999f)
