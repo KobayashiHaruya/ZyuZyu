@@ -20,6 +20,7 @@ namespace basecross {
 		shared_ptr<Player> m_player;
 		shared_ptr<AIchan> m_enemy;
 		shared_ptr<PinP> m_pinp;
+		shared_ptr<SoundItem> m_bgm;
 
 		//ƒrƒ…[‚Ìì¬
 		void CreateViewLight();
@@ -36,10 +37,12 @@ namespace basecross {
 		float m_weaponTime;
 		void WeaponUpdate();
 
+
 		//bool gather = false;
 		void CreateAIchan();
 
 	public:
+		bool m_start = false;
 
 		//\’z‚Æ”jŠü
 		GameStage() :
@@ -53,6 +56,22 @@ namespace basecross {
 		//‰Šú‰»
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+
+		void PlaySE(wstring key, float vol) {
+			auto se = App::GetApp()->GetXAudio2Manager();
+			se->Start(key, 0, vol);
+		}
+
+		void PlayBGM(wstring key, float vol) {
+			auto bgm = App::GetApp()->GetXAudio2Manager();
+			m_bgm = bgm->Start(key, XAUDIO2_LOOP_INFINITE, vol);
+		}
+
+		void StopBGM() {
+			auto se = App::GetApp()->GetXAudio2Manager();
+			se->Stop(m_bgm);
+		}
+
 	};
 
 

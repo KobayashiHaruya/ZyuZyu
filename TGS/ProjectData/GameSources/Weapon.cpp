@@ -585,6 +585,7 @@ namespace basecross {
 		ptrDraw->SetMeshToTransformMatrix(m_spanMat);
 		ptrDraw->SetOwnShadowActive(true);
 		ptrDraw->SetDrawActive(true);
+		ptrDraw->SetDiffuse(Col4(1.0f, 0.6f, 0.0f, 1.0f));
 
 		SetAlphaActive(true);
 

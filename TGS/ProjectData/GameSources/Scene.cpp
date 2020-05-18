@@ -24,8 +24,8 @@ namespace basecross{
 
 		FindFile(dataDir);
 		FindFile(mediaDir + L"Texters/");
-		//FindFile(mediaDir + L"Sound/SE/");
-		//FindFile(mediaDir + L"Sound/BGM/");
+		FindFile(mediaDir + L"Sound/SE/");
+		FindFile(mediaDir + L"Sound/BGM/");
 		FindFile(mediaDir + L"Model/");
 
 	}

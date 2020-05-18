@@ -67,6 +67,14 @@ namespace basecross {
 	void CharSelectStage::OnUpdate() {
 		ChangeCharacter(m_mask->GetIndex());
 		Select();
+
+		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+
+		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
+			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
+		}
+
 	}
 
 	void CharSelectStage::ChangeCharacter(int index) {

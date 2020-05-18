@@ -64,10 +64,11 @@ namespace basecross {
 			Vec2(800.0f, 400.0f),
 			Vec2(-400.0f, 0.0f));
 
-		   // AddGameObject<EndTime>(1, L"0_9.png", true,
-				 //Vec2(225.0f, 225.0f),
-				 //Vec3(600.0f, 0.0f, 0.0f));
+		// AddGameObject<EndTime>(1, L"0_9.png", true,
+			  //Vec2(225.0f, 225.0f),
+			  //Vec3(600.0f, 0.0f, 0.0f));
 	}
+
 	void GameStage::CreateEndTime() {
 
 	}
@@ -114,12 +115,37 @@ namespace basecross {
 			AddGameObject<Object>(
 				Vec3(10.0f, -8.0f, 20.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(2.0f, 2.0f, 8.0f)
+				Vec3(2.0f, 5.0f, 10.0f)
 				);
 			AddGameObject<Object>(
 				Vec3(20.0f, -8.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(5.0f, 5.0f, 5.0f)
+				Vec3(10.0f, 10.0f, 10.0f)
+				);
+			AddGameObject<Object>(
+				Vec3(-20.0f, -8.0f, 13.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(4.0f, 3.0f, 8.0f)
+				);
+			AddGameObject<Object>(
+				Vec3(24.0f, -8.0f, 10.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(5.0f, 3.0f, 3.0f)
+				);
+			AddGameObject<Object>(
+				Vec3(10.0f, -8.0f, -26.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(14.0f, 2.0f, 6.0f)
+				);
+			AddGameObject<Object>(
+				Vec3(-15.0f, -8.0f, -20.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(8.0f, 5.0f, 10.0f)
+				);
+			AddGameObject<Object>(
+				Vec3(-30.0f, -8.0f, -11.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(6.0f, 2.0f, 8.0f)
 				);
 			AddGameObject<OilStage>(
 				Vec3(0.0f, -10.0f, 0.0f),
@@ -134,14 +160,13 @@ namespace basecross {
 			AddGameObject<Nabe>(
 				Vec3(0.0f, -80.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(60.0f,60.0f, 60.0f)
+				Vec3(60.0f, 60.0f, 60.0f)
 				);
-			//m_player = AddGameObject<Player>(
-			//	CharacterType::SHRIMP
-			//	//true
-			//	//0, 0,
-			//	//10, 1
-			//	);
+			m_player = AddGameObject<Player>(
+				CharacterType::SHRIMP,
+				true,
+				0, 0
+				);
 			SetSharedGameObject(L"Player", m_player);
 
 			auto characterGroup = CreateSharedObjectGroup(L"CharacterGroup");
@@ -184,22 +209,13 @@ namespace basecross {
 			//	characterGroup->IntoGroup(m_enemy);
 			//}
 
-			//AddGameObject<Enemy>(
-			//	CharacterType::CHICKEN
-			//	//false
-			//	//1, 1,
-			//	//1, 0
-			//	);
-
-			characterGroup->IntoGroup(m_enemy);
-
 			for (int i = 0; i < 5; i++) {
 				AddGameObject<Weapon>();
 			}
 			m_weaponTime = 10.0f;
 
 			AddGameObject<GunSeat>(
-				Vec3(-10.0f,-8.2f,0.0f),
+				Vec3(-10.0f, -8.2f, 0.0f),
 				Quat(0.0f),
 				true
 				);
@@ -212,18 +228,21 @@ namespace basecross {
 
 			CreatePinP();
 
-			/*m_enemy = AddGameObject<Enemy>(
-				CharacterType::CHICKEN,
-				false,
-				1,0
-				);*/
+			//m_enemy = AddGameObject<Enemy>(
+			//	CharacterType::CHICKEN,
+			//	false,
+			//	1,0
+			//	);
 
 
-				//CreateAIchan();
+			CreateAIchan();
 			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
 
-		}
 
+			PlaySE(L"”š”­_FX01.wav", 0.5f);
+			PlayBGM(L"title_bgm.wav", 0.5f);
+			//StopBGM();
+		}
 		catch (...) {
 			throw;
 
@@ -239,12 +258,6 @@ namespace basecross {
 		}
 
 		WeaponUpdate();
-
-//		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
-
-		if (KeyState.m_bPressedKeyTbl['Z']) {
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
-		}
 
 		ShowPause();
 	}

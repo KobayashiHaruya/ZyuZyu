@@ -71,7 +71,14 @@ namespace basecross {
 	void ResultStage::OnUpdate() {
 		CreateIcon();
 
-
+		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+		
+		if (KeyState.m_bPressedKeyTbl['Z']) {
+			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
+		}
+		if (KeyState.m_bPressedKeyTbl['X']) {
+			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
+		}
 
 	}
 

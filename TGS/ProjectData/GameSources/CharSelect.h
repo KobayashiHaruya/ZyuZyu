@@ -16,6 +16,7 @@ namespace basecross {
 		shared_ptr<UI_Character_Select_Mask_Image> m_mask;
 		shared_ptr<UI_Static_Image> m_characterLogo;
 		shared_ptr<UI_Character_Status> m_characterStatus;
+		shared_ptr<SoundItem> m_bgm;
 
 		int m_startIndex;
 		int m_oldIndex;
@@ -48,6 +49,21 @@ namespace basecross {
 		int GetIndex() {
 			if (!m_mask) return m_startIndex;
 			return m_mask->GetIndex();
+		}
+
+		void PlaySE(wstring key, float vol) {
+			auto se = App::GetApp()->GetXAudio2Manager();
+			se->Start(key, 0, vol);
+		}
+
+		void PlayBGM(wstring key, float vol) {
+			auto bgm = App::GetApp()->GetXAudio2Manager();
+			m_bgm = bgm->Start(key, XAUDIO2_LOOP_INFINITE, vol);
+		}
+
+		void StopBGM() {
+			auto se = App::GetApp()->GetXAudio2Manager();
+			se->Stop(m_bgm);
 		}
 	};
 
