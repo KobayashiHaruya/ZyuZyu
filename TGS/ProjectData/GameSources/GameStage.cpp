@@ -134,7 +134,7 @@ namespace basecross {
 			AddGameObject<Nabe>(
 				Vec3(0.0f, -80.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(60.0f, 60.0f, 60.0f)
+				Vec3(60.0f,60.0f, 60.0f)
 				);
 			//m_player = AddGameObject<Player>(
 			//	CharacterType::SHRIMP
@@ -198,8 +198,17 @@ namespace basecross {
 			}
 			m_weaponTime = 10.0f;
 
-			AddGameObject<SetGun>(true);
+			AddGameObject<GunSeat>(
+				Vec3(-10.0f,-8.2f,0.0f),
+				Quat(0.0f),
+				true
+				);
 
+			AddGameObject<SetGun>(
+				Vec3(0.0f, -8.2f, 0.0f),
+				Quat(0.0f),
+				false
+				);
 
 			CreatePinP();
 

@@ -1399,6 +1399,81 @@ namespace basecross {
 		ptrDraw->UpdateVertices(newVertices);
 	}
 
+	void UI_PlayerGatlingAmmo::OnCreate() {
+		float xPiecesize = 1.0f / (float)m_NumberOfDigits;
+		float helfSize = 0.5f;
+
+		vector<uint16_t> indices;
+		for (UINT i = 0; i < m_NumberOfDigits; i++) {
+			float vertex0 = -helfSize + xPiecesize * (float)i;
+			float vertex1 = vertex0 + xPiecesize;
+			m_BackupVertices.push_back(VertexPositionTexture(Vec3(vertex0, helfSize, 0), Vec2(0.0f, 0.0f)));
+			m_BackupVertices.push_back(VertexPositionTexture(Vec3(vertex1, helfSize, 0), Vec2(0.1f, 0.0f)));
+			m_BackupVertices.push_back(VertexPositionTexture(Vec3(vertex0, -helfSize, 0), Vec2(0.0f, 1.0f)));
+			m_BackupVertices.push_back(VertexPositionTexture(Vec3(vertex1, -helfSize, 0), Vec2(0.1f, 1.0f)));
+			indices.push_back(i * 4 + 0);
+			indices.push_back(i * 4 + 1);
+			indices.push_back(i * 4 + 2);
+			indices.push_back(i * 4 + 1);
+			indices.push_back(i * 4 + 3);
+			indices.push_back(i * 4 + 2);
+		}
+
+		auto ptrTrans = GetComponent<Transform>();
+		ptrTrans->SetPosition(m_pos);
+		ptrTrans->SetScale(m_scale);
+
+		auto ptrDraw = AddComponent<PTSpriteDraw>(m_BackupVertices, indices);
+		ptrDraw->SetTextureResource(m_TextureKey);
+
+		ptrDraw->SetDiffuse(Col4(1.0f, 1.0f, 1.0f, 1.0f));
+
+		SetDrawLayer(15);
+
+		SetAlphaActive(true);
+
+	}
+
+	void UI_PlayerGatlingAmmo::OnUpdate() {
+		vector<VertexPositionTexture> newVertices;
+		UINT num;
+		int verNum = 0;
+		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+		float ammo = player->GetGatlingAmmo();
+
+
+		for (UINT i = m_NumberOfDigits; i > 0; i--) {
+			UINT base = (UINT)pow(10, i);
+			num = ((UINT)ammo) % base;
+			num = num / (base / 10);
+			Vec2 uv0 = m_BackupVertices[verNum].textureCoordinate;
+			uv0.x = (float)num / 10.0f;
+			auto v = VertexPositionTexture(m_BackupVertices[verNum].position, uv0);
+			newVertices.push_back(v);
+
+			Vec2 uv1 = m_BackupVertices[verNum + 1].textureCoordinate;
+			uv1.x = uv0.x + 0.1f;
+			v = VertexPositionTexture(m_BackupVertices[verNum + 1].position, uv1);
+			newVertices.push_back(v);
+
+			Vec2 uv2 = m_BackupVertices[verNum + 2].textureCoordinate;
+			uv2.x = uv0.x;
+
+			v = VertexPositionTexture(m_BackupVertices[verNum + 2].position, uv2);
+			newVertices.push_back(v);
+
+			Vec2 uv3 = m_BackupVertices[verNum + 3].textureCoordinate;
+			uv3.x = uv0.x + 0.1f;
+
+			v = VertexPositionTexture(m_BackupVertices[verNum + 3].position, uv3);
+			newVertices.push_back(v);
+
+			verNum += 4;
+		}
+		auto ptrDraw = GetComponent<PTSpriteDraw>();
+		ptrDraw->UpdateVertices(newVertices);
+	}
+
 	void UI_PlayerDamage::OnCreate() {
 		float xPiecesize = 1.0f / (float)m_NumberOfDigits;
 		float helfSize = 0.5f;

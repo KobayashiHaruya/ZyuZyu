@@ -31,7 +31,10 @@ namespace basecross {
 		Laser,
 		Wind,
 		Gatling,
-		Cannon
+		Cannon,
+		GExplosion,
+		CExplosion,
+		SExplosion
 	};
 
 	class Bullet :public GameObject, public ObstacleEvent<const CharacterStatus_s> {
@@ -121,6 +124,7 @@ namespace basecross {
 		int ID;
 
 		bool m_grenade;
+			CharacterStatus_s m_frome;
 
 	public:
 		Grenade(const shared_ptr<Stage>& StagePtr,
@@ -129,7 +133,8 @@ namespace basecross {
 			const float& speed,
 			const float& gravity,
 			const bool& grenade,
-			const int& id
+			const int& id,
+			const CharacterStatus_s& frome
 		) :
 			GameObject(StagePtr),
 			m_pos(pos),
@@ -137,7 +142,8 @@ namespace basecross {
 			m_moveSpeed(speed),
 			m_gravityScale(gravity),
 			m_grenade(grenade),
-			ID(id)
+			ID(id),
+			m_frome(frome)
 		{}
 		~Grenade() {}
 
@@ -156,19 +162,22 @@ namespace basecross {
 		int ID;
 
 		float m_time;
+		CharacterStatus_s m_frome;
 
 	public:
 		SmokeGrenade(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos,
 			const Quat& rot,
 			const Vec3& scale,
-			const int& id
+			const int& id,
+			const CharacterStatus_s& frome
 		) :
 			GameObject(StagePtr),
 			m_pos(pos),
 			m_rot(rot),
 			m_scale(scale),
-			ID(id)
+			ID(id),
+			m_frome(frome)
 		{}
 		~SmokeGrenade() {}
 
@@ -188,19 +197,22 @@ namespace basecross {
 		int ID;
 
 		float m_time;
+		CharacterStatus_s m_frome;
 
 	public:
 		TorimotiGrenade(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos,
 			const Quat& rot,
 			const Vec3& scale,
-			const int& id
+			const int& id,
+			const CharacterStatus_s& frome
 		) :
 			GameObject(StagePtr),
 			m_pos(pos),
 			m_rot(rot),
 			m_scale(scale),
-			ID(id)
+			ID(id),
+			m_frome(frome)
 		{}
 		~TorimotiGrenade() {}
 
@@ -210,18 +222,44 @@ namespace basecross {
 
 	};
 
+	class GatlingAmmo :public GameObject {
+		Vec3 m_pos;
+		Quat m_qua;
+		Vec3 m_scale = Vec3(1.0f);
+
+		wstring m_modelName = L"CornGatling.bmf";
+
+	public:
+		GatlingAmmo(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos
+		) :
+			GameObject(StagePtr),
+			m_pos(pos)
+		{}
+		~GatlingAmmo() {}
+
+		virtual void BmfDateRead(wstring model);
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+	};
 
 	class SetGun :public GameObject {
-		Vec3 m_pos= Vec3(0.0f, -8.5f, 0.0f);
-		Quat m_quat = Quat(0.0f);
+		Vec3 m_pos;
+		Quat m_qua;
 		Vec3 m_scale = Vec3(3.0f);
 
 		bool m_gun;
 
 	public:
-		SetGun(const shared_ptr<Stage>& StagePtr,const bool& gun
+		SetGun(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos,
+			const Quat& quat,
+			const bool& gun
 		) :
 			GameObject(StagePtr),
+			m_pos(pos),
+			m_qua(quat),
 			m_gun(gun)
 		{}
 		~SetGun() {}
