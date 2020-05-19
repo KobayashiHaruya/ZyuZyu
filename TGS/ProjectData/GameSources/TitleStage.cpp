@@ -167,3 +167,4 @@ namespace basecross {
 	void TitleStage::OnUpdate() {
 		UpdateInput();
 	}
+}
