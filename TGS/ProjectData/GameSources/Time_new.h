@@ -119,4 +119,29 @@ namespace basecross {
 		virtual void OnUpdate2()override;
 	};
 
+//--------------------------------------------------------------------------------------
+///	エンドスイッチ
+//--------------------------------------------------------------------------------------
+
+	class End : public Sprite {
+
+	public:
+		End(const shared_ptr<Stage>& StagePtr,
+			const wstring& TextureKey,
+			const Vec2& startScale,
+			const Vec2& startPos);
+
+		virtual ~End() {}
+
+		float time_ON = 0;
+		//トータル時間
+		float m_TotalTime;
+
+		//初期化
+		virtual void OnCreate() override;
+		virtual void OnUpdate()override;
+
+
+	};
+
 }

@@ -174,7 +174,7 @@ namespace basecross {
 		//頂点とインデックスを指定してスプライト作成
 		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
 		ptrDraw->SetSamplerState(SamplerState::LinearWrap);
-		ptrDraw->SetTextureResource(L"Start.png");
+		ptrDraw->SetTextureResource(L"GameStart.png");
 
 		AddTag(L"Time_new");
 
@@ -328,10 +328,10 @@ namespace basecross {
 		m_Count = elapsedTime;
 
 		if (m_TotalTime < 0.0f) {
-			m_TotalTime = 185.2684f;
+			m_TotalTime = 185.45f;
 		}
 
-		if (m_TotalTime > 1.01f && m_TotalTime < 3.9999f)
+		if (m_TotalTime > 1.001f && m_TotalTime < 3.9999f)
 		{
 			SetDrawActive(true);
 			//時間を更新する
@@ -344,6 +344,76 @@ namespace basecross {
 		}
 
 
+	}
+
+//--------------------------------------------------------------------------------------
+///	エンドスイッチ
+//--------------------------------------------------------------------------------------
+
+	End::End(const shared_ptr<Stage>& stagePtr,
+		const wstring& textureKey,
+		const Vec2& startScale,
+		const Vec2& startPos) :
+		Sprite(stagePtr, textureKey, startScale, startPos)
+	{}
+
+	void End::OnCreate() {
+		float helfSize = 0.5f;
+		//頂点配列(縦横5個ずつ表示)
+		vector<VertexPositionColorTexture> vertices = {
+			{ VertexPositionColorTexture(Vec3(-0, helfSize, 0),Col4(1.0f,1.0f,1.0f,1.0f), Vec2(0.0f, 0.0f)) },
+			{ VertexPositionColorTexture(Vec3(helfSize*2.0f, helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(1.0f, 0.0f)) },
+			{ VertexPositionColorTexture(Vec3(-0, -helfSize, 0), Col4(1.0f, 1.0f, 1.0f, 1.0f), Vec2(0.0f, 1.0f)) },
+			{ VertexPositionColorTexture(Vec3(helfSize*2.0f, -helfSize, 0), Col4(1.0f, 01.0f, 1.0f, 1.0f), Vec2(1.0f, 1.0f)) },
+		};
+		//インデックス配列
+		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
+		auto ptrTrans = GetComponent<Transform>();
+		ptrTrans->SetScale(m_StartScale.x, m_StartScale.y, 1.0f);
+		ptrTrans->SetRotation(0, 0, 0);
+		ptrTrans->SetPosition(Vec3(m_StartPos.x, m_StartPos.y, 0.0f));
+		// ピボットを右端にする
+		ptrTrans->SetPivot(0.0f, 0.0f, 0.0f);
+		//頂点とインデックスを指定してスプライト作成
+		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
+		ptrDraw->SetSamplerState(SamplerState::LinearWrap);
+		ptrDraw->SetTextureResource(L"GameFinish.png");
+
+		AddTag(L"Time_new");
+
+		SetDrawLayer(11);
+		SetAlphaActive(true);
+
+		//スプライトの厚さ		
+//		ptrDraw->SetDiffuse(Col4(1, 1, 1, 11.1f));
+	}
+
+
+	void End::OnUpdate() {
+
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float TimeEat = elapsedTime;
+		m_TotalTime -= TimeEat;
+
+		if (m_TotalTime < 0.0f) {
+			m_TotalTime = 185.52f;
+		}
+
+		// ドローコンポーネントを取得
+		auto ptrDraw = GetComponent<PCTSpriteDraw>();
+
+		if (m_TotalTime <= 1.0f) {
+			// スタートに張り替える
+			ptrDraw->SetDrawActive(true);
+		}
+		else {
+			// その他は張り替える
+			ptrDraw->SetDrawActive(false);
+		}
+		if (m_TotalTime <= 0.01f)
+		{
+			m_TotalTime = 100000;
+		}
 	}
 
 }
