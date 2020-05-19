@@ -128,6 +128,11 @@ namespace basecross {
 		ptrTrans->SetScale(scale);
 	}
 
+	void UI_Static_Image::SetColor(const Col4& color) {
+		auto ptrDraw = GetComponent<PCTSpriteDraw>();
+		ptrDraw->SetDiffuse(color);
+	}
+
 	void UI_Static_Image::Hidden(bool e) {
 		SetDrawActive(!e);
 		SetUpdateActive(!e);
@@ -1677,5 +1682,54 @@ namespace basecross {
 		}
 
 
+	}
+
+
+	//------------------------------------------------------------------------------------------------
+	//UI_Flash_Image : Class
+	//------------------------------------------------------------------------------------------------
+
+	void UI_Flash_Image::OnCreate() {
+		Draw();
+		auto color = GetColor();
+		color.setW(0.0f);
+		SetColor(color);
+	}
+
+	void UI_Flash_Image::OnUpdate2() {
+		if (m_in)
+			In();
+		else
+			Out();
+	}
+
+	void UI_Flash_Image::In() {
+		auto time = App::GetApp()->GetElapsedTime();
+		auto color = GetColor();
+		if (m_count <= m_flashinterval) {
+			m_count += time;
+			auto alpha = m_count / m_flashinterval;
+			color.w = alpha;
+			SetColor(color);
+		}
+		else
+		{
+			m_in = false;
+		}
+	}
+
+	void UI_Flash_Image::Out() {
+		auto time = App::GetApp()->GetElapsedTime();
+		auto color = GetColor();
+		if (m_count >= 0.0f) {
+			m_count -= time;
+			auto alpha = m_count / m_flashinterval;
+			color.w = alpha;
+			SetColor(color);
+		}
+		else
+		{
+			m_in = true;
+		}
 	}
 }

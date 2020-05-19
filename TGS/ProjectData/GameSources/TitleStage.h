@@ -4,33 +4,48 @@
 namespace basecross {
 
 	class TitleStage : public Stage {
-		wstring m_Standard;
-		wstring m_Shrimp_Title;
-		wstring m_Chicken_Title;
-		wstring m_Potato_Title;
-		wstring m_Donut_Title;
-		shared_ptr<SoundItem> m_bgm;
+		int m_baseLayer;
+		wstring m_bgImageName;
+		wstring m_titleLogoImageName;
+		wstring m_startButtonImageName;
+		wstring m_explanationButtonImageName;
+		wstring m_explanationImageName;
+		wstring m_explanationTitleImageName;
+		wstring m_explanationReturnImageName;
+		wstring m_explanationStartImageName;
+		vector<wstring> m_iconImageNames;
 
-		bool m_Update;
-
-		int m_Rand;
+		shared_ptr<UI_Static_Image> m_explanationImage;
+		shared_ptr<UI_Static_Image> m_explanationTitleImage;
+		shared_ptr<UI_Static_Image> m_explanationReturnImage;
+		shared_ptr<UI_Static_Image> m_explanationStartImage;
+		vector<shared_ptr<UI_Static_Image>> m_iconImages;
 
 		void CreateViewLight();
 		void CreateUI();
 
-		void CreateOperationUI();
-		int RandGenerator();
+		void CreateIcons();
+
+		void ToggleExplanationImage();
+		void UpdateInput();
 
 	public:
 		TitleStage() :Stage(),
-			m_Standard(L"GameTitle_ver2.png"),
-			m_Shrimp_Title(L"title_Shrimp.png"),
-			m_Chicken_Title(L"title_Chicken.png"),
-			m_Potato_Title(L"title_Potato.png"),
-			m_Donut_Title(L"title_Donut.png"),
-
-			m_Update(false),
-			m_Rand(0)
+			m_baseLayer(10),
+			m_bgImageName(L"dot.png"),
+			m_titleLogoImageName(L"TitleLogo_1024.png"),
+			m_startButtonImageName(L"dot.png"),
+			m_explanationButtonImageName(L"dot.png"),
+			m_explanationImageName(L"Operation.png"),
+			m_explanationTitleImageName(L"dot.png"),
+			m_explanationReturnImageName(L"dot.png"),
+			m_explanationStartImageName(L"dot.png"),
+			m_iconImageNames({ L"Chicken1.png", L"Chicken2.png", L"Chicken3.png", L"Doughnut1.png", L"Doughnut2.png", L"Doughnut3.png", L"Potato1.png", L"Potato2.png", L"Shrimp1.png", L"Shrimp2.png" }),
+			m_explanationImage(NULL),
+			m_explanationTitleImage(NULL),
+			m_explanationReturnImage(NULL),
+			m_explanationStartImage(NULL),
+			m_iconImages(NULL)
 		{}
 		virtual ~TitleStage() {}
 

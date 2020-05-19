@@ -19,75 +19,120 @@ namespace basecross {
 	}
 
 	void TitleStage::CreateUI() {
-		AddGameObject<Title_UI>(
-			Vec2(1920.0f, 1080.0f),	//vertex
-			Vec3(0.0f, 0.0f, 0.0f),	//pos
-			Vec3(1.0f, 1.0f, 1.0f),	//scale
-			1,	//layer
-			Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
-			//標準のタイトル画像
-			L"NewTitle_ver2.png"	//file(texture)
+		AddGameObject<UI_Static_Image>(
+			Vec2(1920.0f, 1080.0f),
+			Vec3(0.0f),
+			Vec3(1.0f),
+			m_baseLayer,
+			Col4(0.0f),
+			m_bgImageName
 			);
 
-		//switch (RandGenerator()) {
-		//case 0:	//エビver
-		//	AddGameObject<Title_UI>(
-		//		Vec2(1920.0f, 1080.0f),	//vertex
-		//		Vec3(0.0f, 0.0f, 0.0f),	//pos
-		//		Vec3(1.0f, 1.0f, 1.0f),	//scale
-		//		1,	//layer
-		//		Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
-		//		m_Shrimp_Title	//file(texture)
-		//		);
-		//	break;
+		AddGameObject<UI_Static_Image>(
+			Vec2(1024.0f, 689.0f),
+			Vec3(0.0f, 180.0f, 0.0f),
+			Vec3(0.8f),
+			m_baseLayer + 2,
+			Col4(1.0f),
+			m_titleLogoImageName
+			);
 
-		//case 1:	//チキンver
-		//	AddGameObject<Title_UI>(
-		//		Vec2(1920.0f, 1080.0f),	//vertex
-		//		Vec3(0.0f, 0.0f, 0.0f),	//pos
-		//		Vec3(1.0f, 1.0f, 1.0f),	//scale
-		//		1,	//layer
-		//		Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
-		//		m_Chicken_Title	//file(texture)
-		//		);
-		//	break;
+		AddGameObject<UI_Flash_Image>(
+			Vec2(256.0f, 64.0f),
+			Vec3(0.0f, -300.0f, 0.0f),
+			Vec3(3.0f),
+			m_baseLayer + 2,
+			Col4(0.0f, 0.0f, 1.0f, 1.0f),
+			m_startButtonImageName,
+			1.0f
+			);
 
-		//case 2:	//ポテトver
-		//	AddGameObject<Title_UI>(
-		//		Vec2(1920.0f, 1080.0f),	//vertex
-		//		Vec3(0.0f, 0.0f, 0.0f),	//pos
-		//		Vec3(1.0f, 1.0f, 1.0f),	//scale
-		//		1,	//layer
-		//		Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
-		//		m_Potato_Title	//file(texture)
-		//		);
-		//	break;
+		AddGameObject<UI_Static_Image>(
+			Vec2(256.0f, 64.0f),
+			Vec3(826.0f, -500.0f, 0.0f),
+			Vec3(1.0f),
+			m_baseLayer + 2,
+			Col4(0.5f, 1.0f, 0.5f, 1.0f),
+			m_startButtonImageName
+			);
 
-		//case 3:	//ドーナツver
-		//	AddGameObject<Title_UI>(
-		//		Vec2(1920.0f, 1080.0f),	//vertex
-		//		Vec3(0.0f, 0.0f, 0.0f),	//pos
-		//		Vec3(1.0f, 1.0f, 1.0f),	//scale
-		//		1,	//layer
-		//		Col4(1.0f, 1.0f, 1.0f, 1.0f),	//color
-		//		m_Donut_Title	//file(texture)
-		//		);
-		//	break;
-		//default:
-		//	break;
-		//}
-	}
-
-	void TitleStage::CreateOperationUI() {
-		//操作説明画像
-		AddGameObject<Operation_UI>(
+		m_explanationImage = AddGameObject<UI_Static_Image>(
 			Vec2(1920.0f, 1080.0f),
 			Vec3(0.0f, 0.0f, 0.0f),
-			Vec3(1.0f, 1.0f, 1.0f),
-			2,
-			Col4(1.0f, 1.0f, 1.0f, 1.0f),
-			L"Operation_ver3.png"
+			Vec3(1.0f),
+			m_baseLayer + 3,
+			Col4(1.0f),
+			m_explanationImageName
 			);
+
+		m_explanationTitleImage = AddGameObject<UI_Static_Image>(
+			Vec2(256.0f, 64.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(1.0f),
+			m_baseLayer + 4,
+			Col4(1.0f),
+			m_explanationTitleImageName
+			);
+
+		m_explanationReturnImage = AddGameObject<UI_Static_Image>(
+			Vec2(256.0f, 64.0f),
+			Vec3(-500.0f, 0.0f, 0.0f),
+			Vec3(1.0f),
+			m_baseLayer + 4,
+			Col4(1.0f),
+			m_explanationReturnImageName
+			);
+
+		m_explanationStartImage = AddGameObject<UI_Static_Image>(
+			Vec2(256.0f, 64.0f),
+			Vec3(500.0f, 0.0f, 0.0f),
+			Vec3(1.0f),
+			m_baseLayer + 4,
+			Col4(1.0f),
+			m_explanationStartImageName
+			);
+
+		ToggleExplanationImage();
+
+		CreateIcons();
+	}
+
+	void TitleStage::CreateIcons() {
+		mt19937_64 mt{ random_device{}() };
+		uniform_int_distribution<unsigned int> dist(0, m_iconImageNames.size() - 1);
+		for (int i = 0; i < 7; i++) {
+			for (int j = 0; j < 4; j++) {
+				m_iconImages.push_back(
+					AddGameObject<UI_Static_Image>(
+						Vec2(256.0f, 256.0f),
+						Vec3(-900.0f + (300.0f * i), 450.0f - (300.0f * j), 0.0f),
+						Vec3(0.5f),
+						m_baseLayer + 1,
+						Col4(1.0f),
+						m_iconImageNames[dist(mt)]
+						)
+				);
+			}
+		}
+	}
+
+	void TitleStage::ToggleExplanationImage() {
+		auto e = m_explanationImage->GetDrawActive();
+		m_explanationImage->Hidden(e);
+		m_explanationTitleImage->Hidden(e);
+		m_explanationReturnImage->Hidden(e);
+		m_explanationStartImage->Hidden(e);
+	}
+
+	void TitleStage::UpdateInput() {
+		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) {
+			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
+		}
+		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B) {
+			ToggleExplanationImage();
+		}
 	}
 
 	void TitleStage::OnCreate() {
@@ -113,8 +158,6 @@ namespace basecross {
 
 			//リザルトで使う物で再生させるやつ
 			//GetTypeStage<ResultStage>()->PlaySE(L"爆発_色々01.wav", 0.5f);
-
-
 		}
 		catch (...) {
 			throw;
@@ -122,28 +165,5 @@ namespace basecross {
 	}
 
 	void TitleStage::OnUpdate() {
-		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || KeyState.m_bPressedKeyTbl[VK_SPACE] || KeyState.m_bPushKeyTbl['W'] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) {
-			StopBGM();
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
-		}
-
-
-		//マウス右,Bボタンを押したとき操作説明を出す,もう一度同じボタンを押したらcharSelectに移動
-		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
-			if (m_Update) {
-				StopBGM();
-				App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
-			}
-			CreateOperationUI();
-			m_Update = true;
-		}
+		UpdateInput();
 	}
-
-	int TitleStage::RandGenerator() {
-		//srand((unsigned int)time(NULL));
-		m_Rand = rand() % 4;
-		return m_Rand;
-	}
-}
