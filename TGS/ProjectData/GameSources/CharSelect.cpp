@@ -74,7 +74,6 @@ namespace basecross {
 		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
 		}
-
 	}
 
 	void CharSelectStage::ChangeCharacter(int index) {
@@ -115,12 +114,14 @@ namespace basecross {
 			break;
 		}
 		m_oldIndex = index;
+		PlaySE(L"button_pause_se.wav", 0.5f);
 	}
 
 	void CharSelectStage::Select() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || KeyState.m_bPressedKeyTbl[VK_SPACE] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) {
+			PlaySE(L"button_pause_se.wav", 0.5f);
 			//ここにゲームステージへ遷移する処理を書く
 			//GetIndex()で選択したキャラクターのIndexを取得できます
 			int index = GetIndex();

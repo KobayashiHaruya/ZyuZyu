@@ -132,32 +132,19 @@ namespace basecross {
 		}
 		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B) {
 			ToggleExplanationImage();
+			PlaySE(L"button_pause_se.wav", 0.5f);
 		}
 	}
 
 	void TitleStage::OnCreate() {
 		try {
+			StopBGM();
+
 			CreateViewLight();
 			CreateUI();
 
-			//SEを再生
 			PlaySE(L"爆発_色々01.wav", 0.5f);
-			//BGMを再生
 			PlayBGM(L"title_bgm.wav", 0.5f);
-			//BGMを止める
-			//StopBGM();
-
-			//タイトルで使う物で再生させるやつ
-			//GetTypeStage<TitleStage>()->PlaySE(L"爆発_色々01.wav", 0.5f);
-
-			//キャラセレクトで使う物で再生させるやつ
-			//GetTypeStage<CharSelect>()->PlaySE(L"爆発_色々01.wav", 0.5f);
-
-			//ゲームステージで使う物で再生させるやつ
-			//GetTypeStage<GameStage>()->PlaySE(L"爆発_色々01.wav", 0.5f);
-
-			//リザルトで使う物で再生させるやつ
-			//GetTypeStage<ResultStage>()->PlaySE(L"爆発_色々01.wav", 0.5f);
 		}
 		catch (...) {
 			throw;

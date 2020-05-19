@@ -21,6 +21,8 @@ namespace basecross {
 		shared_ptr<UI_Static_Image> m_explanationStartImage;
 		vector<shared_ptr<UI_Static_Image>> m_iconImages;
 
+		shared_ptr<SoundItem> m_bgm;
+
 		void CreateViewLight();
 		void CreateUI();
 
@@ -45,7 +47,8 @@ namespace basecross {
 			m_explanationTitleImage(NULL),
 			m_explanationReturnImage(NULL),
 			m_explanationStartImage(NULL),
-			m_iconImages(NULL)
+			m_iconImages(NULL),
+			m_bgm(NULL)
 		{}
 		virtual ~TitleStage() {}
 
@@ -54,17 +57,17 @@ namespace basecross {
 
 		void PlaySE(wstring key, float vol) {
 			auto se = App::GetApp()->GetXAudio2Manager();
-			//se->Start(key, 0, vol);
+			se->Start(key, 0, vol);
 		}
 
 		void PlayBGM(wstring key, float vol) {
 			auto bgm = App::GetApp()->GetXAudio2Manager();
-			//m_bgm = bgm->Start(key, XAUDIO2_LOOP_INFINITE, vol);
+			m_bgm = bgm->Start(key, XAUDIO2_LOOP_INFINITE, vol);
 		}
 
 		void StopBGM() {
-			auto se = App::GetApp()->GetXAudio2Manager();
-			//se->Stop(m_bgm);
+			auto bgm = App::GetApp()->GetXAudio2Manager();
+			bgm->Stop(m_bgm);
 		}
 	};
 
