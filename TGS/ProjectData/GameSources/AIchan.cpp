@@ -56,7 +56,8 @@ namespace basecross {
 			GetStage()->RemoveGameObject<GameObject>(Other);
 		}
 
-		if (Other->FindTag(L"Object")) {
+		auto currentState = m_stateMachine->GetCurrentState();
+		if (Other->FindTag(L"Object") && currentState == SeekPatrolState::Instance()) {
 			ObstacleJump();
 		}
 	}
@@ -419,7 +420,7 @@ namespace basecross {
 
 
 	//------------------------------------------------------------------------------------------------
-	//アイちゃん敵発見ステート : Class
+	//アイちゃん敵追尾ステート : Class
 	//------------------------------------------------------------------------------------------------
 
 	shared_ptr<SeekDiscoveryState> SeekDiscoveryState::Instance() {
@@ -433,8 +434,8 @@ namespace basecross {
 		if (Obj->GetDamage() >= param.escapeDamage) {
 			Obj->UpdateEscapeMode();
 			if (!Obj->GetEscapeMode()) {
-				Obj->SetTarget(NULL);
-				Obj->GetStateMachine()->ChangeState(SeekEscapeState::Instance());
+				//Obj->SetTarget(NULL);
+				//Obj->GetStateMachine()->ChangeState(SeekEscapeState::Instance());
 			}
 		}
 

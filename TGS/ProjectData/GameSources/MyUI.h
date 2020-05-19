@@ -129,15 +129,21 @@ namespace basecross {
 		void SetTexture(const wstring& texture);
 		void SetTexture(const wstring& texture, Vec2& vertex);
 		void SetTexture(const wstring& texture, Vec2& vertex, const Vec3& scale);
-		void SetPosition(const Vec3& pos);
-		void SetScale(const Vec3& scale);
 
 		Vec3 GetPosition() {
 			return m_pos;
 		}
+		void SetPosition(const Vec3& pos);
+
 		Vec3 GetScale() {
 			return m_scale;
 		}
+		void SetScale(const Vec3& scale);
+
+		Col4 GetColor() {
+			return m_color;
+		}
+		void SetColor(const Col4& color);
 
 		void Hidden(bool e);
 	};
@@ -1277,4 +1283,46 @@ namespace basecross {
 
 	};
 
+
+	//------------------------------------------------------------------------------------------------
+	//UI_Flash_Image : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_Flash_Image : public UI_Static_Image {
+		float m_flashinterval;
+
+		bool m_in;
+		float m_count;
+
+		void In();
+		void Out();
+
+	public:
+		UI_Flash_Image(const shared_ptr<Stage>& StagePtr,
+			const Vec2& vertex,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int& layer,
+			const Col4& color,
+			const wstring& textures,
+			const float flashinterval
+		) :
+			UI_Static_Image(
+				StagePtr,
+				vertex,
+				pos,
+				scale,
+				layer,
+				color,
+				textures
+			),
+			m_flashinterval(flashinterval),
+			m_in(true),
+			m_count(NULL)
+		{}
+		~UI_Flash_Image() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate2() override;
+	};
 }

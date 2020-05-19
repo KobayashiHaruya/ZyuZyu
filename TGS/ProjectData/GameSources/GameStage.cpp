@@ -53,14 +53,14 @@ namespace basecross {
 
 	void GameStage::CreateTime() {
 		
-	AddGameObject<Time01>(1, L"0_9.png", true,
+	/*AddGameObject<Time01>(1, L"0_9.png", true,
 		Vec2(225.0f, 225.0f),
 		Vec3(0.0f, 0.0f, 0.0f));
 
 	//éûä‘ÇçXêVÇ∑ÇÈ
 	auto Time = AddGameObject<Time_Start>(L"Start.png",
 			Vec2(800.0f, 400.0f),
-			Vec2(-400.0f, 0.0f));
+			Vec2(-400.0f, 0.0f));*/
 
 		//AddGameObject<Time10>(1, L"0_9.png", true,
 		//	Vec2(25.0f, 25.0f),
@@ -204,7 +204,7 @@ namespace basecross {
 
 		WeaponUpdate();
 
-		m_time_ON += 0.1;
+		/*m_time_ON += 0.1;
 
 		if(m_time_ON > 0.0 && m_time_ON < 0.2 )
 		{
@@ -293,7 +293,7 @@ namespace basecross {
 		if (m_time_ON > 1.5)
 		{	
 			m_time_ON = 10;
-		}
+		}*/
 
 	//float TimeEat = 0.01;
 	//m_TotalTime -= TimeEat;
