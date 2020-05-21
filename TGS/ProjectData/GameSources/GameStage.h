@@ -17,11 +17,12 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
 		shared_ptr<UI_The_World> m_pause;
+		vector<Character> m_char;
 		shared_ptr<Player> m_player;
 		shared_ptr<AIchan> m_enemy;
 		shared_ptr<PinP> m_pinp;
 		shared_ptr<SoundItem> m_bgm;
-
+		
 		//ƒrƒ…[‚Ìì¬
 		void CreateViewLight();
 		void CreateUI();
@@ -37,6 +38,7 @@ namespace basecross {
 		float m_weaponTime;
 		void WeaponUpdate();
 
+		CharacterType SelectedChar();
 
 		//bool gather = false;
 		void CreateAIchan();
@@ -57,6 +59,8 @@ namespace basecross {
 		//‰Šú‰»
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+
+		void GameFinishScore();
 
 		void PlaySE(wstring key, float vol) {
 			auto se = App::GetApp()->GetXAudio2Manager();

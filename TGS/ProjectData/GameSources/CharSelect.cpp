@@ -72,7 +72,7 @@ namespace basecross {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 
 		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
+			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
 		}
 	}
 
@@ -123,9 +123,27 @@ namespace basecross {
 		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || KeyState.m_bPressedKeyTbl[VK_SPACE] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) {
 			PlaySE(L"button_pause_se.wav", 0.5f);
 			//ここにゲームステージへ遷移する処理を書く
-			//GetIndex()で選択したキャラクターのIndexを取得できます
-			int index = GetIndex();
+			SelectData();
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::game);
 		}
+		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
+			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
+		}
 	}
+
+	void CharSelectStage::SelectData() {
+		wstring ss;
+		App::GetApp()->GetDataDirectory(ss);
+
+		auto key = new XmlDoc(ss + L"/XML/" + L"CharSelect.xml");
+
+		//GetIndex()で選択したキャラクターのIndexを取得できます
+		int index = GetIndex();
+
+		key->SetText(key->GetSelectSingleNode(L"CharSelect/Character"), Util::FloatToWStr(index, 1, Util::Fixed).c_str());
+
+		key->Save(ss + L"/XML/" + L"CharSelect.xml");
+	}
+
+
 }

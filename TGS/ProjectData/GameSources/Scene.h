@@ -70,6 +70,9 @@ namespace basecross{
 		unsigned int level;
 	} CharacterKillDetails_s;
 
+	typedef struct CharacterKillList {
+		unsigned int killState;
+	} CharacterKillList_s;
 
 	//--------------------------------------------------------------------------------------
 	///	ƒQ[ƒ€ƒV[ƒ“

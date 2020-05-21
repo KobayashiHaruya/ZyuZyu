@@ -80,6 +80,7 @@ namespace basecross{
 
 		CharacterStatus_s m_myData;
 		vector<CharacterKillDetails_s> m_killCharacters;  //自身がキルした相手のキャラクタータイプとレベルを持つ
+		vector<CharacterKillList_s> m_killList;
 
 		shared_ptr<ObstacleEvent<const CharacterStatus_s>> m_touchOil;
 		CharacterStatus_s m_opponent;  //自身を攻撃してきた相手のステータスを持つ
@@ -96,7 +97,7 @@ namespace basecross{
 			m_myData({ type, 1, NULL, NULL, NULL, isPlayer, unique }),
 			m_killCharacters(vector<CharacterKillDetails_s>(NULL)),
 			m_touchOil(NULL),
-			ID(id),
+			ID(unique),
 			m_opponent({})
 		{}
 		~Character() {}
@@ -168,7 +169,7 @@ namespace basecross{
 		}
 
 		int GetId() {
-			return ID;
+			return m_myData.unique;
 		}
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
@@ -181,6 +182,7 @@ namespace basecross{
 		void PinPUpdate();
 
 		vector<CharacterKillDetails_s> GetKillCharacters();
+		vector<CharacterKillList_s> GetKillList();
 		void AddKillCharacter(const CharacterKillDetails_s& data);
 		CharacterStatus_s GetMyData();
 		void SetMyData(const CharacterStatus_s& data);

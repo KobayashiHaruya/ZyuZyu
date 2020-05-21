@@ -1404,6 +1404,10 @@ namespace basecross {
 		ptrDraw->UpdateVertices(newVertices);
 	}
 
+	void UI_PlayerGatling::OnCreate() {
+		Draw();
+	}
+
 	void UI_PlayerGatlingAmmo::OnCreate() {
 		float xPiecesize = 1.0f / (float)m_NumberOfDigits;
 		float helfSize = 0.5f;

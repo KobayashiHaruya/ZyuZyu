@@ -1134,10 +1134,35 @@ namespace basecross {
 		virtual void OnUpdate()override;
 	};
 
+	class UI_PlayerGatling : public UI_Base {
+	public:
+		UI_PlayerGatling(const shared_ptr<Stage>& StagePtr,
+			const Vec2& vertex,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int& layer,
+			const Col4& color,
+			const wstring& textures
+		) :
+			UI_Base(
+				StagePtr,
+				vertex,
+				pos,
+				scale,
+				layer,
+				color,
+				textures
+			)
+		{}
+		~UI_PlayerGatling() {}
+
+		virtual void OnCreate() override;
+	};
+
 	class UI_PlayerGatlingAmmo : public GameObject {
 		Vec3 m_pos;
 		Vec3 m_scale;
-		wstring m_TextureKey = L"Share_Number.png";
+		wstring m_TextureKey = L"Corn_Number.png";
 		int m_layer;
 
 		UINT m_NumberOfDigits = 3;

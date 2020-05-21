@@ -62,6 +62,7 @@ namespace basecross {
 		try {
 			CreateViewLight();
 			CreateUI();
+			AddGameObject<ResultScore>();
 		}
 		catch (...) {
 			throw;
