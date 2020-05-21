@@ -54,7 +54,7 @@ namespace basecross {
 	void GameStage::CreateTime() {
 
 		AddGameObject<Time01>(1, L"0_9.png", true,
-			Vec2(100.0f, 100.0f),
+			Vec2(200.0f, 250.0f),
 			Vec3(0.0f, 0.0f, 0.0f));
 
 
@@ -63,21 +63,18 @@ namespace basecross {
 			Vec2(600.0f, 300.0f),
 			Vec2(-300.0f, 0.0f));
 
-
 	}
 
 	void GameStage::CreateEndTime() {
 
 		    AddGameObject<EndTime>(1, L"0_9.png", true,
-				 Vec2(100.0f, 100.0f),
-				 Vec3(600.0f, 0.0f, 0.0f));
-
+				 Vec2(200.0f, 250.0f),
+				 Vec3(0.0f, 0.0f, 0.0f));
 
 				//éûä‘ÇçXêVÇ∑ÇÈ
 				auto Time = AddGameObject<End>(L"GameFinish.png",
 					Vec2(600.0f, 300.0f),
-					Vec2(-300.0f, 0.0f));
-			
+					Vec2(-300.0f, 0.0f));			
 	}
 
 	void GameStage::WeaponUpdate() {

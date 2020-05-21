@@ -34,26 +34,26 @@ namespace basecross {
 			float vertex1 = vertex0 + xPiecesize;
 			//0
 			m_BackupVertices.push_back(
-				VertexPositionTexture(Vec3(vertex0, helfSize, 0), Vec2(0.0f, 0.0f))
+				VertexPositionTexture(Vec3(vertex0, helfSize, 0), Vec2(0.04f, 0.0f))
 			);
 			//1
 			m_BackupVertices.push_back(
-				VertexPositionTexture(Vec3(vertex1, helfSize, 0), Vec2(0.1f, 0.0f))
+				VertexPositionTexture(Vec3(vertex1, helfSize, 0), Vec2(0.05f, 0.0f))
 			);
 			//2
 			m_BackupVertices.push_back(
-				VertexPositionTexture(Vec3(vertex0, -helfSize, 0), Vec2(0.0f, 1.0f))
+				VertexPositionTexture(Vec3(vertex0, -helfSize, 0), Vec2(0.04f, 1.0f))
 			);
 			//3
 			m_BackupVertices.push_back(
-				VertexPositionTexture(Vec3(vertex1, -helfSize, 0), Vec2(0.1f, 1.0f))
+				VertexPositionTexture(Vec3(vertex1, -helfSize, 0), Vec2(0.05f, 1.0f))
 			);
-			indices.push_back(i * 4 + 0);
-			indices.push_back(i * 4 + 1);
-			indices.push_back(i * 4 + 2);
-			indices.push_back(i * 4 + 1);
-			indices.push_back(i * 4 + 3);
-			indices.push_back(i * 4 + 2);
+			indices.push_back(i *4 + 0);
+			indices.push_back(i *4 + 1);
+			indices.push_back(i *4 + 2);
+			indices.push_back(i *4 + 1);
+			indices.push_back(i *4 + 3);
+			indices.push_back(i *4 + 2);
 		}
 
 		SetAlphaActive(m_Trace);
@@ -64,6 +64,7 @@ namespace basecross {
 		//頂点とインデックスを指定してスプライト作成
 		auto ptrDraw = AddComponent<PTSpriteDraw>(m_BackupVertices, indices);
 		ptrDraw->SetTextureResource(m_TextureKey);
+		ptrDraw->SetSamplerState(SamplerState::LinearWrap);
 		GetStage()->SetSharedGameObject(L"Time01", GetThis<Time01>());
 	}
 
@@ -123,10 +124,10 @@ namespace basecross {
 		m_Count = elapsedTime;
 
         if (m_TotalTime < 0.0f) {
-        	m_TotalTime = 3.999999f;
+        	m_TotalTime = 5.999999f;
         }
 
-		if (m_TotalTime > 1.0f && m_TotalTime < 4.0f)
+		if (m_TotalTime > 1.0f && m_TotalTime < 6.0f)
         {
         	//時間を更新する
         	SetTime(m_TotalTime);
@@ -193,7 +194,7 @@ namespace basecross {
 		m_TotalTime -= TimeEat;
 
 		if (m_TotalTime < 0.0f) {
-			m_TotalTime = 3.999999f;
+			m_TotalTime = 5.999999f;
 		}
 
 		// ドローコンポーネントを取得
@@ -328,7 +329,7 @@ namespace basecross {
 		m_Count = elapsedTime;
 
 		if (m_TotalTime < 0.0f) {
-			m_TotalTime = 183.45f;
+			m_TotalTime = 183.43345f;
 		}
 
 		if (m_TotalTime > 1.001f && m_TotalTime < 3.9999f)
@@ -396,7 +397,7 @@ namespace basecross {
 		m_TotalTime -= TimeEat;
 
 		if (m_TotalTime < 0.0f) {
-			m_TotalTime = 183.45f;
+			m_TotalTime = 183.433f;
 		}
 
 		// ドローコンポーネントを取得
