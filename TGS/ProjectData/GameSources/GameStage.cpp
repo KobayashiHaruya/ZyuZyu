@@ -274,6 +274,7 @@ namespace basecross {
 
 
 		vector<CharacterStatus_s> statuses;
+		vector<CharacterKillList_s> m_killList;
 
 		auto group = GetSharedObjectGroup(L"CharacterGroup");
 		auto vec = group->GetGroupVector();
@@ -281,81 +282,55 @@ namespace basecross {
 			auto obj = v.lock();
 			if (obj) {
 				auto character = dynamic_pointer_cast<Character>(obj);
-				character->GetKillCharacters();
 				statuses.push_back(character->GetMyData());
+				//m_killList.push_back(character->GetKillList());
 			}
 		}
 
 		vector<CharacterStatus_s> m_charState = statuses;
-		vector<CharacterKillDetails_s> m_killList;
 
-		for (int i = 0; i < 8; i++) {
-			wstring id = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/ID";
-			wstring type = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Type";
-			wstring kill = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Kill";
-			wstring death = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Death";
-			wstring score = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Score";
-			wstring player = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Player";
+		//for (int i = 0; i < 8; i++) {
+		//	wstring id = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/ID";
+		//	wstring type = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Type";
+		//	wstring kill = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Kill";
+		//	wstring death = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Death";
+		//	wstring score = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Score";
+		//	wstring player = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Player";
+		//	wstring list = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/List";
 
-			vector<wstring> Save = {
-				Util::IntToWStr(m_charState[i].unique),
-				Util::IntToWStr(m_charState[i].type),
-				Util::IntToWStr(m_charState[i].kill),
-				Util::IntToWStr(m_charState[i].death),
-				Util::IntToWStr(m_charState[i].score),
-				Util::IntToWStr(m_charState[i].isPlayer)
-			};
+		//	wstring listSave = L"";
 
-			vector<IXMLDOMNodePtr> Data = {
-				key->GetSelectSingleNode(id.c_str()),
-				key->GetSelectSingleNode(type.c_str()),
-				key->GetSelectSingleNode(kill.c_str()),
-				key->GetSelectSingleNode(death.c_str()),
-				key->GetSelectSingleNode(score.c_str()),
-				key->GetSelectSingleNode(player.c_str())
-			};
+		//	for (auto it = m_killList.begin(); it != m_killList.end(); ++it) {
+		//		listSave += Util::IntToWStr(m_killList[i].killState) + L",";
+		//	}
 
-			for (int j = 0; j < Data.size(); j++) {
-				key->SetText(Data[j], Save[j].c_str());
-			}
+		//	vector<wstring> Save = {
+		//		Util::IntToWStr(m_charState[i].unique),
+		//		Util::IntToWStr(m_charState[i].type),
+		//		Util::IntToWStr(m_charState[i].kill),
+		//		Util::IntToWStr(m_charState[i].death),
+		//		Util::IntToWStr(m_charState[i].score),
+		//		Util::IntToWStr(m_charState[i].isPlayer),
+		//		listSave
+		//	};
 
-			//auto character = dynamic_pointer_cast<Character>(vec[i].lock());
-			//m_killList = character->GetKillCharacters();
+		//	vector<IXMLDOMNodePtr> Data = {
+		//		key->GetSelectSingleNode(id.c_str()),
+		//		key->GetSelectSingleNode(type.c_str()),
+		//		key->GetSelectSingleNode(kill.c_str()),
+		//		key->GetSelectSingleNode(death.c_str()),
+		//		key->GetSelectSingleNode(score.c_str()),
+		//		key->GetSelectSingleNode(player.c_str()),
+		//		key->GetSelectSingleNode(list.c_str())
+		//	};
 
-			//for (int k = 0; k < m_killList.size(); k++) {
-			//	int level = 0;
+		//	for (int j = 0; j < Data.size(); j++) {
+		//		key->SetText(Data[j], Save[j].c_str());
+		//	}
 
-			//	switch (m_killList[k].type)
-			//	{
-			//	case CharacterType::SHRIMP:
-			//		level = 0;
-			//		break;
-			//	case CharacterType::CHICKEN:
-			//		level = 3;
-			//		break;
-			//	case CharacterType::POTATO:
-			//		level = 6;
-			//		break;
-			//	case CharacterType::DOUGHNUT:
-			//		level = 9;
-			//		break;
-			//	default:
-			//		break;
-			//	}
+		//	key->Save(ss + L"/XML/" + L"ResultScore.xml");
 
-			//	level += m_killList[k].level;
-			//	wstring list = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/List";
-
-			//	wstring Save =  Util::IntToWStr(level) + L",";
-			//	IXMLDOMNodePtr Data = key->GetSelectSingleNode(list.c_str());
-
-			//	key->SetText(Data, Save.c_str());
-			//}
-
-
-			key->Save(ss + L"/XML/" + L"ResultScore.xml");
-
-		}
+		//}
 
 	}
 

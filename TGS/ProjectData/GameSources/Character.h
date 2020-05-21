@@ -80,6 +80,7 @@ namespace basecross{
 
 		CharacterStatus_s m_myData;
 		vector<CharacterKillDetails_s> m_killCharacters;  //自身がキルした相手のキャラクタータイプとレベルを持つ
+		vector<CharacterKillList_s> m_killList;
 
 		shared_ptr<ObstacleEvent<const CharacterStatus_s>> m_touchOil;
 		CharacterStatus_s m_opponent;  //自身を攻撃してきた相手のステータスを持つ
@@ -178,6 +179,7 @@ namespace basecross{
 		void PinPUpdate();
 
 		vector<CharacterKillDetails_s> GetKillCharacters();
+		vector<CharacterKillList_s> GetKillList();
 		void AddKillCharacter(const CharacterKillDetails_s& data);
 		CharacterStatus_s GetMyData();
 		void SetMyData(const CharacterStatus_s& data);

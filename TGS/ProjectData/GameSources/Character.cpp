@@ -665,8 +665,37 @@ namespace basecross {
 		return m_killCharacters;
 	}
 
+	vector<CharacterKillList_s> Character::GetKillList() {
+		return m_killList;
+	}
+
+
 	void Character::AddKillCharacter(const CharacterKillDetails_s& data) {
 		m_killCharacters.push_back(data);
+
+		CharacterKillList(state);
+
+		switch (data.type)
+		{
+		case CharacterType::SHRIMP:
+			state.killState = 0;
+			break;
+		case CharacterType::CHICKEN:
+			state.killState = 3;
+			break;
+		case CharacterType::POTATO:
+			state.killState = 6;
+			break;
+		case CharacterType::DOUGHNUT:
+			state.killState = 9;
+			break;
+		default:
+			break;
+		}
+
+		state.killState += data.level;
+
+		m_killList.push_back(state);
 	}
 
 	CharacterStatus_s Character::GetMyData() {

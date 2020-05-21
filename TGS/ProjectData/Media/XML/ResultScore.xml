@@ -3,65 +3,73 @@
 	<Char0>
 		<ID>0</ID>
 		<Type>1</Type>
-		<Kill>0</Kill>
-		<Death>1</Death>
-		<Score>0</Score>
+		<Kill>3</Kill>
+		<Death>0</Death>
+		<Score>600</Score>
 		<Player>1</Player>
+		<List>4,4,4,</List>
 	</Char0>
 	<Char1>
-		<ID>818426041</ID>
-		<Type>11</Type>
+		<ID>0</ID>
+		<Type>0</Type>
 		<Kill>0</Kill>
-		<Death>-461995686</Death>
-		<Score>-2147474688</Score>
-		<Player>45</Player>
+		<Death>-310504855</Death>
+		<Score>-1878993920</Score>
+		<Player>1</Player>
+		<List></List>
 	</Char1>
 	<Char2>
-		<ID>1036831949</ID>
-		<Type>3342392</Type>
-		<Kill>3735604</Kill>
-		<Death>813563904</Death>
-		<Score>811544663</Score>
+		<ID>0</ID>
+		<Type>0</Type>
+		<Kill>0</Kill>
+		<Death>0</Death>
+		<Score>0</Score>
 		<Player>0</Player>
+		<List></List>
 	</Char2>
 	<Char3>
-		<ID>299006774</ID>
+		<ID>3538998</ID>
 		<Type>0</Type>
-		<Kill>-2147474432</Kill>
-		<Death>1885431112</Death>
-		<Score>1056964608</Score>
-		<Player>144</Player>
+		<Kill>-2147479808</Kill>
+		<Death>3276845</Death>
+		<Score>3407921</Score>
+		<Player>55</Player>
+		<List>-2013244416,</List>
 	</Char3>
 	<Char4>
-		<ID>-462913196</ID>
+		<ID>240149246</ID>
 		<Type>1700223281</Type>
 		<Kill>811544663</Kill>
 		<Death>0</Death>
-		<Score>1045220557</Score>
+		<Score>1036831949</Score>
 		<Player>0</Player>
+		<List>503,</List>
 	</Char4>
 	<Char5>
-		<ID>813576279</ID>
-		<Type>-2147474176</Type>
-		<Kill>3473457</Kill>
-		<Death>3407924</Death>
-		<Score>3538998</Score>
-		<Player>51</Player>
+		<ID>5046272</ID>
+		<Type>-2147479552</Type>
+		<Kill>3538995</Kill>
+		<Death>3342392</Death>
+		<Score>3735601</Score>
+		<Player>52</Player>
+		<List>503,</List>
 	</Char5>
 	<Char6>
-		<ID>816656582</ID>
-		<Type>811544663</Type>
-		<Kill>1036831949</Kill>
+		<ID>3014702</ID>
+		<Type>3080268</Type>
+		<Kill>1061997773</Kill>
 		<Death>0</Death>
-		<Score>-462585517</Score>
-		<Player>40</Player>
+		<Score>240345841</Score>
+		<Player>0</Player>
+		<List>0,</List>
 	</Char6>
 	<Char7>
 		<ID>0</ID>
-		<Type>818426041</Type>
-		<Kill>812342170</Kill>
-		<Death>1700223281</Death>
-		<Score>813563904</Score>
-		<Player>87</Player>
+		<Type>3211312</Type>
+		<Kill>3407924</Kill>
+		<Death>3538993</Death>
+		<Score>2883632</Score>
+		<Player>0</Player>
+		<List>-2013244160,</List>
 	</Char7>
 </ScoreTable>
