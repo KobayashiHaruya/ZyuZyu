@@ -1278,12 +1278,17 @@ namespace basecross {
 
 	class Result_Icon_UI :public UI_Horizontal_Sprite_Image {
 		int m_level;
+		CharacterType m_type;
+
 
 	public:
 		Result_Icon_UI(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos,
 			const Vec3& scale,
-			const int layer
+			const int layer,
+			const CharacterType type,
+			const int level
+
 		) :
 			UI_Horizontal_Sprite_Image(
 				StagePtr,
@@ -1295,13 +1300,13 @@ namespace basecross {
 				L"PS_Characteres_Level_Sprite.png",
 				Vec2(256.0f, 256.0f)
 			),
-			m_level(0)
+			m_type(type),
+			m_level(level)
 		{}
 		~Result_Icon_UI() {}
 
 		virtual void OnCreate() override;
 
-		//void SetCharacter(int level);
 	};
 
 

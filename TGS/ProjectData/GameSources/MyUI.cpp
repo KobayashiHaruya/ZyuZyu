@@ -1605,10 +1605,25 @@ namespace basecross {
 	}
 
 	void Result_Icon_UI::OnCreate() {
+		if (m_level < 1) m_level = 1;
+		if (m_level > 3) m_level = 3;
+		m_level = m_level - 1;
+
+		int index = 0;
+		switch (m_type)
+		{
+		case CharacterType::SHRIMP:
+			index = 3;
+			break;
+		case CharacterType::CHICKEN:
+			index = 6;
+			break;
+		case CharacterType::DOUGHNUT:
+			index = 9;
+			break;
+		}
+		index += m_level;
 		Draw();
+		SetIndex(index);
 	}
-
-	//void Result_Icon_UI::SetCharacter(int level) {
-
-	//}
 }

@@ -54,10 +54,23 @@ namespace basecross {
 		m_Cartain = AddGameObject<Result_Curtain>(mediaDir + L"Texters/ResultImagis/ResultAnimation/SpriteStadio/", Vec3(0.0f, 0.0f, 0.0f), Vec3(32.0f), m_layer);
 	}
 
+	void ResultStage::CreateIcon(CharacterType type, int level) {
+		m_ResultIcon = AddGameObject<Result_Icon_UI>(
+			Vec3(0.0f, 500.0f, 0.0f),
+			Vec3(0.3f, 0.3f, 0.3f),
+			0,
+			type,
+			level
+			);
+
+	}
+
 	void ResultStage::OnCreate() {
 		try {
 			CreateViewLight();
+			//SetPhysicsActive(true);
 			CreateUI();
+			CreateIcon(m_type, m_level);
 		}
 		catch (...) {
 			throw;
@@ -65,10 +78,12 @@ namespace basecross {
 	}
 
 	void ResultStage::OnUpdate() {
-		CreateIcon();
-
-
-
+		auto Trans = m_ResultIcon->GetComponent<Transform>();
+		auto Pos = Trans->GetPosition();
+		if (Pos.y > -10.0f) {
+			Trans->SetPosition(0.0f, m_Move, 0.0f);
+			m_Move -= 10.0f;
+		}
 	}
 
 
