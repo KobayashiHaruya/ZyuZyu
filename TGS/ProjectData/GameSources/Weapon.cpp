@@ -264,7 +264,7 @@ namespace basecross {
 			m_modelName = L"NasuLaser_ver1.bmf";
 			break;
 		case 8:
-			m_modelName = L"Potato_ver1.bmf";
+			m_modelName = L"MaitakeWind_ver1.bmf";
 			break;
 		default:
 			break;
@@ -475,7 +475,7 @@ namespace basecross {
 		//SetAlphaActive(true);
 
 		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetAfterCollision(AfterCollision::Auto);
+		ptrColl->SetAfterCollision(AfterCollision::None);
 		ptrColl->SetDrawActive(true);
 
 		//gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
@@ -492,48 +492,28 @@ namespace basecross {
 	}
 
 
-	void GatlingAmmo::BmfDateRead(wstring model) {
-		Mat4x4 m_spanMat;
-		m_spanMat.affineTransformation(
-			Vec3(1.0f, 1.0f, 1.0f),
-			Vec3(0.0f, 0.0f, 0.0f),
-			Vec3(0.0f, 0.0f, 0.0f),
-			Vec3(0.0f, 0.0f, 0.0f));
-
-		//影をつけるa
-		auto ptrShadow = AddComponent<Shadowmap>();
-		ptrShadow->SetMeshResource(model);
-		ptrShadow->SetMeshToTransformMatrix(m_spanMat);
-
-		auto ptrDraw = AddComponent<PNTStaticModelDraw>();
-		ptrDraw->SetMeshResource(model);
-		ptrDraw->SetMeshToTransformMatrix(m_spanMat);
-		ptrDraw->SetOwnShadowActive(true);
-		ptrDraw->SetDrawActive(true);
-
-		SetAlphaActive(true);
-
-		//各パフォーマンスを得る
-		GetStage()->SetCollisionPerformanceActive(true);
-		GetStage()->SetUpdatePerformanceActive(true);
-		GetStage()->SetDrawPerformanceActive(true);
-
-		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetAfterCollision(AfterCollision::Auto);
-		//ptrColl->SetDrawActive(true);
-		ptrColl->AddExcludeCollisionTag(L"Weapon");
-		ptrColl->AddExcludeCollisionTag(L"Grenade");
-		ptrColl->AddExcludeCollisionTag(L"Bullet");
-	}
-
 	void GatlingAmmo::OnCreate() {
 		auto ptr = GetComponent<Transform>();
 
-		BmfDateRead(m_modelName);
-
 		ptr->SetPosition(m_pos);
 		ptr->SetRotation(Vec3(0.0f));
-		ptr->SetScale(Vec3(1.0f));
+		ptr->SetScale(Vec3(0.1f, 1.0f, 1.0f));
+
+		//影をつける
+		auto ShadowPtr = AddComponent<Shadowmap>();
+		ShadowPtr->SetMeshResource(L"DEFAULT_CUBE");
+
+		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
+		PtrDraw->SetMeshResource(L"DEFAULT_CUBE");
+
+		PtrDraw->SetTextureResource(L"Corn.png");
+		SetAlphaActive(true);
+
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetAfterCollision(AfterCollision::None);
+		ptrColl->AddExcludeCollisionTag(L"Weapon");
+		ptrColl->AddExcludeCollisionTag(L"Grenade");
+		ptrColl->AddExcludeCollisionTag(L"Bullet");
 
 		auto gravity = AddComponent<Gravity>();
 
@@ -572,8 +552,8 @@ namespace basecross {
 		m_spanMat.affineTransformation(
 			Vec3(1.0f, 1.0f, 1.0f),
 			Vec3(0.0f, 0.0f, 0.0f),
-			Vec3(XM_PI / 2.0f, 0.0f, 0.0f),
-			Vec3(0.0f, 0.0f, -1.5f));
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, -0.5f, 0.0f));
 
 		//影をつけるa
 		auto ptrShadow = AddComponent<Shadowmap>();

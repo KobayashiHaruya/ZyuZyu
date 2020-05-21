@@ -96,7 +96,7 @@ namespace basecross{
 			m_myData({ type, 1, NULL, NULL, NULL, isPlayer, unique }),
 			m_killCharacters(vector<CharacterKillDetails_s>(NULL)),
 			m_touchOil(NULL),
-			ID(id),
+			ID(unique),
 			m_opponent({})
 		{}
 		~Character() {}
@@ -165,7 +165,7 @@ namespace basecross{
 		}
 
 		int GetId() {
-			return ID;
+			return m_myData.unique;
 		}
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;

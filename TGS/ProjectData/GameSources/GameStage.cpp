@@ -53,7 +53,7 @@ namespace basecross {
 
 	void GameStage::CreateTime() {
 
-		AddGameObject<Time01>(1, L"0_9.png", true,
+		AddGameObject<Time01>(1, L"Share_Number.png", true,
 			Vec2(225.0f, 225.0f),
 			Vec3(0.0f, 0.0f, 0.0f));
 
@@ -83,6 +83,41 @@ namespace basecross {
 
 	}
 
+	CharacterType GameStage::SelectedChar()
+	{
+		wstring dataDir;
+
+		App::GetApp()->GetDataDirectory(dataDir);
+		unique_ptr<XmlDocReader> xmlDocReader = nullptr;
+
+		xmlDocReader.reset(new XmlDocReader(dataDir + L"XML/" + L"CharSelect.xml"));
+
+		wstring SetGameDataStr = XmlDocReader::GetText(xmlDocReader->GetSelectSingleNode(L"CharSelect/Character"));
+		int character = (int)stoi(SetGameDataStr);
+
+		CharacterType player;
+
+		switch (character)
+		{
+		case 0:
+			player = CharacterType::SHRIMP;
+			break;
+		case 1:
+			player = CharacterType::CHICKEN;
+			break;
+		case 2:
+			player = CharacterType::POTATO;
+			break;
+		case 3:
+			player = CharacterType::DOUGHNUT;
+			break;
+		default:
+			break;
+		}
+
+		return player;
+
+	}
 
 	void GameStage::OnCreate() {
 		try {
@@ -162,8 +197,9 @@ namespace basecross {
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(60.0f, 60.0f, 60.0f)
 				);
+
 			m_player = AddGameObject<Player>(
-				CharacterType::SHRIMP,
+				SelectedChar(),
 				true,
 				0, 0
 				);
@@ -171,43 +207,6 @@ namespace basecross {
 
 			auto characterGroup = CreateSharedObjectGroup(L"CharacterGroup");
 			characterGroup->IntoGroup(m_player);
-
-			//for (int i = 1; i < 8; i++) {
-
-			//	CharacterType p;
-			//	int Rand = rand() % 5;
-			//	switch (Rand) {
-			//	case 0:
-			//		p = CharacterType::CHICKEN;
-			//		break;
-			//	case 1:
-			//		p = CharacterType::DOUGHNUT;
-			//		break;
-			//	case 2:
-			//		p = CharacterType::POTATO;
-			//		break;
-			//	case 3:
-			//		p = CharacterType::SHRIMP;
-			//		break;
-			//	}
-
-			//	auto AIparam = AIParam_s{
-			//		vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
-			//		1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
-			//		3, 3,
-			//		0,
-			//		true
-			//	};
-
-			//	m_enemy = AddGameObject<AIchan>(
-			//		p,
-			//		false,
-			//		i, i,
-			//		AIparam
-			//		);
-
-			//	characterGroup->IntoGroup(m_enemy);
-			//}
 
 			for (int i = 0; i < 5; i++) {
 				AddGameObject<Weapon>();
@@ -259,11 +258,105 @@ namespace basecross {
 
 		if (KeyState.m_bPressedKeyTbl['Z']) {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
+			GameFinishScore();
 		}
 
 		WeaponUpdate();
 
 		ShowPause();
+	}
+
+	void GameStage::GameFinishScore() {
+		wstring ss;
+		App::GetApp()->GetDataDirectory(ss);
+
+		auto key = new XmlDoc(ss + L"/XML/" + L"ResultScore.xml");
+
+
+		vector<CharacterStatus_s> statuses;
+
+		auto group = GetSharedObjectGroup(L"CharacterGroup");
+		auto vec = group->GetGroupVector();
+		for (auto& v : vec) {
+			auto obj = v.lock();
+			if (obj) {
+				auto character = dynamic_pointer_cast<Character>(obj);
+				character->GetKillCharacters();
+				statuses.push_back(character->GetMyData());
+			}
+		}
+
+		vector<CharacterStatus_s> m_charState = statuses;
+		vector<CharacterKillDetails_s> m_killList;
+
+		for (int i = 0; i < 8; i++) {
+			wstring id = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/ID";
+			wstring type = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Type";
+			wstring kill = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Kill";
+			wstring death = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Death";
+			wstring score = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Score";
+			wstring player = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Player";
+
+			vector<wstring> Save = {
+				Util::IntToWStr(m_charState[i].unique),
+				Util::IntToWStr(m_charState[i].type),
+				Util::IntToWStr(m_charState[i].kill),
+				Util::IntToWStr(m_charState[i].death),
+				Util::IntToWStr(m_charState[i].score),
+				Util::IntToWStr(m_charState[i].isPlayer)
+			};
+
+			vector<IXMLDOMNodePtr> Data = {
+				key->GetSelectSingleNode(id.c_str()),
+				key->GetSelectSingleNode(type.c_str()),
+				key->GetSelectSingleNode(kill.c_str()),
+				key->GetSelectSingleNode(death.c_str()),
+				key->GetSelectSingleNode(score.c_str()),
+				key->GetSelectSingleNode(player.c_str())
+			};
+
+			for (int j = 0; j < Data.size(); j++) {
+				key->SetText(Data[j], Save[j].c_str());
+			}
+
+			//auto character = dynamic_pointer_cast<Character>(vec[i].lock());
+			//m_killList = character->GetKillCharacters();
+
+			//for (int k = 0; k < m_killList.size(); k++) {
+			//	int level = 0;
+
+			//	switch (m_killList[k].type)
+			//	{
+			//	case CharacterType::SHRIMP:
+			//		level = 0;
+			//		break;
+			//	case CharacterType::CHICKEN:
+			//		level = 3;
+			//		break;
+			//	case CharacterType::POTATO:
+			//		level = 6;
+			//		break;
+			//	case CharacterType::DOUGHNUT:
+			//		level = 9;
+			//		break;
+			//	default:
+			//		break;
+			//	}
+
+			//	level += m_killList[k].level;
+			//	wstring list = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/List";
+
+			//	wstring Save =  Util::IntToWStr(level) + L",";
+			//	IXMLDOMNodePtr Data = key->GetSelectSingleNode(list.c_str());
+
+			//	key->SetText(Data, Save.c_str());
+			//}
+
+
+			key->Save(ss + L"/XML/" + L"ResultScore.xml");
+
+		}
+
 	}
 
 	void GameStage::ShowPause() {

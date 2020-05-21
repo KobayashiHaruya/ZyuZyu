@@ -240,7 +240,6 @@ namespace basecross {
 		{}
 		~GatlingAmmo() {}
 
-		virtual void BmfDateRead(wstring model);
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
@@ -254,7 +253,7 @@ namespace basecross {
 
 		float m_time = 10.0f;
 
-		wstring m_modelName = L"TomatoCannon.bmf";
+		wstring m_modelName = L"Tomato_ver1.bmf";
 
 	public:
 		CannonAmmoBox(const shared_ptr<Stage>& StagePtr,

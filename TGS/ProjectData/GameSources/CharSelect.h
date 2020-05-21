@@ -25,6 +25,7 @@ namespace basecross {
 		void CreateUI();
 		void ChangeCharacter(int index);
 		void Select();
+		void SelectData();
 
 	public:
 		CharSelectStage() :Stage(),
@@ -45,6 +46,7 @@ namespace basecross {
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+
 
 		int GetIndex() {
 			if (!m_mask) return m_startIndex;

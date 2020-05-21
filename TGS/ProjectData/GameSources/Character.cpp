@@ -119,9 +119,18 @@ namespace basecross {
 			false
 			);
 
+		GetStage()->AddGameObject<UI_PlayerGatling>(
+			Vec2(256.0f, 128.0f),
+			Vec3(-800.0f, -450.0f, 0.0f),
+			Vec3(1.0f, 1.0f, 1.0f),
+			10,
+			Col4(1.0f, 1.0f, 1.0f, 1.0f),
+			L"CornIcon.png"
+			);
+
 		GetStage()->AddGameObject<UI_PlayerGatlingAmmo>(
-			Vec3(-850.0f, -400.0f, 0.0f),
-			Vec3(150.0f, 50.0f, 1.0f)
+			Vec3(-750.0f, -465.0f, 0.0f),
+			Vec3(100.0f, 50.0f, 1.0f)
 			);
 
 		GetStage()->AddGameObject<UI_PlayerGun>(
@@ -363,23 +372,23 @@ namespace basecross {
 			}
 		}
 
-		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) || KeyState.m_bPressedKeyTbl['E']) && m_smokeG) {
+		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || KeyState.m_bPressedKeyTbl['Q']) && m_toriG) {
 			GetStage()->AddGameObject<Grenade>(
 				ptr->GetPosition(),
 				ptr->GetQuaternion(),
 				50.0f, 10.0f, true, ID, m_myData
 				);
-			m_smokeG = false;
-			m_smokeGtime = 0.0f;
+			m_toriG = false;
+			m_toriGtime = 0.0f;
 		}
-		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || KeyState.m_bPressedKeyTbl['Q']) && m_toriG) {
+		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) || KeyState.m_bPressedKeyTbl['E']) && m_smokeG) {
 			GetStage()->AddGameObject<Grenade>(
 				ptr->GetPosition(),
 				ptr->GetQuaternion(),
 				50.0f, 10.0f, false, ID, m_myData
 				);
-			m_toriG = false;
-			m_toriGtime = 0.0f;
+			m_smokeG = false;
+			m_smokeGtime = 0.0f;
 		}
 	}
 
