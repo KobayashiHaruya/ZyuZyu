@@ -123,7 +123,7 @@ namespace basecross {
 		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || KeyState.m_bPressedKeyTbl[VK_SPACE] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) {
 			PlaySE(L"button_pause_se.wav", 0.5f);
 			//ここにゲームステージへ遷移する処理を書く
-			SelectData();
+			//SelectData();
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::game);
 		}
 		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
