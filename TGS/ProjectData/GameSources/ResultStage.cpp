@@ -78,12 +78,26 @@ namespace basecross {
 	}
 
 	void ResultStage::OnUpdate() {
+		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || KeyState.m_bPressedKeyTbl[VK_SPACE] || KeyState.m_bPushKeyTbl['W'] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) {
+			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
+		}
+
+
+		//マウス右,Bボタンを押したとき操作説明を出す,もう一度同じボタンを押したらcharSelectに移動
+		//if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
+
+		//}
+
 		auto Trans = m_ResultIcon->GetComponent<Transform>();
 		auto Pos = Trans->GetPosition();
 		if (Pos.y > -10.0f) {
 			Trans->SetPosition(0.0f, m_Move, 0.0f);
 			m_Move -= 10.0f;
 		}
+
+
 	}
 
 
