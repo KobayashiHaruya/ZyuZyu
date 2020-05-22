@@ -324,15 +324,13 @@ namespace basecross {
 	void EndTime::OnUpdate2() {
 
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		float TimeEat = elapsedTime;
-		m_TotalTime -= TimeEat;
-		m_Count = elapsedTime;
+		m_TotalTime -= elapsedTime;
 
-		if (m_TotalTime < 0.0f) {
-			m_TotalTime = 183.43343f;
+		if (m_TotalTime < 0.0) {
+			m_TotalTime = 183.5;
 		}
 
-		if (m_TotalTime > 1.000f && m_TotalTime < 4.0f)
+		if (m_TotalTime > 1.0 && m_TotalTime < 4.0)
 		{
 			SetDrawActive(true);
 			//ŽžŠÔ‚ðXV‚·‚é
@@ -393,8 +391,7 @@ namespace basecross {
 	void End::OnUpdate() {
 
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		float TimeEat = elapsedTime;
-		m_TotalTime -= TimeEat;
+		m_TotalTime -= elapsedTime;
 
 		if (m_TotalTime < 0.0f) {
 			m_TotalTime = 183.43343f;
