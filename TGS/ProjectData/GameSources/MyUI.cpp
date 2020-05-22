@@ -235,7 +235,6 @@ namespace basecross {
 		ptrTrans->SetScale(m_scale);
 
 		SetAlphaActive(true);
-
 	}
 
 	void UI_Character_Select_Mask_Image::MaskMove() {

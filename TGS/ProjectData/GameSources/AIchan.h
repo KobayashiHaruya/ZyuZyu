@@ -90,6 +90,8 @@ namespace basecross{
 		float m_pointPatrolWaitTimeCount;
 		float m_pointPatrolJumpWaitTime;
 		float m_pointPatrolJumpWaitTimeCount;
+		int m_jumpMiss;
+		int m_jumpMissCount;
 		////////èÑâÒÇ…ä÷Ç∑ÇÈÉÅÉìÉoïœêî - Ç±Ç±Ç‹Ç≈////////
 
 
@@ -144,6 +146,8 @@ namespace basecross{
 			m_pointPatrolWaitTimeCount(NULL),
 			m_pointPatrolJumpWaitTime(NULL),
 			m_pointPatrolJumpWaitTimeCount(NULL),
+			m_jumpMiss(3),
+			m_jumpMissCount(NULL),
 			m_target(NULL),
 			m_targetType(AIChan::AITargetType::NONE),
 			m_bulletNum(9),
@@ -160,6 +164,8 @@ namespace basecross{
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
 		virtual void OnCollisionExcute(shared_ptr<GameObject>& Other) override;
+
+		void DroppedIntoOil(const CharacterStatus_s& status);
 
 		void Move(const Vec3& toPos);
 		void Jump(const Vec3& jumpVelocity);
