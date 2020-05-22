@@ -23,9 +23,8 @@ namespace basecross {
 	public:
 		ResultStage() :Stage(),
 			m_layer(5),
-			m_Stage_Image(L""),
 			m_Score_Image(L"Number_128_64.png"),
-			m_Score_frame_Image(L"score_frame.png"),
+			m_Stage_Image(L"ResultBack.png"),
 			m_Cartain(NULL),
 			m_Amount(5),
 			m_Move(500.0f),

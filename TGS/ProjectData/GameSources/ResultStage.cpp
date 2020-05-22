@@ -20,15 +20,15 @@ namespace basecross {
 
 
 	void ResultStage::CreateUI() {
-		//スコア枠
-		//AddGameObject<Result_UI>(
-		//	Vec2(500.0f, 100.0f),
-		//	Vec3(0.0f, -200.0f, 0.0f),
-		//	Vec3(1.0f, 1.0f, 1.0f),
-		//	2,
-		//	Col4(1.0f, 1.0f, 1.0f, 1.0f),
-		//	m_Score_frame_Image
-		//	);
+		//ステージ
+		AddGameObject<Result_UI>(
+			Vec2(1920.0f, 1080.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(1.0f, 1.0f, 1.0f),
+			0,
+			Col4(1.0f, 1.0f, 1.0f, 1.0f),
+			m_Stage_Image
+			);
 
 		//スコア
 		for (int i = 0; i < 6; i++) {	//ループ数で桁変更
@@ -45,7 +45,7 @@ namespace basecross {
 				static_cast<int>(123456)	//表示するスコア
 				);
 			auto trans = Score->GetComponent<Transform>();
-			trans->SetPosition(300.0f * 0.5f - n * 64.0f - 64.0f, -500.0f * 0.5f, 0.0f);
+			trans->SetPosition(300.0f * 0.5f - n * 64.0f - 64.0f, 500.0f * 0.5f, 0.0f);
 		}
 
 
@@ -68,7 +68,6 @@ namespace basecross {
 	void ResultStage::OnCreate() {
 		try {
 			CreateViewLight();
-			//SetPhysicsActive(true);
 			CreateUI();
 			CreateIcon(m_type, m_level);
 		}
