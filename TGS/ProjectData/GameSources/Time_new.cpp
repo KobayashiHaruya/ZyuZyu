@@ -397,7 +397,7 @@ namespace basecross {
 		m_TotalTime -= TimeEat;
 
 		if (m_TotalTime < 0.0f) {
-			m_TotalTime = 183.433f;
+			m_TotalTime = 183.43343f;
 		}
 
 		// ドローコンポーネントを取得
