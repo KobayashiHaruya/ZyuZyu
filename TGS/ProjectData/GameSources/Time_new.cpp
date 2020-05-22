@@ -329,10 +329,10 @@ namespace basecross {
 		m_Count = elapsedTime;
 
 		if (m_TotalTime < 0.0f) {
-			m_TotalTime = 183.43345f;
+			m_TotalTime = 183.433f;
 		}
 
-		if (m_TotalTime > 1.001f && m_TotalTime < 3.9999f)
+		if (m_TotalTime > 1.000f && m_TotalTime < 4.0f)
 		{
 			SetDrawActive(true);
 			//ŽžŠÔ‚ðXV‚·‚é
