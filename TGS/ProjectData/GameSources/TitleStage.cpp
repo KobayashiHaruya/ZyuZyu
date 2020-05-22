@@ -38,22 +38,22 @@ namespace basecross {
 			);
 
 		AddGameObject<UI_Flash_Image>(
-			Vec2(256.0f, 64.0f),
+			Vec2(842.0f, 138.0f),
 			Vec3(0.0f, -300.0f, 0.0f),
-			Vec3(3.0f),
+			Vec3(1.0f),
 			m_baseLayer + 2,
-			Col4(0.0f, 0.0f, 1.0f, 1.0f),
+			Col4(1.0f),
 			m_startButtonImageName,
 			1.0f
 			);
 
 		AddGameObject<UI_Static_Image>(
-			Vec2(256.0f, 64.0f),
-			Vec3(826.0f, -500.0f, 0.0f),
+			Vec2(419.0f, 70.0f),
+			Vec3(745.0f, -500.0f, 0.0f),
 			Vec3(1.0f),
 			m_baseLayer + 2,
-			Col4(0.5f, 1.0f, 0.5f, 1.0f),
-			m_startButtonImageName
+			Col4(1.0f),
+			m_explanationButtonImageName
 			);
 
 		m_explanationImage = AddGameObject<UI_Static_Image>(
@@ -103,13 +103,14 @@ namespace basecross {
 		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j < 4; j++) {
 				m_iconImages.push_back(
-					AddGameObject<UI_Static_Image>(
+					AddGameObject<UI_Flash_Image>(
 						Vec2(256.0f, 256.0f),
 						Vec3(-900.0f + (300.0f * i), 450.0f - (300.0f * j), 0.0f),
 						Vec3(0.5f),
 						m_baseLayer + 1,
 						Col4(1.0f),
-						m_iconImageNames[dist(mt)]
+						m_iconImageNames[dist(mt)],
+						(i * 0.1f) + (j * 0.1f) + 2.0f
 						)
 				);
 			}

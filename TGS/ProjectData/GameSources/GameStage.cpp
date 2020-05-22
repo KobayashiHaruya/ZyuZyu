@@ -105,66 +105,80 @@ namespace basecross {
 			CreateUI();
 			CreateTime();
 			CreateEndTime();
-			AddGameObject<Object>(
+
+			auto obstacleGroup = CreateSharedObjectGroup(L"ObstacleGroup");
+			auto obstacle = AddGameObject<Object>(
 				Vec3(10.0f, -8.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(2.0f, 5.0f, 5.0f)
 				);
-			AddGameObject<Object>(
+			obstacleGroup->IntoGroup(obstacle);
+			obstacle = AddGameObject<Object>(
 				Vec3(10.0f, -8.0f, 5.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(4.0f, 2.0f, 3.0f)
 				);
-			AddGameObject<Object>(
+			obstacleGroup->IntoGroup(obstacle);
+			obstacle = AddGameObject<Object>(
 				Vec3(-5.0f, -8.0f, -10.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(2.0f, 1.0f, 2.5f)
 				);
-			AddGameObject<Object>(
+			obstacleGroup->IntoGroup(obstacle);
+			obstacle = AddGameObject<Object>(
 				Vec3(20.0f, -8.0f, -15.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(5.0f, 1.0f, 10.0f)
 				);
-			AddGameObject<Object>(
+			obstacleGroup->IntoGroup(obstacle);
+			obstacle = AddGameObject<Object>(
 				Vec3(10.0f, -8.0f, 20.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(2.0f, 5.0f, 10.0f)
 				);
-			AddGameObject<Object>(
+			obstacleGroup->IntoGroup(obstacle);
+			obstacle = AddGameObject<Object>(
 				Vec3(20.0f, -8.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(10.0f, 10.0f, 10.0f)
 				);
-			AddGameObject<Object>(
+			obstacleGroup->IntoGroup(obstacle);
+			obstacle = AddGameObject<Object>(
 				Vec3(-20.0f, -8.0f, 13.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(4.0f, 3.0f, 8.0f)
 				);
-			AddGameObject<Object>(
+			obstacleGroup->IntoGroup(obstacle);
+			obstacle = AddGameObject<Object>(
 				Vec3(24.0f, -8.0f, 10.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(5.0f, 3.0f, 3.0f)
 				);
-			AddGameObject<Object>(
+			obstacleGroup->IntoGroup(obstacle);
+			obstacle = AddGameObject<Object>(
 				Vec3(10.0f, -8.0f, -26.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(14.0f, 2.0f, 6.0f)
 				);
-			AddGameObject<Object>(
+			obstacleGroup->IntoGroup(obstacle);
+			obstacle = AddGameObject<Object>(
 				Vec3(-15.0f, -8.0f, -20.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(8.0f, 5.0f, 10.0f)
 				);
-			AddGameObject<Object>(
+			obstacleGroup->IntoGroup(obstacle);
+			obstacle = AddGameObject<Object>(
 				Vec3(-30.0f, -8.0f, -11.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(6.0f, 2.0f, 8.0f)
 				);
-			AddGameObject<OilStage>(
+			obstacleGroup->IntoGroup(obstacle);
+			auto oil = AddGameObject<OilStage>(
 				Vec3(0.0f, -10.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(60.0f, 60.0f, 60.0f)
 				);
+			oil->AddTag(L"Obstacle");
 			AddGameObject<Oil>(
 				Vec3(0.0f, -100.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
@@ -294,10 +308,6 @@ namespace basecross {
 			CreateAIchan();
 			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
 
-
-			auto obstacleGroup = CreateSharedObjectGroup(L"ObstacleGroup");
-			auto obstacle = AddGameObject<TestObstacle>(Vec3(10.0f, -8.0f, 0.0f), Vec3(4.5f));
-			obstacleGroup->IntoGroup(obstacle);
 
 			StopBGM();
 			//PlaySE(L"îöî≠_êFÅX01.wav", 0.5f);

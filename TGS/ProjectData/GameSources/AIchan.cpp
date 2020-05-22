@@ -33,7 +33,7 @@ namespace basecross {
 	void AIchan::OnCollisionEnter(shared_ptr<GameObject>& Other) {
 		Character::OnCollisionEnter(Other);
 
-		//もしあったらオブジェクトがBulletタグのついたオブジェクトだったら
+		//オブジェクトがBulletタグのついたオブジェクトだったら
 		if (Other->FindTag(L"Bullet")) {
 			auto bullet = dynamic_pointer_cast<Bullet>(Other);
 			if (bullet) {
@@ -45,8 +45,6 @@ namespace basecross {
 				}
 			}
 		}
-
-		
 	}
 
 	void AIchan::OnCollisionExcute(shared_ptr<GameObject>& Other) {
@@ -57,10 +55,26 @@ namespace basecross {
 			GetStage()->RemoveGameObject<GameObject>(Other);
 		}
 
+		//ステートマシンが巡回かつあたっている対象が床だったら
 		auto currentState = m_stateMachine->GetCurrentState();
-		if (Other->FindTag(L"Object") && currentState == SeekPatrolState::Instance()) {
-			ObstacleJump();
+		if (Other->FindTag(L"Obstacle") && currentState == SeekPatrolState::Instance()) {
+			if (m_jumpMissCount >= m_jumpMiss) {
+				ChangeNextPoint();
+				m_jumpMissCount = 0;
+			}
+			else {
+				ObstacleJump();
+			}
 		}
+		else {
+			m_jumpMissCount = 0;
+		}
+	}
+
+	void AIchan::DroppedIntoOil(const CharacterStatus_s& status) {
+		Character::DroppedIntoOil(status);
+		SetTarget(NULL);
+		m_stateMachine->ChangeState(SeekPatrolState::Instance());
 	}
 
 	void AIchan::Move(const Vec3& toPos) {
@@ -197,8 +211,6 @@ namespace basecross {
 				closestTransform = transform;
 			}
 		}
-
-
 		/*
 		float closestDistance = GetThisToTargetDistance(transforms[0]->GetPosition(), true) + (transforms[0]->GetScale().getX() / 2.0f);
 		shared_ptr<Transform> closestTransform(transforms[0]);
@@ -217,6 +229,7 @@ namespace basecross {
 		auto pos = obstacleTrans->GetPosition();
 		if ((GetThisToTargetDistance(pos, true) - (scale.getX() / 2.0f)) <= 3.0f) {
 			Jump(Vec3(0.0f, GetJumpPower(), 0.0f));
+			m_jumpMissCount++;
 		}
 	}
 
