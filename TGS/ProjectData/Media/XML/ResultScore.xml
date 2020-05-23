@@ -3,73 +3,73 @@
 	<Char0>
 		<ID>0</ID>
 		<Type>1</Type>
-		<Kill>3</Kill>
-		<Death>0</Death>
-		<Score>600</Score>
+		<Kill>1</Kill>
+		<Death>1</Death>
+		<Score>100</Score>
 		<Player>1</Player>
-		<List>4,4,4,</List>
+		<List>4,</List>
 	</Char0>
 	<Char1>
 		<ID>0</ID>
 		<Type>0</Type>
 		<Kill>0</Kill>
-		<Death>-310504855</Death>
-		<Score>-1878993920</Score>
-		<Player>1</Player>
-		<List></List>
+		<Death>376172812</Death>
+		<Score>-2147462591</Score>
+		<Player>0</Player>
+		<List>None</List>
 	</Char1>
 	<Char2>
-		<ID>0</ID>
+		<ID>2</ID>
+		<Type>2</Type>
+		<Kill>0</Kill>
+		<Death>0</Death>
+		<Score>0</Score>
+		<Player>0</Player>
+		<List>None</List>
+	</Char2>
+	<Char3>
+		<ID>3</ID>
+		<Type>2</Type>
+		<Kill>0</Kill>
+		<Death>0</Death>
+		<Score>0</Score>
+		<Player>0</Player>
+		<List>None</List>
+	</Char3>
+	<Char4>
+		<ID>4</ID>
+		<Type>1</Type>
+		<Kill>0</Kill>
+		<Death>0</Death>
+		<Score>0</Score>
+		<Player>0</Player>
+		<List>None</List>
+	</Char4>
+	<Char5>
+		<ID>5</ID>
+		<Type>0</Type>
+		<Kill>0</Kill>
+		<Death>1</Death>
+		<Score>0</Score>
+		<Player>0</Player>
+		<List>None</List>
+	</Char5>
+	<Char6>
+		<ID>6</ID>
 		<Type>0</Type>
 		<Kill>0</Kill>
 		<Death>0</Death>
 		<Score>0</Score>
 		<Player>0</Player>
-		<List></List>
-	</Char2>
-	<Char3>
-		<ID>3538998</ID>
-		<Type>0</Type>
-		<Kill>-2147479808</Kill>
-		<Death>3276845</Death>
-		<Score>3407921</Score>
-		<Player>55</Player>
-		<List>-2013244416,</List>
-	</Char3>
-	<Char4>
-		<ID>240149246</ID>
-		<Type>1700223281</Type>
-		<Kill>811544663</Kill>
-		<Death>0</Death>
-		<Score>1036831949</Score>
-		<Player>0</Player>
-		<List>503,</List>
-	</Char4>
-	<Char5>
-		<ID>5046272</ID>
-		<Type>-2147479552</Type>
-		<Kill>3538995</Kill>
-		<Death>3342392</Death>
-		<Score>3735601</Score>
-		<Player>52</Player>
-		<List>503,</List>
-	</Char5>
-	<Char6>
-		<ID>3014702</ID>
-		<Type>3080268</Type>
-		<Kill>1061997773</Kill>
-		<Death>0</Death>
-		<Score>240345841</Score>
-		<Player>0</Player>
-		<List>0,</List>
+		<List>None</List>
 	</Char6>
 	<Char7>
-		<ID>0</ID>
-		<Type>3211312</Type>
-		<Kill>3407924</Kill>
-		<Death>3538993</Death>
-		<Score>2883632</Score>
+		<ID>7</ID>
+		<Type>1</Type>
+		<Kill>0</Kill>
+		<Death>0</Death>
+		<Score>0</Score>
 		<Player>0</Player>
-		<List>-2013244160,</List>
+		<List>None</List>
 	</Char7>
 </ScoreTable>

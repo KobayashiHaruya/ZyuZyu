@@ -21,14 +21,16 @@ namespace basecross {
 		//ptrColl->AddExcludeCollisionTag(L"Weapon");
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
 			
-		//‰e‚ð‚Â‚¯‚éa
+		//‰e‚ð‚Â‚¯‚é
 		auto ptrShadow = AddComponent<Shadowmap>();
 		ptrShadow->SetMeshResource(model);
 		ptrShadow->SetMeshToTransformMatrix(m_spanMat);
 
-		auto ptrDraw = AddComponent<PNTStaticModelDraw>();
+		auto ptrDraw = AddComponent <PNTStaticModelDraw>();
 		ptrDraw->SetMeshResource(model);
 		ptrDraw->SetMeshToTransformMatrix(m_spanMat);
+		//ptrDraw->AddAnimation(L"CharacterAnimation", 0, 210, true, 30.0f);
+		//ptrDraw->ChangeCurrentAnimation(L"CharacterAnimation");
 		ptrDraw->SetOwnShadowActive(true);
 		ptrDraw->SetDrawActive(true);
 
@@ -1259,6 +1261,10 @@ namespace basecross {
 			BulletFire();
 			GrenadeFire();
 		}
+
+		//auto ptrDraw = GetComponent<PNTStaticModelDraw>();
+		//float elapsedTime = App::GetApp()->GetElapsedTime();
+		//ptrDraw->UpdateAnimation(elapsedTime);
 	}
 
 	void Character::DrawString() {

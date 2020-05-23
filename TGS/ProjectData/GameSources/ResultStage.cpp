@@ -63,6 +63,7 @@ namespace basecross {
 			CreateViewLight();
 			CreateUI();
 			AddGameObject<ResultScore>();
+			PlayBGM(L"rezult_bgm.wav", 0.5f);
 		}
 		catch (...) {
 			throw;
@@ -75,9 +76,11 @@ namespace basecross {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		
 		if (KeyState.m_bPressedKeyTbl['Z']) {
+			StopBGM();
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
 		}
 		if (KeyState.m_bPressedKeyTbl['X']) {
+			StopBGM();
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
 		}
 

@@ -10,7 +10,7 @@ namespace basecross {
 	class ResultScore :public GameObject {
 		wstring test;
 		vector<CharacterStatus_s> m_charState;
-		vector<CharacterKillDetails_s> m_KillList;
+		vector<CharacterKillList_s> m_KillList;
 
 	public:
 		ResultScore(const shared_ptr<Stage>& StagePtr) :GameObject(StagePtr) {}

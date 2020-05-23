@@ -130,6 +130,7 @@ namespace basecross {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
+			StopBGM();
 		}
 		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B) {
 			ToggleExplanationImage();
@@ -144,7 +145,6 @@ namespace basecross {
 			CreateViewLight();
 			CreateUI();
 
-			PlaySE(L"îöî≠_êFÅX01.wav", 0.5f);
 			PlayBGM(L"title_bgm.wav", 0.5f);
 		}
 		catch (...) {
