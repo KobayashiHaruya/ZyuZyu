@@ -31,9 +31,9 @@ namespace basecross {
 			);
 
 		//スコア
+		m_Score = 123456;
 		for (int i = 0; i < 6; i++) {	//ループ数で桁変更
 			float n = static_cast<float>(i);
-			int score = 0;
 			auto Score = AddGameObject<Score_UI>(
 				Vec2(500.0f, 100.0f),
 				Vec3(0.0f, -200.0f, 0.0f),
@@ -42,7 +42,7 @@ namespace basecross {
 				Col4(1.0f, 1.0f, 1.0f, 1.0f),
 				m_Score_Image,
 				static_cast<int>((powf(10.0f, n))),
-				static_cast<int>(123456)	//表示するスコア
+				static_cast<int>(m_Score)	//表示するスコア
 				);
 			auto trans = Score->GetComponent<Transform>();
 			trans->SetPosition(300.0f * 0.5f - n * 64.0f - 64.0f, 500.0f * 0.5f, 0.0f);
@@ -67,6 +67,7 @@ namespace basecross {
 
 	void ResultStage::OnCreate() {
 		try {
+			StopBGM();
 			CreateViewLight();
 			CreateUI();
 			AddGameObject<ResultScore>();

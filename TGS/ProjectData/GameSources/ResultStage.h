@@ -8,6 +8,8 @@ namespace basecross {
 		int m_Amount;
 		float m_Move;
 
+		int m_Score;
+
 		CharacterType m_type;
 		int m_level;
 
@@ -24,11 +26,12 @@ namespace basecross {
 	public:
 		ResultStage() :Stage(),
 			m_layer(5),
-			m_Score_Image(L"Number_128_64.png"),
+			m_Score_Image(L"Number_695_Gold.png"),
 			m_Stage_Image(L"ResultBack.png"),
 			m_Cartain(NULL),
 			m_Amount(5),
 			m_Move(500.0f),
+			m_Score(0),
 			m_type(POTATO),
 			m_level(0)
 		{}

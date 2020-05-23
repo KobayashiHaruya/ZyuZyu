@@ -213,7 +213,7 @@ namespace basecross {
 
 	void Score_UI::OnCreate() {
 		float score = static_cast<float>(m_Score / m_place % 10);
-		float Width = 64.0f / 640.0f;	//各数字の幅をテクスチャ座標に変換
+		float Width = 69.1f / 691.0f;	//各数字の幅をテクスチャ座標に変換
 
 		Col4 color = Col4(1.0f, 1.0f, 1.0f, 1.0f);
 
