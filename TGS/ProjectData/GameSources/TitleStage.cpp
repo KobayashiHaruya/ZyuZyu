@@ -66,7 +66,7 @@ namespace basecross {
 			);
 
 		m_explanationTitleImage = AddGameObject<UI_Static_Image>(
-			Vec2(256.0f, 64.0f),
+			Vec2(421.0f, 115.0f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(1.0f),
 			m_baseLayer + 4,
@@ -75,18 +75,18 @@ namespace basecross {
 			);
 
 		m_explanationReturnImage = AddGameObject<UI_Static_Image>(
-			Vec2(256.0f, 64.0f),
-			Vec3(-500.0f, 0.0f, 0.0f),
-			Vec3(1.0f),
+			Vec2(256.0f, 68.0f),
+			Vec3(500.0f, 0.0f, 0.0f),
+			Vec3(0.8f),
 			m_baseLayer + 4,
 			Col4(1.0f),
 			m_explanationReturnImageName
 			);
 
 		m_explanationStartImage = AddGameObject<UI_Static_Image>(
-			Vec2(256.0f, 64.0f),
-			Vec3(500.0f, 0.0f, 0.0f),
-			Vec3(1.0f),
+			Vec2(256.0f, 68.0f),
+			Vec3(-500.0f, 0.0f, 0.0f),
+			Vec3(0.8f),
 			m_baseLayer + 4,
 			Col4(1.0f),
 			m_explanationStartImageName
