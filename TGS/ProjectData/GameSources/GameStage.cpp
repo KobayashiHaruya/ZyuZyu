@@ -53,7 +53,7 @@ namespace basecross {
 
 	void GameStage::CreateTime() {
 
-		AddGameObject<Time01>(1, L"Share_Number.png", true,
+		AddGameObject<Time01>(1, L"0_9.png", true,
 			Vec2(225.0f, 225.0f),
 			Vec3(0.0f, 0.0f, 0.0f));
 
