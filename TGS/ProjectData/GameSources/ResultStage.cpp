@@ -20,15 +20,15 @@ namespace basecross {
 
 
 	void ResultStage::CreateUI() {
-		//スコア枠
-		//AddGameObject<Result_UI>(
-		//	Vec2(500.0f, 100.0f),
-		//	Vec3(0.0f, -200.0f, 0.0f),
-		//	Vec3(1.0f, 1.0f, 1.0f),
-		//	2,
-		//	Col4(1.0f, 1.0f, 1.0f, 1.0f),
-		//	m_Score_frame_Image
-		//	);
+		//ステージ
+		AddGameObject<Result_UI>(
+			Vec2(1920.0f, 1080.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(1.0f, 1.0f, 1.0f),
+			0,
+			Col4(1.0f, 1.0f, 1.0f, 1.0f),
+			m_Stage_Image
+			);
 
 		//スコア
 		for (int i = 0; i < 6; i++) {	//ループ数で桁変更
@@ -45,16 +45,23 @@ namespace basecross {
 				static_cast<int>(123456)	//表示するスコア
 				);
 			auto trans = Score->GetComponent<Transform>();
-			trans->SetPosition(300.0f * 0.5f - n * 64.0f - 64.0f, -500.0f * 0.5f, 0.0f);
+			trans->SetPosition(300.0f * 0.5f - n * 64.0f - 64.0f, 500.0f * 0.5f, 0.0f);
 		}
+
 
 		wstring mediaDir;
 		App::GetApp()->GetDataDirectory(mediaDir);
 		m_Cartain = AddGameObject<Result_Curtain>(mediaDir + L"Texters/ResultImagis/ResultAnimation/SpriteStadio/", Vec3(0.0f, 0.0f, 0.0f), Vec3(32.0f), m_layer);
 	}
 
-	void ResultStage::CreateIcon() {
-
+	void ResultStage::CreateIcon(CharacterType type, int level) {
+		m_ResultIcon = AddGameObject<Result_Icon_UI>(
+			Vec3(0.0f, 500.0f, 0.0f),
+			Vec3(0.3f, 0.3f, 0.3f),
+			0,
+			type,
+			level
+			);
 
 	}
 
@@ -63,6 +70,7 @@ namespace basecross {
 			CreateViewLight();
 			CreateUI();
 			AddGameObject<ResultScore>();
+			CreateIcon(m_type, m_level);
 		}
 		catch (...) {
 			throw;
@@ -70,16 +78,24 @@ namespace basecross {
 	}
 
 	void ResultStage::OnUpdate() {
-		CreateIcon();
-
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
-		
-		if (KeyState.m_bPressedKeyTbl['Z']) {
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
-		}
-		if (KeyState.m_bPressedKeyTbl['X']) {
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
 		}
+
+		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
+			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
+		}
+
+
+		auto Trans = m_ResultIcon->GetComponent<Transform>();
+		auto Pos = Trans->GetPosition();
+		if (Pos.y > -10.0f) {
+			Trans->SetPosition(0.0f, m_Move, 0.0f);
+			m_Move -= 10.0f;
+		}
+
 
 	}
 
