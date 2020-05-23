@@ -1253,13 +1253,15 @@ namespace basecross {
 		AddLevel();
 
 		PlayerRotMove();
-		if (m_setGun) {
-			SetWeaponFire();
-		}
-		else {
-			PlayerMove();
-			BulletFire();
-			GrenadeFire();
+		if (GetTypeStage<GameStage>()->m_start) {
+			if (m_setGun) {
+				SetWeaponFire();
+			}
+			else {
+				PlayerMove();
+				BulletFire();
+				GrenadeFire();
+			}
 		}
 
 		//auto ptrDraw = GetComponent<PNTStaticModelDraw>();
