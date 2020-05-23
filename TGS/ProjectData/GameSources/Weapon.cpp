@@ -416,7 +416,7 @@ namespace basecross {
 		//PtrDraw->SetTextureResource(L"trace.png");
 		//SetAlphaActive(true);
 
-		auto ptrColl = AddComponent<CollisionSphere>();
+		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 
 		AddTag(L"Grenade");

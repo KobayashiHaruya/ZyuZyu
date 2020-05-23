@@ -65,6 +65,7 @@ namespace basecross {
 		auto ptrDraw = AddComponent<PTSpriteDraw>(m_BackupVertices, indices);
 		ptrDraw->SetTextureResource(m_TextureKey);
 		ptrDraw->SetSamplerState(SamplerState::LinearWrap);
+		SetDrawActive(true);
 		GetStage()->SetSharedGameObject(L"Time01", GetThis<Time01>());
 	}
 
@@ -120,24 +121,14 @@ namespace basecross {
 
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		float TimeEat = elapsedTime;
-        m_TotalTime -= TimeEat;
+		m_TotalTime -= TimeEat;
 		m_Count = elapsedTime;
 
-        if (m_TotalTime < 0.0f) {
-        	m_TotalTime = 5.999999f;
-        }
-
-		if (m_TotalTime > 1.0f && m_TotalTime < 6.0f)
-        {
-        	//時間を更新する
-        	SetTime(m_TotalTime);
-        }
-		else
-		{
-			//時間を更新する
-           SetTime(m_TotalTime);
-		   SetDrawActive(false);
+		if (m_TotalTime < 1.0f) {
+			GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
 		}
+
+		SetTime(m_TotalTime);
 
 
 	}
@@ -210,6 +201,8 @@ namespace basecross {
 		}
 		if (m_TotalTime <= 0.1f)
 		{
+			GetTypeStage<GameStage>()->m_start = true;
+			GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
 			m_TotalTime = 100000;
 		}
 	}

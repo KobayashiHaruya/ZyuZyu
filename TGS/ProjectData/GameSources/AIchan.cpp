@@ -24,10 +24,12 @@ namespace basecross {
 	}
 
 	void AIchan::OnUpdate() {
-		m_stateMachine->Update();
+		if (GetTypeStage<GameStage>()->m_start) {
+			m_stateMachine->Update();
 
-		AddLevel();
-		if (m_aiParam.isDebug) UpdateDebugObject();
+			AddLevel();
+			if (m_aiParam.isDebug) UpdateDebugObject();
+		}
 	}
 
 	void AIchan::OnCollisionEnter(shared_ptr<GameObject>& Other) {

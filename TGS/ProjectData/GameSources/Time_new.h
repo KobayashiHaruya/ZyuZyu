@@ -16,7 +16,7 @@ namespace basecross {
 		Vec2 m_StartScale;
 		Vec3 m_StartPos;
 		wstring m_TextureKey;
-		float m_Time;
+		float m_Time = 5.9f;
 		//桁数
 		UINT m_NumberOfDigits;
 		//バックアップ頂点データ
@@ -42,7 +42,7 @@ namespace basecross {
 		}
 
 		//トータル時間
-		float m_TotalTime;
+		float m_TotalTime = 5.9f;
 		float m_Count = 0;
 
 		virtual void OnCreate() override;

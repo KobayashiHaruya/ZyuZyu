@@ -67,22 +67,26 @@ namespace basecross {
 
 		//PtrDraw->SetTextureResource(L"trace.png");
 
-		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetAfterCollision(AfterCollision::Auto);
+		//auto ptrColl = AddComponent<CollisionObb>();
+		//ptrColl->SetAfterCollision(AfterCollision::Auto);
+		//ptrColl->SetDrawActive(true);
 
 		AddTag(L"Object");
 	}
 
 	void Object::OnCreate() {
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetAfterCollision(AfterCollision::Auto);
+		ptrColl->SetDrawActive(true);
 		Draw();
 	}
 
 	void OilStage::OnCreate() {
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
-		ptrColl->SetMakedSize(Vec3(1.2f, 0.08f, 1.2f));
-		//ptrColl->SetDrawActive(true);
-		BmfDateRead(L"Stage_floor.bmf", Vec3(0.0f, -0.725f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
+		ptrColl->SetDrawActive(true);
+		ptrColl->SetMakedSize(Vec3(10.0f, 0.5f, 10.0f));
+		BmfDateRead(L"Kakiage_50(100).bmf", Vec3(0.0f, -95.75f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.4f, 0.4f, 0.4f));
 	}
 	
 	void OilStage::OnUpdate() {
@@ -94,14 +98,14 @@ namespace basecross {
 	void Oil::OnCreate() {
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
-		ptrColl->SetMakedSize(Vec3(20.0f, 1.7f, 20.0f));
-		//ptrColl->SetDrawActive(true);
-		BmfDateRead(L"Stage_oil.bmf", Vec3(0.0f, 0.35f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
+		ptrColl->SetDrawActive(true);
+		ptrColl->SetMakedSize(Vec3(25.0f, 1.0f, 25.0f));
+		BmfDateRead(L"Oil_50(100).bmf", Vec3(0.0f, -85.75f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.4f, 0.4f, 0.4f));
 		AddTag(L"Oil");
 	}
 
 	void Nabe::OnCreate() {
-		BmfDateRead(L"Stage_nabe.bmf", Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
+		BmfDateRead(L"Nabe_50(100).bmf", Vec3(0.0f, -95.75f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.4f, 0.4f, 0.4f));
 	}
 
 }

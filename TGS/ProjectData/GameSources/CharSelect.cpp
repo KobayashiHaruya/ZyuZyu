@@ -58,6 +58,7 @@ namespace basecross {
 		try {
 			CreateViewLight();
 			CreateUI();
+			PlayBGM(L"title_bgm.wav", 0.5f);
 		}
 		catch (...) {
 			throw;
@@ -67,13 +68,6 @@ namespace basecross {
 	void CharSelectStage::OnUpdate() {
 		ChangeCharacter(m_mask->GetIndex());
 		Select();
-
-		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-
-		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
-		}
 	}
 
 	void CharSelectStage::ChangeCharacter(int index) {
@@ -123,11 +117,13 @@ namespace basecross {
 		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || KeyState.m_bPressedKeyTbl[VK_SPACE] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) {
 			PlaySE(L"button_pause_se.wav", 0.5f);
 			//ここにゲームステージへ遷移する処理を書く
-			//SelectData();
+			SelectData();
+			StopBGM();
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::game);
 		}
 		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
+			StopBGM();
 		}
 	}
 

@@ -202,18 +202,18 @@ namespace basecross {
 			auto oil = AddGameObject<OilStage>(
 				Vec3(0.0f, -10.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(60.0f, 60.0f, 60.0f)
+				Vec3(1.0f, 1.0f, 1.0f)
 				);
 			oil->AddTag(L"Obstacle");
 			AddGameObject<Oil>(
-				Vec3(0.0f, -100.0f, 0.0f),
+				Vec3(0.0f, -20.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(60.0f, 60.0f, 60.0f)
+				Vec3(1.0f, 1.0f, 1.0f)
 				);
 			AddGameObject<Nabe>(
-				Vec3(0.0f, -80.0f, 0.0f),
+				Vec3(0.0f, -10.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(60.0f, 60.0f, 60.0f)
+				Vec3(1.0f, 1.0f, 1.0f)
 				);
 
 			m_player = AddGameObject<Player>(
@@ -227,59 +227,23 @@ namespace basecross {
 			characterGroup->IntoGroup(m_player);
 
 
-			//for (int i = 1; i < 8; i++) {
-
-			//	CharacterType p;
-			//	int Rand = rand() % 5;
-			//	switch (Rand) {
-			//	case 0:
-			//		p = CharacterType::CHICKEN;
-			//		break;
-			//	case 1:
-			//		p = CharacterType::DOUGHNUT;
-			//		break;
-			//	case 2:
-			//		p = CharacterType::POTATO;
-			//		break;
-			//	case 3:
-			//		p = CharacterType::SHRIMP;
-			//		break;
-			//	}
-
-			//	auto AIparam = AIParam_s{
-			//		vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
-			//		1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
-			//		3, 3,
-			//		0,
-			//		true
-			//	};
-
-			//	m_enemy = AddGameObject<AIchan>(
-			//		p,
-			//		false,
-			//		i, i,
-			//		AIparam
-			//		);
-
-			//	characterGroup->IntoGroup(m_enemy);
-			//}
 
 			for (int i = 1; i < 8; i++) {
 
 				CharacterType p;
-				int Rand = rand() % 5;
+				int Rand = rand() % 3;
 				switch (Rand) {
 				case 0:
-					p = CharacterType::CHICKEN;
+					p = CharacterType::SHRIMP;
 					break;
 				case 1:
-					p = CharacterType::DOUGHNUT;
+					p = CharacterType::CHICKEN;
 					break;
 				case 2:
 					p = CharacterType::POTATO;
 					break;
 				case 3:
-					p = CharacterType::SHRIMP;
+					p = CharacterType::DOUGHNUT;
 					break;
 				}
 
@@ -336,9 +300,8 @@ namespace basecross {
 			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
 
 
-			StopBGM();
 			//PlaySE(L"”š”­_FX01.wav", 0.5f);
-			//PlayBGM(L"title_bgm.wav", 0.5f);
+			PlayBGM(L"Main_BGM01.wav", 0.2f);
 		}
 		catch (...) {
 			throw;
@@ -352,6 +315,7 @@ namespace basecross {
 
 		if (KeyState.m_bPressedKeyTbl['Z']) {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
+			StopBGM();
 			GameFinishScore();
 		}
 
@@ -377,54 +341,64 @@ namespace basecross {
 			if (obj) {
 				auto character = dynamic_pointer_cast<Character>(obj);
 				statuses.push_back(character->GetMyData());
-				//m_killList.push_back(character->GetKillList());
 			}
 		}
 
 		vector<CharacterStatus_s> m_charState = statuses;
 
-		//for (int i = 0; i < 8; i++) {
-		//	wstring id = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/ID";
-		//	wstring type = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Type";
-		//	wstring kill = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Kill";
-		//	wstring death = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Death";
-		//	wstring score = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Score";
-		//	wstring player = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Player";
-		//	wstring list = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/List";
+		for (int i = 0; i < 8; i++) {
+			wstring id = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/ID";
+			wstring type = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Type";
+			wstring kill = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Kill";
+			wstring death = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Death";
+			wstring score = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Score";
+			wstring player = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Player";
+			wstring list = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/List";
 
-		//	wstring listSave = L"";
+			wstring listSave = L"";
 
-		//	for (auto it = m_killList.begin(); it != m_killList.end(); ++it) {
-		//		listSave += Util::IntToWStr(m_killList[i].killState) + L",";
-		//	}
+			if (m_charState[i].kill) {
+				auto& obj = vec[i].lock();
+				if (obj) {
+					auto character = dynamic_pointer_cast<Character>(obj);
+					m_killList = character->GetKillList();
+				}
+				for (int j = 0; j < m_charState[i].kill; j++)
+				{
+					listSave += Util::IntToWStr(m_killList[j].killState) + L",";
+				}
+			}
+			else {
+				listSave = L"None";
+			}
 
-		//	vector<wstring> Save = {
-		//		Util::IntToWStr(m_charState[i].unique),
-		//		Util::IntToWStr(m_charState[i].type),
-		//		Util::IntToWStr(m_charState[i].kill),
-		//		Util::IntToWStr(m_charState[i].death),
-		//		Util::IntToWStr(m_charState[i].score),
-		//		Util::IntToWStr(m_charState[i].isPlayer),
-		//		listSave
-		//	};
+			vector<wstring> Save = {
+				Util::IntToWStr(m_charState[i].unique),
+				Util::IntToWStr(m_charState[i].type),
+				Util::IntToWStr(m_charState[i].kill),
+				Util::IntToWStr(m_charState[i].death),
+				Util::IntToWStr(m_charState[i].score),
+				Util::IntToWStr(m_charState[i].isPlayer),
+				listSave
+			};
 
-		//	vector<IXMLDOMNodePtr> Data = {
-		//		key->GetSelectSingleNode(id.c_str()),
-		//		key->GetSelectSingleNode(type.c_str()),
-		//		key->GetSelectSingleNode(kill.c_str()),
-		//		key->GetSelectSingleNode(death.c_str()),
-		//		key->GetSelectSingleNode(score.c_str()),
-		//		key->GetSelectSingleNode(player.c_str()),
-		//		key->GetSelectSingleNode(list.c_str())
-		//	};
+			vector<IXMLDOMNodePtr> Data = {
+				key->GetSelectSingleNode(id.c_str()),
+				key->GetSelectSingleNode(type.c_str()),
+				key->GetSelectSingleNode(kill.c_str()),
+				key->GetSelectSingleNode(death.c_str()),
+				key->GetSelectSingleNode(score.c_str()),
+				key->GetSelectSingleNode(player.c_str()),
+				key->GetSelectSingleNode(list.c_str())
+			};
 
-		//	for (int j = 0; j < Data.size(); j++) {
-		//		key->SetText(Data[j], Save[j].c_str());
-		//	}
+			for (int j = 0; j < Data.size(); j++) {
+				key->SetText(Data[j], Save[j].c_str());
+			}
 
-		//	key->Save(ss + L"/XML/" + L"ResultScore.xml");
+			key->Save(ss + L"/XML/" + L"ResultScore.xml");
 
-		//}
+		}
 
 	}
 

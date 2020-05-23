@@ -72,6 +72,7 @@ namespace basecross {
 			CreateUI();
 			AddGameObject<ResultScore>();
 			CreateIcon(m_type, m_level);
+			PlayBGM(L"rezult_bgm.wav", 0.5f);
 		}
 		catch (...) {
 			throw;
@@ -82,10 +83,12 @@ namespace basecross {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) {
+			StopBGM();
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
 		}
 
 		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
+			StopBGM();
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
 		}
 
