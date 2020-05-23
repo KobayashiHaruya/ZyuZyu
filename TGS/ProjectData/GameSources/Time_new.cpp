@@ -320,19 +320,27 @@ namespace basecross {
 		auto ptrDraw = GetComponent<PTSpriteDraw>();
 		ptrDraw->UpdateVertices(newVertices);
 
+
+
 	}
+	void EndTime::UpdateTime()
+	{		
+//		m_TotalTime / 180;
+	}
+
 	void EndTime::OnUpdate2() {
 
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		m_TotalTime -= elapsedTime;
 
 		if (m_TotalTime < 0.0) {
-			m_TotalTime = 183.4;
+			m_TotalTime = 180.0;
 		}
 
 		if (m_TotalTime > 1.0 && m_TotalTime < 4.0)
 		{
 			SetDrawActive(true);
+
 			//時間を更新する
 			SetTime(m_TotalTime);
 		}
@@ -341,7 +349,6 @@ namespace basecross {
 		{
 			SetDrawActive(false);
 		}
-
 
 	}
 
@@ -394,7 +401,7 @@ namespace basecross {
 		m_TotalTime -= elapsedTime;
 
 		if (m_TotalTime < 0.0f) {
-			m_TotalTime = 183.43343f;
+			m_TotalTime = 180.0f;
 		}
 
 		// ドローコンポーネントを取得

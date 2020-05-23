@@ -357,8 +357,6 @@ namespace basecross {
 
 		WeaponUpdate();
 
-
-
 		ShowPause();
 	}
 

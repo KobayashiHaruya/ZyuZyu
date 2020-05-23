@@ -111,8 +111,10 @@ namespace basecross {
 		}
 
 		//ƒg[ƒ^ƒ‹ŠÔ
-		float m_TotalTime;
+		float m_TotalTime = 180;
 		float m_Count = 0;
+		unsigned int time001;
+		void UpdateTime();
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate()override;
