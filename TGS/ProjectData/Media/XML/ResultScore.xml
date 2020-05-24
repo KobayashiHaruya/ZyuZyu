@@ -3,24 +3,24 @@
 	<Char0>
 		<ID>0</ID>
 		<Type>1</Type>
-		<Kill>1</Kill>
-		<Death>1</Death>
-		<Score>100</Score>
+		<Kill>3</Kill>
+		<Death>3</Death>
+		<Score>300</Score>
 		<Player>1</Player>
-		<List>4,</List>
+		<List>7,7,7,</List>
 	</Char0>
 	<Char1>
-		<ID>0</ID>
+		<ID>1</ID>
 		<Type>0</Type>
-		<Kill>0</Kill>
-		<Death>376172812</Death>
-		<Score>-2147462591</Score>
+		<Kill>1</Kill>
+		<Death>2</Death>
+		<Score>100</Score>
 		<Player>0</Player>
-		<List>None</List>
+		<List>1,</List>
 	</Char1>
 	<Char2>
 		<ID>2</ID>
-		<Type>2</Type>
+		<Type>0</Type>
 		<Kill>0</Kill>
 		<Death>0</Death>
 		<Score>0</Score>
@@ -29,7 +29,7 @@
 	</Char2>
 	<Char3>
 		<ID>3</ID>
-		<Type>2</Type>
+		<Type>0</Type>
 		<Kill>0</Kill>
 		<Death>0</Death>
 		<Score>0</Score>
@@ -38,18 +38,18 @@
 	</Char3>
 	<Char4>
 		<ID>4</ID>
-		<Type>1</Type>
-		<Kill>0</Kill>
+		<Type>3</Type>
+		<Kill>2</Kill>
 		<Death>0</Death>
-		<Score>0</Score>
+		<Score>200</Score>
 		<Player>0</Player>
-		<List>None</List>
+		<List>7,7,</List>
 	</Char4>
 	<Char5>
 		<ID>5</ID>
-		<Type>0</Type>
+		<Type>1</Type>
 		<Kill>0</Kill>
-		<Death>1</Death>
+		<Death>0</Death>
 		<Score>0</Score>
 		<Player>0</Player>
 		<List>None</List>
@@ -58,7 +58,7 @@
 		<ID>6</ID>
 		<Type>0</Type>
 		<Kill>0</Kill>
-		<Death>0</Death>
+		<Death>3</Death>
 		<Score>0</Score>
 		<Player>0</Player>
 		<List>None</List>
@@ -67,7 +67,7 @@
 		<ID>7</ID>
 		<Type>1</Type>
 		<Kill>0</Kill>
-		<Death>0</Death>
+		<Death>1</Death>
 		<Score>0</Score>
 		<Player>0</Player>
 		<List>None</List>

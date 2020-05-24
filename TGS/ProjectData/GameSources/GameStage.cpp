@@ -134,67 +134,67 @@ namespace basecross {
 
 			auto obstacleGroup = CreateSharedObjectGroup(L"ObstacleGroup");
 			auto obstacle = AddGameObject<Object>(
-				Vec3(10.0f, -8.0f, 0.0f),
+				Vec3(10.0f, -7.5f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(2.0f, 5.0f, 5.0f)
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(10.0f, -8.0f, 5.0f),
+				Vec3(10.0f, -7.5f, 5.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(4.0f, 2.0f, 3.0f)
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(-5.0f, -8.0f, -10.0f),
+				Vec3(-5.0f, -7.5f, -10.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(2.0f, 1.0f, 2.5f)
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(20.0f, -8.0f, -15.0f),
+				Vec3(20.0f, -7.5f, -15.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(5.0f, 1.0f, 10.0f)
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(10.0f, -8.0f, 20.0f),
+				Vec3(10.0f, -7.5f, 20.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(2.0f, 5.0f, 10.0f)
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(20.0f, -8.0f, 0.0f),
+				Vec3(20.0f, -7.5f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(10.0f, 10.0f, 10.0f)
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(-20.0f, -8.0f, 13.0f),
+				Vec3(-20.0f, -7.5f, 13.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(4.0f, 3.0f, 8.0f)
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(24.0f, -8.0f, 10.0f),
+				Vec3(24.0f, -7.5f, 10.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(5.0f, 3.0f, 3.0f)
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(10.0f, -8.0f, -26.0f),
+				Vec3(10.0f, -7.5f, -26.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(14.0f, 2.0f, 6.0f)
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(-15.0f, -8.0f, -20.0f),
+				Vec3(-15.0f, -7.5f, -20.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(8.0f, 5.0f, 10.0f)
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(-30.0f, -8.0f, -11.0f),
+				Vec3(-30.0f, -7.5f, -11.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(6.0f, 2.0f, 8.0f)
 				);
@@ -231,7 +231,7 @@ namespace basecross {
 			for (int i = 1; i < 8; i++) {
 
 				CharacterType p;
-				int Rand = rand() % 3;
+				int Rand = rand() % 4;
 				switch (Rand) {
 				case 0:
 					p = CharacterType::SHRIMP;
