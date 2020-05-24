@@ -489,7 +489,7 @@ namespace basecross {
 	//------------------------------------------------------------------------------------------------
 
 	typedef struct ScoreTableLine {
-		shared_ptr<UI_Sprite_Text> name;
+		shared_ptr<UI_Static_Image> logo;
 		shared_ptr<UI_Number> kill;
 		shared_ptr<UI_Number> death;
 		shared_ptr<UI_Number> score;
@@ -618,10 +618,13 @@ namespace basecross {
 		wstring m_fontName;
 		vector<shared_ptr<UI_Sprite_Text>> m_headerTexts;
 		vector<ScoreTableLine_s> m_lines;
+		vector<shared_ptr<UI_Number>> m_ranks;
 
 		Col4 m_white;
 
 		bool m_isCreate;
+
+		void ChangeLogo(const shared_ptr<UI_Static_Image>& image, const CharacterType& type);
 
 		void CreateTableHeader();
 		void CreateLine(CharacterStatus_s& status, int index);
@@ -646,6 +649,7 @@ namespace basecross {
 			m_fontName(L"ÉÅÉCÉäÉI"),
 			m_headerTexts(vector<shared_ptr<UI_Sprite_Text>>(NULL)),
 			m_lines(vector<ScoreTableLine_s>(NULL)),
+			m_ranks(vector<shared_ptr<UI_Number>>(NULL)),
 			m_white(Col4(1.0f)),
 			m_isCreate(false)
 		{}

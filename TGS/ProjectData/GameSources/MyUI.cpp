@@ -415,6 +415,26 @@ namespace basecross {
 		UpdateTable();
 	}
 
+	void UI_Score_Table::ChangeLogo(const shared_ptr<UI_Static_Image>& image, const CharacterType& type) {
+		switch (type)
+		{
+		case CharacterType::CHICKEN:
+			image->SetTexture(L"ChickenLogo.png", Vec2(631.0f, 278.0f), Vec3(0.2f));
+			break;
+		case CharacterType::DOUGHNUT:
+			image->SetTexture(L"DoughnutLogo.png", Vec2(631.0f, 264.0f), Vec3(0.2f));
+			break;
+		case CharacterType::POTATO:
+			image->SetTexture(L"PotatoLogo.png", Vec2(621.0f, 285.0f), Vec3(0.2f));
+			break;
+		case CharacterType::SHRIMP:
+			image->SetTexture(L"ShrimpLogo.png", Vec2(631.0f, 298.0f), Vec3(0.2f));
+			break;
+		default:
+			break;
+		}
+	}
+
 	void UI_Score_Table::CreateTableHeader() {
 		float i = 363.0f;
 		float iPlus = 330.0f;
@@ -427,7 +447,19 @@ namespace basecross {
 			m_fontName,
 			m_headerFontSize,
 			m_white,
-			Rect2D<float>(i + (iPlus * 1), t, 1000.0f, b),
+			Rect2D<float>(i + (iPlus * 0 - 500.0f), t, 1000.0f, b),
+			StringSprite::TextAlignment::m_Center,
+			L"ランク",
+			m_layer,
+			false
+			);
+		m_headerTexts.push_back(text);
+
+		text = stage->AddGameObject<UI_Sprite_Text>(
+			m_fontName,
+			m_headerFontSize,
+			m_white,
+			Rect2D<float>(i + (iPlus * 1 + 250.0f), t, 1080.0f, b),
 			StringSprite::TextAlignment::m_Center,
 			L"キル",
 			m_layer,
@@ -439,7 +471,7 @@ namespace basecross {
 			m_fontName,
 			m_headerFontSize,
 			m_white,
-			Rect2D<float>(i + (iPlus * 2), t, 1320.0f, b),
+			Rect2D<float>(i + (iPlus * 2 + 125.0f), t, 1330.0f, b),
 			StringSprite::TextAlignment::m_Center,
 			L"デス",
 			m_layer,
@@ -481,7 +513,8 @@ namespace basecross {
 				m_separatorImageName
 				);
 			line.separator = separator;
-		} else {
+		}
+		else {
 			auto separator = stage->AddGameObject<UI_Static_Image>(
 				Vec2(1200.0f, 3.0f),
 				Vec3(0.0f, 220.0f - (index * space), 0.0f),
@@ -492,6 +525,18 @@ namespace basecross {
 				);
 			line.separator = separator;
 		}
+
+		auto rank = stage->AddGameObject<UI_Number>(
+			Vec2(-525.0f, 180.0f - (index * 80.0f)),
+			1,
+			Col4(1.0f),
+			Number::NumberAlign::CENTER,
+			0.0f,
+			Vec2(0.4f),
+			m_layer
+			);
+		rank->SetValue(index + 1);
+		m_ranks.push_back(rank);
 
 		auto playerBadge = stage->AddGameObject<UI_Static_Image>(
 			Vec2(64.0f, 32.0f),
@@ -504,20 +549,31 @@ namespace basecross {
 		playerBadge->Hidden(!status.isPlayer);
 		line.playerBadge = playerBadge;
 
+		shared_ptr<UI_Static_Image> logo = stage->AddGameObject<UI_Static_Image>(
+			Vec2(64.0f, 32.0f),
+			Vec3(-260.0f, 180.0f - (index * space), 0.0f),
+			Vec3(0.2f),
+			m_layer,
+			m_white,
+			L"dot.png"
+			);
+		ChangeLogo(logo, status.type);
+		line.logo = logo;
+/*
 		auto text = stage->AddGameObject<UI_Sprite_Text>(
 			m_fontName,
 			m_lineFontSize,
 			m_white,
-			Rect2D<float>(i, t + (index * space), 1556.0f, b + (index * space)),
+			Rect2D<float>(i + 180.0f, t + (index * space), 1556.0f, b + (index * space)),
 			StringSprite::TextAlignment::m_Left,
 			GetCharacterTypeToString(status.type),
 			m_layer,
 			false
 			);
-		line.name = text;
+		line.name = text;*/
 
 		auto number = stage->AddGameObject<UI_Number>(
-			Vec2(-110.0f, 180.0f - (index * 80.0f)),
+			Vec2(50.0f, 180.0f - (index * 80.0f)),
 			5,
 			Col4(0.0f, 1.0f, 0.0f, 1.0f),
 			Number::NumberAlign::CENTER,
@@ -529,7 +585,7 @@ namespace basecross {
 		line.kill = number;
 
 		number = stage->AddGameObject<UI_Number>(
-			Vec2(210.0f, 180.0f - (index * 80.0f)),
+			Vec2(280.0f, 180.0f - (index * 80.0f)),
 			5,
 			Col4(1.0f, 0.0f, 0.0f, 1.0f),
 			Number::NumberAlign::CENTER,
@@ -561,7 +617,8 @@ namespace basecross {
 		for (int i = 0; i < m_lines.size(); i++) {
 			auto& status = m_characterStatuses[i];
 			auto& line = m_lines[i];
-			line.name->UpdateText(GetCharacterTypeToString(status.type));
+			ChangeLogo(line.logo, status.type);
+			//line.name->UpdateText(GetCharacterTypeToString(status.type));
 			line.kill->SetValue(status.kill);
 			line.death->SetValue(status.death);
 			line.score->SetValue(status.score);
@@ -577,8 +634,9 @@ namespace basecross {
 
 	void UI_Score_Table::Hidden(bool e) {
 		for (auto& text : m_headerTexts) text->SetDrawActive(!e);
+		for (auto& rank : m_ranks) rank->Hidden(e);
 		for (auto& line : m_lines) {
-			line.name->SetDrawActive(!e);
+			line.logo->Hidden(e);
 			line.kill->Hidden(e);
 			line.death->Hidden(e);
 			line.score->Hidden(e);
