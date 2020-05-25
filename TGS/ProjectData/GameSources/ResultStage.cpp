@@ -106,8 +106,6 @@ namespace basecross {
 		}
 
 		if (m_Cartain->GetCount() >= 40) m_resultThree->Play();
-
-		if(m_resultTwo->IsAnimeEnd()) App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
 	}
 
 

@@ -138,7 +138,7 @@ namespace basecross {
 
 		key->SetText(key->GetSelectSingleNode(L"CharSelect/Character"), Util::FloatToWStr(index, 1, Util::Fixed).c_str());
 
-		//key->Save(ss + L"/XML/" + L"CharSelect.xml");
+		key->Save(ss + L"/XML/" + L"CharSelect.xml");
 	}
 
 

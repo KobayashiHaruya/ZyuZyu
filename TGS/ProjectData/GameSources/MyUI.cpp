@@ -1898,6 +1898,6 @@ namespace basecross {
 		}
 		ChangeAnimation(animName, time);
 		SetFps(30.0f);
-		SetLooped(true);
+		SetLooped(false);
 	}
 }
