@@ -72,6 +72,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AIchan.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CopyrightStage.h">
+      <Filter>Headers\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)AIchan.cpp">
       <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)CopyrightStage.cpp">
+      <Filter>Sources\Stage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

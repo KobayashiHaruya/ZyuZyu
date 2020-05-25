@@ -32,7 +32,7 @@
 				</ineheritRates>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -54,7 +54,7 @@
 				<refEffectName>Crack_L</refEffectName>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -76,7 +76,7 @@
 				<refEffectName>Crack_R</refEffectName>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -98,7 +98,7 @@
 				<refEffectName>Star1</refEffectName>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -120,7 +120,7 @@
 				<refEffectName>Star2</refEffectName>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -141,7 +141,7 @@
 				</ineheritRates>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -162,7 +162,7 @@
 				</ineheritRates>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -184,7 +184,7 @@
 				<refEffectName>Star3</refEffectName>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -205,7 +205,7 @@
 				</ineheritRates>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -226,7 +226,7 @@
 				</ineheritRates>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -247,7 +247,7 @@
 				</ineheritRates>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -268,7 +268,7 @@
 				</ineheritRates>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -289,7 +289,7 @@
 				</ineheritRates>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -310,7 +310,7 @@
 				</ineheritRates>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -331,7 +331,7 @@
 				</ineheritRates>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>
@@ -352,7 +352,7 @@
 				</ineheritRates>
 				<alphaBlendType>mix</alphaBlendType>
 				<show>1</show>
-				<locked>1</locked>
+				<locked>0</locked>
 				<expandAttribute>0</expandAttribute>
 				<expandChildren>1</expandChildren>
 			</value>

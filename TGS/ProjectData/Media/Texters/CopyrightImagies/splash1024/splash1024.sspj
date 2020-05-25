@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <SpriteStudioProject version="1.02.02">
-	<name>ResultBack_Animation2</name>
+	<name>splash1024</name>
 	<exportPath></exportPath>
 	<settings>
 		<animeBaseDirectory></animeBaseDirectory>
 		<cellMapBaseDirectory></cellMapBaseDirectory>
 		<imageBaseDirectory></imageBaseDirectory>
 		<effectBaseDirectory></effectBaseDirectory>
-		<exportBaseDirectory>Export</exportBaseDirectory>
+		<exportBaseDirectory>../export</exportBaseDirectory>
 		<queryExportBaseDirectory>1</queryExportBaseDirectory>
 		<ssaxImport>
-			<convertImageOffsetToCellAnime>1</convertImageOffsetToCellAnime>
+			<convertImageOffsetToCellAnime>0</convertImageOffsetToCellAnime>
 			<ignorePivotAsCellRegister>1</ignorePivotAsCellRegister>
 			<keepAngleAsIsIfNegativeScale>1</keepAngleAsIsIfNegativeScale>
 		</ssaxImport>
@@ -28,7 +28,7 @@
 			<reverseZRotSignForNegativeScale>1</reverseZRotSignForNegativeScale>
 			<numberOfPivotDecimals>0</numberOfPivotDecimals>
 		</ssaxExport>
-		<player>ss5_sdk</player>
+		<player>any</player>
 		<strictVer4>0</strictVer4>
 		<dontUseMatrixForTransform>0</dontUseMatrixForTransform>
 		<rootPartFunctionAsVer4>0</rootPartFunctionAsVer4>
@@ -40,6 +40,9 @@
 			<item>CELL</item>
 			<item>POSX</item>
 			<item>POSY</item>
+			<item>POSZ</item>
+			<item>ROTX</item>
+			<item>ROTY</item>
 			<item>ROTZ</item>
 			<item>SCLX</item>
 			<item>SCLY</item>
@@ -52,10 +55,18 @@
 			<item>VERT</item>
 			<item>PVTX</item>
 			<item>PVTY</item>
+			<item>ANCX</item>
+			<item>ANCY</item>
 			<item>SIZX</item>
 			<item>SIZY</item>
 			<item>IFLH</item>
 			<item>IFLV</item>
+			<item>UVTX</item>
+			<item>UVTY</item>
+			<item>UVRZ</item>
+			<item>UVSX</item>
+			<item>UVSY</item>
+			<item>BNDR</item>
 			<item>USER</item>
 			<item>IPRM</item>
 		</availableAttributes>
@@ -69,7 +80,7 @@
 			<item>HIDE</item>
 		</defaultSetAttributes>
 		<wrapMode>clamp</wrapMode>
-		<filterMode>linear</filterMode>
+		<filterMode>nearlest</filterMode>
 		<interpolationType>linear</interpolationType>
 		<renderingSettings>
 			<outputFolder></outputFolder>
@@ -100,22 +111,15 @@
 		<padding>1</padding>
 	</texPackSettings>
 	<cellmapNames>
-		<value>ResultBack_Animation2.ssce</value>
+		<value>splash1024.ssce</value>
 	</cellmapNames>
 	<animepackNames>
-		<value>ResultBack_Animation2.ssae</value>
+		<value>splash1024.ssae</value>
+		<value>splash1024_instance.ssae</value>
 	</animepackNames>
-	<effectFileNames>
-		<value>Crack_L.ssee</value>
-		<value>Crack_R.ssee</value>
-		<value>Star1.ssee</value>
-		<value>Star2.ssee</value>
-		<value>Star3.ssee</value>
-	</effectFileNames>
-	<lastAnimeFile>ResultBack_Animation2.ssae</lastAnimeFile>
-	<lastAnimeName>anime_Chicken</lastAnimeName>
-	<lastCellMapFile>ResultBack_Animation2.ssce</lastCellMapFile>
-	<lastEffectFile>Star2.ssee</lastEffectFile>
-	<lastCell>ScoreBoard</lastCell>
-	<lastPart>ScoreBoard</lastPart>
+	<lastAnimeFile>splash1024.ssae</lastAnimeFile>
+	<lastAnimeName>inout</lastAnimeName>
+	<lastCellMapFile>splash1024.ssce</lastCellMapFile>
+	<lastCell>b1</lastCell>
+	<lastPart>root</lastPart>
 </SpriteStudioProject>

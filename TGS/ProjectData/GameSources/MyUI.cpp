@@ -1900,4 +1900,49 @@ namespace basecross {
 		SetFps(30.0f);
 		SetLooped(false);
 	}
+
+
+	//------------------------------------------------------------------------------------------------
+	//コピーライトスプラッシュ : Class
+	//------------------------------------------------------------------------------------------------
+
+	void UI_Copyright_Splash::OnCreate() {
+		SetDrawLayer(m_layer);
+		Mat4x4 mat;
+		mat.affineTransformation(
+			Vec3(1.0f, 1.0f, 1.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f)
+		);
+		SetToAnimeMatrix(mat);
+
+		auto PtrTrans = GetComponent<Transform>();
+		PtrTrans->SetScale(m_scale);
+		PtrTrans->SetPosition(m_pos);
+		SS5ssae::OnCreate();
+		SetFps(60.0f);
+		SetLooped(false);
+	}
+
+	void UI_Copyright_Splash::OnUpdate() {
+		if (m_isPlay) {
+			float time = App::GetApp()->GetElapsedTime();
+			UpdateAnimeTime(time);
+			//Out();
+/*
+			if (m_frame >= 10.0f) {
+				m_count += time;
+			}
+			else {
+				m_frame += time;
+			}
+
+			if (m_count >= m_outTime) Out();*/
+		}
+	}
+
+	void UI_Copyright_Splash::Out() {
+		ChangeAnimation(L"out", 0.0f);
+	}
 }

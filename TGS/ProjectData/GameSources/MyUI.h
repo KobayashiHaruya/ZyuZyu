@@ -1487,4 +1487,49 @@ namespace basecross {
 			m_isPlay = true;
 		}
 	};
+
+
+	//------------------------------------------------------------------------------------------------
+	//コピーライトスプラッシュ : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_Copyright_Splash :public SS5ssae {
+		Vec3 m_pos;
+		Vec3 m_scale;
+		int m_layer;
+
+		float m_outTime;
+		int m_count;
+
+		float m_frame;
+
+		bool m_isPlay;
+
+	public:
+		UI_Copyright_Splash(const shared_ptr<Stage>& StagePtr,
+			const wstring& BaseDir,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int layer
+		) :
+			SS5ssae(StagePtr, BaseDir, L"splash1024_instance.ssae", L"in", true),
+			m_pos(pos),
+			m_scale(scale),
+			m_layer(layer),
+			m_outTime(3.0f),
+			m_count(NULL),
+			m_frame(NULL),
+			m_isPlay(false)
+		{}
+		~UI_Copyright_Splash() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+		void Out();
+
+		void Play() {
+			m_isPlay = true;
+		}
+	};
 }

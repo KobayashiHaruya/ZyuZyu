@@ -120,9 +120,9 @@ namespace basecross{
 
 		switch (m_gameStageKey)
 		{
-		//case GameStageKey::copyright:
-		//	ResetActiveStage<CopywriterStage>();
-		//	break;
+		case GameStageKey::copyright:
+			ResetActiveStage<CopyrightStage>();
+			break;
 		case GameStageKey::title:
 			ResetActiveStage<TitleStage>();
 			break;
