@@ -21,14 +21,14 @@ namespace basecross {
 
 	void ResultStage::CreateUI() {
 		//ステージ
-		AddGameObject<Result_UI>(
+		/*AddGameObject<Result_UI>(
 			Vec2(1920.0f, 1080.0f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(1.0f, 1.0f, 1.0f),
 			0,
 			Col4(1.0f, 1.0f, 1.0f, 1.0f),
 			m_Stage_Image
-			);
+			);*/
 
 		//スコア
 		m_Score = 123456;
@@ -52,6 +52,11 @@ namespace basecross {
 		wstring mediaDir;
 		App::GetApp()->GetDataDirectory(mediaDir);
 		m_Cartain = AddGameObject<Result_Curtain>(mediaDir + L"Texters/ResultImagis/ResultAnimation/SpriteStadio/", Vec3(0.0f, 0.0f, 0.0f), Vec3(32.0f), m_layer);
+		m_resultThree = AddGameObject<UI_Result_Three>(mediaDir + L"Texters/ResultImagis/ResultAnimation3/", Vec3(0.0f), Vec3(32.0f), m_layer - 6);
+		m_resultTwo = AddGameObject<UI_Result_Two>(mediaDir + L"Texters/ResultImagis/ResultAnimation2/", Vec3(0.0f), Vec3(32.0f), m_layer - 3);
+
+		m_resultTwo->ChangeCharacter(CharacterType::CHICKEN);
+		m_resultTwo->Play();
 	}
 
 	void ResultStage::CreateIcon(CharacterType type, int level) {
@@ -100,7 +105,9 @@ namespace basecross {
 			m_Move -= 10.0f;
 		}
 
+		if (m_Cartain->GetCount() >= 40) m_resultThree->Play();
 
+		if(m_resultTwo->IsAnimeEnd()) App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
 	}
 
 

@@ -1818,4 +1818,86 @@ namespace basecross {
 		Draw();
 		SetIndex(index);
 	}
+
+
+	//------------------------------------------------------------------------------------------------
+	//リザルトアニメーション3 : Class
+	//------------------------------------------------------------------------------------------------
+
+	void UI_Result_Three::OnCreate() {
+		SetDrawLayer(m_layer);
+		Mat4x4 mat;
+		mat.affineTransformation(
+			Vec3(1.0f, 1.0f, 1.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f)
+		);
+		SetToAnimeMatrix(mat);
+
+		auto PtrTrans = GetComponent<Transform>();
+		PtrTrans->SetScale(m_scale);
+		PtrTrans->SetPosition(m_pos);
+		SS5ssae::OnCreate();
+		SetLooped(false);
+	}
+
+	void UI_Result_Three::OnUpdate() {
+		if (m_isPlay) {
+			float time = App::GetApp()->GetElapsedTime();
+			UpdateAnimeTime(time);
+		}
+	}
+
+
+	//------------------------------------------------------------------------------------------------
+	//リザルトアニメーション2 : Class
+	//------------------------------------------------------------------------------------------------
+
+	void UI_Result_Two::OnCreate() {
+		SetDrawLayer(m_layer);
+		Mat4x4 mat;
+		mat.affineTransformation(
+			Vec3(1.0f, 1.0f, 1.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f)
+		);
+		SetToAnimeMatrix(mat);
+
+		auto PtrTrans = GetComponent<Transform>();
+		PtrTrans->SetScale(m_scale);
+		PtrTrans->SetPosition(m_pos);
+		SS5ssae::OnCreate();
+	}
+
+	void UI_Result_Two::OnUpdate() {
+		if (m_isPlay) {
+			float time = App::GetApp()->GetElapsedTime();
+			UpdateAnimeTime(time);
+		}
+	}
+
+	void UI_Result_Two::ChangeCharacter(const CharacterType type) {
+		wstring animName = L"";
+		float time = 0.0f;
+		switch (type)
+		{
+		case basecross::POTATO:
+			animName = L"anime_Potato";
+			break;
+		case basecross::SHRIMP:
+			animName = L"anime_Shrimp";
+			break;
+		case basecross::CHICKEN:
+			animName = L"anime_Chicken";
+			break;
+		case basecross::DOUGHNUT:
+			animName = L"anime_Doughnut";
+			break;
+		}
+		ChangeAnimation(animName, time);
+		SetFps(30.0f);
+		SetLooped(true);
+	}
 }

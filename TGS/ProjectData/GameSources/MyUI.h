@@ -1335,6 +1335,9 @@ namespace basecross {
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
+		int GetCount() {
+			return m_count;
+		}
 	};
 
 
@@ -1414,4 +1417,74 @@ namespace basecross {
 	};
 
 
+	//------------------------------------------------------------------------------------------------
+	//リザルトアニメーション3 : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_Result_Three :public SS5ssae {
+		Vec3 m_pos;
+		Vec3 m_scale;
+		int m_layer;
+
+		bool m_isPlay;
+
+	public:
+		UI_Result_Three(const shared_ptr<Stage>& StagePtr,
+			const wstring& BaseDir,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int layer
+		) :
+			SS5ssae(StagePtr, BaseDir, L"ResultBack_Animation1.ssae", L"anime_1", true),
+			m_pos(pos),
+			m_scale(scale),
+			m_layer(layer),
+			m_isPlay(false)
+		{}
+		~UI_Result_Three() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+		void Play() {
+			m_isPlay = true;
+		}
+	};
+
+
+	//------------------------------------------------------------------------------------------------
+	//リザルトアニメーション2 : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_Result_Two :public SS5ssae {
+		Vec3 m_pos;
+		Vec3 m_scale;
+		int m_layer;
+
+		bool m_isPlay;
+
+	public:
+		UI_Result_Two(const shared_ptr<Stage>& StagePtr,
+			const wstring& BaseDir,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int layer
+		) :
+			SS5ssae(StagePtr, BaseDir, L"ResultBack_Animation2.ssae", L"anime_Chicken", true),
+			m_pos(pos),
+			m_scale(scale),
+			m_layer(layer),
+			m_isPlay(false)
+		{}
+		~UI_Result_Two() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+		void ChangeCharacter(const CharacterType type);
+
+		void Play() {
+			m_isPlay = true;
+		}
+	};
 }
