@@ -1532,4 +1532,25 @@ namespace basecross {
 			m_isPlay = true;
 		}
 	};
+
+
+	//デバックテキスト
+	class DebugText : public GameObject{
+		wstring m_text;
+
+	public:
+		DebugText(const shared_ptr<Stage>& StagePtr
+		) :
+			GameObject(StagePtr),
+			m_text(L"")
+		{}
+		~DebugText() {}
+
+		virtual void OnCreate();
+		virtual void OnUpdate2();
+
+		void SetText(const wstring& text) {
+			m_text = text;
+		}
+	};
 }

@@ -24,6 +24,8 @@ namespace basecross {
 		bool m_LRBaseMode;
 		//上下スティック変更のモード
 		bool m_UDBaseMode;
+		//マウス感度
+		float m_mouseSensitivity;
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!

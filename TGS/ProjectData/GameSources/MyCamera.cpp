@@ -16,7 +16,8 @@ namespace basecross {
 		m_RotSpeed(2.0f),
 		m_ZoomSpeed(0.1f),
 		m_LRBaseMode(true),
-		m_UDBaseMode(true)
+		m_UDBaseMode(true),
+		m_mouseSensitivity(3.0f)
 	{}
 
 	MyCamera::~MyCamera() {}
@@ -185,6 +186,21 @@ namespace basecross {
 			}
 		}
 
+		//マウスで視点を移動する - ここから
+
+		auto& app = App::GetApp();
+		auto wh = app->GetGameWidth() / 2;
+		auto hh = app->GetGameHeight() / 2;
+
+		auto cursorPos = keyData.m_MouseClientPoint;
+		auto cursorPosN = (new Vec2(int(cursorPos.x - wh), int(cursorPos.y - hh)))->normalize() * m_mouseSensitivity * elapsedTime;
+		m_RadXZ += cursorPosN.x;
+		m_RadY += cursorPosN.y;
+
+		SetCursorPos(wh, hh);//カーソルを必ず中心にする
+
+		//マウスで視点を移動する - ここまで
+
 		//if (m_RadY > XM_PI * 4 / 9.0f) {
 		//	m_RadY = XM_PI * 4 / 9.0f;
 		//}
@@ -246,5 +262,4 @@ namespace basecross {
 		UpdateArmLengh();
 		Camera::OnUpdate();
 	}
-
 }

@@ -1945,4 +1945,16 @@ namespace basecross {
 	void UI_Copyright_Splash::Out() {
 		ChangeAnimation(L"out", 0.0f);
 	}
+
+
+	//デバックテキスト
+	void DebugText::OnCreate() {
+		auto sp = AddComponent<StringSprite>();
+		sp->SetStartPosition(Point2D<float>(300, 10));
+	}
+
+	void DebugText::OnUpdate2() {
+		auto sp = GetComponent<StringSprite>();
+		sp->SetText(m_text);
+	}
 }
