@@ -13,6 +13,7 @@
 #include "Character.h"
 #include "Player.h"
 #include "MyUI.h"
+#include "CopyrightStage.h"
 #include "TitleStage.h"
 #include "ResultStage.h"
 #include "CharSelect.h"

@@ -21,7 +21,8 @@ namespace basecross {
 		shared_ptr<SoundItem> m_bgm;
 
 		shared_ptr<Result_Icon_UI> m_ResultIcon;
-
+		shared_ptr<UI_Result_Three> m_resultThree;
+		shared_ptr<UI_Result_Two> m_resultTwo;
 
 	public:
 		ResultStage() :Stage(),
@@ -33,7 +34,9 @@ namespace basecross {
 			m_Move(500.0f),
 			m_Score(0),
 			m_type(POTATO),
-			m_level(0)
+			m_level(0),
+			m_resultThree(NULL),
+			m_resultTwo(NULL)
 		{}
 		virtual ~ResultStage() {}
 

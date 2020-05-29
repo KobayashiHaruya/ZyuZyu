@@ -489,7 +489,7 @@ namespace basecross {
 	//------------------------------------------------------------------------------------------------
 
 	typedef struct ScoreTableLine {
-		shared_ptr<UI_Sprite_Text> name;
+		shared_ptr<UI_Static_Image> logo;
 		shared_ptr<UI_Number> kill;
 		shared_ptr<UI_Number> death;
 		shared_ptr<UI_Number> score;
@@ -618,10 +618,13 @@ namespace basecross {
 		wstring m_fontName;
 		vector<shared_ptr<UI_Sprite_Text>> m_headerTexts;
 		vector<ScoreTableLine_s> m_lines;
+		vector<shared_ptr<UI_Number>> m_ranks;
 
 		Col4 m_white;
 
 		bool m_isCreate;
+
+		void ChangeLogo(const shared_ptr<UI_Static_Image>& image, const CharacterType& type);
 
 		void CreateTableHeader();
 		void CreateLine(CharacterStatus_s& status, int index);
@@ -646,6 +649,7 @@ namespace basecross {
 			m_fontName(L"メイリオ"),
 			m_headerTexts(vector<shared_ptr<UI_Sprite_Text>>(NULL)),
 			m_lines(vector<ScoreTableLine_s>(NULL)),
+			m_ranks(vector<shared_ptr<UI_Number>>(NULL)),
 			m_white(Col4(1.0f)),
 			m_isCreate(false)
 		{}
@@ -1331,6 +1335,9 @@ namespace basecross {
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
+		int GetCount() {
+			return m_count;
+		}
 	};
 
 
@@ -1410,4 +1417,140 @@ namespace basecross {
 	};
 
 
+	//------------------------------------------------------------------------------------------------
+	//リザルトアニメーション3 : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_Result_Three :public SS5ssae {
+		Vec3 m_pos;
+		Vec3 m_scale;
+		int m_layer;
+
+		bool m_isPlay;
+
+	public:
+		UI_Result_Three(const shared_ptr<Stage>& StagePtr,
+			const wstring& BaseDir,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int layer
+		) :
+			SS5ssae(StagePtr, BaseDir, L"ResultBack_Animation1.ssae", L"anime_1", true),
+			m_pos(pos),
+			m_scale(scale),
+			m_layer(layer),
+			m_isPlay(false)
+		{}
+		~UI_Result_Three() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+		void Play() {
+			m_isPlay = true;
+		}
+	};
+
+
+	//------------------------------------------------------------------------------------------------
+	//リザルトアニメーション2 : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_Result_Two :public SS5ssae {
+		Vec3 m_pos;
+		Vec3 m_scale;
+		int m_layer;
+
+		bool m_isPlay;
+
+	public:
+		UI_Result_Two(const shared_ptr<Stage>& StagePtr,
+			const wstring& BaseDir,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int layer
+		) :
+			SS5ssae(StagePtr, BaseDir, L"ResultBack_Animation2.ssae", L"anime_Chicken", true),
+			m_pos(pos),
+			m_scale(scale),
+			m_layer(layer),
+			m_isPlay(false)
+		{}
+		~UI_Result_Two() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+		void ChangeCharacter(const CharacterType type);
+
+		void Play() {
+			m_isPlay = true;
+		}
+	};
+
+
+	//------------------------------------------------------------------------------------------------
+	//コピーライトスプラッシュ : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_Copyright_Splash :public SS5ssae {
+		Vec3 m_pos;
+		Vec3 m_scale;
+		int m_layer;
+
+		float m_outTime;
+		int m_count;
+
+		float m_frame;
+
+		bool m_isPlay;
+
+	public:
+		UI_Copyright_Splash(const shared_ptr<Stage>& StagePtr,
+			const wstring& BaseDir,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int layer
+		) :
+			SS5ssae(StagePtr, BaseDir, L"splash1024_instance.ssae", L"in", true),
+			m_pos(pos),
+			m_scale(scale),
+			m_layer(layer),
+			m_outTime(3.0f),
+			m_count(NULL),
+			m_frame(NULL),
+			m_isPlay(false)
+		{}
+		~UI_Copyright_Splash() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+		void Out();
+
+		void Play() {
+			m_isPlay = true;
+		}
+	};
+
+
+	//デバックテキスト
+	class DebugText : public GameObject{
+		wstring m_text;
+
+	public:
+		DebugText(const shared_ptr<Stage>& StagePtr
+		) :
+			GameObject(StagePtr),
+			m_text(L"")
+		{}
+		~DebugText() {}
+
+		virtual void OnCreate();
+		virtual void OnUpdate2();
+
+		void SetText(const wstring& text) {
+			m_text = text;
+		}
+	};
 }
