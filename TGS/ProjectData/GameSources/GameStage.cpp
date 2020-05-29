@@ -336,43 +336,43 @@ namespace basecross {
 
 
 
-			//for (int i = 1; i < 8; i++) {
+			for (int i = 1; i < 8; i++) {
 
-			//	CharacterType p;
-			//	int Rand = rand() % 4;
-			//	switch (Rand) {
-			//	case 0:
-			//		p = CharacterType::SHRIMP;
-			//		break;
-			//	case 1:
-			//		p = CharacterType::CHICKEN;
-			//		break;
-			//	case 2:
-			//		p = CharacterType::POTATO;
-			//		break;
-			//	case 3:
-			//		p = CharacterType::DOUGHNUT;
-			//		break;
-			//	}
+				CharacterType p;
+				int Rand = rand() % 4;
+				switch (Rand) {
+				case 0:
+					p = CharacterType::SHRIMP;
+					break;
+				case 1:
+					p = CharacterType::CHICKEN;
+					break;
+				case 2:
+					p = CharacterType::POTATO;
+					break;
+				case 3:
+					p = CharacterType::DOUGHNUT;
+					break;
+				}
 
-			//	auto AIparam = AIParam_s{
-			//		vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
-			//		1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
-			//		3, 3,
-			//		0,
-			//		15.0f,
-			//		true
-			//	};
+				auto AIparam = AIParam_s{
+					vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
+					1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
+					3, 3,
+					0,
+					15.0f,
+					true
+				};
 
-			//	m_enemy = AddGameObject<AIchan>(
-			//		p,
-			//		false,
-			//		i, i,
-			//		AIparam
-			//		);
+				m_enemy = AddGameObject<AIchan>(
+					p,
+					false,
+					i, i,
+					AIparam
+					);
 
-			//	characterGroup->IntoGroup(m_enemy);
-			//}
+				characterGroup->IntoGroup(m_enemy);
+			}
 
 			for (int i = 0; i < 5; i++) {
 				AddGameObject<Weapon>();
@@ -469,9 +469,9 @@ namespace basecross {
 			if (m_charState[i].kill > 0) {
 				auto group = GetSharedObjectGroup(L"CharacterGroup");
 				auto vec = group->GetGroupVector();
-				auto obj = vec[i];
-				if (obj.lock()) {
-					auto character = dynamic_pointer_cast<Character>(obj.lock());
+				auto& obj = vec[i].lock();
+				if (obj) {
+					auto character = dynamic_pointer_cast<Character>(obj);
 					m_kills.push_back(character->GetKillList());
 				}
 				for (int j = 0; j < m_charState[i].kill; j++)

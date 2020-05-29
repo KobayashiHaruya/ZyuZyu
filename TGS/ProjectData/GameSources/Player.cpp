@@ -29,59 +29,59 @@ namespace basecross{
 
 
 	void ResultScore::ReadScore() {
-		wstring key;
-		App::GetApp()->GetDataDirectory(key);
+		//wstring key;
+		//App::GetApp()->GetDataDirectory(key);
 
-		unique_ptr<XmlDocReader> m_XmlDocReader;
-		m_XmlDocReader.reset(new XmlDocReader(key + L"XML/" + L"ResultScore.xml"));
+		//unique_ptr<XmlDocReader> m_XmlDocReader;
+		//m_XmlDocReader.reset(new XmlDocReader(key + L"XML/" + L"ResultScore.xml"));
 
-		wstring table = L"ScoreTable/Char";
-
-
-		for (int i = 0; i < 8; i++) {
-			CharacterStatus_s m_myData;
-
-			wstring id = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/ID";
-			wstring type = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Type";
-			wstring kill = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Kill";
-			wstring death = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Death";
-			wstring score = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Score";
-			wstring player = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Player";
-			wstring list = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/List";
-
-			switch (std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(id.c_str()))))
-			{
-			case 0:
-				m_myData.type = CharacterType::POTATO;
-				break;
-			case 1:
-				m_myData.type = CharacterType::SHRIMP;
-				break;
-			case 2:
-				m_myData.type = CharacterType::CHICKEN;
-				break;
-			case 3:
-				m_myData.type = CharacterType::DOUGHNUT;
-				break;
-			default:
-				m_myData.type = CharacterType::SHRIMP;
-				break;
-			}
-
-			m_myData.unique = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(type.c_str())));
-			m_myData.kill = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(kill.c_str())));
-			m_myData.death = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(death.c_str())));
-			m_myData.score = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(score.c_str())));
-			m_myData.isPlayer = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(player.c_str())));
-			list = XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(list.c_str()));
+		//wstring table = L"ScoreTable/Char";
 
 
-			vector<wstring> LineVec;
-			Util::WStrToTokenVector(LineVec, list, L'\\');
+		//for (int i = 0; i < 8; i++) {
+			//CharacterStatus_s m_myData;
 
-			int count = 0;
-			vector<int> m_list;
-			int m_kills;
+			//wstring id = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/ID";
+			//wstring type = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Type";
+			//wstring kill = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Kill";
+			//wstring death = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Death";
+			//wstring score = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Score";
+			//wstring player = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Player";
+			//wstring list = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/List";
+
+			//switch (std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(id.c_str()))))
+			//{
+			//case 0:
+			//	m_myData.type = CharacterType::POTATO;
+			//	break;
+			//case 1:
+			//	m_myData.type = CharacterType::SHRIMP;
+			//	break;
+			//case 2:
+			//	m_myData.type = CharacterType::CHICKEN;
+			//	break;
+			//case 3:
+			//	m_myData.type = CharacterType::DOUGHNUT;
+			//	break;
+			//default:
+			//	m_myData.type = CharacterType::SHRIMP;
+			//	break;
+			//}
+
+			//m_myData.unique = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(type.c_str())));
+			//m_myData.kill = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(kill.c_str())));
+			//m_myData.death = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(death.c_str())));
+			//m_myData.score = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(score.c_str())));
+			//m_myData.isPlayer = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(player.c_str())));
+			//list = XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(list.c_str()));
+
+
+			//vector<wstring> LineVec;
+			//Util::WStrToTokenVector(LineVec, list, L'\\');
+
+			//int count = 0;
+			//vector<int> m_list;
+			//int m_kills;
 			//for (size_t i = 0; i < LineVec.size(); i++) {
 			//	vector<wstring> Tokens;
 			//	Util::WStrToTokenVector(Tokens, LineVec[i], L'\\');
@@ -98,7 +98,7 @@ namespace basecross{
 				//m_KillList.push_back(m_list[0]);
 			//}
 
-		}
+		//}
 	}
 
 
