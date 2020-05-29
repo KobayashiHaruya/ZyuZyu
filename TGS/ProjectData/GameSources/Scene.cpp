@@ -72,13 +72,20 @@ namespace basecross{
 
 				if (exe == L".bmf") {
 					// —áŠO‚Ì“o˜^,ƒ{[ƒ“ƒ‚ƒfƒ‹‚¾‚©‚ç
-					if (!((fileName == L"Chara_R.bmf") || (fileName == L"CornGatling_Animation.bmf") || (fileName == L"TomatoCannon_Animation.bmf"))) {
-						auto modelMesh = MeshResource::CreateStaticModelMesh(dir, fileName);
+					if ((fileName == L"Chara_R.bmf") || 
+						(fileName == L"CornGatling_Animation.bmf") || 
+						(fileName == L"TomatoCannon_Animation.bmf") || 
+						(fileName == L"Shrimp_Animation_ver2.bmf") || 
+						(fileName == L"0525_Animation_Shrimp_test4.bmf") || 
+						(fileName == L"Chicken_Animation_test9.bmf") ||
+						(fileName == L"Animation_Potato_test5.bmf") ||
+						(fileName == L"Animation_Doughnut_test3.bmf")) {
+						auto modelMesh = MeshResource::CreateBoneModelMesh(dir, fileName);
 						App::GetApp()->RegisterResource(fileName, modelMesh);
 					}
 					else
 					{
-						auto modelMesh = MeshResource::CreateBoneModelMesh(dir, fileName);
+						auto modelMesh = MeshResource::CreateStaticModelMesh(dir, fileName);
 						App::GetApp()->RegisterResource(fileName, modelMesh);
 					}
 				}

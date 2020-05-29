@@ -23,13 +23,10 @@ namespace basecross{
 		str += test;
 		str += L"\n";
 
-		//str += Util::FloatToWStr(t);
-		//str += L"\n";
-
-
 		auto string = GetComponent<StringSprite>();
 		string->SetText(str);
 	}
+
 
 	void ResultScore::ReadScore() {
 		wstring key;
@@ -83,23 +80,23 @@ namespace basecross{
 			Util::WStrToTokenVector(LineVec, list, L'\\');
 
 			int count = 0;
-			vector<CharacterKillList_s> m_list;
-			CharacterKillList_s m_kills;
-			for (size_t i = 0; i < LineVec.size(); i++) {
-				vector<wstring> Tokens;
-				Util::WStrToTokenVector(Tokens, LineVec[i], L'\\');
+			vector<int> m_list;
+			int m_kills;
+			//for (size_t i = 0; i < LineVec.size(); i++) {
+			//	vector<wstring> Tokens;
+			//	Util::WStrToTokenVector(Tokens, LineVec[i], L'\\');
 				//for (size_t j = 0; j < Tokens.size(); j++)
 				//{
 				//	if (Tokens[j] != L",") {
 				//		m_kills.killState = std::stoi(Tokens[j]);
-						//m_list.push_back(m_kills);
-						//count++;
+				//		m_list.push_back(m_kills);
+				//		count++;
 				//	}
 				//}
 
-				m_charState.push_back(m_myData);
+				//m_charState.push_back(m_myData);
 				//m_KillList.push_back(m_list[0]);
-			}
+			//}
 
 		}
 	}

@@ -20,23 +20,6 @@ namespace basecross {
 	};
 
 
-	enum BulletS {
-		None,
-		Assault,
-		Hand,
-		Shot,
-		SMG,
-		Rocket,
-		Sniper,
-		Laser,
-		Wind,
-		Gatling,
-		Cannon,
-		GExplosion,
-		CExplosion,
-		SExplosion
-	};
-
 	class Bullet :public GameObject, public ObstacleEvent<const CharacterStatus_s> {
 		Vec3 m_pos;
 		Quat m_rot;
@@ -48,6 +31,8 @@ namespace basecross {
 		float m_gravityScale;
 		float m_time;
 		int ID;
+
+		bool m_hit = true;
 
 		int m_fromUnique;
 
@@ -101,7 +86,6 @@ namespace basecross {
 		int m_type;
 		wstring text;
 		wstring m_modelName;
-
 	public:
 
 
@@ -227,9 +211,29 @@ namespace basecross {
 		Quat m_qua;
 		Vec3 m_scale = Vec3(1.0f);
 
-		float m_time = 10.0f;
+		float m_time = 15.0f;
 
 		wstring m_modelName = L"CornGatling.bmf";
+
+		shared_ptr<MeshResource> m_SquareMeshResource;
+		size_t m_Number;
+
+		Quat Billboard(const Vec3& Line) {
+			Vec3 Temp = Line;
+			Mat4x4 RotMatrix;
+			Vec3 DefUp(0, 1.0f, 0);
+			Vec2 TempVec2(Temp.x, Temp.z);
+			if (TempVec2.length() < 0.1f) {
+				DefUp = Vec3(0, 0, 1.0f);
+			}
+			Temp.normalize();
+			RotMatrix = XMMatrixLookAtLH(Vec3(0, 0, 0), Temp, DefUp);
+			RotMatrix.inverse();
+			Quat Qt;
+			Qt = RotMatrix.quatInMatrix();
+			Qt.normalize();
+			return Qt;
+		}
 
 	public:
 		GatlingAmmo(const shared_ptr<Stage>& StagePtr,

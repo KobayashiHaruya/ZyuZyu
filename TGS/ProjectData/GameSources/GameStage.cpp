@@ -87,6 +87,113 @@ namespace basecross {
 
 	}
 
+	void GameStage::WeaponState() {
+
+
+		for (int i = 0; i < 9; i++) {
+			WeaponState_s state;
+			state.weapon = (BulletS)i;
+
+			switch (state.weapon)
+			{
+			case BulletS::None:
+				state.barrage = false;
+				state.reAmmo = 0;
+				state.ammo = 0;
+				state.maxAmmo = 0;
+				state.intTime = 0.0f;
+				state.maxIntTime = 0.0f;
+				state.reTime = 0.0f;
+				state.maxreTime = 0.0f;
+				break;
+			case BulletS::Assault:
+				state.barrage = true;
+				state.reAmmo = 30;
+				state.ammo = 30;
+				state.maxAmmo = 0;
+				state.intTime = 0.0f;
+				state.maxIntTime = 0.15f;
+				state.reTime = 0.0f;
+				state.maxreTime = 0.65f;
+				break;
+			case BulletS::Hand:
+				state.barrage = false;
+				state.reAmmo = 15;
+				state.ammo = 15;
+				state.maxAmmo = 50;
+				state.intTime = 0.0f;
+				state.maxIntTime = 0.2f;
+				state.reTime = 0.0f;
+				state.maxreTime = 2.0f;
+				break;
+			case BulletS::Shot:
+				state.barrage = false;
+				state.reAmmo = 2;
+				state.ammo = 2;
+				state.maxAmmo = 14;
+				state.intTime = 0.0f;
+				state.maxIntTime = 0.4f;
+				state.reTime = 0.0f;
+				state.maxreTime = 1.6f;
+				break;
+			case BulletS::SMG:
+				state.barrage = true;
+				state.reAmmo = 20;
+				state.ammo = 20;
+				state.maxAmmo = 100;
+				state.intTime = 0.0f;
+				state.maxIntTime = 0.08f;
+				state.reTime = 0.0f;
+				state.maxreTime = 0.4f;
+				break;
+			case BulletS::Rocket:
+				state.barrage = false;
+				state.reAmmo = 1;
+				state.ammo = 1;
+				state.maxAmmo = 8;
+				state.intTime = 0.0f;
+				state.maxIntTime = 0.0f;
+				state.reTime = 0.0f;
+				state.maxreTime = 2.5f;
+				break;
+			case BulletS::Sniper:
+				state.barrage = false;
+				state.reAmmo = 6;
+				state.ammo = 6;
+				state.maxAmmo = 18;
+				state.intTime = 0.0f;
+				state.maxIntTime = 0.8f;
+				state.reTime = 0.0f;
+				state.maxreTime = 1.5f;
+				break;
+			case BulletS::Laser:
+				state.barrage = false;
+				state.reAmmo = 50;
+				state.ammo = 50;
+				state.maxAmmo = 0;
+				state.intTime = 0.0f;
+				state.maxIntTime = 0.0f;
+				state.reTime = 0.0f;
+				state.maxreTime = 1.2f;
+				break;
+			case BulletS::Wind:
+				state.barrage = true;
+				state.reAmmo = 1500;
+				state.ammo = 1500;
+				state.maxAmmo = 0;
+				state.maxIntTime = 1.0f / 60.0f;
+				state.maxreTime = 1.0f;
+				break;
+			}
+			state.intTime = 0.0f;
+			state.reTime = 0.0f;
+
+			m_weaponState.push_back(state);
+
+		}
+
+	}
+
 	CharacterType GameStage::SelectedChar()
 	{
 		wstring dataDir;
@@ -127,6 +234,7 @@ namespace basecross {
 		try {
 			//SetPhysicsActive(true);
 			//ビューとライトの作成
+			WeaponState();
 			CreateViewLight();
 			CreateUI();
 			CreateTime();
@@ -228,43 +336,43 @@ namespace basecross {
 
 
 
-			for (int i = 1; i < 8; i++) {
+			//for (int i = 1; i < 8; i++) {
 
-				CharacterType p;
-				int Rand = rand() % 4;
-				switch (Rand) {
-				case 0:
-					p = CharacterType::SHRIMP;
-					break;
-				case 1:
-					p = CharacterType::CHICKEN;
-					break;
-				case 2:
-					p = CharacterType::POTATO;
-					break;
-				case 3:
-					p = CharacterType::DOUGHNUT;
-					break;
-				}
+			//	CharacterType p;
+			//	int Rand = rand() % 4;
+			//	switch (Rand) {
+			//	case 0:
+			//		p = CharacterType::SHRIMP;
+			//		break;
+			//	case 1:
+			//		p = CharacterType::CHICKEN;
+			//		break;
+			//	case 2:
+			//		p = CharacterType::POTATO;
+			//		break;
+			//	case 3:
+			//		p = CharacterType::DOUGHNUT;
+			//		break;
+			//	}
 
-				auto AIparam = AIParam_s{
-					vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
-					1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
-					3, 3,
-					0,
-					15.0f,
-					true
-				};
+			//	auto AIparam = AIParam_s{
+			//		vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
+			//		1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
+			//		3, 3,
+			//		0,
+			//		15.0f,
+			//		true
+			//	};
 
-				m_enemy = AddGameObject<AIchan>(
-					p,
-					false,
-					i, i,
-					AIparam
-					);
+			//	m_enemy = AddGameObject<AIchan>(
+			//		p,
+			//		false,
+			//		i, i,
+			//		AIparam
+			//		);
 
-				characterGroup->IntoGroup(m_enemy);
-			}
+			//	characterGroup->IntoGroup(m_enemy);
+			//}
 
 			for (int i = 0; i < 5; i++) {
 				AddGameObject<Weapon>();
@@ -330,9 +438,8 @@ namespace basecross {
 
 		auto key = new XmlDoc(ss + L"/XML/" + L"ResultScore.xml");
 
-
 		vector<CharacterStatus_s> statuses;
-		vector<CharacterKillList_s> m_killList;
+		vector<vector<int>> kills;
 
 		auto group = GetSharedObjectGroup(L"CharacterGroup");
 		auto vec = group->GetGroupVector();
@@ -341,10 +448,12 @@ namespace basecross {
 			if (obj) {
 				auto character = dynamic_pointer_cast<Character>(obj);
 				statuses.push_back(character->GetMyData());
+				//kills.push_back(character->GetKillList());
 			}
 		}
 
-		vector<CharacterStatus_s> m_charState = statuses;
+		m_charState = statuses;
+		//m_kills = kills;
 
 		for (int i = 0; i < 8; i++) {
 			wstring id = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/ID";
@@ -357,15 +466,19 @@ namespace basecross {
 
 			wstring listSave = L"";
 
-			if (m_charState[i].kill) {
-				auto& obj = vec[i].lock();
-				if (obj) {
-					auto character = dynamic_pointer_cast<Character>(obj);
-					m_killList = character->GetKillList();
+			if (m_charState[i].kill > 0) {
+				auto group = GetSharedObjectGroup(L"CharacterGroup");
+				auto vec = group->GetGroupVector();
+				auto obj = vec[i];
+				if (obj.lock()) {
+					auto character = dynamic_pointer_cast<Character>(obj.lock());
+					m_kills.push_back(character->GetKillList());
 				}
 				for (int j = 0; j < m_charState[i].kill; j++)
 				{
-					listSave += Util::IntToWStr(m_killList[j].killState) + L",";
+					int a = m_kills[i][j];
+					listSave += Util::IntToWStr(a);
+					listSave += L"|";
 				}
 			}
 			else {

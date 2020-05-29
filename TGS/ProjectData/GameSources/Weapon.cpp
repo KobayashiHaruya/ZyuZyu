@@ -13,53 +13,58 @@ namespace basecross {
 		switch (state)
 		{
 		case BulletS::None:
+			speed = 65.0f;
+			grav = 4.0f;
+			time = 5.0f;
+			scale = Vec3(1.0f);
+			AddTag(L"Bullet");
 			break;
 		case BulletS::Assault:
-			speed = 50.0f;
-			grav = 5.0f;
-			time = 1.0f;
+			speed = 65.0f;
+			grav = 4.0f;
+			time = 5.0f;
 			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Hand:
-			speed = 50.0f;
-			grav = 5.0f;
-			time = 1.0f;
+			speed = 75.0f;
+			grav = 4.0f;
+			time = 5.0f;
 			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Shot:
-			speed = 50.0f;
+			speed = 60.0f;
 			grav = 5.0f;
-			time = 1.0f;
+			time = 5.0f;
 			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::SMG:
-			speed = 50.0f;
+			speed = 75.0f;
 			grav = 1.0f;
-			time = 3.0f;
+			time = 5.0f;
 			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Rocket:
-			speed = 50.0f;
-			grav = 5.0f;
-			time = 1.0f;
+			speed = 55.0f;
+			grav = 0.5f;
+			time = 5.0f;
 			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Sniper:
-			speed = 50.0f;
-			grav = 5.0f;
-			time = 1.0f;
+			speed = 140.0f;
+			grav = 2.0f;
+			time = 2.0f;
 			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Laser:
-			speed = 50.0f;
-			grav = 5.0f;
-			time = 1.0f;
+			speed = 120.0f;
+			grav = 0.0f;
+			time = 2.0f;
 			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
@@ -71,7 +76,7 @@ namespace basecross {
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Gatling:
-			speed = 80.0f;
+			speed = 100.0f;
 			grav = 5.0f;
 			time = 1.0f;
 			scale = Vec3(1.0f);
@@ -147,6 +152,9 @@ namespace basecross {
 		ptrColl->AddExcludeCollisionTag(L"Bullet");
 		ptrColl->AddExcludeCollisionTag(L"SetGun");
 		ptrColl->AddExcludeCollisionTag(L"Weapon");
+		ptrColl->AddExcludeCollisionTag(L"GatlingAmmo");
+		ptrColl->AddExcludeCollisionTag(L"SetGun");
+		ptrColl->AddExcludeCollisionTag(L"Explosion");
 
 		auto gravity = AddComponent<Gravity>();
 		gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
@@ -180,8 +188,17 @@ namespace basecross {
 		if (FindTag(L"Explosion") || m_type == BulletS::Laser) {
 
 		}
+		else if ((m_type == BulletS::Rocket && m_hit) && (Other->GetID() != ID || Other->FindTag(L"Object"))) {
+			auto ptr = GetComponent<Transform>();
+			auto gravity = GetComponent<Gravity>();
+
+			ptr->SetScale(Vec3(5.0f));
+			m_time = 0.8f;
+			gravity->SetGravityVerocityZero();
+			m_hit = false;
+		}
 		else {
-			if (Other->GetID() != ID && !Other->FindTag(L"Bullet") || Other->FindTag(L"Object")) {
+			if ((Other->GetID() != ID && !Other->FindTag(L"Bullet") || Other->FindTag(L"Object")) && !(m_type == BulletS::Rocket)) {
 				GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
 			}
 		}
@@ -350,10 +367,13 @@ namespace basecross {
 		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
 		PtrDraw->SetMeshResource(L"DEFAULT_CAPSULE");
 
-		auto ptrColl = AddComponent<CollisionCapsule>();
+		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 		ptrColl->AddExcludeCollisionTag(L"SetGun");
 		ptrColl->AddExcludeCollisionTag(L"Weapon");
+		ptrColl->AddExcludeCollisionTag(L"Smoke");
+		ptrColl->AddExcludeCollisionTag(L"Torimoti");
+		ptrColl->AddExcludeCollisionTag(L"GatlingAmmo");
 
 		auto gravity = AddComponent<Gravity>();
 		gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
@@ -418,7 +438,14 @@ namespace basecross {
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
-
+		ptrColl->AddExcludeCollisionTag(L"Grenade");
+		ptrColl->AddExcludeCollisionTag(L"Smoke");
+		ptrColl->AddExcludeCollisionTag(L"Torimoti");
+		ptrColl->AddExcludeCollisionTag(L"Weapon");
+		ptrColl->AddExcludeCollisionTag(L"SetGun");
+		ptrColl->AddExcludeCollisionTag(L"Object");
+		ptrColl->AddExcludeCollisionTag(L"GatlingAmmo");
+		
 		AddTag(L"Grenade");
 		AddTag(L"Smoke");
 
@@ -478,7 +505,13 @@ namespace basecross {
 		ptrColl->SetAfterCollision(AfterCollision::None);
 		ptrColl->SetDrawActive(true);
 
-		//gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
+		ptrColl->AddExcludeCollisionTag(L"Grenade");
+		ptrColl->AddExcludeCollisionTag(L"Smoke");
+		ptrColl->AddExcludeCollisionTag(L"Torimoti");
+		ptrColl->AddExcludeCollisionTag(L"Weapon");
+		ptrColl->AddExcludeCollisionTag(L"SetGun");
+		ptrColl->AddExcludeCollisionTag(L"Object");
+		ptrColl->AddExcludeCollisionTag(L"GatlingAmmo");
 
 		AddTag(L"Grenade");
 		AddTag(L"Torimoti");
@@ -497,16 +530,34 @@ namespace basecross {
 
 		ptr->SetPosition(m_pos);
 		ptr->SetRotation(Vec3(0.0f));
-		ptr->SetScale(Vec3(0.1f, 1.0f, 1.0f));
+		ptr->SetScale(Vec3(1.0f, 1.0f, 1.0f));
 
-		//影をつける
-		auto ShadowPtr = AddComponent<Shadowmap>();
-		ShadowPtr->SetMeshResource(L"DEFAULT_CUBE");
+		vector<VertexPositionNormalTexture> vertices;
+		vector<uint16_t> indices;
+		MeshUtill::CreateSquare(1.0f, vertices, indices);
+		//左上頂点
+		vertices[0].textureCoordinate = Vec2(0, 0);
+		//右上頂点
+		vertices[1].textureCoordinate = Vec2(1, 0);
+		//左下頂点
+		vertices[2].textureCoordinate = Vec2(0, 1.0f);
+		//右下頂点
+		vertices[3].textureCoordinate = Vec2(1, 1.0f);
 
-		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
-		PtrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		vector<VertexPositionColorTexture> new_vertices;
+		for (auto& v : vertices) {
+			VertexPositionColorTexture nv;
+			nv.position = v.position;
+			nv.color = Col4(1.0f, 1.0f, 1.0f, 1.0f);
+			nv.textureCoordinate = v.textureCoordinate;
+			new_vertices.push_back(nv);
+		}
 
-		PtrDraw->SetTextureResource(L"Corn.png");
+		m_SquareMeshResource = MeshResource::CreateMeshResource<VertexPositionColorTexture>(new_vertices, indices, true);
+
+		auto draw = AddComponent<PCTStaticDraw>();
+		draw->SetMeshResource(m_SquareMeshResource);
+		draw->SetTextureResource(L"Corn.png");
 		SetAlphaActive(true);
 
 		auto ptrColl = AddComponent<CollisionObb>();
@@ -514,6 +565,9 @@ namespace basecross {
 		ptrColl->AddExcludeCollisionTag(L"Weapon");
 		ptrColl->AddExcludeCollisionTag(L"Grenade");
 		ptrColl->AddExcludeCollisionTag(L"Bullet");
+		ptrColl->AddExcludeCollisionTag(L"GatlingAmmo");
+		ptrColl->AddExcludeCollisionTag(L"SetGun");
+		ptrColl->AddExcludeCollisionTag(L"Explosion");
 
 		auto gravity = AddComponent<Gravity>();
 
@@ -523,7 +577,15 @@ namespace basecross {
 
 	}
 
-	void GatlingAmmo::OnUpdate() {
+	void GatlingAmmo::OnUpdate() {		
+		auto PtrTransform = GetComponent<Transform>();
+		auto PtrCamera = GetStage()->GetView()->GetTargetCamera();
+
+		Quat Qt;
+		Qt = Billboard(PtrCamera->GetAt() - PtrCamera->GetEye());
+
+		PtrTransform->SetQuaternion(Qt);
+
 		if (0.0f >= m_time) {
 			GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
 		}
@@ -581,6 +643,9 @@ namespace basecross {
 		ptrColl->AddExcludeCollisionTag(L"Weapon");
 		ptrColl->AddExcludeCollisionTag(L"Grenade");
 		ptrColl->AddExcludeCollisionTag(L"Bullet");
+		ptrColl->AddExcludeCollisionTag(L"GatlingAmmo");
+		ptrColl->AddExcludeCollisionTag(L"SetGun");
+		ptrColl->AddExcludeCollisionTag(L"Explosion");
 	}
 
 	void CannonAmmoBox::OnCreate() {
@@ -650,8 +715,11 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 		ptrColl->AddExcludeCollisionTag(L"Weapon");
-		ptrColl->AddExcludeCollisionTag(L"Bullet");
 		ptrColl->AddExcludeCollisionTag(L"Grenade");
+		ptrColl->AddExcludeCollisionTag(L"Bullet");
+		ptrColl->AddExcludeCollisionTag(L"GatlingAmmo");
+		ptrColl->AddExcludeCollisionTag(L"SetGun");
+		ptrColl->AddExcludeCollisionTag(L"Explosion");
 
 		ptrColl->SetMakedSize(Vec3(0.5f, 1.0f, 0.5f));
 
@@ -716,8 +784,11 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 		ptrColl->AddExcludeCollisionTag(L"Weapon");
-		ptrColl->AddExcludeCollisionTag(L"Bullet");
 		ptrColl->AddExcludeCollisionTag(L"Grenade");
+		ptrColl->AddExcludeCollisionTag(L"Bullet");
+		ptrColl->AddExcludeCollisionTag(L"GatlingAmmo");
+		ptrColl->AddExcludeCollisionTag(L"SetGun");
+		ptrColl->AddExcludeCollisionTag(L"Explosion");
 
 		ptrColl->SetMakedSize(Vec3(0.5f, 1.0f, 0.5f));
 

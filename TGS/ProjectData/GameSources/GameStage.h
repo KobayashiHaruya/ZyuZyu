@@ -10,22 +10,25 @@
 #include "Character.h"
 #include "AIchan.h"
 
-namespace basecross {
+namespace basecross {	
 
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
 		shared_ptr<UI_The_World> m_pause;
-		vector<Character> m_char;
 		shared_ptr<Player> m_player;
 		shared_ptr<AIchan> m_enemy;
 		shared_ptr<PinP> m_pinp;
 		shared_ptr<SoundItem> m_bgm;
 		
+		vector<CharacterStatus_s> m_charState;
+		vector<vector<int>> m_kills;
+
 		//ビューの作成
 		void CreateViewLight();
 		void CreateUI();
+		void WeaponState();
 
 		void ShowPause();
 
@@ -44,6 +47,7 @@ namespace basecross {
 		void CreateAIchan();
 
 	public:
+		vector<WeaponState_s> m_weaponState;
 		bool m_start = false;
 		int bomb;
 

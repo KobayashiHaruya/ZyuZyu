@@ -20,19 +20,25 @@ namespace basecross {
 		ptrColl->SetMakedDiameter(2.5f);
 		//ptrColl->AddExcludeCollisionTag(L"Weapon");
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
-			
+
 		//影をつける
 		auto ptrShadow = AddComponent<Shadowmap>();
 		ptrShadow->SetMeshResource(model);
 		ptrShadow->SetMeshToTransformMatrix(m_spanMat);
 
-		auto ptrDraw = AddComponent <PNTStaticModelDraw>();
-		ptrDraw->SetMeshResource(model);
-		ptrDraw->SetMeshToTransformMatrix(m_spanMat);
-		//ptrDraw->AddAnimation(L"CharacterAnimation", 0, 210, true, 30.0f);
-		//ptrDraw->ChangeCurrentAnimation(L"CharacterAnimation");
-		ptrDraw->SetOwnShadowActive(true);
-		ptrDraw->SetDrawActive(true);
+		auto PtrDraw = AddComponent<BcPNTBoneModelDraw>();
+		PtrDraw->SetFogEnabled(false);
+		//描画するメッシュを設定
+		PtrDraw->SetMeshResource(model);
+		PtrDraw->SetMeshToTransformMatrix(m_spanMat);
+
+		PtrDraw->AddAnimation(L"Stop", 0, 30, true, 30.0f);
+		PtrDraw->AddAnimation(L"Walk", 35, 30, true, 30.0f);
+		PtrDraw->ChangeCurrentAnimation(L"Stop");
+
+		PtrDraw->SetOwnShadowActive(true);
+		PtrDraw->SetDrawActive(true);
+
 
 		//各パフォーマンスを得る
 		GetStage()->SetCollisionPerformanceActive(true);
@@ -55,41 +61,41 @@ namespace basecross {
 		switch (m_myData.type)
 		{
 		case CharacterType::POTATO:
-			m_weaponO = BulletS::Shot;
-			m_weaponT = BulletS::None;
-			m_modelName = L"Potato_ver1.bmf";
+			m_WeaponO.weapon = BulletS::Shot;
+			m_WeaponT.weapon = BulletS::None;
+			m_modelName = L"Animation_Potato_test5.bmf";
 			speed = 5.0f;
 			grav = 50.0f;
 			jump = 10.0f;
 			break;
 		case CharacterType::SHRIMP:
-			m_weaponO = BulletS::SMG;
-			m_weaponT = BulletS::None;
-			m_modelName = L"Shrimp_ver2.bmf";
+			m_WeaponO.weapon = BulletS::SMG;
+			m_WeaponT.weapon = BulletS::None;
+			m_modelName = L"0525_Animation_Shrimp_test4.bmf";
 			speed = 10.0f;
 			grav = 25.0f;
 			jump = 15.0f;
 			break;
 		case CharacterType::CHICKEN:
-			m_weaponO = BulletS::Rocket;
-			m_weaponT = BulletS::None;
+			m_WeaponO.weapon = BulletS::Rocket;
+			m_WeaponT.weapon = BulletS::Assault;
 			speed = 15.0f;
 			grav = 30.0f;
 			jump = 14.0f;
-			m_modelName = L"Chicken_ver1.bmf";
+			m_modelName = L"Chicken_Animation_test9.bmf";
 			break;
 		case CharacterType::DOUGHNUT:
-			m_weaponO = BulletS::Sniper;
-			m_weaponT = BulletS::None;
-			m_modelName = L"Doughnut_ver1.bmf";
+			m_WeaponO.weapon = BulletS::Sniper;
+			m_WeaponT.weapon = BulletS::None;
+			m_modelName = L"Animation_Doughnut_test3.bmf";
 			speed = 8.0f;
 			grav = 25.0f;
 			jump = 10.0f;
 			break;
 		default:
-			m_weaponO = BulletS::SMG;
-			m_weaponT = BulletS::None;
-			m_modelName = L"Shrimp_ver2.bmf";
+			m_WeaponO.weapon = BulletS::SMG;
+			m_WeaponT.weapon = BulletS::None;
+			m_modelName = L"0525_Animation_Shrimp_test4.bmf";
 			speed = 1.0f;
 			grav = 10.0f;
 			jump = 10.0f;
@@ -101,8 +107,10 @@ namespace basecross {
 		m_gravityScale = grav;
 		m_jumpPower = jump;
 
-		BulletState(m_weaponO, true);
-		BulletState(m_weaponT, false);
+		m_weaponState = GetTypeStage<GameStage>()->m_weaponState;
+
+		BulletState(m_WeaponO.weapon, true);
+		BulletState(m_WeaponT.weapon, false);
 	}
 
 	void Character::PlayerUI() {
@@ -306,11 +314,16 @@ namespace basecross {
 		float time = App::GetApp()->GetElapsedTime();
 		auto grav = GetComponent<Gravity>();
 		Vec3 speed = ptrTransform->GetPosition();
+		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
 
 
 		if (angle.length() > 0.0f) {
 			speed += angle * time * m_defaultSpeed;
 			ptrTransform->SetPosition(speed);
+			m_eAnim = Anim::walk;
+		}
+		else {
+			m_eAnim = Anim::stop;
 		}
 
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPushKeyTbl[VK_SPACE]) & m_jump) {
@@ -438,7 +451,7 @@ namespace basecross {
 
 		Vec3 vecForce = rot * force.x;
 		vecForce.y = force.y;
-		grav->StartJump(vecForce * ((m_damage / 200.0f) + 1));
+		grav->StartJump(vecForce * ((m_damage / 250.0f) + 1));
 
 		//ここで一定の条件（吹っ飛び率、自身をふっとばしたのはプレイヤーか）などで自身を表示するPinPを表示する
 		/*if(m_opponent.isPlayer) */ShowMyPinP();
@@ -633,6 +646,7 @@ namespace basecross {
 		AddKillCharacter(kill);
 		AddKill(1);
 
+		if(m_myData.isPlayer)
 		GetStage()->AddGameObject<UI_Kill_Icon>(
 			Vec3(0.0f, -350.0f, 0.0f),
 			Vec3(0.8f, 0.8f, 1.0f),
@@ -667,7 +681,7 @@ namespace basecross {
 		return m_killCharacters;
 	}
 
-	vector<CharacterKillList_s> Character::GetKillList() {
+	vector<int> Character::GetKillList() {
 		return m_killList;
 	}
 
@@ -675,27 +689,27 @@ namespace basecross {
 	void Character::AddKillCharacter(const CharacterKillDetails_s& data) {
 		m_killCharacters.push_back(data);
 
-		CharacterKillList(state);
+		int state;
 
 		switch (data.type)
 		{
 		case CharacterType::SHRIMP:
-			state.killState = 0;
+			state = 0;
 			break;
 		case CharacterType::CHICKEN:
-			state.killState = 3;
+			state = 3;
 			break;
 		case CharacterType::POTATO:
-			state.killState = 6;
+			state = 6;
 			break;
 		case CharacterType::DOUGHNUT:
-			state.killState = 9;
+			state = 9;
 			break;
 		default:
 			break;
 		}
 
-		state.killState += data.level;
+		state += data.level;
 
 		m_killList.push_back(state);
 	}
@@ -739,118 +753,48 @@ namespace basecross {
 
 
 	void Character::BulletState(int state, bool weapon, bool same) {
-		int maxAmmo;
-		int reloadAmmo;
-		float interval;
-		float reload;
-		bool barrage;
-
-		switch (state)
+		WeaponState_s m_state;
+		for (int i = 0; i < m_weaponState.size(); i++)
 		{
-		case BulletS::None:
-			maxAmmo = 0;
-			reloadAmmo = 0;
-			interval = 0;
-			reload = 0;
-			barrage = false;
-			break;
-		case BulletS::Assault:
-			maxAmmo = 0;
-			reloadAmmo = 30;
-			interval = 0.5f;
-			reload = 0.5f;
-			barrage = true;
-			break;
-		case BulletS::Hand:
-			maxAmmo = 50;
-			reloadAmmo = 15;
-			interval = 0.2f;
-			reload = 0.5f;
-			barrage = false;
-			break;
-		case BulletS::Shot:
-			maxAmmo = 14;
-			reloadAmmo = 2;
-			interval = 1.0f;
-			reload = 0.5f;
-			barrage = false;
-			break;
-		case BulletS::SMG:
-			maxAmmo = 100;
-			reloadAmmo = 20;
-			interval = 0.1f;
-			reload = 0.5f;
-			barrage = true;
-			break;
-		case BulletS::Rocket:
-			maxAmmo = 8;
-			reloadAmmo = 1;
-			interval = 0.0f;
-			reload = 0.5f;
-			barrage = false;
-			break;
-		case BulletS::Sniper:
-			maxAmmo = 18;
-			reloadAmmo = 6;
-			interval = 1.0f;
-			reload = 0.5f;
-			barrage = false;
-			break;
-		case BulletS::Laser:
-			maxAmmo = 0;
-			reloadAmmo = 50;
-			interval = 0.3f;
-			reload = 0.5f;
-			barrage = false;
-			break;
-		case BulletS::Wind:
-			maxAmmo = 0;
-			reloadAmmo = 2000;
-			interval = 1.0f / 60.0f;
-			reload = 0.5f;
-			barrage = true;
-			break;
-		default:
-			break;
+			if (m_weaponState[i].weapon == (BulletS)state) {
+				m_state = m_weaponState[i];
+			}
 		}
 
 		if (weapon) {
 			if (same)
 			{
-				m_maxAmmoO += maxAmmo + reloadAmmo;
-				m_barrageO = barrage;
+				m_WeaponO.maxAmmo += m_state.maxAmmo + m_state.ammo;
 			}
 			else {
-				m_ammoO = reloadAmmo;
-				m_reAmmoO = reloadAmmo;
-				m_maxAmmoO = maxAmmo;
-				m_intTimeO = 0;
-				m_maxIntTimeO = interval;
-				m_reTimeO = 0;
-				m_maxreTimeO = reload;
-				m_barrageO = barrage;
-				m_weaponO = BulletS(state);
+				m_WeaponO.weapon = m_state.weapon;
+				m_WeaponO.barrage = m_state.barrage;
+				m_WeaponO.ammo = m_state.reAmmo;
+				m_WeaponO.reAmmo = m_state.ammo;
+				m_WeaponO.maxAmmo = m_state.maxAmmo;
+				m_WeaponO.intTime = m_state.intTime;
+				m_WeaponO.maxIntTime = m_state.maxIntTime;
+				m_WeaponO.reTime = m_state.reTime;
+				m_WeaponO.maxreTime = m_state.maxreTime;
 			}
 		}
 		else {
 			if (same)
 			{
-				m_maxAmmoT += maxAmmo + reloadAmmo;
-				m_barrageT = barrage;
+				m_WeaponT.maxAmmo += m_state.maxAmmo + m_state.ammo;
 			}
 			else {
-				m_ammoT = reloadAmmo;
-				m_reAmmoT = reloadAmmo;
-				m_maxAmmoT = maxAmmo;
-				m_intTimeT = 0;
-				m_maxIntTimeT = interval;
-				m_reTimeT = 0;
-				m_maxreTimeT = reload;
-				m_barrageT = barrage;
-				m_weaponT = BulletS(state);
+				m_WeaponT.weapon = m_state.weapon;
+				m_WeaponT.barrage = m_state.barrage;
+				m_WeaponT.ammo = m_state.reAmmo;
+				m_WeaponT.reAmmo = m_state.ammo;
+				m_WeaponT.maxAmmo = m_state.maxAmmo;
+				m_WeaponT.intTime = m_state.intTime;
+				m_WeaponT.maxIntTime = m_state.maxIntTime;
+				m_WeaponT.reTime = m_state.reTime;
+				m_WeaponT.maxreTime = m_state.maxreTime;
 			}
 		}
-
 	}
 
 	void Character::BulletFire() {
@@ -866,19 +810,18 @@ namespace basecross {
 			m_weapon = !m_weapon;
 			m_reload = false;
 			m_fire = true;
-			m_reTimeO = 0;
-			m_reTimeT = 0;
-			m_intTimeO = 0;
-			m_intTimeT = 0;
-
+			m_WeaponO.reTime = 0.0f;
+			m_WeaponT.reTime = 0.0f;
+			m_WeaponO.intTime = 0.0f;
+			m_WeaponT.intTime = 0.0f;
 		}
 
-		if (BulletS::None == m_weaponT) {
+		if (BulletS::None == m_WeaponT.weapon) {
 			m_weapon = true;
 		}
 
 		if (m_weapon) {
-			if (m_barrageO) {
+			if (m_WeaponO.barrage) {
 				if ((cntlVec[0].bRightTrigger > 250.0f || KeyState.m_bPushKeyTbl[VK_LBUTTON])) {
 					fire = true;
 					m_fire = true;
@@ -894,87 +837,39 @@ namespace basecross {
 			}
 
 			if (((((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X) || KeyState.m_bPressedKeyTbl['R'])
-				&& m_ammoO < m_reAmmoO)
-				|| m_ammoO <= 0) && !m_reload) {
+				&& m_WeaponO.ammo < m_WeaponO.reAmmo)
+				|| m_WeaponO.ammo <= 0) && !m_reload) {
 				m_reload = true;
 				m_fire = false;
-				m_reTimeO = m_maxreTimeO;
+				m_WeaponO.reTime = m_WeaponO.maxreTime;
 			}
-			
-			if (m_reload && m_maxAmmoO > 0) {
-				if (m_reTimeO > 0) {
+
+			if (m_reload && m_WeaponO.maxAmmo > 0) {
+				if (m_WeaponO.reTime > 0) {
 					float time = App::GetApp()->GetElapsedTime();
-					m_reTimeO -= time;
+					m_WeaponO.reTime -= time;
 					m_fire = false;
 				}
 				else {
 					int rem;
-					rem = m_reAmmoO - m_ammoO;
-					m_maxAmmoO -= rem;
-					if (m_maxAmmoO < 0) {
-						rem += m_maxAmmoO;
-						m_maxAmmoO = 0;
+					rem = m_WeaponO.reAmmo - m_WeaponO.ammo;
+					m_WeaponO.maxAmmo -= rem;
+					if (m_WeaponO.maxAmmo < 0) {
+						rem += m_WeaponO.maxAmmo;
+						m_WeaponO.maxAmmo = 0;
 					}
-					m_ammoO += rem;
+					m_WeaponO.ammo += rem;
 
 					m_reload = false;
 					m_fire = true;
 				}
 			}
 
-			if (m_ammoO > 0 && m_intTimeO <= 0) {
-				if (fire && m_fire) {
-					if (m_weaponO == BulletS::Shot) {
-
-						for (size_t i = 0; i < 20; i++)
-						{
-							//Quat X;
-							//X.x = (i * 3.14f) / 180.0f;
-							auto bullet = GetStage()->AddGameObject<Bullet>(
-								ptr->GetPosition(),
-								ptr->GetQuaternion(),
-								m_weaponO,
-								m_myData.unique,
-								ID,
-								m_myData
-								);
-
-							bullet->AddEvent([this](const CharacterStatus_s status) {
-								DroppedIntoOil(status);
-							});
-						}
-
-
-					}
-					else {
-						auto bullet = GetStage()->AddGameObject<Bullet>(
-							ptr->GetPosition(),
-							ptr->GetQuaternion(),
-							m_weaponO,
-							m_myData.unique,
-							ID,
-							m_myData
-							);
-
-						bullet->AddEvent([this](const CharacterStatus_s status) {
-							DroppedIntoOil(status);
-						});
-
-					}
-					m_ammoO--;
-					m_intTimeO = m_maxIntTimeO;
-
-					m_fire = false;
-				}
-			}
-			else if (m_intTimeO > 0) {
-				float time = App::GetApp()->GetElapsedTime();
-				m_intTimeO -= time;
-			}
+			WeaponOFire(fire);
 
 		}
 		else {
-			if (m_barrageT) {
+			if (m_WeaponT.barrage) {
 				if ((cntlVec[0].bRightTrigger > 250.0f || KeyState.m_bPushKeyTbl[VK_LBUTTON])) {
 					fire = true;
 					m_fire = true;
@@ -990,63 +885,76 @@ namespace basecross {
 			}
 
 			if (((((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X) || KeyState.m_bPressedKeyTbl['R'])
-				&& m_ammoT < m_reAmmoT)
-				|| m_ammoT <= 0) && !m_reload) {
+				&& m_WeaponT.ammo < m_WeaponT.reAmmo)
+				|| m_WeaponT.ammo <= 0) && !m_reload) {
 				m_reload = true;
 				m_fire = false;
-				m_reTimeT = m_maxreTimeT;
+				m_WeaponT.reTime = m_WeaponT.maxreTime;
 			}
 
-			if (m_reload && m_maxAmmoT > 0) {
-				if (m_reTimeT > 0) {
+			if (m_reload && m_WeaponT.maxAmmo > 0) {
+				if (m_WeaponT.reTime > 0) {
 					float time = App::GetApp()->GetElapsedTime();
-					m_reTimeT -= time;
+					m_WeaponT.reTime -= time;
 					m_fire = false;
 				}
 				else {
 					int rem;
-					rem = m_reAmmoT - m_ammoT;
-					m_maxAmmoT -= rem;
-					if (m_maxAmmoT < 0) {
-						rem += m_maxAmmoT;
-						m_maxAmmoT = 0;
+					rem = m_WeaponT.reAmmo - m_WeaponT.ammo;
+					m_WeaponT.maxAmmo -= rem;
+					if (m_WeaponT.maxAmmo < 0) {
+						rem += m_WeaponT.maxAmmo;
+						m_WeaponT.maxAmmo = 0;
 					}
-					m_ammoT += rem;
+					m_WeaponT.ammo += rem;
 
 					m_reload = false;
 					m_fire = true;
 				}
 			}
 
-			if (m_ammoT > 0 && m_intTimeT <= 0) {
-				if (fire && m_fire) {
-					if (m_weaponT == BulletS::Shot) {
+			WeaponTFire(fire);
 
-						for (size_t i = 0; i < 20; i++)
-						{
-							//Quat X;
-							//X.x = (i * 3.14f) / 180.0f;
-							auto bullet = GetStage()->AddGameObject<Bullet>(
-								ptr->GetPosition(),
-								ptr->GetQuaternion(),
-								m_weaponT,
-								m_myData.unique,
-								ID,
-								m_myData
-								);
+		}
+		
+	}
 
-							bullet->AddEvent([this](const CharacterStatus_s status) {
-								DroppedIntoOil(status);
-							});
-						}
+	void Character::WeaponOFire(bool fire) {
+		auto ptr = GetComponent<Transform>();
+		
+		if (m_reload && m_WeaponO.maxAmmo > 0) {
+			if (m_WeaponO.reTime > 0) {
+				float time = App::GetApp()->GetElapsedTime();
+				m_WeaponO.reTime -= time;
+				m_fire = false;
+			}
+			else {
+				int rem;
+				rem = m_WeaponO.reAmmo - m_WeaponO.ammo;
+				m_WeaponO.maxAmmo -= rem;
+				if (m_WeaponO.maxAmmo < 0) {
+					rem += m_WeaponO.maxAmmo;
+					m_WeaponO.maxAmmo = 0;
+				}
+				m_WeaponO.ammo += rem;
 
+				m_reload = false;
+				m_fire = true;
+			}
+		}
 
-					}
-					else {
+		if (m_WeaponO.ammo > 0 && m_WeaponO.intTime <= 0) {
+			if (fire && m_fire) {
+				if (m_WeaponO.weapon == BulletS::Shot) {
+
+					for (size_t i = 0; i < 20; i++)
+					{
+						//Quat X;
+						//X.x = (i * 3.14f) / 180.0f;
 						auto bullet = GetStage()->AddGameObject<Bullet>(
 							ptr->GetPosition(),
 							ptr->GetQuaternion(),
-							m_weaponT,
+							m_WeaponO.weapon,
 							m_myData.unique,
 							ID,
 							m_myData
@@ -1055,21 +963,109 @@ namespace basecross {
 						bullet->AddEvent([this](const CharacterStatus_s status) {
 							DroppedIntoOil(status);
 						});
-
 					}
-					m_ammoT--;
-					m_intTimeT = m_maxIntTimeT;
 
-					m_fire = false;
 				}
-			}
-			else if (m_intTimeT > 0) {
-				float time = App::GetApp()->GetElapsedTime();
-				m_intTimeT -= time;
-			}
+				else {
+					auto bullet = GetStage()->AddGameObject<Bullet>(
+						ptr->GetPosition(),
+						ptr->GetQuaternion(),
+						m_WeaponO.weapon,
+						m_myData.unique,
+						ID,
+						m_myData
+						);
 
+					bullet->AddEvent([this](const CharacterStatus_s status) {
+						DroppedIntoOil(status);
+					});
+
+				}
+				m_WeaponO.ammo--;
+				m_WeaponO.intTime = m_WeaponO.maxIntTime;
+
+				m_fire = false;
+			}
 		}
-		
+		else if (m_WeaponO.intTime > 0) {
+			float time = App::GetApp()->GetElapsedTime();
+			m_WeaponO.intTime -= time;
+		}
+	}
+
+	void Character::WeaponTFire(bool fire) {
+		auto ptr = GetComponent<Transform>();
+
+		if (m_reload && m_WeaponT.maxAmmo > 0) {
+			if (m_WeaponT.reTime > 0) {
+				float time = App::GetApp()->GetElapsedTime();
+				m_WeaponT.reTime -= time;
+				m_fire = false;
+			}
+			else {
+				int rem;
+				rem = m_WeaponT.reAmmo - m_WeaponT.ammo;
+				m_WeaponT.maxAmmo -= rem;
+				if (m_WeaponT.maxAmmo < 0) {
+					rem += m_WeaponT.maxAmmo;
+					m_WeaponT.maxAmmo = 0;
+				}
+				m_WeaponT.ammo += rem;
+
+				m_reload = false;
+				m_fire = true;
+			}
+		}
+
+		if (m_WeaponT.ammo > 0 && m_WeaponT.intTime <= 0) {
+			if (fire && m_fire) {
+				if (m_WeaponT.weapon == BulletS::Shot) {
+
+					for (size_t i = 0; i < 20; i++)
+					{
+						//Quat X;
+						//X.x = (i * 3.14f) / 180.0f;
+						auto bullet = GetStage()->AddGameObject<Bullet>(
+							ptr->GetPosition(),
+							ptr->GetQuaternion(),
+							m_WeaponT.weapon,
+							m_myData.unique,
+							ID,
+							m_myData
+							);
+
+						bullet->AddEvent([this](const CharacterStatus_s status) {
+							DroppedIntoOil(status);
+						});
+					}
+
+				}
+				else {
+					auto bullet = GetStage()->AddGameObject<Bullet>(
+						ptr->GetPosition(),
+						ptr->GetQuaternion(),
+						m_WeaponT.weapon,
+						m_myData.unique,
+						ID,
+						m_myData
+						);
+
+					bullet->AddEvent([this](const CharacterStatus_s status) {
+						DroppedIntoOil(status);
+					});
+
+				}
+				m_WeaponT.ammo--;
+				m_WeaponT.intTime = m_WeaponT.maxIntTime;
+
+				m_fire = false;
+			}
+		}
+		else if (m_WeaponT.intTime > 0) {
+			float time = App::GetApp()->GetElapsedTime();
+			m_WeaponT.intTime -= time;
+		}
+
 	}
 
 	void Character::SetWeaponFire() {
@@ -1185,15 +1181,15 @@ namespace basecross {
 			break;
 		case BulletS::Rocket:
 			force = Vec2(4.0f, 3.0f);
-			damage = 25.0;
+			damage = 15.0;
 			break;
 		case BulletS::Sniper:
-			force = Vec2(2.0f, 5.0f);
-			damage = 30.0;
+			force = Vec2(5.0f, 1.0f);
+			damage = 20.0;
 			break;
 		case BulletS::Laser:
-			force = Vec2(1.0f, 2.0f);
-			damage = 10.0;
+			force = Vec2(0.0f, 1.0f);
+			damage = 20.0;
 			break;
 		case BulletS::Wind:
 			force = Vec2(10.0f, 0.2f);
@@ -1201,19 +1197,19 @@ namespace basecross {
 			break;
 		case BulletS::Gatling:
 			force = Vec2(10.0f, 5.0f);
-			damage = 1.0;
+			damage = 2.0;
 			break;
 		case BulletS::Cannon:
 			force = Vec2(15.0f, 10.0f);
-			damage = 1.0;
+			damage = 50.0;
 			break;
 		case BulletS::GExplosion:
 			force = Vec2(-5.0f, 5.0f);
-			damage = 20.0;
+			damage = 40.0;
 			break;
 		case BulletS::CExplosion:
 			force = Vec2(5.0f, 5.0f);
-			damage = 20.0;
+			damage = 30.0;
 			break;
 		case BulletS::SExplosion:
 			force = Vec2(5.0f, 5.0f);
@@ -1232,16 +1228,16 @@ namespace basecross {
 
 	void Character::PickGun(int state) {
 		bool same = false;
-		if (BulletS::None == m_weaponT) {
+		if (BulletS::None == m_WeaponT.weapon) {
 			BulletState(state, false);
 		}
 		else {
 			if (m_weapon) {
-				if (m_weaponO == state)
+				if (m_WeaponO.weapon == state)
 					same = true;
 			}
 			else {
-				if (m_weaponT == state) {
+				if (m_WeaponT.weapon == state) {
 					same = true;
 				}
 			}
@@ -1251,6 +1247,11 @@ namespace basecross {
 
 	void Character::PlayerMovement() {
 		AddLevel();
+
+		Animation();
+		float time = App::GetApp()->GetElapsedTime();
+		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		ptrDraw->UpdateAnimation(time);
 
 		PlayerRotMove();
 		if (GetTypeStage<GameStage>()->m_start) {
@@ -1263,10 +1264,6 @@ namespace basecross {
 				GrenadeFire();
 			}
 		}
-
-		//auto ptrDraw = GetComponent<PNTStaticModelDraw>();
-		//float elapsedTime = App::GetApp()->GetElapsedTime();
-		//ptrDraw->UpdateAnimation(elapsedTime);
 	}
 
 	void Character::DrawString() {
@@ -1314,13 +1311,13 @@ namespace basecross {
 		strFps += Util::FloatToWStr(rot.z);
 		strFps += L"\n";
 
-		strFps += Util::FloatToWStr(m_ammoO);
+		strFps += Util::FloatToWStr(m_WeaponO.ammo);
 		strFps += L", ";
-		strFps += Util::FloatToWStr(m_maxAmmoO);
+		strFps += Util::FloatToWStr(m_WeaponO.maxAmmo);
 		strFps += L"\n";
-		strFps += Util::FloatToWStr(m_ammoT);
+		strFps += Util::FloatToWStr(m_WeaponT.ammo);
 		strFps += L", ";
-		strFps += Util::FloatToWStr(m_maxAmmoT);
+		strFps += Util::FloatToWStr(m_WeaponT.maxAmmo);
 		strFps += L"\n";
 
 		strFps += Util::FloatToWStr(m_gatlingShotAmmo);
@@ -1329,6 +1326,23 @@ namespace basecross {
 		strFps += L"\n";
 
 		strFps += Util::FloatToWStr(GetTypeStage<GameStage>()->bomb);
+		strFps += L"\n";
+
+		strFps += Util::IntToWStr((int)m_WeaponO.weapon);
+		strFps += L", ";
+		strFps += Util::IntToWStr(m_WeaponO.reAmmo);
+		strFps += L", ";
+		strFps += Util::IntToWStr(m_WeaponO.ammo);
+		strFps += L", ";
+		strFps += Util::IntToWStr(m_WeaponO.maxAmmo);
+		strFps += L", ";
+		strFps += Util::FloatToWStr(m_WeaponO.maxIntTime);
+		strFps += L", ";
+		strFps += Util::FloatToWStr(m_WeaponO.intTime);
+		strFps += L", ";
+		strFps += Util::FloatToWStr(m_WeaponO.maxreTime);
+		strFps += L", ";
+		strFps += Util::FloatToWStr(m_WeaponO.reTime);
 		strFps += L"\n";
 
 		auto string = GetComponent<StringSprite>();

@@ -30,6 +30,9 @@ namespace basecross {
 			AddLevel();
 			if (m_aiParam.isDebug) UpdateDebugObject();
 		}
+		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		ptrDraw->UpdateAnimation(elapsedTime);
 	}
 
 	void AIchan::OnCollisionEnter(shared_ptr<GameObject>& Other) {
@@ -276,6 +279,15 @@ namespace basecross {
 	}
 	void AIchan::RandomBulletSelect() {
 		m_oldBulletNum = m_newBulletNum;
+
+		SetFire(true, true);
+		SetFire(false, false);
+
+		SetWeaponOState(7, 0);
+		SetWeaponTState(7, 0);
+		SetWeaponOState(5, 0);
+		SetWeaponTState(5, 0);
+
 		m_newBulletNum = RandomNumber(1, m_bulletMaxPossession);
 	}
 	bool AIchan::BulletShotPermission() {
@@ -288,78 +300,14 @@ namespace basecross {
 		return false;
 	}
 	void AIchan::RandomBulletShot() {
-		auto trans = GetComponent<Transform>();
-		auto my = GetMyData();
-		auto id = GetId();
+		bool fire = true;
+		SetFire(true, true);
+
 		if (m_newBulletNum == 1) {
-			auto w = GetWeaponO();
-			if (w == BulletS::Shot) {
-				for (size_t i = 0; i < 1; i++)
-				{
-					auto bullet = GetStage()->AddGameObject<Bullet>(
-						trans->GetPosition(),
-						trans->GetQuaternion(),
-						(BulletS)w,
-						my.unique,
-						id,
-						my
-						);
-
-					bullet->AddEvent([this](const CharacterStatus_s status) {
-						DroppedIntoOil(status);
-					});
-				}
-			}
-			else
-			{
-				auto bullet = GetStage()->AddGameObject<Bullet>(
-					trans->GetPosition(),
-					trans->GetQuaternion(),
-					(BulletS)w,
-					my.unique,
-					id,
-					my
-					);
-
-				bullet->AddEvent([this](const CharacterStatus_s status) {
-					DroppedIntoOil(status);
-				});
-			}
+			WeaponOFire(fire);
 		}
 		else if (m_newBulletNum == 2) {
-			auto w = GetWeaponT();
-			if (w == BulletS::Shot) {
-				for (size_t i = 0; i < 1; i++)
-				{
-					auto bullet = GetStage()->AddGameObject<Bullet>(
-						trans->GetPosition(),
-						trans->GetQuaternion(),
-						(BulletS)w,
-						my.unique,
-						id,
-						my
-						);
-
-					bullet->AddEvent([this](const CharacterStatus_s status) {
-						DroppedIntoOil(status);
-						});
-				}
-			}
-			else
-			{
-				auto bullet = GetStage()->AddGameObject<Bullet>(
-					trans->GetPosition(),
-					trans->GetQuaternion(),
-					(BulletS)w,
-					my.unique,
-					id,
-					my
-					);
-
-				bullet->AddEvent([this](const CharacterStatus_s status) {
-					DroppedIntoOil(status);
-					});
-			}
+			WeaponTFire(fire);
 		}
 	}
 
@@ -481,8 +429,8 @@ namespace basecross {
 		}
 		auto sP = Obj->BulletShotPermission();
 		if (sP) {
-			Obj->RandomBulletShot();
 		}
+		Obj->RandomBulletShot();
 
 		//Obj->ObstacleJump();
 	}

@@ -60,6 +60,39 @@ namespace basecross{
 		unsigned int unique;
 	} CharacterStatus_s;
 
+	//------------------------------------------------------------------------------------------------
+	//武器ステータス : struct
+	//------------------------------------------------------------------------------------------------
+
+	enum BulletS {
+		None,
+		Assault,
+		Hand,
+		Shot,
+		SMG,
+		Rocket,
+		Sniper,
+		Laser,
+		Wind,
+		Gatling,
+		Cannon,
+		GExplosion,
+		CExplosion,
+		SExplosion
+	};
+
+
+	typedef struct WeaponState {
+		BulletS weapon;
+		bool barrage;
+		unsigned int ammo;
+		unsigned int maxAmmo;
+		unsigned int reAmmo;
+		float intTime;
+		float maxIntTime;
+		float reTime;
+		float maxreTime;
+	} WeaponState_s;
 
 	//------------------------------------------------------------------------------------------------
 	//キル詳細 : struct
@@ -69,10 +102,6 @@ namespace basecross{
 		CharacterType type;
 		unsigned int level;
 	} CharacterKillDetails_s;
-
-	typedef struct CharacterKillList {
-		unsigned int killState;
-	} CharacterKillList_s;
 
 	//--------------------------------------------------------------------------------------
 	///	ゲームシーン

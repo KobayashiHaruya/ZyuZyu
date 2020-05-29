@@ -9,35 +9,36 @@
 
 namespace basecross{
 
+	typedef struct CharacterWeapon {
+		BulletS weapon;
+		bool barrage;
+		int ammo;
+		int maxAmmo;
+		int reAmmo;
+		float intTime;
+		float maxIntTime;
+		float reTime;
+		float maxreTime;
+	} CharacterWeapon_s;
+
+
 	class Character : public GameObject {
+		enum Anim
+		{
+			stop,
+			walk
+		};
+
 		Vec3 m_modelPos;
 		Vec3 m_modelRot;
 		Vec3 m_modelScale;
 
 		wstring m_modelName;
 
-		BulletS m_weaponO;
-		BulletS m_weaponT;
-
 		bool m_weapon = true;
-		bool m_barrageO;
-		bool m_barrageT;
 
-		int m_ammoO;
-		int m_maxAmmoO;
-		int m_reAmmoO;
-		float m_intTimeO;
-		float m_maxIntTimeO;
-		float m_reTimeO;
-		float m_maxreTimeO;
-
-		int m_ammoT;
-		int m_maxAmmoT;
-		int m_reAmmoT;
-		float m_intTimeT;
-		float m_maxIntTimeT;
-		float m_reTimeT;
-		float m_maxreTimeT;
+		bool m_fire = true;
+		bool m_reload = false;
 
 		int m_gatlingAmmo = 150;
 		int m_gatlingPickAmmo = 30;
@@ -62,9 +63,6 @@ namespace basecross{
 		bool m_smokeG = true;
 		bool m_toriG = true;
 
-		bool m_fire = true;
-		bool m_reload = false;
-
 		float m_damage = 0.0f;
 
 		float m_moveSpeed;
@@ -77,10 +75,16 @@ namespace basecross{
 		Vec2 m_force;
 		bool m_des = false;
 		bool m_jump = false;
+		Anim m_eAnim = Anim::stop;
+		bool m_anim = false;
 
 		CharacterStatus_s m_myData;
 		vector<CharacterKillDetails_s> m_killCharacters;  //自身がキルした相手のキャラクタータイプとレベルを持つ
-		vector<CharacterKillList_s> m_killList;
+		vector<int> m_killList;
+
+		vector<WeaponState_s> m_weaponState;
+		CharacterWeapon_s m_WeaponO;
+		CharacterWeapon_s m_WeaponT;
 
 		shared_ptr<ObstacleEvent<const CharacterStatus_s>> m_touchOil;
 		CharacterStatus_s m_opponent;  //自身を攻撃してきた相手のステータスを持つ
@@ -94,7 +98,7 @@ namespace basecross{
 			const int& id
 		) :
 			GameObject(StagePtr),
-			m_myData({ type, 1, NULL, NULL, NULL, isPlayer, unique }),
+			m_myData({ type, 1, 0, 0, 0, isPlayer, unique }),
 			m_killCharacters(vector<CharacterKillDetails_s>(NULL)),
 			m_touchOil(NULL),
 			ID(unique),
@@ -116,6 +120,8 @@ namespace basecross{
 		void GrenadeFire();
 		void BulletDamage(int state, Vec3 rot);
 		void BulletFire();
+		void WeaponOFire(bool fire);
+		void WeaponTFire(bool fire);
 		void SetWeaponFire();
 		void BulletState(int state, bool weapon, bool same = false);
 		void CharaState();
@@ -123,6 +129,17 @@ namespace basecross{
 
 		void DrawString();
 
+		void Animation() {
+			auto PtrDraw = GetComponent<BcPNTBoneModelDraw>();
+			if (m_eAnim == Anim::walk && m_anim) {
+				PtrDraw->ChangeCurrentAnimation(L"Walk");
+				m_anim = false;
+			}
+			else if (m_eAnim == Anim::stop && !m_anim) {
+				PtrDraw->ChangeCurrentAnimation(L"Stop");
+				m_anim = true;
+			}
+		}
 		void Torimoti(bool hit) {
 			if (hit) {
 				m_defaultSpeed = 0.0f;
@@ -132,16 +149,16 @@ namespace basecross{
 			}
 		}
 		int GetAmmoO() {
-			return m_ammoO;
+			return m_WeaponO.ammo;
 		}
 		int GetAmmoT() {
-			return m_ammoT;
+			return m_WeaponT.ammo;
 		}
 		int GetDAmmoO() {
-			return m_maxAmmoO;
+			return m_WeaponO.maxAmmo;
 		}
 		int GetDAmmoT() {
-			return m_maxAmmoT;
+			return m_WeaponT.maxAmmo;
 		}
 		int GetGatlingAmmo() {
 			return m_gatlingAmmo;
@@ -150,10 +167,97 @@ namespace basecross{
 			return m_weapon;
 		}
 		int GetWeaponO() {
-			return (int)m_weaponO;
+			return (int)m_WeaponO.weapon;
 		}
 		int GetWeaponT() {
-			return (int)m_weaponT;
+			return (int)m_WeaponT.weapon;
+		}
+		CharacterWeapon_s GetWeaponOState() {
+			return m_WeaponO;
+		}
+		CharacterWeapon_s GetWeaponTState() {
+			return m_WeaponT;
+		}
+		void SetWeaponOState(int type,float value) {
+
+			switch (type)
+			{
+			case 0:
+				m_WeaponO.weapon = (BulletS)(int)value;
+				break;
+			case 1:
+				m_WeaponO.barrage = (bool)value;
+				break;
+			case 2:
+				m_WeaponO.ammo = value;
+				break;
+			case 3:
+				m_WeaponO.maxAmmo = value;
+				break;
+			case 4:
+				m_WeaponO.reAmmo = value;
+				break;
+			case 5:
+				m_WeaponO.intTime = value;
+				break;
+			case 6:
+				m_WeaponO.maxIntTime = value;
+				break;
+			case 7:
+				m_WeaponO.reTime = value;
+				break;
+			case 8:
+				m_WeaponO.maxreTime = value;
+				break;
+			default:
+				break;
+			}
+
+
+		}
+		void SetWeaponTState(int type, float value) {
+
+			switch (type)
+			{
+			case 0:
+				m_WeaponT.weapon = (BulletS)(int)value;
+				break;
+			case 1:
+				m_WeaponT.barrage = (bool)value;
+				break;
+			case 2:
+				m_WeaponT.ammo = value;
+				break;
+			case 3:
+				m_WeaponT.maxAmmo = value;
+				break;
+			case 4:
+				m_WeaponT.reAmmo = value;
+				break;
+			case 5:
+				m_WeaponT.intTime = value;
+				break;
+			case 6:
+				m_WeaponT.maxIntTime = value;
+				break;
+			case 7:
+				m_WeaponT.reTime = value;
+				break;
+			case 8:
+				m_WeaponT.maxreTime = value;
+				break;
+			default:
+				break;
+			}
+
+		}
+		void SetFire(bool fire, bool type) {
+			if (type) {
+				m_fire = fire;
+			}
+			else {
+				m_reload = fire;
+			}
 		}
 		float GetSGTime() {
 			return m_smokeGtime;
@@ -182,7 +286,7 @@ namespace basecross{
 		void PinPUpdate();
 
 		vector<CharacterKillDetails_s> GetKillCharacters();
-		vector<CharacterKillList_s> GetKillList();
+		vector<int> GetKillList();
 		void AddKillCharacter(const CharacterKillDetails_s& data);
 		CharacterStatus_s GetMyData();
 		void SetMyData(const CharacterStatus_s& data);
