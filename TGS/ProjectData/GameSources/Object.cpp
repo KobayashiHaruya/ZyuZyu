@@ -79,10 +79,10 @@ namespace basecross {
 	}
 
 	void OilStage::OnCreate() {
-		BmfDateRead(L"Kakiage_50(100).bmf", Vec3(0.0f, -95.75f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.4f, 0.4f, 0.4f));
+		BmfDateRead(L"Kakiage_50(100).bmf", Vec3(0.0f, -94.15f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.4f, 0.4f, 0.4f));
 		auto ptrColl = GetComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
-		ptrColl->SetMakedSize(Vec3(10.5f, 0.5f, 10.5f));
+		ptrColl->SetMakedSize(Vec3(10.5f, 2.0f, 10.5f));
 		SetAlphaActive(true);
 
 		AddTag(L"Object");
@@ -101,10 +101,8 @@ namespace basecross {
 		else {
 			Draw();
 		}
-			auto ptrColl = GetComponent<CollisionObb>();
-			ptrColl->SetAfterCollision(AfterCollision::None);
-			ptrColl->SetMakedSize(Vec3(20.0f, 1.0f, 20.0f));
-			ptrColl->SetFixed(true);
+		auto ptrColl = GetComponent<CollisionObb>();
+		ptrColl->SetAfterCollision(AfterCollision::None);
 		AddTag(L"Oil");
 	}
 

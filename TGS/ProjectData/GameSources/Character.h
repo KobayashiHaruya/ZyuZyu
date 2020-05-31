@@ -80,7 +80,6 @@ namespace basecross{
 
 		CharacterStatus_s m_myData;
 		vector<CharacterKillDetails_s> m_killCharacters;  //自身がキルした相手のキャラクタータイプとレベルを持つ
-		vector<int> m_killList;
 
 		vector<WeaponState_s> m_weaponState;
 		CharacterWeapon_s m_WeaponO;
@@ -129,7 +128,8 @@ namespace basecross{
 
 		void DrawString();
 
-		void Animation() {
+		void Animation(Anim state) {
+			m_eAnim = state;
 			auto PtrDraw = GetComponent<BcPNTBoneModelDraw>();
 			if (m_eAnim == Anim::walk && m_anim) {
 				PtrDraw->ChangeCurrentAnimation(L"Walk");
@@ -286,7 +286,6 @@ namespace basecross{
 		void PinPUpdate();
 
 		vector<CharacterKillDetails_s> GetKillCharacters();
-		vector<int> GetKillList();
 		void AddKillCharacter(const CharacterKillDetails_s& data);
 		CharacterStatus_s GetMyData();
 		void SetMyData(const CharacterStatus_s& data);

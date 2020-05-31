@@ -23,7 +23,6 @@ namespace basecross {
 		shared_ptr<SoundItem> m_bgm;
 		
 		vector<CharacterStatus_s> m_charState;
-		vector<int> m_kills;
 
 		//ƒrƒ…[‚Ìì¬
 		void CreateViewLight();

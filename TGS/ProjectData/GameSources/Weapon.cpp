@@ -16,98 +16,98 @@ namespace basecross {
 			speed = 65.0f;
 			grav = 4.0f;
 			time = 5.0f;
-			scale = Vec3(0.5f);
+			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Assault:
 			speed = 65.0f;
 			grav = 4.0f;
 			time = 5.0f;
-			scale = Vec3(0.5f);
+			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Hand:
 			speed = 75.0f;
 			grav = 4.0f;
 			time = 5.0f;
-			scale = Vec3(0.5f);
+			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Shot:
 			speed = 60.0f;
 			grav = 5.0f;
 			time = 5.0f;
-			scale = Vec3(0.5f);
+			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::SMG:
 			speed = 75.0f;
 			grav = 1.0f;
 			time = 5.0f;
-			scale = Vec3(0.5f);
+			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Rocket:
 			speed = 55.0f;
 			grav = 0.5f;
 			time = 5.0f;
-			scale = Vec3(0.2f);
+			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Sniper:
 			speed = 140.0f;
 			grav = 2.0f;
 			time = 2.0f;
-			scale = Vec3(0.2f);
+			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Laser:
 			speed = 120.0f;
 			grav = 0.0f;
 			time = 2.0f;
-			scale = Vec3(0.2f);
+			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Wind:
 			speed = 80.0f;
 			grav = 5.0f;
 			time = 0.2f;
-			scale = Vec3(0.2f);
+			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Gatling:
 			speed = 100.0f;
 			grav = 5.0f;
 			time = 1.0f;
-			scale = Vec3(0.2f);
+			scale = Vec3(1.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Cannon:
 			speed = 20.0f;
 			grav = 1.0f;
 			time = 10.0f;
-			scale = Vec3(1.0f);
+			scale = Vec3(3.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::GExplosion:
 			speed = 0.0f;
 			grav = 0.0f;
 			time = 0.2f;
-			scale = Vec3(3.0f);
+			scale = Vec3(10.0f);
 			AddTag(L"Explosion");
 			break;
 		case BulletS::CExplosion:
 			speed = 0.0f;
 			grav = 0.0f;
 			time = 0.2f;
-			scale = Vec3(5.0f);
+			scale = Vec3(15.0f);
 			AddTag(L"Explosion");
 			break;
 		case BulletS::SExplosion:
 			speed = 0.0f;
 			grav = 0.0f;
 			time = 0.2f;
-			scale = Vec3(4.0f);
+			scale = Vec3(13.0f);
 			AddTag(L"Explosion");
 			AddTag(L"Smoke");
 			break;
@@ -345,7 +345,7 @@ namespace basecross {
 
 		ptr->SetPosition(m_pos);
 		ptr->SetQuaternion(m_rot);
-		ptr->SetScale(Vec3(0.2f));
+		ptr->SetScale(Vec3(0.6f));
 
 		//‰e‚ð‚Â‚¯‚é
 		auto ShadowPtr = AddComponent<Shadowmap>();
@@ -409,7 +409,7 @@ namespace basecross {
 
 		ptr->SetPosition(m_pos);
 		ptr->SetQuaternion(m_rot);
-		ptr->SetScale(Vec3(4.5f, 4.5f, 4.5f));
+		ptr->SetScale(Vec3(13.0f));
 
 		//‰e‚ð‚Â‚¯‚é
 		auto ShadowPtr = AddComponent<Shadowmap>();
@@ -471,7 +471,7 @@ namespace basecross {
 
 		ptr->SetPosition(m_pos);
 		ptr->SetRotation(Vec3(0.0f, m_rot.y, 0.0f));
-		ptr->SetScale(Vec3(4.0f, 0.2f, 4.0f));
+		ptr->SetScale(Vec3(10.0f, 0.3f, 10.0f));
 
 		//‰e‚ð‚Â‚¯‚é
 		auto ShadowPtr = AddComponent<Shadowmap>();
@@ -512,7 +512,7 @@ namespace basecross {
 
 		ptr->SetPosition(m_pos);
 		ptr->SetRotation(Vec3(0.0f));
-		ptr->SetScale(Vec3(0.3));
+		ptr->SetScale(Vec3(1.0));
 
 		vector<VertexPositionNormalTexture> vertices;
 		vector<uint16_t> indices;
@@ -637,7 +637,7 @@ namespace basecross {
 
 		ptr->SetPosition(m_pos);
 		ptr->SetRotation(Vec3(0.0f));
-		ptr->SetScale(Vec3(0.3f));
+		ptr->SetScale(Vec3(1.0f));
 
 	}
 
@@ -647,7 +647,7 @@ namespace basecross {
 
 		ptr->SetPosition(m_pos);
 		ptr->SetQuaternion(m_qua);
-		ptr->SetScale(Vec3(1.0f, 1.0f, 1.0f));
+		ptr->SetScale(Vec3(3.0f));
 
 		Mat4x4 m_spanMat;
 		wstring m_modelName;
@@ -713,7 +713,7 @@ namespace basecross {
 		wstring m_modelName;
 
 		if (m_gun) {
-			ptr->SetScale(Vec3(1.0f, 1.0f, 1.0f));
+			ptr->SetScale(Vec3(3.0f, 3.0f, 3.0f));
 			m_modelName = L"CornProp.bmf";
 			m_spanMat.affineTransformation(
 				Vec3(1.0f, 1.0f, 1.0f),
@@ -723,7 +723,7 @@ namespace basecross {
 			AddTag(L"GatlingGun");
 		}
 		else {
-			ptr->SetScale(Vec3(1.0f, 0.2f, 1.0f));
+			ptr->SetScale(Vec3(3.0f, 0.6f, 3.0f));
 			m_modelName = L"TomatoBattery.bmf";
 			m_spanMat.affineTransformation(
 				Vec3(1.0f, 1.0f, 1.0f),

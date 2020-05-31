@@ -14,7 +14,7 @@ namespace basecross {
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
 	void GameStage::CreateViewLight() {
-		const Vec3 eye(0.0f, -2.0f, -2.0f);
+		const Vec3 eye(0.0f, -6.0f, -6.0f);
 		const Vec3 at(0.0f);
 
 		auto& app = App::GetApp();
@@ -425,6 +425,7 @@ namespace basecross {
 		auto key = new XmlDoc(ss + L"/XML/" + L"ResultScore.xml");
 
 		vector<CharacterStatus_s> statuses;
+		vector<CharacterKillDetails_s> kills;
 
 		auto group = GetSharedObjectGroup(L"CharacterGroup");
 		auto vec = group->GetGroupVector();
@@ -438,7 +439,7 @@ namespace basecross {
 
 		m_charState = statuses;
 
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < m_charState.size(); i++) {
 			wstring id = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/ID";
 			wstring type = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Type";
 			wstring kill = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Kill";
@@ -449,16 +450,38 @@ namespace basecross {
 
 			wstring listSave = L"";
 
-			if (m_charState[i].kill > 0) {
-				auto& obj = vec[i].lock();
-				if (obj) {
-					auto character = dynamic_pointer_cast<Character>(obj);
-					m_kills = character->GetKillList();
-				}
-				for (int j = 0; j < m_charState[i].kill; j++)
+			auto& obj = vec[i].lock();
+			if (obj) {
+				auto character = dynamic_pointer_cast<Character>(obj);
+				kills = character->GetKillCharacters();
+			}
+
+			if (kills.size() > 0) {
+				for (int j = 0; j < kills.size(); j++)
 				{
-					int a = m_kills[i];
-					listSave += Util::IntToWStr(a);
+					int state = 0;
+					CharacterType type = kills[j].type;
+					switch (type)
+					{
+					case CharacterType::SHRIMP:
+						state = 0;
+						break;
+					case CharacterType::CHICKEN:
+						state = 3;
+						break;
+					case CharacterType::POTATO:
+						state = 6;
+						break;
+					case CharacterType::DOUGHNUT:
+						state = 9;
+						break;
+					default:
+						break;
+					}
+
+					state += kills[i].level;
+
+					listSave += Util::IntToWStr(state);
 					listSave += L"|";
 				}
 			}
