@@ -17,8 +17,8 @@ namespace basecross {
 			Vec3(0.0f, -1.5f, 0.0f));
 
 		auto ptrColl = AddComponent<CollisionCapsule>();
-		ptrColl->SetMakedDiameter(2.5f);
-		//ptrColl->AddExcludeCollisionTag(L"Weapon");
+		ptrColl->SetMakedDiameter(2.0f);
+		ptrColl->SetMakedHeight(1.0f);
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
 
 		//影をつける
@@ -96,7 +96,7 @@ namespace basecross {
 			m_WeaponO.weapon = BulletS::SMG;
 			m_WeaponT.weapon = BulletS::None;
 			m_modelName = L"0525_Animation_Shrimp_test4.bmf";
-			speed = 1.0f;
+			speed = 10.0f;
 			grav = 10.0f;
 			jump = 10.0f;
 			break;
@@ -248,7 +248,7 @@ namespace basecross {
 		if (ptrCamera) {
 			//MyCameraに注目するオブジェクト（プレイヤー）の設定
 			ptrCamera->SetTargetObject(GetThis<Character>());
-			ptrCamera->SetTargetToAt(Vec3(0.0f, 0.25f, 0));
+			ptrCamera->SetTargetToAt(Vec3(0.0f, 1.5f, 0));
 		}
 
 	}
@@ -320,10 +320,10 @@ namespace basecross {
 		if (angle.length() > 0.0f) {
 			speed += angle * time * m_defaultSpeed;
 			ptrTransform->SetPosition(speed);
-			m_eAnim = Anim::walk;
+			Animation(Anim::walk);
 		}
 		else {
-			m_eAnim = Anim::stop;
+			Animation(Anim::stop);
 		}
 
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPushKeyTbl[VK_SPACE]) & m_jump) {
@@ -417,25 +417,25 @@ namespace basecross {
 			PtrTransform->SetPosition(Vec3(0.0f, 0.0f, 0.0f));
 			break;
 		case 1:
-			PtrTransform->SetPosition(Vec3(-30.0f, 0.0f, 30.0f));
+			PtrTransform->SetPosition(Vec3(-5.0f, 0.0f, 5.0f));
 			break;
 		case 2:
-			PtrTransform->SetPosition(Vec3(30.0f, 0.0f, 30.0f));
+			PtrTransform->SetPosition(Vec3(5.0f, 0.0f, 5.0f));
 			break;
 		case 3:
-			PtrTransform->SetPosition(Vec3(30.0f, 0.0f, -30.0f));
+			PtrTransform->SetPosition(Vec3(5.0f, 0.0f, -5.0f));
 			break;
 		case 4:
-			PtrTransform->SetPosition(Vec3(-30.0f, 0.0f, -30.0f));
+			PtrTransform->SetPosition(Vec3(-5.0f, 0.0f, -5.0f));
 			break;
 		case 5:
-			PtrTransform->SetPosition(Vec3(-30.0f, 0.0f, 0.0f));
+			PtrTransform->SetPosition(Vec3(-5.0f, 0.0f, 0.0f));
 			break;
 		case 6:
-			PtrTransform->SetPosition(Vec3(30.0f, 0.0f, 0.0f));
+			PtrTransform->SetPosition(Vec3(5.0f, 0.0f, 0.0f));
 			break;
 		case 7:
-			PtrTransform->SetPosition(Vec3(0.0f, 0.0f, -30.0f));
+			PtrTransform->SetPosition(Vec3(0.0f, 0.0f, -5.0f));
 			break;
 		default:
 			PtrTransform->SetPosition(Vec3(0.0f, 0.0f, 0.0f));
@@ -451,7 +451,8 @@ namespace basecross {
 
 		Vec3 vecForce = rot * force.x;
 		vecForce.y = force.y;
-		grav->StartJump(vecForce * ((m_damage / 250.0f) + 1));
+
+		grav->SetGravityVerocity(vecForce * ((m_damage / 250.0f) + 1));
 
 		//ここで一定の条件（吹っ飛び率、自身をふっとばしたのはプレイヤーか）などで自身を表示するPinPを表示する
 		/*if(m_opponent.isPlayer) */ShowMyPinP();
@@ -534,7 +535,6 @@ namespace basecross {
 
 		if (Other->FindTag(L"Oil")) {
 			TouchOil();
-			Respawn();
 		}
 
 	}
@@ -632,6 +632,11 @@ namespace basecross {
 		SetUpdateActive(true);
 		SetDrawActive(true);
 
+
+		auto grav = GetComponent<Gravity>();
+		grav->SetGravityVerocityZero();
+
+		Respawn();
 		CharaState();
 		m_smoke = false;
 		m_torimoti = false;
@@ -681,37 +686,8 @@ namespace basecross {
 		return m_killCharacters;
 	}
 
-	vector<int> Character::GetKillList() {
-		return m_killList;
-	}
-
-
 	void Character::AddKillCharacter(const CharacterKillDetails_s& data) {
 		m_killCharacters.push_back(data);
-
-		int state;
-
-		switch (data.type)
-		{
-		case CharacterType::SHRIMP:
-			state = 0;
-			break;
-		case CharacterType::CHICKEN:
-			state = 3;
-			break;
-		case CharacterType::POTATO:
-			state = 6;
-			break;
-		case CharacterType::DOUGHNUT:
-			state = 9;
-			break;
-		default:
-			break;
-		}
-
-		state += data.level;
-
-		m_killList.push_back(state);
 	}
 
 	CharacterStatus_s Character::GetMyData() {
@@ -1248,7 +1224,6 @@ namespace basecross {
 	void Character::PlayerMovement() {
 		AddLevel();
 
-		Animation();
 		float time = App::GetApp()->GetElapsedTime();
 		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
 		ptrDraw->UpdateAnimation(time);
@@ -1264,6 +1239,13 @@ namespace basecross {
 				GrenadeFire();
 			}
 		}
+	
+		auto pos = GetComponent<Transform>()->GetPosition();
+
+		if (pos.y <= -20.0f) {
+			TouchOil();
+		}
+
 	}
 
 	void Character::DrawString() {

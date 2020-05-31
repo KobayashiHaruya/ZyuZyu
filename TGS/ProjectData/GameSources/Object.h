@@ -74,19 +74,22 @@ namespace basecross {
 	};
 
 	class Oil :public ObjectBase {
+		bool m_model;
 	public:
 
 		Oil(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos,
 			const Vec3& rot,
-			const Vec3& scale
+			const Vec3& scale,
+			const bool& model
 		) :
 			ObjectBase(
 				StagePtr,
 				pos,
 				rot,
 				scale
-			)
+			),
+			m_model(model)
 		{}
 		~Oil() {}
 

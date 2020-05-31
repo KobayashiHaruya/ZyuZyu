@@ -33,6 +33,13 @@ namespace basecross {
 		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		ptrDraw->UpdateAnimation(elapsedTime);
+
+		auto pos = GetComponent<Transform>()->GetPosition();
+
+		if (pos.y <= -20.0f) {
+			TouchOil();
+		}
+
 	}
 
 	void AIchan::OnCollisionEnter(shared_ptr<GameObject>& Other) {

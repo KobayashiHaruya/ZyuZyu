@@ -144,9 +144,6 @@ namespace basecross {
 		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
 		PtrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
-		//PtrDraw->SetTextureResource(L"trace.png");
-		//SetAlphaActive(true);
-
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 		ptrColl->AddExcludeCollisionTag(L"Bullet");
@@ -301,16 +298,6 @@ namespace basecross {
 		ptr->SetRotation(Vec3(0.0f));
 		ptr->SetScale(Vec3(1.0f));
 
-		////‰e‚ð‚Â‚¯‚é
-		//auto ShadowPtr = AddComponent<Shadowmap>();
-		//ShadowPtr->SetMeshResource(L"DEFAULT_CUBE");
-
-		//auto PtrDraw = AddComponent<BcPNTStaticDraw>();
-		//PtrDraw->SetMeshResource(L"DEFAULT_CUBE");
-
-		//PtrDraw->SetTextureResource(text);
-		//SetAlphaActive(true);
-
 		auto gravity = AddComponent<Gravity>();
 
 		SetBulletType(m_type);
@@ -358,7 +345,7 @@ namespace basecross {
 
 		ptr->SetPosition(m_pos);
 		ptr->SetQuaternion(m_rot);
-		ptr->SetScale(Vec3(0.5f));
+		ptr->SetScale(Vec3(0.6f));
 
 		//‰e‚ð‚Â‚¯‚é
 		auto ShadowPtr = AddComponent<Shadowmap>();
@@ -391,7 +378,6 @@ namespace basecross {
 				GetStage()->AddGameObject<SmokeGrenade>(
 					ptr->GetPosition(),
 					m_rot,
-					Vec3(13.0f, 13.0f, 13.0f),
 					ID,
 					m_frome
 					);
@@ -400,7 +386,6 @@ namespace basecross {
 				GetStage()->AddGameObject<TorimotiGrenade>(
 					ptr->GetPosition(),
 					m_rot,
-					Vec3(10.0f, 0.5f, 10.0f),
 					ID,
 					m_frome
 					);
@@ -424,7 +409,7 @@ namespace basecross {
 
 		ptr->SetPosition(m_pos);
 		ptr->SetQuaternion(m_rot);
-		ptr->SetScale(m_scale);
+		ptr->SetScale(Vec3(13.0f));
 
 		//‰e‚ð‚Â‚¯‚é
 		auto ShadowPtr = AddComponent<Shadowmap>();
@@ -432,9 +417,6 @@ namespace basecross {
 
 		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
 		PtrDraw->SetMeshResource(L"DEFAULT_SPHERE");
-
-		//PtrDraw->SetTextureResource(L"trace.png");
-		//SetAlphaActive(true);
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
@@ -489,7 +471,7 @@ namespace basecross {
 
 		ptr->SetPosition(m_pos);
 		ptr->SetRotation(Vec3(0.0f, m_rot.y, 0.0f));
-		ptr->SetScale(m_scale);
+		ptr->SetScale(Vec3(10.0f, 0.3f, 10.0f));
 
 		//‰e‚ð‚Â‚¯‚é
 		auto ShadowPtr = AddComponent<Shadowmap>();
@@ -530,7 +512,7 @@ namespace basecross {
 
 		ptr->SetPosition(m_pos);
 		ptr->SetRotation(Vec3(0.0f));
-		ptr->SetScale(Vec3(1.0f, 1.0f, 1.0f));
+		ptr->SetScale(Vec3(1.0));
 
 		vector<VertexPositionNormalTexture> vertices;
 		vector<uint16_t> indices;
@@ -665,7 +647,7 @@ namespace basecross {
 
 		ptr->SetPosition(m_pos);
 		ptr->SetQuaternion(m_qua);
-		ptr->SetScale(Vec3(3.0f, 3.0f, 3.0f));
+		ptr->SetScale(Vec3(3.0f));
 
 		Mat4x4 m_spanMat;
 		wstring m_modelName;
@@ -712,18 +694,6 @@ namespace basecross {
 		GetStage()->SetUpdatePerformanceActive(true);
 		GetStage()->SetDrawPerformanceActive(true);
 
-		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetAfterCollision(AfterCollision::None);
-		ptrColl->AddExcludeCollisionTag(L"Weapon");
-		ptrColl->AddExcludeCollisionTag(L"Grenade");
-		ptrColl->AddExcludeCollisionTag(L"Bullet");
-		ptrColl->AddExcludeCollisionTag(L"GatlingAmmo");
-		ptrColl->AddExcludeCollisionTag(L"SetGun");
-		ptrColl->AddExcludeCollisionTag(L"Explosion");
-
-		ptrColl->SetMakedSize(Vec3(0.5f, 1.0f, 0.5f));
-
-
 		AddTag(L"Weapon");
 		//AddTag(L"SetGun");
 
@@ -753,7 +723,7 @@ namespace basecross {
 			AddTag(L"GatlingGun");
 		}
 		else {
-			ptr->SetScale(Vec3(3.0f, 1.0f, 3.0f));
+			ptr->SetScale(Vec3(3.0f, 0.6f, 3.0f));
 			m_modelName = L"TomatoBattery.bmf";
 			m_spanMat.affineTransformation(
 				Vec3(1.0f, 1.0f, 1.0f),
