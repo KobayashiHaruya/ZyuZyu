@@ -108,7 +108,7 @@ namespace basecross {
 		int ID;
 
 		bool m_grenade;
-			CharacterStatus_s m_frome;
+		CharacterStatus_s m_frome;
 
 	public:
 		Grenade(const shared_ptr<Stage>& StagePtr,
@@ -142,7 +142,6 @@ namespace basecross {
 	class SmokeGrenade :public GameObject {
 		Vec3 m_pos;
 		Quat m_rot;
-		Vec3 m_scale;
 		int ID;
 
 		float m_time;
@@ -152,14 +151,12 @@ namespace basecross {
 		SmokeGrenade(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos,
 			const Quat& rot,
-			const Vec3& scale,
 			const int& id,
 			const CharacterStatus_s& frome
 		) :
 			GameObject(StagePtr),
 			m_pos(pos),
 			m_rot(rot),
-			m_scale(scale),
 			ID(id),
 			m_frome(frome)
 		{}
@@ -177,7 +174,6 @@ namespace basecross {
 	class TorimotiGrenade :public GameObject {
 		Vec3 m_pos;
 		Quat m_rot;
-		Vec3 m_scale;
 		int ID;
 
 		float m_time;
@@ -187,14 +183,12 @@ namespace basecross {
 		TorimotiGrenade(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos,
 			const Quat& rot,
-			const Vec3& scale,
 			const int& id,
 			const CharacterStatus_s& frome
 		) :
 			GameObject(StagePtr),
 			m_pos(pos),
 			m_rot(rot),
-			m_scale(scale),
 			ID(id),
 			m_frome(frome)
 		{}

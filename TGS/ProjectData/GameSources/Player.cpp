@@ -29,13 +29,13 @@ namespace basecross{
 
 
 	void ResultScore::ReadScore() {
-		//wstring key;
-		//App::GetApp()->GetDataDirectory(key);
+		wstring key;
+		App::GetApp()->GetDataDirectory(key);
 
-		//unique_ptr<XmlDocReader> m_XmlDocReader;
-		//m_XmlDocReader.reset(new XmlDocReader(key + L"XML/" + L"ResultScore.xml"));
+		unique_ptr<XmlDocReader> m_XmlDocReader;
+		m_XmlDocReader.reset(new XmlDocReader(key + L"XML/" + L"ResultScore.xml"));
 
-		//wstring table = L"ScoreTable/Char";
+		wstring table = L"ScoreTable/Char";
 
 
 		//for (int i = 0; i < 8; i++) {

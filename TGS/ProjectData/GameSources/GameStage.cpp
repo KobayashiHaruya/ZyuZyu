@@ -14,29 +14,14 @@ namespace basecross {
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
 	void GameStage::CreateViewLight() {
-		const Vec3 eye(0.0f, -6.0f, -6.0f);
+		const Vec3 eye(0.0f, -2.0f, -2.0f);
 		const Vec3 at(0.0f);
-
-		//auto PtrView = CreateView<SingleView>();
-		////ビューのカメラの設定
-		//auto PtrCamera = ObjectFactory::Create<Camera>();
-		//PtrView->SetCamera(PtrCamera);
-		//PtrCamera->SetEye(eye);
-		//PtrCamera->SetAt(at);
-		////マルチライトの作成
-		//auto PtrMultiLight = CreateLight<MultiLight>();
-		////デフォルトのライティングを指定
-		//PtrMultiLight->SetDefaultLighting();
 
 		auto& app = App::GetApp();
 		Viewport view = { 0.0f, 0.0f, app->GetGameWidth(), app->GetGameHeight(), 0.0f, 1.0f };
 		auto ptrView = CreateView<MultiView>();
 		//ビューのカメラの設定
 		auto ptrMyCamera = ObjectFactory::Create<MyCamera>();
-		//ptrView->SetCamera(ptrMyCamera);
-		//ptrView->SetViewport(view);
-		//ptrMyCamera->SetViewPort(ptrView->GetViewport());
-		//ptrView->SetViewport(ptrMyCamera->getv);
 		ptrView->AddView(view, ptrMyCamera);
 		ptrMyCamera->SetEye(eye);
 		ptrMyCamera->SetAt(at);
@@ -316,7 +301,8 @@ namespace basecross {
 			AddGameObject<Oil>(
 				Vec3(0.0f, -20.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
+				Vec3(1.0f, 1.0f, 1.0f),
+				true
 				);
 			AddGameObject<Nabe>(
 				Vec3(0.0f, -10.0f, 0.0f),
@@ -439,7 +425,6 @@ namespace basecross {
 		auto key = new XmlDoc(ss + L"/XML/" + L"ResultScore.xml");
 
 		vector<CharacterStatus_s> statuses;
-		vector<vector<int>> kills;
 
 		auto group = GetSharedObjectGroup(L"CharacterGroup");
 		auto vec = group->GetGroupVector();
@@ -448,12 +433,10 @@ namespace basecross {
 			if (obj) {
 				auto character = dynamic_pointer_cast<Character>(obj);
 				statuses.push_back(character->GetMyData());
-				//kills.push_back(character->GetKillList());
 			}
 		}
 
 		m_charState = statuses;
-		//m_kills = kills;
 
 		for (int i = 0; i < 8; i++) {
 			wstring id = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/ID";
@@ -467,16 +450,14 @@ namespace basecross {
 			wstring listSave = L"";
 
 			if (m_charState[i].kill > 0) {
-				auto group = GetSharedObjectGroup(L"CharacterGroup");
-				auto vec = group->GetGroupVector();
 				auto& obj = vec[i].lock();
 				if (obj) {
 					auto character = dynamic_pointer_cast<Character>(obj);
-					m_kills.push_back(character->GetKillList());
+					m_kills = character->GetKillList();
 				}
 				for (int j = 0; j < m_charState[i].kill; j++)
 				{
-					int a = m_kills[i][j];
+					int a = m_kills[i];
 					listSave += Util::IntToWStr(a);
 					listSave += L"|";
 				}

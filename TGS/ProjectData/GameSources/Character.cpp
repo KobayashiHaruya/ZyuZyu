@@ -14,12 +14,13 @@ namespace basecross {
 			Vec3(1.0f, 1.0f, 1.0f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(0.0f, 3.14f, 0.0f),
-			Vec3(0.0f, -1.5f, 0.0f));
+			Vec3(0.0f, -0.5f, 0.0f));
 
 		auto ptrColl = AddComponent<CollisionCapsule>();
-		ptrColl->SetMakedDiameter(2.5f);
-		//ptrColl->AddExcludeCollisionTag(L"Weapon");
+		ptrColl->SetMakedDiameter(0.15f);
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
+		ptrColl->SetDrawActive(true);
+		ptrColl->SetFixed(false);
 
 		//影をつける
 		auto ptrShadow = AddComponent<Shadowmap>();
@@ -64,7 +65,7 @@ namespace basecross {
 			m_WeaponO.weapon = BulletS::Shot;
 			m_WeaponT.weapon = BulletS::None;
 			m_modelName = L"Animation_Potato_test5.bmf";
-			speed = 5.0f;
+			speed = 2.5f;
 			grav = 50.0f;
 			jump = 10.0f;
 			break;
@@ -72,14 +73,14 @@ namespace basecross {
 			m_WeaponO.weapon = BulletS::SMG;
 			m_WeaponT.weapon = BulletS::None;
 			m_modelName = L"0525_Animation_Shrimp_test4.bmf";
-			speed = 10.0f;
+			speed = 5.0f;
 			grav = 25.0f;
 			jump = 15.0f;
 			break;
 		case CharacterType::CHICKEN:
 			m_WeaponO.weapon = BulletS::Rocket;
 			m_WeaponT.weapon = BulletS::Assault;
-			speed = 15.0f;
+			speed = 7.25f;
 			grav = 30.0f;
 			jump = 14.0f;
 			m_modelName = L"Chicken_Animation_test9.bmf";
@@ -88,7 +89,7 @@ namespace basecross {
 			m_WeaponO.weapon = BulletS::Sniper;
 			m_WeaponT.weapon = BulletS::None;
 			m_modelName = L"Animation_Doughnut_test3.bmf";
-			speed = 8.0f;
+			speed = 4.0f;
 			grav = 25.0f;
 			jump = 10.0f;
 			break;
@@ -96,7 +97,7 @@ namespace basecross {
 			m_WeaponO.weapon = BulletS::SMG;
 			m_WeaponT.weapon = BulletS::None;
 			m_modelName = L"0525_Animation_Shrimp_test4.bmf";
-			speed = 1.0f;
+			speed = 5.0f;
 			grav = 10.0f;
 			jump = 10.0f;
 			break;
@@ -248,7 +249,7 @@ namespace basecross {
 		if (ptrCamera) {
 			//MyCameraに注目するオブジェクト（プレイヤー）の設定
 			ptrCamera->SetTargetObject(GetThis<Character>());
-			ptrCamera->SetTargetToAt(Vec3(0.0f, 0.25f, 0));
+			ptrCamera->SetTargetToAt(Vec3(0.0f, 0.5f, 0));
 		}
 
 	}
@@ -417,25 +418,25 @@ namespace basecross {
 			PtrTransform->SetPosition(Vec3(0.0f, 0.0f, 0.0f));
 			break;
 		case 1:
-			PtrTransform->SetPosition(Vec3(-30.0f, 0.0f, 30.0f));
+			PtrTransform->SetPosition(Vec3(-5.0f, 0.0f, 5.0f));
 			break;
 		case 2:
-			PtrTransform->SetPosition(Vec3(30.0f, 0.0f, 30.0f));
+			PtrTransform->SetPosition(Vec3(5.0f, 0.0f, 5.0f));
 			break;
 		case 3:
-			PtrTransform->SetPosition(Vec3(30.0f, 0.0f, -30.0f));
+			PtrTransform->SetPosition(Vec3(5.0f, 0.0f, -5.0f));
 			break;
 		case 4:
-			PtrTransform->SetPosition(Vec3(-30.0f, 0.0f, -30.0f));
+			PtrTransform->SetPosition(Vec3(-5.0f, 0.0f, -5.0f));
 			break;
 		case 5:
-			PtrTransform->SetPosition(Vec3(-30.0f, 0.0f, 0.0f));
+			PtrTransform->SetPosition(Vec3(-5.0f, 0.0f, 0.0f));
 			break;
 		case 6:
-			PtrTransform->SetPosition(Vec3(30.0f, 0.0f, 0.0f));
+			PtrTransform->SetPosition(Vec3(5.0f, 0.0f, 0.0f));
 			break;
 		case 7:
-			PtrTransform->SetPosition(Vec3(0.0f, 0.0f, -30.0f));
+			PtrTransform->SetPosition(Vec3(0.0f, 0.0f, -5.0f));
 			break;
 		default:
 			PtrTransform->SetPosition(Vec3(0.0f, 0.0f, 0.0f));
@@ -451,7 +452,7 @@ namespace basecross {
 
 		Vec3 vecForce = rot * force.x;
 		vecForce.y = force.y;
-		grav->StartJump(vecForce * ((m_damage / 250.0f) + 1));
+		grav->StartJump(vecForce * ((m_damage / 1000.0f) + 1));
 
 		//ここで一定の条件（吹っ飛び率、自身をふっとばしたのはプレイヤーか）などで自身を表示するPinPを表示する
 		/*if(m_opponent.isPlayer) */ShowMyPinP();
@@ -691,7 +692,9 @@ namespace basecross {
 
 		int state;
 
-		switch (data.type)
+		int type = data.type;
+
+		switch (type)
 		{
 		case CharacterType::SHRIMP:
 			state = 0;
@@ -709,7 +712,9 @@ namespace basecross {
 			break;
 		}
 
-		state += data.level;
+		int level = data.level;
+
+		state += level;
 
 		m_killList.push_back(state);
 	}
