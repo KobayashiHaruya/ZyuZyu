@@ -31,7 +31,7 @@ namespace basecross {
 			);
 
 		//スコア
-		m_TrueScore = 500;
+		m_TrueScore = 12345;
 		for (int i = 0; i < 5; i++) {	//ループ数で桁変更
 			float n = static_cast<float>(i);
 			m_Score_UI = AddGameObject<Score_UI>(
@@ -65,13 +65,12 @@ namespace basecross {
 	}
 
 	void ResultStage::ScoreMove() {
-		AddScore(rand());
-		int Po_1 = m_TrueScore % 10;		//1の位抽出
+		int Po_1 = m_TrueScore % 10;	//1の位抽出
 
-		int Po_2 = m_TrueScore / 10;		//2の位抽出
+		int Po_2 = m_TrueScore / 10;	//2の位抽出
 		Po_2 = Po_2 % 10;
 
-		int Po_3 = m_TrueScore / 100;		//3の位抽出
+		int Po_3 = m_TrueScore / 100;	//3の位抽出
 		Po_3 = Po_3 % 10;
 
 		int Po_4 = m_TrueScore / 1000;	//4の位抽出
@@ -80,8 +79,36 @@ namespace basecross {
 		int Po_5 = m_TrueScore / 10000;	//5の位抽出
 		Po_5 = Po_5 % 10;
 
-		if (Po_1 == m_Score) {
 
+		int score = GetScore();
+		int aPo_1 = score % 10;	//1の位抽出
+
+		int aPo_2 = score / 10;	//2の位抽出
+		aPo_2 = aPo_2 % 10;
+
+		int aPo_3 = score / 100;	//3の位抽出
+		aPo_3 = aPo_3 % 10;
+
+		int aPo_4 = score / 1000;	//4の位抽出
+		aPo_4 = aPo_4 % 10;
+
+		int aPo_5 = score / 10000;	//5の位抽出
+		aPo_5 = aPo_5 % 10;
+
+		if (Po_1 != aPo_1) {
+			AddScore(rand());
+		}
+		if (Po_1 == aPo_1 && Po_2 != aPo_2) {
+			AddScore(rand() * 10);
+		}
+		if (Po_2 == aPo_2 && Po_3 != aPo_3) {
+			AddScore(rand() * 100);
+		}
+		if (Po_3 == aPo_3 && Po_4 != aPo_4) {
+			AddScore(rand() * 1000);
+		}
+		if (Po_4 == aPo_4 && Po_5 != aPo_5) {
+			AddScore(rand() * 10000);
 		}
 	}
 

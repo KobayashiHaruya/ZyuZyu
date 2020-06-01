@@ -69,7 +69,7 @@ namespace basecross {
 		}
 
 		void AddScore(int value) {
-			m_Score = value;
+			m_Score += value;
 		}
 
 	};
