@@ -9,6 +9,7 @@
 #include "MyUI.h"
 #include "Character.h"
 #include "AIchan.h"
+#include "MyCamera.h"
 
 namespace basecross {	
 
@@ -16,6 +17,8 @@ namespace basecross {
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
+		shared_ptr<MyCamera> m_camera;
+
 		shared_ptr<UI_The_World> m_pause;
 		shared_ptr<Player> m_player;
 		shared_ptr<AIchan> m_enemy;
@@ -53,6 +56,7 @@ namespace basecross {
 		//構築と破棄
 		GameStage() :
 			Stage(),
+			m_camera(NULL),
 			m_pause(NULL),
 			m_player(NULL),
 			m_enemy(NULL),
@@ -80,6 +84,13 @@ namespace basecross {
 			se->Stop(m_bgm);
 		}
 
+		shared_ptr<MyCamera> GetCamera() {
+			return m_camera;
+		}
+
+		void TestFunc() {
+
+		}
 	};
 
 

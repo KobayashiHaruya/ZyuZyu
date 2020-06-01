@@ -231,6 +231,10 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnUpdate()override;
+
+		/*Quat GetQuaternion() {
+			return Quat::
+		}*/
 	};
 
 

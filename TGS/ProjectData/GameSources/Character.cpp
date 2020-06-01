@@ -779,6 +779,19 @@ namespace basecross {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
 		auto ptr = GetComponent<Transform>();
+		auto gameStage = dynamic_pointer_cast<GameStage>(GetStage());
+		gameStage->TestFunc();
+		auto test = gameStage->GetCamera()->GetAt();
+
+		//ƒJƒƒ‰‚ÌŽæ“¾
+		/*auto camera = OnGetDrawCamera();
+		auto front = ptr->GetPosition() - camera->GetEye();
+		front = front.normalize();
+		float angle = atan2(front.y, front.z);
+		auto playerAngle = ptr->GetRotation();
+		Quat q = ptr->GetQuaternion();
+		q.rotationRollPitchYawFromVector(Vec3(playerAngle.x + 50, playerAngle.y, playerAngle.z));
+		q.normalize();*/
 
 		bool fire = false;
 
