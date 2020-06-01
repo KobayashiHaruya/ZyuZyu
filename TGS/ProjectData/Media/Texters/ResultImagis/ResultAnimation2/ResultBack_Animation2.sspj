@@ -113,9 +113,8 @@
 		<value>Star3.ssee</value>
 	</effectFileNames>
 	<lastAnimeFile>ResultBack_Animation2.ssae</lastAnimeFile>
-	<lastAnimeName>anime_Chicken</lastAnimeName>
+	<lastAnimeName>anime_Shrimp</lastAnimeName>
 	<lastCellMapFile>ResultBack_Animation2.ssce</lastCellMapFile>
 	<lastEffectFile>Star2.ssee</lastEffectFile>
-	<lastCell>ScoreBoard</lastCell>
-	<lastPart>ScoreBoard</lastPart>
+	<lastCell>NumberOne</lastCell>
 </SpriteStudioProject>

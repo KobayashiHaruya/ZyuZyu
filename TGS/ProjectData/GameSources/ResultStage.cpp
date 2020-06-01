@@ -55,7 +55,7 @@ namespace basecross {
 		m_resultThree = AddGameObject<UI_Result_Three>(mediaDir + L"Texters/ResultImagis/ResultAnimation3/", Vec3(0.0f), Vec3(32.0f), m_layer - 6);
 		m_resultTwo = AddGameObject<UI_Result_Two>(mediaDir + L"Texters/ResultImagis/ResultAnimation2/", Vec3(0.0f), Vec3(32.0f), m_layer - 3);
 
-		m_resultTwo->ChangeCharacter(CharacterType::CHICKEN);
+		m_resultTwo->ChangeCharacter(CharacterType::DOUGHNUT);
 		m_resultTwo->Play();
 	}
 

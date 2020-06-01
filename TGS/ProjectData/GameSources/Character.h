@@ -6,6 +6,7 @@
 #pragma once
 #include "stdafx.h"
 #include "Weapon.h"
+#include "GameStage.h"
 
 namespace basecross{
 

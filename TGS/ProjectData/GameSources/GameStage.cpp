@@ -33,6 +33,7 @@ namespace basecross {
 		auto ptrView = CreateView<MultiView>();
 		//ƒrƒ…[‚ÌƒJƒƒ‰‚Ìİ’è
 		auto ptrMyCamera = ObjectFactory::Create<MyCamera>();
+		m_camera = ptrMyCamera;
 		//ptrView->SetCamera(ptrMyCamera);
 		//ptrView->SetViewport(view);
 		//ptrMyCamera->SetViewPort(ptrView->GetViewport());
