@@ -39,7 +39,6 @@ namespace basecross {
 		if (pos.y <= -20.0f) {
 			TouchOil();
 		}
-
 	}
 
 	void AIchan::OnCollisionEnter(shared_ptr<GameObject>& Other) {
@@ -101,6 +100,8 @@ namespace basecross {
 		trans->SetPosition(pos);
 		auto ptr = GetBehavior<UtilBehavior>();
 		ptr->RotToHead(rot, time * m_aiParam.pointPatrolRotSpeed);
+
+		Animation(Anim::walk);
 	}
 	void AIchan::Jump(const Vec3& jumpVelocity) {
 		auto gravity = GetComponent<Gravity>();

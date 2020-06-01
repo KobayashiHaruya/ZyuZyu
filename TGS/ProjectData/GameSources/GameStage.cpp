@@ -322,7 +322,7 @@ namespace basecross {
 
 
 
-			for (int i = 1; i < 0; i++) {
+			for (int i = 1; i < 8; i++) {
 
 				CharacterType p;
 				int Rand = rand() % 4;

@@ -575,7 +575,7 @@ namespace basecross {
 		auto number = stage->AddGameObject<UI_Number>(
 			Vec2(50.0f, 180.0f - (index * 80.0f)),
 			5,
-			Col4(0.0f, 1.0f, 0.0f, 1.0f),
+			Col4(1.0f),
 			Number::NumberAlign::CENTER,
 			10.0f,
 			Vec2(0.4f),
@@ -587,7 +587,7 @@ namespace basecross {
 		number = stage->AddGameObject<UI_Number>(
 			Vec2(280.0f, 180.0f - (index * 80.0f)),
 			5,
-			Col4(1.0f, 0.0f, 0.0f, 1.0f),
+			Col4(1.0f),
 			Number::NumberAlign::CENTER,
 			10.0f,
 			Vec2(0.4f),
@@ -599,7 +599,7 @@ namespace basecross {
 		number = stage->AddGameObject<UI_Number>(
 			Vec2(520.0f, 180.0f - (index * 80.0f)),
 			5,
-			Col4(1.0f, 1.0f, 0.0f, 1.0f),
+			Col4(1.0f),
 			Number::NumberAlign::CENTER,
 			10.0f,
 			Vec2(0.4f),

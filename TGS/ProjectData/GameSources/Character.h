@@ -21,13 +21,14 @@ namespace basecross{
 		float maxreTime;
 	} CharacterWeapon_s;
 
+	enum Anim
+	{
+		stop,
+		walk
+	};
 
 	class Character : public GameObject {
-		enum Anim
-		{
-			stop,
-			walk
-		};
+		
 
 		Vec3 m_modelPos;
 		Vec3 m_modelRot;
@@ -76,7 +77,7 @@ namespace basecross{
 		bool m_des = false;
 		bool m_jump = false;
 		Anim m_eAnim = Anim::stop;
-		bool m_anim = false;
+		bool m_anim = true;
 
 		CharacterStatus_s m_myData;
 		vector<CharacterKillDetails_s> m_killCharacters;  //自身がキルした相手のキャラクタータイプとレベルを持つ
