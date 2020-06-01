@@ -31,21 +31,21 @@ namespace basecross {
 			);
 
 		//スコア
-		m_Score = 123456;
-		for (int i = 0; i < 6; i++) {	//ループ数で桁変更
+		m_TrueScore = 500;
+		for (int i = 0; i < 5; i++) {	//ループ数で桁変更
 			float n = static_cast<float>(i);
-			auto Score = AddGameObject<Score_UI>(
+			m_Score_UI = AddGameObject<Score_UI>(
 				Vec2(500.0f, 100.0f),
 				Vec3(0.0f, -200.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f),
+				Vec3(1.5f, 1.5f, 1.5f),
 				3,
 				Col4(1.0f, 1.0f, 1.0f, 1.0f),
 				m_Score_Image,
 				static_cast<int>((powf(10.0f, n))),
 				static_cast<int>(m_Score)	//表示するスコア
 				);
-			auto trans = Score->GetComponent<Transform>();
-			trans->SetPosition(300.0f * 0.5f - n * 64.0f - 64.0f, 500.0f * 0.5f, 0.0f);
+			auto trans = m_Score_UI->GetComponent<Transform>();
+			trans->SetPosition(300.0f * 0.5f - n * 64.0f - 64.0f, 150.0f * 0.5f, 0.0f);
 		}
 
 
@@ -62,7 +62,27 @@ namespace basecross {
 			type,
 			level
 			);
+	}
 
+	void ResultStage::ScoreMove() {
+		AddScore(rand());
+		int Po_1 = m_TrueScore % 10;		//1の位抽出
+
+		int Po_2 = m_TrueScore / 10;		//2の位抽出
+		Po_2 = Po_2 % 10;
+
+		int Po_3 = m_TrueScore / 100;		//3の位抽出
+		Po_3 = Po_3 % 10;
+
+		int Po_4 = m_TrueScore / 1000;	//4の位抽出
+		Po_4 = Po_4 % 10;
+
+		int Po_5 = m_TrueScore / 10000;	//5の位抽出
+		Po_5 = Po_5 % 10;
+
+		if (Po_1 == m_Score) {
+
+		}
 	}
 
 	void ResultStage::OnCreate() {
@@ -70,13 +90,14 @@ namespace basecross {
 			StopBGM();
 			CreateViewLight();
 			CreateUI();
-			AddGameObject<ResultScore>();
+			//AddGameObject<ResultScore>();
 			CreateIcon(m_type, m_level);
 		}
 		catch (...) {
 			throw;
 		}
 	}
+
 
 	void ResultStage::OnUpdate() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
@@ -89,6 +110,8 @@ namespace basecross {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
 		}
 
+		ScoreMove();
+
 
 		auto Trans = m_ResultIcon->GetComponent<Transform>();
 		auto Pos = Trans->GetPosition();
@@ -96,10 +119,6 @@ namespace basecross {
 			Trans->SetPosition(0.0f, m_Move, 0.0f);
 			m_Move -= 10.0f;
 		}
-
-
 	}
-
-
 
 }
