@@ -900,9 +900,8 @@ namespace basecross {
 		float angle = atan2(front.y, front.z);
 		auto playerAngle = ptr->GetRotation();
 		Quat q = ptr->GetQuaternion();
-		q.rotationRollPitchYawFromVector(Vec3(50.0f, 0.0f, 0.0f));
-		q.normalize();
-
+		/*q.rotationRollPitchYawFromVector(Vec3(playerAngle.x + 50, playerAngle.y, playerAngle.z));
+		q.normalize();*/
 
 		bool fire = false;
 
