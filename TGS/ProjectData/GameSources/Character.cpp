@@ -863,44 +863,14 @@ namespace basecross {
 		gameStage->TestFunc();
 		auto test = gameStage->GetCamera()->GetAt();
 
-
-		/*
-		
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
-
-		Vec3 angle(0, 0, 0);
-
-		auto ptrTransform = GetComponent<Transform>();
-		auto ptrCamera = OnGetDrawCamera();
-		auto front = ptrTransform->GetPosition() - ptrCamera->GetEye();
-		front.y = 0;
-		front.normalize();
-		float frontAngle = atan2(front.z, front.x);
-		Vec2 moveVec(0.0f, 1.0f);
-		float moveSize = moveVec.length();
-		float cntlAngle = atan2(0.0f, 1.0f);
-		float totalAngle = frontAngle + cntlAngle;
-		angle = Vec3(cos(totalAngle), 0, sin(totalAngle));
-		angle.normalize();
-		angle *= moveSize;
-		angle.y = 0.0f;
-
-		if (angle.length() > 0.0f) {
-			auto ptr = GetBehavior<UtilBehavior>();
-			ptr->RotToHead(angle, 1.0f);
-		}
-
-		*/
-
 		//ƒJƒƒ‰‚ÌŽæ“¾
-		auto camera = OnGetDrawCamera();
+		/*auto camera = OnGetDrawCamera();
 		auto front = ptr->GetPosition() - camera->GetEye();
 		front = front.normalize();
 		float angle = atan2(front.y, front.z);
 		auto playerAngle = ptr->GetRotation();
 		Quat q = ptr->GetQuaternion();
-		/*q.rotationRollPitchYawFromVector(Vec3(playerAngle.x + 50, playerAngle.y, playerAngle.z));
+		q.rotationRollPitchYawFromVector(Vec3(playerAngle.x + 50, playerAngle.y, playerAngle.z));
 		q.normalize();*/
 
 		bool fire = false;
@@ -975,7 +945,7 @@ namespace basecross {
 							//X.x = (i * 3.14f) / 180.0f;
 							auto bullet = GetStage()->AddGameObject<Bullet>(
 								ptr->GetPosition(),
-								q,
+								ptr->GetQuaternion(),
 								m_weaponO,
 								m_myData.unique,
 								ID,
@@ -992,7 +962,7 @@ namespace basecross {
 					else {
 						auto bullet = GetStage()->AddGameObject<Bullet>(
 							ptr->GetPosition(),
-							q,
+							ptr->GetQuaternion(),
 							m_weaponO,
 							m_myData.unique,
 							ID,
@@ -1071,7 +1041,7 @@ namespace basecross {
 							//X.x = (i * 3.14f) / 180.0f;
 							auto bullet = GetStage()->AddGameObject<Bullet>(
 								ptr->GetPosition(),
-								q,
+								ptr->GetQuaternion(),
 								m_weaponT,
 								m_myData.unique,
 								ID,
@@ -1088,7 +1058,7 @@ namespace basecross {
 					else {
 						auto bullet = GetStage()->AddGameObject<Bullet>(
 							ptr->GetPosition(),
-							q,
+							ptr->GetQuaternion(),
 							m_weaponT,
 							m_myData.unique,
 							ID,
