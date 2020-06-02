@@ -123,6 +123,8 @@ namespace basecross{
 		void BulletFire();
 		void WeaponOFire(bool fire);
 		void WeaponTFire(bool fire);
+		void WeaponOFire(bool fire, Quat rot);
+		void WeaponTFire(bool fire, Quat rot);
 		void SetWeaponFire();
 		void BulletState(int state, bool weapon, bool same = false);
 		void CharaState();

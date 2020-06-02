@@ -296,7 +296,17 @@ namespace basecross {
 		SetWeaponOState(5, 0);
 		SetWeaponTState(5, 0);
 
-		m_newBulletNum = RandomNumber(1, m_bulletMaxPossession);
+		//m_newBulletNum = RandomNumber(1, m_bulletMaxPossession);
+
+		//ƒŠƒ[ƒh‚ª”­¶‚µ‚½‚ç‚à‚¤ˆê‚Â‚Ì•Ší‚ÉØ‚è‘Ö‚¦‚é‚æ‚¤‚É‚·‚é
+		auto one = GetWeaponOState();
+		auto two = GetWeaponTState();
+		if (one.ammo || !two.ammo) {
+			m_newBulletNum = 1;
+		}
+		else {
+			m_newBulletNum = m_bulletMaxPossession;
+		}
 	}
 	bool AIchan::BulletShotPermission() {
 		float time = App::GetApp()->GetElapsedTime();
@@ -311,11 +321,18 @@ namespace basecross {
 		bool fire = true;
 		SetFire(true, true);
 
+		auto thisQuat = GetComponent<Transform>()->GetQuaternion();
+
+		if (m_target) {
+			auto front = m_target->GetPosition() - GetComponent<Transform>()->GetPosition();
+			thisQuat.facing(front);
+		}
+
 		if (m_newBulletNum == 1) {
-			WeaponOFire(fire);
+			WeaponOFire(fire, thisQuat);
 		}
 		else if (m_newBulletNum == 2) {
-			WeaponTFire(fire);
+			WeaponTFire(fire, thisQuat);
 		}
 	}
 

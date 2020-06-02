@@ -1057,6 +1057,155 @@ namespace basecross {
 
 	}
 
+	void Character::WeaponOFire(bool fire, Quat rot) {
+		auto ptr = GetComponent<Transform>();
+
+		if (m_reload && m_WeaponO.maxAmmo > 0) {
+			if (m_WeaponO.reTime > 0) {
+				float time = App::GetApp()->GetElapsedTime();
+				m_WeaponO.reTime -= time;
+				m_fire = false;
+			}
+			else {
+				int rem;
+				rem = m_WeaponO.reAmmo - m_WeaponO.ammo;
+				m_WeaponO.maxAmmo -= rem;
+				if (m_WeaponO.maxAmmo < 0) {
+					rem += m_WeaponO.maxAmmo;
+					m_WeaponO.maxAmmo = 0;
+				}
+				m_WeaponO.ammo += rem;
+
+				m_reload = false;
+				m_fire = true;
+			}
+		}
+
+		if (m_WeaponO.ammo > 0 && m_WeaponO.intTime <= 0) {
+			if (fire && m_fire) {
+				if (m_WeaponO.weapon == BulletS::Shot) {
+
+					for (size_t i = 0; i < 20; i++)
+					{
+						//Quat X;
+						//X.x = (i * 3.14f) / 180.0f;
+						auto bullet = GetStage()->AddGameObject<Bullet>(
+							ptr->GetPosition(),
+							rot,
+							m_WeaponO.weapon,
+							m_myData.unique,
+							ID,
+							m_myData
+							);
+
+						bullet->AddEvent([this](const CharacterStatus_s status) {
+							DroppedIntoOil(status);
+							});
+					}
+
+				}
+				else {
+					auto bullet = GetStage()->AddGameObject<Bullet>(
+						ptr->GetPosition(),
+						rot,
+						m_WeaponO.weapon,
+						m_myData.unique,
+						ID,
+						m_myData
+						);
+
+					bullet->AddEvent([this](const CharacterStatus_s status) {
+						DroppedIntoOil(status);
+						});
+
+				}
+				m_WeaponO.ammo--;
+				m_WeaponO.intTime = m_WeaponO.maxIntTime;
+
+				m_fire = false;
+			}
+		}
+		else if (m_WeaponO.intTime > 0) {
+			float time = App::GetApp()->GetElapsedTime();
+			m_WeaponO.intTime -= time;
+		}
+	}
+
+	void Character::WeaponTFire(bool fire, Quat rot) {
+		auto ptr = GetComponent<Transform>();
+
+		if (m_reload && m_WeaponT.maxAmmo > 0) {
+			if (m_WeaponT.reTime > 0) {
+				float time = App::GetApp()->GetElapsedTime();
+				m_WeaponT.reTime -= time;
+				m_fire = false;
+			}
+			else {
+				int rem;
+				rem = m_WeaponT.reAmmo - m_WeaponT.ammo;
+				m_WeaponT.maxAmmo -= rem;
+				if (m_WeaponT.maxAmmo < 0) {
+					rem += m_WeaponT.maxAmmo;
+					m_WeaponT.maxAmmo = 0;
+				}
+				m_WeaponT.ammo += rem;
+
+				m_reload = false;
+				m_fire = true;
+			}
+		}
+
+		if (m_WeaponT.ammo > 0 && m_WeaponT.intTime <= 0) {
+			if (fire && m_fire) {
+				if (m_WeaponT.weapon == BulletS::Shot) {
+
+					for (size_t i = 0; i < 20; i++)
+					{
+						//Quat X;
+						//X.x = (i * 3.14f) / 180.0f;
+						auto bullet = GetStage()->AddGameObject<Bullet>(
+							ptr->GetPosition(),
+							rot,
+							m_WeaponT.weapon,
+							m_myData.unique,
+							ID,
+							m_myData
+							);
+
+						bullet->AddEvent([this](const CharacterStatus_s status) {
+							DroppedIntoOil(status);
+							});
+					}
+
+				}
+				else {
+					auto bullet = GetStage()->AddGameObject<Bullet>(
+						ptr->GetPosition(),
+						rot,
+						m_WeaponT.weapon,
+						m_myData.unique,
+						ID,
+						m_myData
+						);
+
+					bullet->AddEvent([this](const CharacterStatus_s status) {
+						DroppedIntoOil(status);
+						});
+
+				}
+				m_WeaponT.ammo--;
+				m_WeaponT.intTime = m_WeaponT.maxIntTime;
+
+				m_fire = false;
+			}
+		}
+		else if (m_WeaponT.intTime > 0) {
+			float time = App::GetApp()->GetElapsedTime();
+			m_WeaponT.intTime -= time;
+		}
+
+	}
+
 	void Character::SetWeaponFire() {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
