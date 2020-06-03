@@ -7,6 +7,7 @@ namespace basecross {
 		int m_layer;
 		int m_Amount;
 		float m_Move;
+		float m_Second;
 
 		int m_Score;
 		int m_TrueScore;
@@ -33,6 +34,7 @@ namespace basecross {
 			m_Stage_Image(L"ScoreBoard_Sample.png"),
 			m_Cartain(NULL),
 			m_Amount(5),
+			m_Second(0.0f),
 			m_Move(500.0f),
 			m_Score(000000),
 			m_TrueScore(0),

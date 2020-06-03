@@ -441,6 +441,13 @@ namespace basecross {
 		void SetScore3(int s) {
 			m_Score = s * 100;
 		}
+		void SetScore4(int s) {
+			m_Score = s * 1000;
+		}
+		void SetScore5(int s) {
+			m_Score = s * 10000;
+		}
+
 
 		int GetScore() {
 			return m_Score;
