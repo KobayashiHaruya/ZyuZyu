@@ -22,16 +22,19 @@ namespace basecross{
 	} CharacterWeapon_s;
 
 
+	enum Anim
+	{
+		stop,
+		walk
+	};
+
 	class Character : public GameObject {
-		enum Anim
-		{
-			stop,
-			walk
-		};
 
 		Vec3 m_modelPos;
 		Vec3 m_modelRot;
 		Vec3 m_modelScale;
+
+		Quat m_bulletRot;
 
 		wstring m_modelName;
 
@@ -110,6 +113,7 @@ namespace basecross{
 		void PlayerCamera();
 		void PlayerMove();
 		void PlayerRotMove();
+		void BulletRot();
 		void PlayerUI();
 		void PlayerMovement();
 

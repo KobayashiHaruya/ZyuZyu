@@ -134,7 +134,7 @@ namespace basecross {
 			case BulletS::Rocket:
 				state.barrage = false;
 				state.reAmmo = 1;
-				state.ammo = 1;
+				state.ammo = 1; 
 				state.maxAmmo = 8;
 				state.intTime = 0.0f;
 				state.maxIntTime = 0.0f;
@@ -227,87 +227,108 @@ namespace basecross {
 
 			auto obstacleGroup = CreateSharedObjectGroup(L"ObstacleGroup");
 			auto obstacle = AddGameObject<Object>(
-				Vec3(10.0f, -7.5f, 0.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(2.0f, 5.0f, 5.0f)
+				Vec3(-28.0f, 3.0f, 10.0f),
+				Vec3(0.0f, 0.0f, -XM_PI / 20.0f),
+				Vec3(3.0f),
+				ObjectType::Harumaki
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(10.0f, -7.5f, 5.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(4.0f, 2.0f, 3.0f)
+				Vec3(30.0f, 5.0f, -10.0f),
+				Vec3(XM_PI / 2.0f, 0.0f, 0.0f),
+				Vec3(1.5f),
+				ObjectType::Asupara
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(-5.0f, -7.5f, -10.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(2.0f, 1.0f, 2.5f)
+				Vec3(30.0f, 5.0f, -5.0f),
+				Vec3(XM_PI / 2.0f, 0.0f, 0.0f),
+				Vec3(1.5f),
+				ObjectType::Asupara
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(20.0f, -7.5f, -15.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(5.0f, 1.0f, 10.0f)
+				Vec3(30.0f, 5.0f, 0.0f),
+				Vec3(XM_PI / 2.0f, 0.0f, 0.0f),
+				Vec3(1.5f),
+				ObjectType::Asupara
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(10.0f, -7.5f, 20.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(2.0f, 5.0f, 10.0f)
+				Vec3(30.0f, 5.0f, 5.0f),
+				Vec3(XM_PI / 2.0f, 0.0f, 0.0f),
+				Vec3(1.5f),
+				ObjectType::Asupara
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(20.0f, -7.5f, 0.0f),
+				Vec3(0.0f, 2.0f, 40.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(10.0f, 10.0f, 10.0f)
+				Vec3(2.0f),
+				ObjectType::Siitake
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(-20.0f, -7.5f, 13.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(4.0f, 3.0f, 8.0f)
+				Vec3(10.0f, 2.0f, 40.0f),
+				Vec3(0.0f, 1.0f, 0.0f),
+				Vec3(5.0f),
+				ObjectType::Katu
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(24.0f, -7.5f, 10.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(5.0f, 3.0f, 3.0f)
+				Vec3(20.0f, 4.0f, -40.0f),
+				Vec3(0.0f, XM_PI / 4.0f, XM_PI / 2.0f),
+				Vec3(7.0f),
+				ObjectType::Korokke
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(10.0f, -7.5f, -26.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(14.0f, 2.0f, 6.0f)
+				Vec3(-40.0f, 2.0f, -30.0f),
+				Vec3(0.0f, 1.5f, 0.0f),
+				Vec3(6.0f),
+				ObjectType::Nasu
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(-15.0f, -7.5f, -20.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(8.0f, 5.0f, 10.0f)
+				Vec3(-40.0f, 1.5f, 10.0f),
+				Vec3(0.0f, 0.0f, XM_PI / 8.0f),
+				Vec3(5.0f),
+				ObjectType::Imo
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(-30.0f, -7.5f, -11.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(6.0f, 2.0f, 8.0f)
-				);
-			obstacleGroup->IntoGroup(obstacle);
-			auto oil = AddGameObject<OilStage>(
-				Vec3(0.0f, -10.0f, 0.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
-				);
-			oil->AddTag(L"Obstacle");
-			AddGameObject<Oil>(
-				Vec3(0.0f, -20.0f, 0.0f),
+				Vec3(-20.0f, 2.0f, 40.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f),
-				true
+				ObjectType::Azi
 				);
-			AddGameObject<Nabe>(
-				Vec3(0.0f, -10.0f, 0.0f),
+			obstacleGroup->IntoGroup(obstacle);
+			obstacle = AddGameObject<Object>(
+				Vec3(-30.0f, 4.0f, 20.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
+				Vec3(3.0f, 3.0f, 3.0f),
+				ObjectType::Kabotya
+				);
+			obstacleGroup->IntoGroup(obstacle);
+
+			auto oil = AddGameObject<Object>(
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.4f, 0.4f, 0.4f),
+				ObjectType::Kakiage
+				);
+			oil->AddTag(L"Obstacle");
+			AddGameObject<Object>(
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.4f, 0.4f, 0.4f),
+				ObjectType::Oil
+				);
+			AddGameObject<Object>(
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.4f, 0.4f, 0.4f),
+				ObjectType::Nabe
 				);
 
 			m_player = AddGameObject<Player>(
@@ -322,64 +343,58 @@ namespace basecross {
 
 
 
-			for (int i = 1; i < 0; i++) {
+			//for (int i = 1; i < 8; i++) {
 
-				CharacterType p;
-				int Rand = rand() % 4;
-				switch (Rand) {
-				case 0:
-					p = CharacterType::SHRIMP;
-					break;
-				case 1:
-					p = CharacterType::CHICKEN;
-					break;
-				case 2:
-					p = CharacterType::POTATO;
-					break;
-				case 3:
-					p = CharacterType::DOUGHNUT;
-					break;
-				}
+			//	CharacterType p;
+			//	int Rand = rand() % 4;
+			//	switch (Rand) {
+			//	case 0:
+			//		p = CharacterType::SHRIMP;
+			//		break;
+			//	case 1:
+			//		p = CharacterType::CHICKEN;
+			//		break;
+			//	case 2:
+			//		p = CharacterType::POTATO;
+			//		break;
+			//	case 3:
+			//		p = CharacterType::DOUGHNUT;
+			//		break;
+			//	}
 
-				auto AIparam = AIParam_s{
-					vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
-					1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
-					3, 3,
-					0,
-					15.0f,
-					true
-				};
+			//	auto AIparam = AIParam_s{
+			//		vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
+			//		1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
+			//		3, 3,
+			//		0,
+			//		15.0f,
+			//		true
+			//	};
 
-				m_enemy = AddGameObject<AIchan>(
-					p,
-					false,
-					i, i,
-					AIparam
-					);
-
-				characterGroup->IntoGroup(m_enemy);
-			}
+			//	CreateAIchan();
+			//	characterGroup->IntoGroup(m_enemy);
+			//}
 
 			for (int i = 0; i < 5; i++) {
 				AddGameObject<Weapon>();
 			}
 			m_weaponTime = 10.0f;
 
-			AddGameObject<GunSeat>(
-				Vec3(-10.0f, -8.2f, 0.0f),
-				Quat(0.0f),
-				true
-				);
+			//AddGameObject<GunSeat>(
+			//	Vec3(-10.0f, 2.0f, 0.0f),
+			//	Quat(0.0f),
+			//	true
+			//	);
 
-			AddGameObject<SetGun>(
-				Vec3(0.0f, -8.2f, 0.0f),
-				Quat(0.0f),
-				false
-				);
+			//AddGameObject<SetGun>(
+			//	Vec3(0.0f, 2.0f, 0.0f),
+			//	Quat(0.0f),
+			//	false
+			//	);
 
-			AddGameObject<CannonAmmoBox>(
-				Vec3(0.0f, -8.0f, 5.0f)
-				);
+			//AddGameObject<CannonAmmoBox>(
+			//	Vec3(0.0f, 2.0f, 5.0f)
+			//	);
 
 			CreatePinP();
 
@@ -390,7 +405,6 @@ namespace basecross {
 			//	);
 
 
-			CreateAIchan();
 			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
 
 

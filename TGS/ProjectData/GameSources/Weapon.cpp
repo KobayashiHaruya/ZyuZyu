@@ -248,7 +248,7 @@ namespace basecross {
 		int Rand = rand() % 8 + 1;
 
 		m_pos.x = rand() % 60 + -30;
-		m_pos.y = 0.0f;
+		m_pos.y = 10.0f;
 		m_pos.z = rand() % 60 + -30;
 
 		switch (Rand)

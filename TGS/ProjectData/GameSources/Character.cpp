@@ -340,24 +340,128 @@ namespace basecross {
 
 		Vec3 angle(0, 0, 0);
 
-		auto ptrTransform = GetComponent<Transform>();
+		float fThumbLY = 0.0f;
+		float fThumbLX = 0.0f;
+		if (cntlVec[0].bConnected) {
+			fThumbLY = cntlVec[0].fThumbLY;
+			fThumbLX = cntlVec[0].fThumbLX;
+		}
+
+		if (KeyState.m_bPushKeyTbl['W']) {
+			fThumbLY = 1.0f;
+		}
+		else if (KeyState.m_bPushKeyTbl['S']) {
+			fThumbLY = -1.0f;
+		}
+		if (KeyState.m_bPushKeyTbl['D']) {
+			fThumbLX = 1.0f;
+		}
+		else if (KeyState.m_bPushKeyTbl['A']) {
+			fThumbLX = -1.0f;
+		}
+
+		auto trans = GetComponent<Transform>();
 		auto ptrCamera = OnGetDrawCamera();
-		auto front = ptrTransform->GetPosition() - ptrCamera->GetEye();
+		auto front = trans->GetPosition() - ptrCamera->GetEye();
 		front.y = 0;
 		front.normalize();
 		float frontAngle = atan2(front.z, front.x);
-		Vec2 moveVec(0.0f, 1.0f);
+		Vec2 moveVec;
+		float cntlAngle;
+		if ((cntlVec[0].bLeftTrigger > 250.0f || KeyState.m_bPushKeyTbl[VK_RBUTTON])) {
+			moveVec = Vec2(0.0f, 1.0f);
+			cntlAngle = atan2(0.0f, 1.0f);
+		}
+		else {
+			moveVec = Vec2(fThumbLX, fThumbLY);
+			cntlAngle = atan2(-fThumbLX, fThumbLY);
+		}
 		float moveSize = moveVec.length();
-		float cntlAngle = atan2(0.0f, 1.0f);
+		float totalAngle = frontAngle + cntlAngle;
+		angle = Vec3(cos(totalAngle), 0, sin(totalAngle));
+		angle.normalize();
+		angle *= moveSize;
+
+		if (angle.length() > 0.0f) {
+			bsm::Vec3 Temp = angle;
+			Temp.normalize();
+			float ToAngle = atan2(Temp.x, Temp.z);
+			bsm::Quat Qt;
+			Qt.rotationRollPitchYawFromVector(bsm::Vec3(0, ToAngle, 0));
+			Qt.normalize();
+			bsm::Quat NowQt = trans->GetQuaternion();
+			NowQt = Qt;
+			m_bulletRot = NowQt;
+		}
+
+		angle.y = 0.0f;
+
+		if (angle.length() > 0.0f) {
+			auto ptr = GetBehavior<UtilBehavior>();
+			ptr->RotToHead(angle, 1.0f);
+			//BulletRot();
+		}
+
+	}
+
+	void Character::BulletRot() {
+
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+		float fThumbRY = 0.0f;
+		float fThumbRX = 0.0f;
+		if (cntlVec[0].bConnected) {
+			fThumbRY = cntlVec[0].fThumbRY;
+			fThumbRX = cntlVec[0].fThumbRX;
+		}
+
+		if (KeyState.m_bPushKeyTbl['W']) {
+			fThumbRY = 1.0f;
+		}
+		else if (KeyState.m_bPushKeyTbl['S']) {
+			fThumbRY = -1.0f;
+		}
+		if (KeyState.m_bPushKeyTbl['D']) {
+			fThumbRX = 1.0f;
+		}
+		else if (KeyState.m_bPushKeyTbl['A']) {
+			fThumbRX = -1.0f;
+		}
+
+		Vec3 angle(0, 0, 0);
+
+		auto trans = GetComponent<Transform>();
+		auto ptrCamera = OnGetDrawCamera();
+		auto front = trans->GetPosition() - ptrCamera->GetEye();
+		front.y = 0;
+		front.normalize();
+		float frontAngle = atan2(front.z, front.x);
+		float moveX = fThumbRX;
+		float moveZ = fThumbRY;
+		Vec2 moveVec(moveX, moveZ);
+		//Vec2 moveVec(0.0f, 1.0f);
+		float moveSize = moveVec.length();
+		float cntlAngle = atan2(-moveX, moveZ);
+		//float cntlAngle = atan2(0.0f, 1.0f);
 		float totalAngle = frontAngle + cntlAngle;
 		angle = Vec3(cos(totalAngle), 0, sin(totalAngle));
 		angle.normalize();
 		angle *= moveSize;
 		angle.y = 0.0f;
 
+		//回転の更新
 		if (angle.length() > 0.0f) {
-			auto ptr = GetBehavior<UtilBehavior>();
-			ptr->RotToHead(angle, 1.0f);
+			bsm::Vec3 Temp = angle;
+			Temp.normalize();
+			float ToAngle = atan2(Temp.x, Temp.z);
+			bsm::Quat Qt;
+			Qt.rotationRollPitchYawFromVector(bsm::Vec3(0, ToAngle, 0));
+			Qt.normalize();
+			//現在の回転を取得
+			bsm::Quat NowQt = trans->GetQuaternion();
+			//現在と目標を補間
+			NowQt = Qt;
+			m_bulletRot = NowQt;
 		}
 
 	}
@@ -414,31 +518,31 @@ namespace basecross {
 		//ランダムに出すように
 		switch (Rand) {
 		case 0:
-			PtrTransform->SetPosition(Vec3(0.0f, 0.0f, 0.0f));
+			PtrTransform->SetPosition(Vec3(0.0f, 5.0f, 0.0f));
 			break;
 		case 1:
-			PtrTransform->SetPosition(Vec3(-5.0f, 0.0f, 5.0f));
+			PtrTransform->SetPosition(Vec3(-30.0f, 5.0f, 30.0f));
 			break;
 		case 2:
-			PtrTransform->SetPosition(Vec3(5.0f, 0.0f, 5.0f));
+			PtrTransform->SetPosition(Vec3(30.0f, 5.0f, 30.0f));
 			break;
 		case 3:
-			PtrTransform->SetPosition(Vec3(5.0f, 0.0f, -5.0f));
+			PtrTransform->SetPosition(Vec3(30.0f, 5.0f, -30.0f));
 			break;
 		case 4:
-			PtrTransform->SetPosition(Vec3(-5.0f, 0.0f, -5.0f));
+			PtrTransform->SetPosition(Vec3(-30.0f, 5.0f, -30.0f));
 			break;
 		case 5:
-			PtrTransform->SetPosition(Vec3(-5.0f, 0.0f, 0.0f));
+			PtrTransform->SetPosition(Vec3(-30.0f, 5.0f, 0.0f));
 			break;
 		case 6:
-			PtrTransform->SetPosition(Vec3(5.0f, 0.0f, 0.0f));
+			PtrTransform->SetPosition(Vec3(30.0f, 5.0f, 0.0f));
 			break;
 		case 7:
-			PtrTransform->SetPosition(Vec3(0.0f, 0.0f, -5.0f));
+			PtrTransform->SetPosition(Vec3(0.0f, 5.0f, -30.0f));
 			break;
 		default:
-			PtrTransform->SetPosition(Vec3(0.0f, 0.0f, 0.0f));
+			PtrTransform->SetPosition(Vec3(0.0f, 5.0f, 0.0f));
 			break;
 		}
 	}
@@ -929,7 +1033,7 @@ namespace basecross {
 						//X.x = (i * 3.14f) / 180.0f;
 						auto bullet = GetStage()->AddGameObject<Bullet>(
 							ptr->GetPosition(),
-							ptr->GetQuaternion(),
+							m_bulletRot,
 							m_WeaponO.weapon,
 							m_myData.unique,
 							ID,
@@ -945,7 +1049,7 @@ namespace basecross {
 				else {
 					auto bullet = GetStage()->AddGameObject<Bullet>(
 						ptr->GetPosition(),
-						ptr->GetQuaternion(),
+						m_bulletRot,
 						m_WeaponO.weapon,
 						m_myData.unique,
 						ID,
@@ -1164,7 +1268,7 @@ namespace basecross {
 			damage = 20.0;
 			break;
 		case BulletS::Laser:
-			force = Vec2(0.0f, 1.0f);
+			force = Vec2(0.5f, 0.0f);
 			damage = 20.0;
 			break;
 		case BulletS::Wind:
@@ -1242,7 +1346,7 @@ namespace basecross {
 	
 		auto pos = GetComponent<Transform>()->GetPosition();
 
-		if (pos.y <= -20.0f) {
+		if (pos.y <= -10.0f) {
 			TouchOil();
 		}
 
