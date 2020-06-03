@@ -430,6 +430,28 @@ namespace basecross {
 
 
 		void OnCreate() override;
+		void OnUpdate2() override;
+
+		void SetScore1(int s) {
+			m_Score = s * 1;
+		}
+		void SetScore2(int s) {
+			m_Score = s * 10;
+		}
+		void SetScore3(int s) {
+			m_Score = s * 100;
+		}
+		void SetScore4(int s) {
+			m_Score = s * 1000;
+		}
+		void SetScore5(int s) {
+			m_Score = s * 10000;
+		}
+
+
+		int GetScore() {
+			return m_Score;
+		}
 	};
 
 	//------------------------------------------------------------------------------------------------

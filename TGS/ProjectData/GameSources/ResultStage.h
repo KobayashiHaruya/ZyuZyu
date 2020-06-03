@@ -7,8 +7,10 @@ namespace basecross {
 		int m_layer;
 		int m_Amount;
 		float m_Move;
+		float m_Second;
 
 		int m_Score;
+		int m_TrueScore;
 
 		CharacterType m_type;
 		int m_level;
@@ -24,15 +26,20 @@ namespace basecross {
 		shared_ptr<UI_Result_Three> m_resultThree;
 		shared_ptr<UI_Result_Two> m_resultTwo;
 
+		shared_ptr<Score_UI> m_Score_UI;
+
+
 	public:
 		ResultStage() :Stage(),
 			m_layer(5),
 			m_Score_Image(L"Number_695_Gold.png"),
-			m_Stage_Image(L"ResultBack.png"),
+			m_Stage_Image(L"ScoreBoard_Sample.png"),
 			m_Cartain(NULL),
 			m_Amount(5),
+			m_Second(0.0f),
 			m_Move(500.0f),
-			m_Score(0),
+			m_Score(000000),
+			m_TrueScore(0),
 			m_type(POTATO),
 			m_level(0),
 			m_resultThree(NULL),
@@ -43,6 +50,7 @@ namespace basecross {
 		void CreateViewLight();
 		void CreateUI();
 		void CreateIcon(CharacterType type, int level);
+		void ScoreMove();
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
@@ -61,6 +69,15 @@ namespace basecross {
 			auto se = App::GetApp()->GetXAudio2Manager();
 			se->Stop(m_bgm);
 		}
+
+		int GetScore() const {
+			return m_Score;
+		}
+
+		void AddScore(int value) {
+			m_Score += value;
+		}
+
 	};
 
 }

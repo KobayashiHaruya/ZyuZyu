@@ -222,6 +222,10 @@ namespace basecross {
 			{Vec3(50,    0, 0), color, Vec2((score + 1) * Width, 0.0f)}, // 頂点２
 			{Vec3(0, -100, 0), color, Vec2((score + 0) * Width, 1.0f)}, // 頂点３
 			{Vec3(50, -100, 0), color, Vec2((score + 1) * Width, 1.0f)}, // 頂点４
+			//{Vec3(200,    0, 0), color, Vec2((score + 1) * Width, 0.0f)}, // 頂点２
+			//{Vec3(0, -100, 0), color, Vec2((score + 0) * Width, 1.0f)}, // 頂点３
+			//{Vec3(200, -100, 0), color, Vec2((score + 1) * Width, 1.0f)}, // 頂点４
+
 		};
 		indices = {0, 1, 2, 2, 1, 3 };
 
@@ -235,6 +239,22 @@ namespace basecross {
 		ptrTrans->SetScale(m_scale);
 
 		SetAlphaActive(true);
+	}
+
+	void Score_UI::OnUpdate2() {
+		auto resultstage = dynamic_pointer_cast<ResultStage>(GetStage());
+
+		float n = static_cast<float>(resultstage->GetScore() / m_place % 10); // 表示したい数字
+		float w = 69.1f / 691.0f; // 各数字の幅をテクスチャ座標に変換する
+
+		vertices[0].textureCoordinate.x = (n + 0) * w;
+		vertices[1].textureCoordinate.x = (n + 1) * w;
+		vertices[2].textureCoordinate.x = (n + 0) * w;
+		vertices[3].textureCoordinate.x = (n + 1) * w;
+
+		auto drawComp = GetComponent<PCTSpriteDraw>();
+		drawComp->UpdateVertices(vertices); // 頂点データを更新する
+
 	}
 
 	void UI_Character_Select_Mask_Image::MaskMove() {
