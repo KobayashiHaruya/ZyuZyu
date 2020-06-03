@@ -6,6 +6,7 @@ namespace basecross {
 	class ResultStage : public Stage {
 		int m_layer;
 		int m_Amount;
+		float m_PosY;
 		float m_Move;
 		float m_Second;
 
@@ -35,6 +36,7 @@ namespace basecross {
 			m_Score_Image(L"Number_695_Gold.png"),
 			m_Stage_Image(L"ScoreBoard_Sample.png"),
 			m_Cartain(NULL),
+			m_PosY(1500.0f),
 			m_Amount(5),
 			m_Second(0.0f),
 			m_Move(500.0f),
@@ -74,8 +76,8 @@ namespace basecross {
 			return m_Score;
 		}
 
-		void AddScore(int value) {
-			m_Score += value;
+		void SetScore(int value) {
+			m_Score = value;
 		}
 
 	};

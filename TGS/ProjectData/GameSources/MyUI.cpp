@@ -222,9 +222,6 @@ namespace basecross {
 			{Vec3(50,    0, 0), color, Vec2((score + 1) * Width, 0.0f)}, // ’¸“_‚Q
 			{Vec3(0, -100, 0), color, Vec2((score + 0) * Width, 1.0f)}, // ’¸“_‚R
 			{Vec3(50, -100, 0), color, Vec2((score + 1) * Width, 1.0f)}, // ’¸“_‚S
-			//{Vec3(200,    0, 0), color, Vec2((score + 1) * Width, 0.0f)}, // ’¸“_‚Q
-			//{Vec3(0, -100, 0), color, Vec2((score + 0) * Width, 1.0f)}, // ’¸“_‚R
-			//{Vec3(200, -100, 0), color, Vec2((score + 1) * Width, 1.0f)}, // ’¸“_‚S
 
 		};
 		indices = {0, 1, 2, 2, 1, 3 };
