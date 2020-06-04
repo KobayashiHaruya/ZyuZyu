@@ -38,7 +38,7 @@ namespace basecross {
 			float n = static_cast<float>(i);
 			m_Score_UI[i] = AddGameObject<Score_UI>(
 				Vec2(500.0f, 100.0f),
-				Vec3(300.0f * 0.5f - n * 64.0f - 64.0f, 150.0f * 0.5f, 0.0f),
+				Vec3(300.0f * 0.5f - n * 64.0f - 64.0f, 460.0f * 0.5f, 0.0f),
 				Vec3(1.5f, 1.5f, 1.5f),
 				3,
 				Col4(1.0f, 1.0f, 1.0f, 1.0f),
@@ -53,7 +53,7 @@ namespace basecross {
 		App::GetApp()->GetDataDirectory(mediaDir);
 		m_Cartain = AddGameObject<Result_Curtain>(mediaDir + L"Texters/ResultImagis/ResultAnimation/SpriteStadio/", Vec3(0.0f, 0.0f, 0.0f), Vec3(32.0f), m_layer);
 		m_resultThree = AddGameObject<UI_Result_Three>(mediaDir + L"Texters/ResultImagis/ResultAnimation3/", Vec3(0.0f), Vec3(32.0f), m_layer - 6);
-		m_resultTwo = AddGameObject<UI_Result_Two>(mediaDir + L"Texters/ResultImagis/ResultAnimation2/", Vec3(0.0f), Vec3(32.0f), m_layer - 3);
+		m_resultTwo = AddGameObject<UI_Result_Two>(mediaDir + L"Texters/ResultImagis/ResultAnimation2_ver4/", Vec3(0.0f), Vec3(32.0f), m_layer - 3);
 
 		m_resultTwo->ChangeCharacter(CharacterType::DOUGHNUT);
 		m_resultTwo->Play();
