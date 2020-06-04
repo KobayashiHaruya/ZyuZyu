@@ -36,20 +36,18 @@ namespace basecross {
 
 		for (int i = 0; i < 5; i++) {	//ループ数で桁変更
 			float n = static_cast<float>(i);
-			m_Score_UI = AddGameObject<Score_UI>(
+			m_Score_UI[i] = AddGameObject<Score_UI>(
 				Vec2(500.0f, 100.0f),
-				Vec3(0.0f, -00.0f, 0.0f),
+				Vec3(300.0f * 0.5f - n * 64.0f - 64.0f, 150.0f * 0.5f, 0.0f),
 				Vec3(1.5f, 1.5f, 1.5f),
 				3,
 				Col4(1.0f, 1.0f, 1.0f, 1.0f),
 				m_Score_Image,
 				static_cast<int>((powf(10.0f, n))),
-				static_cast<int>(m_Score)	//表示するスコア
+				static_cast<int>(m_Score)
 				);
-			auto trans = m_Score_UI->GetComponent<Transform>();
-			trans->SetPosition(300.0f * 0.5f - n * 64.0f - 64.0f, 150.0f * 0.5f, 0.0f);
+			m_Score_UI[i]->SetDrawActive(false);
 		}
-
 
 		wstring mediaDir;
 		App::GetApp()->GetDataDirectory(mediaDir);
@@ -62,23 +60,29 @@ namespace basecross {
 	}
 
 	void ResultStage::CreateIcon(CharacterType type, int level) {
-		m_ResultIcon = AddGameObject<Result_Icon_UI>(
-			Vec3(0.0f, 500.0f, 0.0f),
-			Vec3(0.3f, 0.3f, 0.3f),
-			0,
-			type,
-			level
-			);
+		//m_ResultIcon = AddGameObject<Result_Icon_UI>(
+		//	Vec3(0.0f, 500.0f, 0.0f),
+		//	Vec3(0.3f, 0.3f, 0.3f),
+		//	0,
+		//	type,
+		//	level
+		//	);
 	}
 
 	void ResultStage::ScoreMove() {
 		m_Second += App::GetApp()->GetElapsedTime();
-		if (m_Second <= 6.0f) {
+		if (m_Second <= 13.0f) {
 			SetScore(rand());
 		}
 		else {
 			SetScore(m_TrueScore);
 		}
+
+		//auto Trans = m_Score_UI->GetComponent<Transform>();
+		//if (m_PosY > -10.0f) {
+		//	Trans->SetPosition(0.0f, m_PosY, 0.0f);
+		//	m_PosY -= 10.0f;
+		//}
 	}
 
 	void ResultStage::OnCreate() {
@@ -113,14 +117,25 @@ namespace basecross {
 
 		ScoreMove();
 
-		auto Trans = m_ResultIcon->GetComponent<Transform>();
-		auto Pos = Trans->GetPosition();
-		if (Pos.y > -10.0f) {
-			Trans->SetPosition(0.0f, m_Move, 0.0f);
-			m_Move -= 10.0f;
-		}
+
+		//auto Trans = m_ResultIcon->GetComponent<Transform>();
+		//auto Pos = Trans->GetPosition();
+		//if (Pos.y > -10.0f) {
+		//	Trans->SetPosition(0.0f, m_Move, 0.0f);
+		//	m_Move -= 10.0f;
+		//}
 		
 		if (m_Cartain->GetCount() >= 40) m_resultThree->Play();
 	}
 
+	void ResultStage::OnUpdate2() {
+		m_Second += App::GetApp()->GetElapsedTime();
+		for (int i = 0; i < 5; i++) {	//ループ数で桁変更
+
+			if (m_Second >= 8.0f) {
+				m_Score_UI[i]->SetDrawActive(true);
+
+			}
+		}
+	}
 }

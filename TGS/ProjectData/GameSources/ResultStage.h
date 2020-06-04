@@ -27,7 +27,7 @@ namespace basecross {
 		shared_ptr<UI_Result_Three> m_resultThree;
 		shared_ptr<UI_Result_Two> m_resultTwo;
 
-		shared_ptr<Score_UI> m_Score_UI;
+		shared_ptr<Score_UI> m_Score_UI[5];
 
 
 	public:
@@ -56,6 +56,7 @@ namespace basecross {
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+		virtual void OnUpdate2() override;
 
 		void PlaySE(wstring key, float vol) {
 			auto se = App::GetApp()->GetXAudio2Manager();

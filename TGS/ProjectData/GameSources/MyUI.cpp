@@ -225,12 +225,10 @@ namespace basecross {
 
 		};
 		indices = {0, 1, 2, 2, 1, 3 };
-
 		auto ptrDraw = AddComponent<PCTSpriteDraw>(vertices, indices);
 		ptrDraw->SetDiffuse(m_color);
 		ptrDraw->SetTextureResource(m_textures);
 		SetDrawLayer(m_layer);
-
 		auto ptrTrans = GetComponent<Transform>();
 		ptrTrans->SetPosition(m_pos);
 		ptrTrans->SetScale(m_scale);
@@ -248,7 +246,6 @@ namespace basecross {
 		vertices[1].textureCoordinate.x = (n + 1) * w;
 		vertices[2].textureCoordinate.x = (n + 0) * w;
 		vertices[3].textureCoordinate.x = (n + 1) * w;
-
 		auto drawComp = GetComponent<PCTSpriteDraw>();
 		drawComp->UpdateVertices(vertices); // 頂点データを更新する
 

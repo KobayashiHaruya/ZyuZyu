@@ -432,7 +432,6 @@ namespace basecross {
 		void OnCreate() override;
 		void OnUpdate2() override;
 
-
 		int GetScore() {
 			return m_Score;
 		}
