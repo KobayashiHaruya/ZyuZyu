@@ -77,12 +77,6 @@ namespace basecross {
 		else {
 			SetScore(m_TrueScore);
 		}
-
-		//auto Trans = m_Score_UI->GetComponent<Transform>();
-		//if (m_PosY > -10.0f) {
-		//	Trans->SetPosition(0.0f, m_PosY, 0.0f);
-		//	m_PosY -= 10.0f;
-		//}
 	}
 
 	void ResultStage::OnCreate() {
