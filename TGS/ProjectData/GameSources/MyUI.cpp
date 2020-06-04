@@ -888,16 +888,25 @@ namespace basecross {
 
 	void UI_The_World::ShowTitleback(bool e) {
 		if (m_titleback) {
-			m_titleback->SetDrawActive(e);
+			m_titleback->Hidden(!e);
+			m_selectback->Hidden(!e);
 		}
 		else {
 			m_titleback = GetStage()->AddGameObject<UI_Static_Image>(
-				Vec2(1255.0f, 203.0f),
-				Vec3(0.0f, -80.0f, 0.0f),
-				Vec3(0.8f, 0.8f, 0.8f),
+				Vec2(256.0f, 68.0f),
+				Vec3(0.0f, -50.0f, 0.0f),
+				Vec3(1.0f),
 				m_layer,
 				m_white,
 				m_titlebackImageName
+				);
+			m_selectback = GetStage()->AddGameObject<UI_Static_Image>(
+				Vec2(256.0f, 68.0f),
+				Vec3(0.0f, -85.0f, 0.0f),
+				Vec3(1.0f),
+				m_layer,
+				m_white,
+				m_selectbackImageName
 				);
 			ShowTitleback(e);
 		}
