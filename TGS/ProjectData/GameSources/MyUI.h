@@ -819,6 +819,9 @@ namespace basecross {
 		void SetCharacterKillDetails(const vector<CharacterKillDetails_s>& characterStatusKillDetails) {
 			if(m_killDetails) m_killDetails->SetCharacterKillDetails(characterStatusKillDetails);
 		}
+		int GetTabIndex() {
+			return m_index;
+		}
 		bool GetShowing() {
 			return m_isShow;
 		}
@@ -1224,6 +1227,7 @@ namespace basecross {
 		shared_ptr<UI_Static_Image> m_colon;
 
 		unsigned int m_time;
+		unsigned int m_showingTime;
 		Vec2 m_pos;
 		Vec2 m_scale;
 		Col4 m_color;
@@ -1234,11 +1238,14 @@ namespace basecross {
 		unsigned int m_digit;
 		float m_space;
 
+		bool m_isStart;
+
 		void UpdateTime();
 
 	public:
 		UI_CountdownTimer(const shared_ptr<Stage>& StagePtr,
 			const unsigned int time,
+			const unsigned int showingTime,
 			const Vec2& pos,
 			const Vec2& scale,
 			const Col4& color,
@@ -1246,6 +1253,7 @@ namespace basecross {
 		) :
 			GameObject(StagePtr),
 			m_time(time > 5999 ? 5999 : time),
+			m_showingTime(showingTime > m_time ? m_time : showingTime),
 			m_pos(pos),
 			m_scale(scale),
 			m_color(color),
@@ -1256,7 +1264,8 @@ namespace basecross {
 			m_count(NULL),
 			m_colonImageName(L"Colon.png"),
 			m_digit(2),
-			m_space(10.0f)
+			m_space(10.0f),
+			m_isStart(false)
 		{}
 		~UI_CountdownTimer() {}
 
@@ -1266,7 +1275,16 @@ namespace basecross {
 		unsigned int GetTime() {
 			return m_time;
 		}
+
+		void Start() {
+			m_isStart = true;
+		}
+
+		void Stop() {
+			m_isStart = false;
+		}
 	};
+
 
 	//------------------------------------------------------------------------------------------------
 	//プレイヤーUI : Class
@@ -1421,7 +1439,7 @@ namespace basecross {
 	//リザルトアニメーション3 : Class
 	//------------------------------------------------------------------------------------------------
 
-	class UI_Result_Three :public SS5ssae {
+	class UI_Result_Three : public SS5ssae {
 		Vec3 m_pos;
 		Vec3 m_scale;
 		int m_layer;
@@ -1456,7 +1474,7 @@ namespace basecross {
 	//リザルトアニメーション2 : Class
 	//------------------------------------------------------------------------------------------------
 
-	class UI_Result_Two :public SS5ssae {
+	class UI_Result_Two : public SS5ssae {
 		Vec3 m_pos;
 		Vec3 m_scale;
 		int m_layer;
@@ -1493,7 +1511,7 @@ namespace basecross {
 	//コピーライトスプラッシュ : Class
 	//------------------------------------------------------------------------------------------------
 
-	class UI_Copyright_Splash :public SS5ssae {
+	class UI_Copyright_Splash : public SS5ssae {
 		Vec3 m_pos;
 		Vec3 m_scale;
 		int m_layer;
@@ -1553,4 +1571,131 @@ namespace basecross {
 			m_text = text;
 		}
 	};
+
+
+	//------------------------------------------------------------------------------------------------
+	//CountSignal : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_Count_Signal : public GameObject {
+		unsigned int m_startTime;
+		unsigned int m_endTime;
+		Vec3 m_numberPos;
+		Vec3 m_numberScale;
+		Vec3 m_signalPos;
+		Vec3 m_signalScale;
+		int m_layer;
+		bool m_isStart;
+		wstring m_startSignalImageName;
+		wstring m_endSignalImageName;
+
+		shared_ptr<UI_Number> m_number;
+		shared_ptr<UI_Static_Image> m_signalImage;
+		unsigned int m_nowTime;
+
+		void CreateStart();
+		void CreateEnd();
+
+		void SignalUpdate();
+
+	public:
+		UI_Count_Signal(const shared_ptr<Stage>& StagePtr,
+			const unsigned int startTime,
+			const unsigned int endTime,
+			const Vec3& numberPos,
+			const Vec3& numberScale,
+			const Vec3& signalPos,
+			const Vec3& signalScale,
+			const int layer,
+			const bool isStart
+		) :
+			GameObject(StagePtr),
+			m_startTime(startTime),
+			m_endTime(endTime),
+			m_numberPos(numberPos),
+			m_numberScale(numberScale),
+			m_signalPos(signalPos),
+			m_signalScale(signalScale),
+			m_layer(layer),
+			m_isStart(isStart),
+			m_startSignalImageName(L"GameStart.png"),
+			m_endSignalImageName(L"GameFinish.png"),
+			m_number(NULL),
+			m_signalImage(NULL),
+			m_nowTime(NULL)
+		{}
+		~UI_Count_Signal() {}
+
+		virtual void OnCreate() override;
+
+		void SetNowTime(const unsigned nowTime) {
+			m_nowTime = nowTime;
+			SignalUpdate();
+		}
+	};
+
+
+	//------------------------------------------------------------------------------------------------
+	//カーテン : Class
+	//------------------------------------------------------------------------------------------------
+
+	class UI_Curtain : public SS5ssae {
+		Vec3 m_pos;
+		Vec3 m_scale;
+		int m_layer;
+		float m_fps;
+
+		float m_baseFps;
+
+		float m_startFrame;
+		float m_endFrame;
+		float m_frameCount;
+		bool m_finished;
+
+		void FrameUpdate();
+
+	public:
+		UI_Curtain(const shared_ptr<Stage>& StagePtr,
+			const wstring& BaseDir,
+			const Vec3& pos,
+			const Vec3& scale,
+			const int layer
+		) :
+			SS5ssae(StagePtr, BaseDir, L"Result_Animation.ssae", L"anime_1", true),
+			m_pos(pos),
+			m_scale(scale),
+			m_layer(layer),
+			m_fps(60.0f),
+			m_baseFps(30.0f),
+			m_startFrame(NULL),
+			m_endFrame(NULL),
+			m_frameCount(NULL),
+			m_finished(false)
+		{}
+		~UI_Curtain() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
+		bool Finished() {
+			return m_finished;
+		}
+
+		void Open() {
+			m_startFrame = 0.0f;
+			m_endFrame = 40.0f;
+			m_frameCount = m_startFrame / m_baseFps;
+			ChangeAnimation(L"anime_1", m_frameCount);
+			m_finished = false;
+		};
+
+		void Close() {
+			m_startFrame = 41.0f;
+			m_endFrame = 80.0f;
+			m_frameCount = m_startFrame / m_baseFps;
+			ChangeAnimation(L"anime_1", m_frameCount);
+			m_finished = false;
+		}
+	};
+
 }

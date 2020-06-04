@@ -223,8 +223,8 @@ namespace basecross {
 			WeaponState();
 			CreateViewLight();
 			CreateUI();
-			CreateTime();
-			CreateEndTime();
+			/*CreateTime();
+			CreateEndTime();*/
 
 			auto obstacleGroup = CreateSharedObjectGroup(L"ObstacleGroup");
 			auto obstacle = AddGameObject<Object>(
@@ -382,8 +382,6 @@ namespace basecross {
 				Vec3(0.0f, -8.0f, 5.0f)
 				);
 
-			CreatePinP();
-
 			//m_enemy = AddGameObject<Enemy>(
 			//	CharacterType::CHICKEN,
 			//	false,
@@ -391,9 +389,16 @@ namespace basecross {
 			//	);
 
 
-			CreateAIchan();
-			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
 
+			CreatePinP();
+			m_timer = AddGameObject<UI_CountdownTimer>(185, 180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
+			m_startSignal = AddGameObject<UI_Count_Signal>(185, 180, Vec3(0.0f), Vec3(2.0f), Vec3(0.0f), Vec3(1.0f), 5, true);
+			m_endSignal = AddGameObject<UI_Count_Signal>(5, 0, Vec3(0.0f, 420.0f, 0.0f), Vec3(1.5f), Vec3(0.0f), Vec3(0.8f), 5, false);
+
+			wstring mediaDir;
+			App::GetApp()->GetDataDirectory(mediaDir);
+			m_curtain =  AddGameObject<UI_Curtain>(mediaDir + L"Texters/ShareImagies/CurtainAnimation/", Vec3(0.0f), Vec3(34.0f), 1000);
+			m_curtain->Open();
 
 			//PlaySE(L"爆発_色々01.wav", 0.5f);
 			PlayBGM(L"Main_BGM01.wav", 0.2f);
@@ -407,6 +412,7 @@ namespace basecross {
 
 	void GameStage::OnUpdate() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 
 		if (KeyState.m_bPressedKeyTbl['Z']) {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
@@ -417,6 +423,51 @@ namespace basecross {
 		WeaponUpdate();
 
 		ShowPause();
+
+		//ポーズ画面が開いていて特定のタブでボタンが押された時
+		if (m_pause->GetShowing() && m_state == 1) {
+			switch (m_pause->GetTabIndex())
+			{
+			case 3:
+				m_state = (KeyState.m_bPressedKeyTbl[VK_LBUTTON] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) ? 5 : ((KeyState.m_bPressedKeyTbl[VK_RBUTTON] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B) ? 6 : m_state);
+				if ((m_state == 5 || m_state == 6)) {
+					m_curtain->Close();
+				}
+				break;
+			default:
+				break;
+			}
+		}
+
+		if (m_curtain->Finished()) {
+			switch (m_state)
+			{
+			case 0:
+				m_timer->Start();
+				m_state = 1;
+				break;
+			case 1:
+				if (m_timer->GetTime() == 0) {
+					m_curtain->Close();
+					m_state = 2;
+				}
+				break;
+			case 3:
+				NextStage();
+				m_state = 10;
+				break;
+			case 5:
+				PrevTitleStage();
+				m_state = 10;
+				break;
+			case 6:
+				PrevSelectStage();
+				m_state = 10;
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	void GameStage::GameFinishScore() {
@@ -518,6 +569,27 @@ namespace basecross {
 
 		}
 
+	}
+
+	void GameStage::OnUpdate2() {
+
+		if (m_timer->GetTime() == 180) m_start = true;
+
+		m_startSignal->SetNowTime(m_timer->GetTime());
+		m_endSignal->SetNowTime(m_timer->GetTime());
+	}
+
+	void GameStage::NextStage() {
+		App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
+
+	}
+
+	void GameStage::PrevTitleStage() {
+		App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
+	}
+
+	void GameStage::PrevSelectStage() {
+		App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
 	}
 
 	void GameStage::ShowPause() {

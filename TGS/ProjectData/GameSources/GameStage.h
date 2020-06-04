@@ -27,6 +27,14 @@ namespace basecross {
 		
 		vector<CharacterStatus_s> m_charState;
 
+		shared_ptr<UI_CountdownTimer> m_timer;
+		shared_ptr<UI_Count_Signal> m_startSignal;
+		shared_ptr<UI_Count_Signal> m_endSignal;
+
+		shared_ptr<UI_Curtain> m_curtain;
+
+		unsigned int m_state;
+
 		//ÉrÉÖÅ[ÇÃçÏê¨
 		void CreateViewLight();
 		void CreateUI();
@@ -48,6 +56,10 @@ namespace basecross {
 		//bool gather = false;
 		void CreateAIchan();
 
+		void NextStage();
+		void PrevTitleStage();
+		void PrevSelectStage();
+
 	public:
 		vector<WeaponState_s> m_weaponState;
 		bool m_start = false;
@@ -60,12 +72,18 @@ namespace basecross {
 			m_pause(NULL),
 			m_player(NULL),
 			m_enemy(NULL),
-			m_pinp(NULL)
+			m_pinp(NULL),
+			m_timer(NULL),
+			m_startSignal(NULL),
+			m_endSignal(NULL),
+			m_curtain(NULL),
+			m_state(NULL)
 		{}
 		virtual ~GameStage() {}
 		//èâä˙âª
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+		virtual void OnUpdate2() override;
 
 		void GameFinishScore();
 

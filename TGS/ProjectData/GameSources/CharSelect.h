@@ -16,7 +16,10 @@ namespace basecross {
 		shared_ptr<UI_Character_Select_Mask_Image> m_mask;
 		shared_ptr<UI_Static_Image> m_characterLogo;
 		shared_ptr<UI_Character_Status> m_characterStatus;
+		shared_ptr<UI_Curtain> m_curtain;
 		shared_ptr<SoundItem> m_bgm;
+
+		unsigned int m_state;
 
 		int m_startIndex;
 		int m_oldIndex;
@@ -26,6 +29,9 @@ namespace basecross {
 		void ChangeCharacter(int index);
 		void Select();
 		void SelectData();
+
+		void NextStage();
+		void PrevStage();
 
 	public:
 		CharSelectStage() :Stage(),
@@ -40,7 +46,9 @@ namespace basecross {
 			m_oldIndex(-1),
 			m_mask(NULL),
 			m_characterLogo(NULL),
-			m_characterStatus(NULL)
+			m_characterStatus(NULL),
+			m_curtain(NULL),
+			m_state(NULL)
 		{}
 		virtual ~CharSelectStage() {}
 
