@@ -50,6 +50,8 @@ namespace basecross {
 		wstring mediaDir;
 		App::GetApp()->GetDataDirectory(mediaDir);
 		m_characterStatus = AddGameObject<UI_Character_Status>(mediaDir + L"Texters/StageSelectImagies/Status_Animation/SpriteStudio/", Vec3(230.0f, -375.0f, 0.0f), Vec3(30.0f), m_layer);
+		m_curtain = AddGameObject<UI_Curtain>(mediaDir + L"Texters/ShareImagies/CurtainAnimation/", Vec3(0.0f), Vec3(34.0f), m_layer + 100);
+		m_curtain->Open();
 
 		ChangeCharacter(m_startIndex);
 	}
@@ -68,6 +70,20 @@ namespace basecross {
 	void CharSelectStage::OnUpdate() {
 		ChangeCharacter(m_mask->GetIndex());
 		Select();
+
+		if (m_curtain->Finished() && m_state != 0) {
+			switch (m_state)
+			{
+			case 1:
+				NextStage();
+				break;
+			case 2:
+				PrevStage();
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	void CharSelectStage::ChangeCharacter(int index) {
@@ -114,17 +130,28 @@ namespace basecross {
 	void CharSelectStage::Select() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || KeyState.m_bPressedKeyTbl[VK_SPACE] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) {
+		if ((KeyState.m_bUpKeyTbl[VK_LBUTTON] || KeyState.m_bPressedKeyTbl[VK_SPACE] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) && m_state == 0) {
 			PlaySE(L"button_pause_se.wav", 0.5f);
-			//ここにゲームステージへ遷移する処理を書く
-			SelectData();
-			StopBGM();
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::game);
+			m_curtain->Close();
+			m_state = 1;
 		}
-		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
-			StopBGM();
+		if ((KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) && m_state == 0) {
+			PlaySE(L"button_pause_se.wav", 0.5f);
+			m_curtain->Close();
+			m_state = 2;
 		}
+	}
+
+	void CharSelectStage::NextStage() {
+		//ここにゲームステージへ遷移する処理を書く
+		SelectData();
+		StopBGM();
+		App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::game);
+	}
+
+	void CharSelectStage::PrevStage() {
+		App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
+		StopBGM();
 	}
 
 	void CharSelectStage::SelectData() {
@@ -138,7 +165,7 @@ namespace basecross {
 
 		key->SetText(key->GetSelectSingleNode(L"CharSelect/Character"), Util::FloatToWStr(index, 1, Util::Fixed).c_str());
 
-		key->Save(ss + L"/XML/" + L"CharSelect.xml");
+		//key->Save(ss + L"/XML/" + L"CharSelect.xml");
 	}
 
 

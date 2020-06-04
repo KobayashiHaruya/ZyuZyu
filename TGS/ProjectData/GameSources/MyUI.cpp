@@ -924,10 +924,10 @@ namespace basecross {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		if (m_index == 3 && (KeyState.m_bPressedKeyTbl['Q'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) {
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
+			//App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
 		}
 		if (m_index == 3 && (KeyState.m_bPressedKeyTbl['E'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
+			//App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
 		}
 		/*if (KeyState.m_bPressedKeyTbl['P'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X) {
 			Show(false);
@@ -1662,22 +1662,27 @@ namespace basecross {
 	}
 
 	void UI_CountdownTimer::OnUpdate2() {
+		if (!m_isStart) return;
 		auto eTime = App::GetApp()->GetElapsedTime();
 		m_count += eTime;
 
 		if (m_count >= 1.0f && m_time > 0) {
 			m_count = NULL;
 			m_time--;
-			UpdateTime();
+			if (m_time < m_showingTime) {
+				m_showingTime--;
+				UpdateTime();
+			}
 		}
 	}
 
 	void UI_CountdownTimer::UpdateTime() {
-		auto a = m_time / 60;
-		auto b = m_time % 60;
+		auto a = m_showingTime / 60;
+		auto b = m_showingTime % 60;
 		m_second->SetValue(b);
 		m_minute->SetValue(a);
 	}
+
 
 	//------------------------------------------------------------------------------------------------
 	//キルアイコン : Class
@@ -1970,5 +1975,122 @@ namespace basecross {
 	void DebugText::OnUpdate2() {
 		auto sp = GetComponent<StringSprite>();
 		sp->SetText(m_text);
+	}
+
+
+	//------------------------------------------------------------------------------------------------
+	//CountSignal : Class
+	//------------------------------------------------------------------------------------------------
+
+	void UI_Count_Signal::OnCreate() {
+		if (m_isStart) {
+			CreateStart();
+		}
+		else {
+			CreateEnd();
+		}
+		m_signalImage->Hidden(true);
+
+		m_number = GetStage()->AddGameObject<UI_Number>(
+			Vec2(m_numberPos.x, m_numberPos.y),
+			1,
+			Col4(1.0f),
+			Number::NumberAlign::ZERO_CENTER,
+			0.0f,
+			Vec2(m_numberScale.x, m_numberScale.y),
+			1000
+			);
+		m_number->Hidden(true);
+	}
+
+	void UI_Count_Signal::CreateStart() {
+		m_signalImage = GetStage()->AddGameObject<UI_Static_Image>(
+			Vec2(1024.0f, 256.0f),
+			m_signalPos,
+			m_signalScale,
+			m_layer,
+			Col4(1.0f),
+			m_startSignalImageName
+			);
+	}
+
+	void UI_Count_Signal::CreateEnd() {
+		m_signalImage = GetStage()->AddGameObject<UI_Static_Image>(
+			Vec2(1472.0f, 256.0f),
+			m_signalPos,
+			m_signalScale,
+			m_layer,
+			Col4(1.0f),
+			m_endSignalImageName
+			);
+	}
+
+	void UI_Count_Signal::SignalUpdate() {
+		if (m_isStart) {
+			int num = m_nowTime - m_endTime;
+			if (num > 0) {
+				m_number->Hidden(false);
+				m_number->SetValue(num);
+			}
+			else if (num == 0) {
+				m_number->Hidden(true);
+				m_signalImage->Hidden(false);
+			}
+			else {
+				m_number->Hidden(true);
+				m_signalImage->Hidden(true);
+			}
+		}
+		else {
+			int num = m_startTime - m_nowTime;
+			if (num < 0) return;
+			if (m_nowTime > 0) {
+				m_number->Hidden(false);
+				m_number->SetValue(m_nowTime);
+			}
+			else if (m_nowTime == 0) {
+				m_number->Hidden(true);
+				m_signalImage->Hidden(false);
+			}
+		}
+	}
+
+
+	//------------------------------------------------------------------------------------------------
+	//カーテン : Class
+	//------------------------------------------------------------------------------------------------
+	
+	void UI_Curtain::FrameUpdate() {
+		auto time = App::GetApp()->GetElapsedTime();
+		if (m_frameCount <= m_endFrame / m_baseFps) {
+			UpdateAnimeTime(time);
+			m_frameCount += time;
+		}
+		else {
+			m_finished = true;
+		}
+	}
+
+	void UI_Curtain::OnCreate() {
+		SetDrawLayer(m_layer);
+		Mat4x4 mat;
+		mat.affineTransformation(
+			Vec3(1.0f, 1.0f, 1.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f)
+		);
+		SetToAnimeMatrix(mat);
+
+		auto PtrTrans = GetComponent<Transform>();
+		PtrTrans->SetScale(m_scale);
+		PtrTrans->SetPosition(m_pos);
+		SS5ssae::OnCreate();
+		SetFps(m_baseFps);
+		SetLooped(false);
+	}
+
+	void UI_Curtain::OnUpdate() {
+		FrameUpdate();
 	}
 }
