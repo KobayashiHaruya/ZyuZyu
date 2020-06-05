@@ -126,7 +126,6 @@ namespace basecross{
 			m_gameStageKey = key;
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), m_stageKey[m_gameStageKey]);
 		}
-
 	};
 
 

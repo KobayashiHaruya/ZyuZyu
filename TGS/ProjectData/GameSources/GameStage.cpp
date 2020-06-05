@@ -391,8 +391,8 @@ namespace basecross {
 
 
 			CreatePinP();
-			m_timer = AddGameObject<UI_CountdownTimer>(185, 180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
-			m_startSignal = AddGameObject<UI_Count_Signal>(185, 180, Vec3(0.0f), Vec3(2.0f), Vec3(0.0f), Vec3(1.0f), 5, true);
+			m_timer = AddGameObject<UI_CountdownTimer>(15, 15, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
+			m_startSignal = AddGameObject<UI_Count_Signal>(15, 10, Vec3(0.0f), Vec3(2.0f), Vec3(0.0f), Vec3(1.0f), 5, true);
 			m_endSignal = AddGameObject<UI_Count_Signal>(5, 0, Vec3(0.0f, 420.0f, 0.0f), Vec3(1.5f), Vec3(0.0f), Vec3(0.8f), 5, false);
 
 			wstring mediaDir;
@@ -572,7 +572,10 @@ namespace basecross {
 	}
 
 	void GameStage::OnUpdate2() {
-
+		if (!m_timer->GetTime() && m_curtain->Finished()) {
+			m_state = 3;
+			m_curtain->Close();
+		}
 		if (m_timer->GetTime() == 180) m_start = true;
 
 		m_startSignal->SetNowTime(m_timer->GetTime());

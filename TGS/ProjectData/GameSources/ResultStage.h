@@ -16,6 +16,8 @@ namespace basecross {
 		CharacterType m_type;
 		int m_level;
 
+		int m_state;
+
 		wstring m_Stage_Image;
 		wstring m_Score_Image;
 		wstring m_Score_frame_Image;
@@ -24,11 +26,12 @@ namespace basecross {
 		shared_ptr<SoundItem> m_bgm;
 
 		shared_ptr<Result_Icon_UI> m_ResultIcon;
+
+		shared_ptr<UI_Curtain> m_curtain;
 		shared_ptr<UI_Result_Three> m_resultThree;
 		shared_ptr<UI_Result_Two> m_resultTwo;
 
 		shared_ptr<Score_UI> m_Score_UI[5];
-
 
 	public:
 		ResultStage() :Stage(),
@@ -44,8 +47,10 @@ namespace basecross {
 			m_TrueScore(0),
 			m_type(POTATO),
 			m_level(0),
+			m_curtain(NULL),
 			m_resultThree(NULL),
-			m_resultTwo(NULL)
+			m_resultTwo(NULL),
+			m_state(NULL)
 		{}
 		virtual ~ResultStage() {}
 

@@ -51,7 +51,10 @@ namespace basecross {
 
 		wstring mediaDir;
 		App::GetApp()->GetDataDirectory(mediaDir);
-		m_Cartain = AddGameObject<Result_Curtain>(mediaDir + L"Texters/ResultImagis/ResultAnimation/SpriteStadio/", Vec3(0.0f, 0.0f, 0.0f), Vec3(50.0f), m_layer);
+		//m_Cartain = AddGameObject<Result_Curtain>(mediaDir + L"Texters/ResultImagis/ResultAnimation/SpriteStadio/", Vec3(0.0f, 0.0f, 0.0f), Vec3(50.0f), m_layer);
+
+		m_curtain = AddGameObject<UI_Curtain>(mediaDir + L"Texters/ShareImagies/CurtainAnimation/", Vec3(0.0f), Vec3(34.0f), m_layer + 100);
+		m_curtain->Open();
 		m_resultThree = AddGameObject<UI_Result_Three>(mediaDir + L"Texters/ResultImagis/ResultAnimation3/", Vec3(0.0f), Vec3(32.0f), m_layer - 6);
 		m_resultTwo = AddGameObject<UI_Result_Two>(mediaDir + L"Texters/ResultImagis/ResultAnimation2/", Vec3(0.0f), Vec3(32.0f), m_layer - 3);
 
@@ -99,14 +102,14 @@ namespace basecross {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		m_Second += App::GetApp()->GetElapsedTime();
 
-		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) {
-			StopBGM();
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
+		if ((KeyState.m_bUpKeyTbl[VK_LBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) && m_state == 10) {
+			m_curtain->Close();
+			m_state = 1;
 		}
 
-		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) {
-			StopBGM();
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
+		if ((KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) && m_state == 10) {
+			m_curtain->Close();
+			m_state = 2;
 		}
 
 		ScoreMove();
@@ -118,8 +121,29 @@ namespace basecross {
 		//	Trans->SetPosition(0.0f, m_Move, 0.0f);
 		//	m_Move -= 10.0f;
 		//}
-		
-		if (m_Cartain->GetCount() >= 40) m_resultThree->Play();
+
+
+		if (m_curtain->Finished()) {
+			switch (m_state)
+			{
+			case 0:
+				m_resultThree->Play();
+				m_state = 10;
+				break;
+			case 1:
+				StopBGM();
+				App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
+				m_state = 100;
+				break;
+			case 2:
+				StopBGM();
+				App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
+				m_state = 100;
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	void ResultStage::OnUpdate2() {
