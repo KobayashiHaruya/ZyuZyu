@@ -33,7 +33,7 @@ namespace basecross {
 	}
 
 	void GameStage::CreateUI() {
-		m_pause = AddGameObject<UI_The_World>(5);
+		m_pause = AddGameObject<UI_The_World>(9999);
 
 	}
 
@@ -391,8 +391,8 @@ namespace basecross {
 
 
 			CreatePinP();
-			m_timer = AddGameObject<UI_CountdownTimer>(15, 15, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
-			m_startSignal = AddGameObject<UI_Count_Signal>(15, 10, Vec3(0.0f), Vec3(2.0f), Vec3(0.0f), Vec3(1.0f), 5, true);
+			m_timer = AddGameObject<UI_CountdownTimer>(185, 180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
+			m_startSignal = AddGameObject<UI_Count_Signal>(185, 180, Vec3(0.0f), Vec3(2.0f), Vec3(0.0f), Vec3(1.0f), 5, true);
 			m_endSignal = AddGameObject<UI_Count_Signal>(5, 0, Vec3(0.0f, 420.0f, 0.0f), Vec3(1.5f), Vec3(0.0f), Vec3(0.8f), 5, false);
 
 			wstring mediaDir;
@@ -457,11 +457,11 @@ namespace basecross {
 				m_state = 10;
 				break;
 			case 5:
-				PrevTitleStage();
+				PrevSelectStage();
 				m_state = 10;
 				break;
 			case 6:
-				PrevSelectStage();
+				PrevTitleStage();
 				m_state = 10;
 				break;
 			default:
