@@ -439,7 +439,7 @@ namespace basecross {
 
 
 
-			for (int i = 1; i < 2; i++) {
+			for (int i = 1; i < 8; i++) {
 
 				CharacterType p;
 				int Rand = rand() % 4;
@@ -561,6 +561,7 @@ namespace basecross {
 				break;
 			case 1:
 				if (m_timer->GetTime() == 0) {
+					m_start = false;
 					m_curtain->Close();
 					m_state = 2;
 				}

@@ -139,7 +139,6 @@ namespace basecross {
 
 	void Object::Collision() {
 		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetDrawActive(true);
 		ptrColl->AddExcludeCollisionTag(L"Smoke");
 		ptrColl->AddExcludeCollisionTag(L"Torimoti");
 		ptrColl->AddExcludeCollisionTag(L"Explosion");

@@ -517,18 +517,6 @@ namespace basecross {
 				GetStage()->AddGameObject<GatlingAmmo>(
 					GetComponent<Transform>()->GetPosition()
 					);
-				GetStage()->AddGameObject<GatlingAmmo>(
-					GetComponent<Transform>()->GetPosition()
-					);
-				GetStage()->AddGameObject<GatlingAmmo>(
-					GetComponent<Transform>()->GetPosition()
-					);
-				GetStage()->AddGameObject<GatlingAmmo>(
-					GetComponent<Transform>()->GetPosition()
-					);
-				GetStage()->AddGameObject<GatlingAmmo>(
-					GetComponent<Transform>()->GetPosition()
-					);
 			}
 
 		}
@@ -541,18 +529,6 @@ namespace basecross {
 			}
 
 			if (m_toriIn) {
-				GetStage()->AddGameObject<GatlingAmmo>(
-					GetComponent<Transform>()->GetPosition()
-					);
-				GetStage()->AddGameObject<GatlingAmmo>(
-					GetComponent<Transform>()->GetPosition()
-					);
-				GetStage()->AddGameObject<GatlingAmmo>(
-					GetComponent<Transform>()->GetPosition()
-					);
-				GetStage()->AddGameObject<GatlingAmmo>(
-					GetComponent<Transform>()->GetPosition()
-					);
 				GetStage()->AddGameObject<GatlingAmmo>(
 					GetComponent<Transform>()->GetPosition()
 					);
