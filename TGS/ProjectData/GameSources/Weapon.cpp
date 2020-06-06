@@ -51,7 +51,7 @@ namespace basecross {
 			speed = 55.0f;
 			grav = 0.5f;
 			time = 5.0f;
-			scale = Vec3(1.0f);
+			scale = Vec3(1.5f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Sniper:
@@ -95,6 +95,7 @@ namespace basecross {
 			time = 0.2f;
 			scale = Vec3(10.0f);
 			AddTag(L"Explosion");
+			AddTag(L"Bullet");
 			break;
 		case BulletS::CExplosion:
 			speed = 0.0f;
@@ -102,6 +103,7 @@ namespace basecross {
 			time = 0.2f;
 			scale = Vec3(15.0f);
 			AddTag(L"Explosion");
+			AddTag(L"Bullet");
 			break;
 		case BulletS::SExplosion:
 			speed = 0.0f;
@@ -109,7 +111,16 @@ namespace basecross {
 			time = 0.2f;
 			scale = Vec3(13.0f);
 			AddTag(L"Explosion");
+			AddTag(L"Bullet");
 			AddTag(L"Smoke");
+			break;
+		case BulletS::RExplosion:
+			speed = 0.0f;
+			grav = 0.0f;
+			time = 0.5f;
+			scale = Vec3(5.0f);
+			AddTag(L"Explosion");
+			AddTag(L"Bullet");
 			break;
 		default:
 			break;
@@ -206,6 +217,9 @@ namespace basecross {
 		case BulletS::SExplosion:
 			Effect(L"Explosion_Grenade.efk");
 			break;
+		case BulletS::RExplosion:
+			Effect(L"Explosion_Egg.efk");
+			break;
 		default:
 			break;
 		}
@@ -245,21 +259,33 @@ namespace basecross {
 		if (FindTag(L"Explosion") || m_type == BulletS::Laser) {
 
 		}
-		else if ((m_type == BulletS::Rocket && m_hit) && (Other->GetID() != ID || Other->FindTag(L"Object"))) {
-			auto ptr = GetComponent<Transform>();
-			auto gravity = GetComponent<Gravity>();
+		else if ((Other->FindTag(L"Object") && !Other->FindTag(L"Bullet")) || Other->GetID() != ID) {
+			Destroy();
 
-			ptr->SetScale(Vec3(5.0f));
-			m_time = 0.8f;
-			gravity->SetGravityVerocityZero();
-			m_hit = false;
-		}
-		else {
-			if ((Other->GetID() != ID && !Other->FindTag(L"Bullet") || Other->FindTag(L"Object")) && !(m_type == BulletS::Rocket)) {
-				GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
+			if (m_type == BulletS::Rocket) {
+				auto ptr = GetComponent<Transform>();
+
+				GetStage()->AddGameObject<Bullet>(
+					ptr->GetPosition(),
+					ptr->GetQuaternion(),
+					BulletS::RExplosion,
+					m_frome.unique,
+					ID,
+					m_frome
+					);
+
 			}
+
 		}
 	}
+
+	void Bullet::Destroy() {
+
+		GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
+		m_efkPlay->StopEffect();
+
+	}
+
 
 	void Bullet::OnCreate() {
 		Draw();

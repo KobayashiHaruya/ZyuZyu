@@ -78,7 +78,8 @@ namespace basecross {
 		Cannon,
 		GExplosion,
 		CExplosion,
-		SExplosion
+		SExplosion,
+		RExplosion
 	};
 
 

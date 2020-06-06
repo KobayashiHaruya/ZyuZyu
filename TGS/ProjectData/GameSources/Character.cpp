@@ -513,13 +513,6 @@ namespace basecross {
 		}
 
 		if (Other->FindTag(L"Explosion")) {
-			BulletDamage(Other->GetBulletType(), Other->GetComponent<Transform>()->GetForword());
-			auto bullet = dynamic_pointer_cast<Bullet>(Other);
-			if (bullet) {
-				m_touchOil = dynamic_pointer_cast<ObstacleEvent<const CharacterStatus_s>>(Other);
-				m_opponent = bullet->GetFrome();
-			}
-
 			if (Other->FindTag(L"Smoke")) {
 				GetStage()->AddGameObject<GatlingAmmo>(
 					GetComponent<Transform>()->GetPosition()
@@ -539,7 +532,7 @@ namespace basecross {
 			}
 
 		}
-		else if(Other->FindTag(L"Bullet") && Other->GetID() != ID){
+		if(Other->FindTag(L"Bullet") && Other->GetID() != ID){
 			BulletDamage(Other->GetBulletType(), Other->GetComponent<Transform>()->GetForword());
 			auto bullet = dynamic_pointer_cast<Bullet>(Other);
 			if (bullet) {
@@ -1360,8 +1353,8 @@ namespace basecross {
 			damage = 2.0;
 			break;
 		case BulletS::Rocket:
-			force = Vec2(4.0f, 3.0f);
-			damage = 15.0;
+			force = Vec2(0.0f, 0.0f);
+			damage = 0.0;
 			break;
 		case BulletS::Sniper:
 			force = Vec2(5.0f, 1.0f);
@@ -1394,6 +1387,10 @@ namespace basecross {
 		case BulletS::SExplosion:
 			force = Vec2(5.0f, 5.0f);
 			damage = 20.0;
+			break;
+		case BulletS::RExplosion:
+			force = Vec2(4.0f, 3.0f);
+			damage = 15.0;
 			break;
 		default:
 			break;

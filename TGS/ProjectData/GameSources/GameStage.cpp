@@ -53,14 +53,14 @@ namespace basecross {
 
 	void GameStage::CreateEndTime() {
 
-		    AddGameObject<EndTime>(1, L"0_9.png", true,
-				 Vec2(200.0f, 250.0f),
-				 Vec3(0.0f, 0.0f, 0.0f));
+		AddGameObject<EndTime>(1, L"0_9.png", true,
+			Vec2(200.0f, 250.0f),
+			Vec3(0.0f, 0.0f, 0.0f));
 
-				//時間を更新する
-				auto Time = AddGameObject<End>(L"GameFinish.png",
-					Vec2(600.0f, 300.0f),
-					Vec2(-300.0f, 0.0f));			
+		//時間を更新する
+		auto Time = AddGameObject<End>(L"GameFinish.png",
+			Vec2(600.0f, 300.0f),
+			Vec2(-300.0f, 0.0f));
 	}
 
 	void GameStage::WeaponUpdate() {
@@ -277,7 +277,7 @@ namespace basecross {
 		m_effectName.push_back(name);
 		m_effect[12] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
 
-		name = L"Assault.efk";
+		name = L"Explosion_Egg.efk";
 		m_effectName.push_back(name);
 		m_effect[13] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
 
@@ -300,7 +300,7 @@ namespace basecross {
 		name = L"Assault.efk";
 		m_effectName.push_back(name);
 		m_effect[18] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
+		
 	}
 
 	void GameStage::OnDraw()
@@ -439,7 +439,7 @@ namespace basecross {
 
 
 
-			for (int i = 1; i < 8; i++) {
+			for (int i = 1; i < 2; i++) {
 
 				CharacterType p;
 				int Rand = rand() % 4;
@@ -467,7 +467,13 @@ namespace basecross {
 					true
 				};
 
-				CreateAIchan();
+				m_enemy = AddGameObject<AIchan>(
+					p,
+					false,
+					i, i,
+					AIparam
+					);
+
 				characterGroup->IntoGroup(m_enemy);
 			}
 
@@ -477,7 +483,7 @@ namespace basecross {
 			m_weaponTime = 10.0f;
 
 			AddGameObject<GunSeat>(
-				Vec3(-10.0f, 2.5f, 10.0f),
+				Vec3(-10.0f, 2.0f, 10.0f),
 				Quat(0.0f),
 				true
 				);

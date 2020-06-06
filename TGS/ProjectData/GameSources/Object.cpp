@@ -155,4 +155,90 @@ namespace basecross {
 		ObjectModel();
 	}
 	
+
+	void Result_Icon::OnCreate() {
+		auto ptr = GetComponent<Transform>();
+
+		ptr->SetPosition(m_pos);
+		ptr->SetRotation(Vec3(0.0f));
+		ptr->SetScale(Vec3(1.0f, 1.0f, 0.5f));
+
+		vector<VertexPositionNormalTexture> vertices;
+		vector<uint16_t> indices;
+		MeshUtill::CreateSquare(1.0f, vertices, indices);
+
+		vertices[0].textureCoordinate = Vec2(0, 0);
+
+		vertices[1].textureCoordinate = Vec2(1, 0);
+
+		vertices[2].textureCoordinate = Vec2(0, 1.0f);
+
+		vertices[3].textureCoordinate = Vec2(1, 1.0f);
+
+		vector<VertexPositionColorTexture> new_vertices;
+		for (auto& v : vertices) {
+			VertexPositionColorTexture nv;
+			nv.position = v.position;
+			nv.color = Col4(1.0f, 1.0f, 1.0f, 1.0f);
+			nv.textureCoordinate = v.textureCoordinate;
+			new_vertices.push_back(nv);
+		}
+
+		m_SquareMeshResource = MeshResource::CreateMeshResource<VertexPositionColorTexture>(new_vertices, indices, true);
+
+		auto draw = AddComponent<PCTStaticDraw>();
+		draw->SetMeshResource(m_SquareMeshResource);
+		switch (m_type)
+		{
+		case POTATO:
+			draw->SetTextureResource(L"Result_Potato.png");
+			break;
+		case SHRIMP:
+			draw->SetTextureResource(L"Result_Shrimp.png");
+			break;
+		case CHICKEN:
+			draw->SetTextureResource(L"Result_Chicken.png");
+			break;
+		case DOUGHNUT:
+			draw->SetTextureResource(L"Result_Doughnut.png");
+			break;
+		}
+		SetDrawLayer(-2);
+		SetAlphaActive(true);
+
+		auto gravity = AddComponent<Gravity>();
+
+		auto ptrColl = AddComponent<CollisionObb>();
+
+	}
+
+	void Wall::OnCreate() {
+
+		auto PtrTransform = GetComponent<Transform>();
+
+		PtrTransform->SetPosition(m_Position);
+		PtrTransform->SetQuaternion(m_Qt);
+		PtrTransform->SetScale(m_Scale);
+
+		auto ptrColl = AddComponent<CollisionObb>();
+
+		//影をつける
+		//auto ShadowPtr = AddComponent<Shadowmap>();
+		//ShadowPtr->SetMeshResource(L"DEFAULT_CUBE");
+
+		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
+		PtrDraw->SetFogEnabled(true);
+		PtrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		PtrDraw->SetOwnShadowActive(true);
+		SetAlphaActive(true);
+		SetDrawActive(false);
+
+		//物理計算ボックス
+		PsBoxParam param(PtrTransform->GetWorldMatrix(), 0.0f, true, PsMotionType::MotionTypeFixed);
+		auto PsPtr = AddComponent<RigidbodyBox>(param);
+		PsPtr->SetDrawActive(true);
+
+	}
+
+
 }

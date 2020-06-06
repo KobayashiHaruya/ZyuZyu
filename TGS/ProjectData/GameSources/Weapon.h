@@ -30,9 +30,7 @@ namespace basecross {
 		float m_gravityScale;
 		float m_time;
 		int ID;
-
-		bool m_hit = true;
-
+ 
 		int m_fromUnique;
 
 		CharacterStatus_s m_frome;
@@ -65,6 +63,7 @@ namespace basecross {
 		void Draw();
 		void Move();
 		void Timer();
+		void Destroy();
 		void Effect(wstring name);
 		void BulletState(BulletS state);
 		void EffectState(BulletS state);

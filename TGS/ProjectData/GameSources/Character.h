@@ -28,12 +28,6 @@ namespace basecross{
 		walk
 	};
 
-	enum Anim
-	{
-		stop,
-		walk
-	};
-
 	class Character : public GameObject {
 		Vec3 m_modelPos;
 		Vec3 m_modelRot;
