@@ -9,7 +9,9 @@ namespace basecross {
 		float m_PosY;
 		float m_Move;
 		float m_Second;
+		float m_randpos;
 
+		Vec3 m_position = Vec3(0.0f, 5.0f, 5.0f);
 		int m_Score;
 		int m_TrueScore;
 
@@ -23,12 +25,11 @@ namespace basecross {
 		shared_ptr<Result_Curtain> m_Cartain;
 		shared_ptr<SoundItem> m_bgm;
 
-		shared_ptr<Result_Icon_UI> m_ResultIcon;
 		shared_ptr<UI_Result_Three> m_resultThree;
 		shared_ptr<UI_Result_Two> m_resultTwo;
 
 		shared_ptr<Score_UI> m_Score_UI[5];
-
+		//shared_ptr<Object> m_Object;
 
 	public:
 		ResultStage() :Stage(),
@@ -42,7 +43,7 @@ namespace basecross {
 			m_Move(500.0f),
 			m_Score(000000),
 			m_TrueScore(0),
-			m_type(POTATO),
+			m_type(SHRIMP),
 			m_level(0),
 			m_resultThree(NULL),
 			m_resultTwo(NULL)
@@ -51,8 +52,9 @@ namespace basecross {
 
 		void CreateViewLight();
 		void CreateUI();
-		void CreateIcon(CharacterType type, int level);
+		void CreateIcon(CharacterType type);
 		void ScoreMove();
+		void CreateWall();
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
