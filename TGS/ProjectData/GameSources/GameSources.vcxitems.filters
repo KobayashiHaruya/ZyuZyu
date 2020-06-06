@@ -75,6 +75,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)CopyrightStage.h">
       <Filter>Headers\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EfkInterface.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -136,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)CopyrightStage.cpp">
       <Filter>Sources\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EfkInterface.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

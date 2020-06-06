@@ -115,7 +115,6 @@ namespace basecross {
 			break;
 		}
 
-
 		m_scale = scale;
 		m_moveSpeed = speed;
 		m_gravityScale = grav;
@@ -132,17 +131,17 @@ namespace basecross {
 		ptr->SetQuaternion(m_rot);
 		ptr->SetScale(m_scale);
 
-		auto ptrShadow = AddComponent<Shadowmap>();
-		ptrShadow->SetMeshResource(L"DEFAULT_SPHERE");
+		//auto ptrShadow = AddComponent<Shadowmap>();
+		//ptrShadow->SetMeshResource(L"DEFAULT_SPHERE");
 
-		auto ptrDraw = AddComponent<PNTStaticModelDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
-		ptrDraw->SetOwnShadowActive(true);
-		ptrDraw->SetDrawActive(true);
-		SetAlphaActive(true);
+		//auto ptrDraw = AddComponent<PNTStaticModelDraw>();
+		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+		//ptrDraw->SetOwnShadowActive(true);
+		//ptrDraw->SetDrawActive(true);
+		//SetAlphaActive(true);
 
-		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
-		PtrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+		//auto PtrDraw = AddComponent<BcPNTStaticDraw>();
+		//PtrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
@@ -156,9 +155,70 @@ namespace basecross {
 		auto gravity = AddComponent<Gravity>();
 		gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
 
+		EffectState(m_type);
+
 		SetID(ID);
 		SetBulletType(m_type);
+	}
 
+	void Bullet::EffectState(BulletS state) {
+		switch (state)
+		{
+		case BulletS::None:
+			Effect(L"Assault_ver2.efk");
+			break;
+		case BulletS::Assault:
+			Effect(L"Assault_ver2.efk");
+			break;
+		case BulletS::Hand:
+			Effect(L"Revolver_ver2.efk");
+			break;
+		case BulletS::Shot:
+			Effect(L"Shotgun_ver2.efk");
+			break;
+		case BulletS::SMG:
+			Effect(L"SMG_ver2.efk");
+			break;
+		case BulletS::Rocket:
+			Effect(L"RocketBoost.efk");
+			break;
+		case BulletS::Sniper:
+			Effect(L"Sniper2_ver2.efk");
+			break;
+		case BulletS::Laser:
+			Effect(L"Laser3_ver2.efk");
+			break;
+		case BulletS::Wind:
+			Effect(L"Wind_ver2.efk");
+			break;
+		case BulletS::Gatling:
+			Effect(L"Gatling_ver2.efk");
+			break;
+		case BulletS::Cannon:
+			break;
+		case BulletS::GExplosion:
+			Effect(L"Explosion_Gatling.efk");
+			break;
+		case BulletS::CExplosion:
+			Effect(L"NExplosion_Tomato.efk");
+			Effect(L"Explosion_Tomato2.efk");
+			break;
+		case BulletS::SExplosion:
+			Effect(L"Explosion_Grenade.efk");
+			break;
+		default:
+			break;
+		}
+	}
+
+	void Bullet::Effect(wstring name) {
+		auto ptr = GetComponent<Transform>();
+
+		m_efkEffect = GetTypeStage<GameStage>()->GetEffect(name);
+		m_efkPlay = ObjectFactory::Create<EfkPlay>(m_efkEffect, ptr->GetPosition());
+		m_efkPlay->Play(m_efkEffect, ptr->GetPosition());
+		Vec3 rot = ptr->GetForword();
+		m_efkPlay->SetRotation(rot);
 	}
 
 	void Bullet::Move() {
@@ -207,6 +267,8 @@ namespace basecross {
 	}
 
 	void Bullet::OnUpdate() {
+		auto pos = GetComponent<Transform>()->GetPosition();
+		m_efkPlay->SetLocation(pos);
 		Timer();
 	}
 
@@ -248,7 +310,7 @@ namespace basecross {
 		int Rand = rand() % 8 + 1;
 
 		m_pos.x = rand() % 60 + -30;
-		m_pos.y = 0.0f;
+		m_pos.y = 10.0f;
 		m_pos.z = rand() % 60 + -30;
 
 		switch (Rand)

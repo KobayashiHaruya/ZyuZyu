@@ -28,12 +28,18 @@ namespace basecross{
 		walk
 	};
 
-	class Character : public GameObject {
-		
+	enum Anim
+	{
+		stop,
+		walk
+	};
 
+	class Character : public GameObject {
 		Vec3 m_modelPos;
 		Vec3 m_modelRot;
 		Vec3 m_modelScale;
+
+		Quat m_bulletRot;
 
 		wstring m_modelName;
 
@@ -42,7 +48,7 @@ namespace basecross{
 		bool m_fire = true;
 		bool m_reload = false;
 
-		int m_gatlingAmmo = 150;
+		int m_gatlingAmmo = 0;
 		int m_gatlingPickAmmo = 30;
 		int m_gatlingBombAmmo = 150;
 		float m_gatlingShotAmmo;

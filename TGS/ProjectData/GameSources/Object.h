@@ -3,118 +3,55 @@
 
 namespace basecross {
 
-	class ObjectBase :public GameObject {
+	enum ObjectType {
+		Oil,
+		Kakiage,
+		Nabe,
+		Asupara,
+		Azi,
+		Harumaki,
+		Kabotya,
+		Katu,
+		Korokke,
+		Nasu,
+		Imo,
+		Siitake
+	};
+
+	class Object :public GameObject {
 		Vec3 m_pos;
 		Vec3 m_rot;
 		Vec3 m_scale;
 
-	public:
+		Vec3 m_modelPos;
+		Vec3 m_modelRot;
+		Vec3 m_colSize;
 
-		ObjectBase(const shared_ptr<Stage>& StagePtr,
-			const Vec3& pos,
-			const Vec3& rot,
-			const Vec3& scale
-		) :
-			GameObject(StagePtr),
-			m_pos(pos),
-			m_rot(rot),
-			m_scale(scale)
+		wstring m_modelName;
 
-		{}
-		~ObjectBase() {}
+		ObjectType m_food;
 
-		void BmfDateRead(wstring model, Vec3 mpos, Vec3 mrot, Vec3 mscale);
-		void Draw();
-
-	};
-
-	class Object :public ObjectBase {
 	public:
 
 		Object(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos,
 			const Vec3& rot,
-			const Vec3& scale
+			const Vec3& scale,
+			const ObjectType& food
 		) :
-			ObjectBase(
-				StagePtr,
-				pos,
-				rot,
-				scale
-			)
+			GameObject(StagePtr),
+			m_pos(pos),
+			m_rot(rot),
+			m_scale(scale),
+			m_food(food)
+
 		{}
 		~Object() {}
 
 		virtual void OnCreate() override;
-
-	};
-
-	class OilStage :public ObjectBase {
-		Vec3 m_pos;
-	public:
-
-		OilStage(const shared_ptr<Stage>& StagePtr,
-			const Vec3& pos,
-			const Vec3& rot,
-			const Vec3& scale
-		) :
-			ObjectBase(
-				StagePtr,
-				pos,
-				rot,
-				scale
-			),
-			m_pos(pos)
-		{}
-		~OilStage() {}
-
-		virtual void OnCreate() override;
-		virtual void OnUpdate() override;
-
-	};
-
-	class Oil :public ObjectBase {
-		bool m_model;
-	public:
-
-		Oil(const shared_ptr<Stage>& StagePtr,
-			const Vec3& pos,
-			const Vec3& rot,
-			const Vec3& scale,
-			const bool& model
-		) :
-			ObjectBase(
-				StagePtr,
-				pos,
-				rot,
-				scale
-			),
-			m_model(model)
-		{}
-		~Oil() {}
-
-		virtual void OnCreate() override;
-
-	};
-
-	class Nabe :public ObjectBase {
-	public:
-
-		Nabe(const shared_ptr<Stage>& StagePtr,
-			const Vec3& pos,
-			const Vec3& rot,
-			const Vec3& scale
-		) :
-			ObjectBase(
-				StagePtr,
-				pos,
-				rot,
-				scale
-			)
-		{}
-		~Nabe() {}
-
-		virtual void OnCreate() override;
+		void BmfDateRead(wstring model, Vec3 mpos);
+		void ObjectModel();
+		void Collision();
 
 	};
 

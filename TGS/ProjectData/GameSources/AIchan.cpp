@@ -36,7 +36,7 @@ namespace basecross {
 
 		auto pos = GetComponent<Transform>()->GetPosition();
 
-		if (pos.y <= -20.0f) {
+		if (pos.y <= -10.0f) {
 			TouchOil();
 		}
 	}

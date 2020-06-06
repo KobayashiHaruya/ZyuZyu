@@ -78,7 +78,7 @@ namespace basecross {
 			break;
 		case CharacterType::CHICKEN:
 			m_WeaponO.weapon = BulletS::Rocket;
-			m_WeaponT.weapon = BulletS::Assault;
+			m_WeaponT.weapon = BulletS::None;
 			speed = 15.0f;
 			grav = 30.0f;
 			jump = 14.0f;
@@ -340,24 +340,65 @@ namespace basecross {
 
 		Vec3 angle(0, 0, 0);
 
-		auto ptrTransform = GetComponent<Transform>();
+		float fThumbLY = 0.0f;
+		float fThumbLX = 0.0f;
+		float fThumbRY = 0.0f;
+		if (cntlVec[0].bConnected) {
+			fThumbLY = cntlVec[0].fThumbLY;
+			fThumbLX = cntlVec[0].fThumbLX;
+			fThumbRY = cntlVec[0].fThumbRY;
+		}
+
+		if (KeyState.m_bPushKeyTbl['W']) {
+			fThumbLY = 1.0f;
+		}
+		else if (KeyState.m_bPushKeyTbl['S']) {
+			fThumbLY = -1.0f;
+		}
+		if (KeyState.m_bPushKeyTbl['D']) {
+			fThumbLX = 1.0f;
+		}
+		else if (KeyState.m_bPushKeyTbl['A']) {
+			fThumbLX = -1.0f;
+		}
+
+		auto trans = GetComponent<Transform>();
 		auto ptrCamera = OnGetDrawCamera();
-		auto front = ptrTransform->GetPosition() - ptrCamera->GetEye();
+		auto front = trans->GetPosition() - ptrCamera->GetEye();
 		front.y = 0;
 		front.normalize();
 		float frontAngle = atan2(front.z, front.x);
-		Vec2 moveVec(0.0f, 1.0f);
-		float moveSize = moveVec.length();
-		float cntlAngle = atan2(0.0f, 1.0f);
-		float totalAngle = frontAngle + cntlAngle;
+		Vec2 moveVec;
+		float cntlAngle;
+		float totalAngle;
+		if ((cntlVec[0].bLeftTrigger > 250.0f || KeyState.m_bPushKeyTbl[VK_RBUTTON])) {
+			moveVec = Vec2(0.0f, 1.0f);
+			cntlAngle = atan2(0.0f, 1.0f);
+		}
+		else {
+			moveVec = Vec2(fThumbLX, fThumbLY);
+			cntlAngle = atan2(-fThumbLX, fThumbLY);
+		}
+		totalAngle = frontAngle + cntlAngle;
 		angle = Vec3(cos(totalAngle), 0, sin(totalAngle));
 		angle.normalize();
+		float moveSize = moveVec.length();
 		angle *= moveSize;
+
 		angle.y = 0.0f;
 
 		if (angle.length() > 0.0f) {
 			auto ptr = GetBehavior<UtilBehavior>();
 			ptr->RotToHead(angle, 1.0f);
+
+			Vec3 Temp = angle;
+			Temp.normalize();
+			float ToAngle = atan2(Temp.x, Temp.z);
+			bsm::Quat Qt;
+			Qt.rotationRollPitchYawFromVector(bsm::Vec3(0, ToAngle, 0));
+			Qt.normalize();
+			Quat NowQt = trans->GetQuaternion();
+			m_bulletRot = Qt;
 		}
 
 	}
@@ -414,31 +455,31 @@ namespace basecross {
 		//ランダムに出すように
 		switch (Rand) {
 		case 0:
-			PtrTransform->SetPosition(Vec3(0.0f, 0.0f, 0.0f));
+			PtrTransform->SetPosition(Vec3(0.0f, 5.0f, 0.0f));
 			break;
 		case 1:
-			PtrTransform->SetPosition(Vec3(-5.0f, 0.0f, 5.0f));
+			PtrTransform->SetPosition(Vec3(-30.0f, 5.0f, 30.0f));
 			break;
 		case 2:
-			PtrTransform->SetPosition(Vec3(5.0f, 0.0f, 5.0f));
+			PtrTransform->SetPosition(Vec3(30.0f, 5.0f, 30.0f));
 			break;
 		case 3:
-			PtrTransform->SetPosition(Vec3(5.0f, 0.0f, -5.0f));
+			PtrTransform->SetPosition(Vec3(30.0f, 5.0f, -30.0f));
 			break;
 		case 4:
-			PtrTransform->SetPosition(Vec3(-5.0f, 0.0f, -5.0f));
+			PtrTransform->SetPosition(Vec3(-30.0f, 5.0f, -30.0f));
 			break;
 		case 5:
-			PtrTransform->SetPosition(Vec3(-5.0f, 0.0f, 0.0f));
+			PtrTransform->SetPosition(Vec3(-30.0f, 5.0f, 0.0f));
 			break;
 		case 6:
-			PtrTransform->SetPosition(Vec3(5.0f, 0.0f, 0.0f));
+			PtrTransform->SetPosition(Vec3(30.0f, 5.0f, 0.0f));
 			break;
 		case 7:
-			PtrTransform->SetPosition(Vec3(0.0f, 0.0f, -5.0f));
+			PtrTransform->SetPosition(Vec3(0.0f, 5.0f, -30.0f));
 			break;
 		default:
-			PtrTransform->SetPosition(Vec3(0.0f, 0.0f, 0.0f));
+			PtrTransform->SetPosition(Vec3(0.0f, 5.0f, 0.0f));
 			break;
 		}
 	}
@@ -651,14 +692,15 @@ namespace basecross {
 		AddKillCharacter(kill);
 		AddKill(1);
 
-		if(m_myData.isPlayer)
-		GetStage()->AddGameObject<UI_Kill_Icon>(
-			Vec3(0.0f, -350.0f, 0.0f),
-			Vec3(0.8f, 0.8f, 1.0f),
-			100,
-			status.type,
-			status.level
-			);
+		if (m_myData.isPlayer) {
+			GetStage()->AddGameObject<UI_Kill_Icon>(
+				Vec3(0.0f, -350.0f, 0.0f),
+				Vec3(0.8f, 0.8f, 1.0f),
+				100,
+				status.type,
+				status.level
+				);
+		}
 	}
 
 	//PinPに自身を指定して表示する
@@ -942,7 +984,7 @@ namespace basecross {
 						//X.x = (i * 3.14f) / 180.0f;
 						auto bullet = GetStage()->AddGameObject<Bullet>(
 							ptr->GetPosition(),
-							ptr->GetQuaternion(),
+							m_bulletRot,
 							m_WeaponO.weapon,
 							m_myData.unique,
 							ID,
@@ -958,7 +1000,7 @@ namespace basecross {
 				else {
 					auto bullet = GetStage()->AddGameObject<Bullet>(
 						ptr->GetPosition(),
-						ptr->GetQuaternion(),
+						m_bulletRot,
 						m_WeaponO.weapon,
 						m_myData.unique,
 						ID,
@@ -1016,7 +1058,7 @@ namespace basecross {
 						//X.x = (i * 3.14f) / 180.0f;
 						auto bullet = GetStage()->AddGameObject<Bullet>(
 							ptr->GetPosition(),
-							ptr->GetQuaternion(),
+							m_bulletRot,
 							m_WeaponT.weapon,
 							m_myData.unique,
 							ID,
@@ -1032,7 +1074,7 @@ namespace basecross {
 				else {
 					auto bullet = GetStage()->AddGameObject<Bullet>(
 						ptr->GetPosition(),
-						ptr->GetQuaternion(),
+						m_bulletRot,
 						m_WeaponT.weapon,
 						m_myData.unique,
 						ID,
@@ -1234,7 +1276,7 @@ namespace basecross {
 				if (fire) {
 					auto bullet = GetStage()->AddGameObject<Bullet>(
 						m_setGunPos + Vec3(0.0f, 1.0f, 0.0f),
-						ptr->GetQuaternion(),
+						m_bulletRot,
 						BulletS::Gatling,
 						m_myData.unique,
 						ID,
@@ -1259,7 +1301,7 @@ namespace basecross {
 			if (fire && m_cannonAmmo) {
 				auto bullet = GetStage()->AddGameObject<Bullet>(
 					m_setGunPos + Vec3(0.0f,1.0f,0.0f),
-					ptr->GetQuaternion(),
+					m_bulletRot,
 					BulletS::Cannon,
 					m_myData.unique,
 					ID,
@@ -1279,7 +1321,7 @@ namespace basecross {
 			m_gatlingAmmo = 0;
 			auto bullet = GetStage()->AddGameObject<Bullet>(
 				m_setGunPos,
-				ptr->GetQuaternion(),
+				m_bulletRot,
 				BulletS::GExplosion,
 				m_myData.unique,
 				ID,
@@ -1326,7 +1368,7 @@ namespace basecross {
 			damage = 20.0;
 			break;
 		case BulletS::Laser:
-			force = Vec2(0.0f, 1.0f);
+			force = Vec2(0.5f, 0.0f);
 			damage = 20.0;
 			break;
 		case BulletS::Wind:
@@ -1404,7 +1446,7 @@ namespace basecross {
 	
 		auto pos = GetComponent<Transform>()->GetPosition();
 
-		if (pos.y <= -20.0f) {
+		if (pos.y <= -10.0f) {
 			TouchOil();
 		}
 
@@ -1436,57 +1478,20 @@ namespace basecross {
 		strFps += Util::FloatToWStr(fThumbRY);
 		strFps += L"\n";
 
-		Quat quat = GetComponent<Transform>()->GetQuaternion();
 		Vec3 rot = GetComponent<Transform>()->GetRotation();
 
-		strFps += Util::FloatToWStr(quat.w);
+		strFps += Util::FloatToWStr(m_bulletRot.w);
 		strFps += L", ";
-		strFps += Util::FloatToWStr(quat.x);
+		strFps += Util::FloatToWStr(m_bulletRot.x);
 		strFps += L", ";
-		strFps += Util::FloatToWStr(quat.y);
+		strFps += Util::FloatToWStr(m_bulletRot.y);
 		strFps += L", ";
-		strFps += Util::FloatToWStr(quat.z);
-		strFps += L"\n";
-
-		strFps += Util::FloatToWStr(rot.x);
-		strFps += L", ";
-		strFps += Util::FloatToWStr(rot.y);
-		strFps += L", ";
-		strFps += Util::FloatToWStr(rot.z);
-		strFps += L"\n";
-
-		strFps += Util::FloatToWStr(m_WeaponO.ammo);
-		strFps += L", ";
-		strFps += Util::FloatToWStr(m_WeaponO.maxAmmo);
-		strFps += L"\n";
-		strFps += Util::FloatToWStr(m_WeaponT.ammo);
-		strFps += L", ";
-		strFps += Util::FloatToWStr(m_WeaponT.maxAmmo);
+		strFps += Util::FloatToWStr(m_bulletRot.z);
 		strFps += L"\n";
 
 		strFps += Util::FloatToWStr(m_gatlingShotAmmo);
 		strFps += L"\n";
 		strFps += Util::FloatToWStr(m_gatlingAmmo);
-		strFps += L"\n";
-
-		strFps += Util::FloatToWStr(GetTypeStage<GameStage>()->bomb);
-		strFps += L"\n";
-
-		strFps += Util::IntToWStr((int)m_WeaponO.weapon);
-		strFps += L", ";
-		strFps += Util::IntToWStr(m_WeaponO.reAmmo);
-		strFps += L", ";
-		strFps += Util::IntToWStr(m_WeaponO.ammo);
-		strFps += L", ";
-		strFps += Util::IntToWStr(m_WeaponO.maxAmmo);
-		strFps += L", ";
-		strFps += Util::FloatToWStr(m_WeaponO.maxIntTime);
-		strFps += L", ";
-		strFps += Util::FloatToWStr(m_WeaponO.intTime);
-		strFps += L", ";
-		strFps += Util::FloatToWStr(m_WeaponO.maxreTime);
-		strFps += L", ";
-		strFps += Util::FloatToWStr(m_WeaponO.reTime);
 		strFps += L"\n";
 
 		auto string = GetComponent<StringSprite>();

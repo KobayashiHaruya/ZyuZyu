@@ -135,7 +135,7 @@ namespace basecross {
 			case BulletS::Rocket:
 				state.barrage = false;
 				state.reAmmo = 1;
-				state.ammo = 1;
+				state.ammo = 1; 
 				state.maxAmmo = 8;
 				state.intTime = 0.0f;
 				state.maxIntTime = 0.0f;
@@ -216,10 +216,105 @@ namespace basecross {
 
 	}
 
+	void GameStage::CreateEffect() {
+		m_efkInterface = ObjectFactory::Create<EfkInterface>();
+
+		wstring dir;
+		App::GetApp()->GetDataDirectory(dir);
+
+
+		wstring effectStr = dir + L"Effect\\";
+
+		wstring name = L"Assault_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[0] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Revolver_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[1] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Shotgun_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[2] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"SMG_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[3] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"RocketBoost.efk";
+		m_effectName.push_back(name);
+		m_effect[4] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Sniper2_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[5] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Laser3_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[6] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Wind_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[7] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Gatling_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[8] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Explosion_Tomato.efk";
+		m_effectName.push_back(name);
+		m_effect[9] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Explosion_Tomato2.efk";
+		m_effectName.push_back(name);
+		m_effect[10] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Explosion_Gatling.efk";
+		m_effectName.push_back(name);
+		m_effect[11] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Explosion_Grenade.efk";
+		m_effectName.push_back(name);
+		m_effect[12] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Assault.efk";
+		m_effectName.push_back(name);
+		m_effect[13] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Assault.efk";
+		m_effectName.push_back(name);
+		m_effect[14] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Assault.efk";
+		m_effectName.push_back(name);
+		m_effect[15] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Assault.efk";
+		m_effectName.push_back(name);
+		m_effect[16] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Assault.efk";
+		m_effectName.push_back(name);
+		m_effect[17] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Assault.efk";
+		m_effectName.push_back(name);
+		m_effect[18] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+	}
+
+	void GameStage::OnDraw()
+	{
+		auto& camera = GetView()->GetTargetCamera();
+		m_efkInterface->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
+		m_efkInterface->OnDraw();
+	}
+
 	void GameStage::OnCreate() {
 		try {
 			//SetPhysicsActive(true);
-			//ビューとライトの作成
+			//ビューとライトの作成.
+			CreateEffect();
 			WeaponState();
 			CreateViewLight();
 			CreateUI();
@@ -228,87 +323,108 @@ namespace basecross {
 
 			auto obstacleGroup = CreateSharedObjectGroup(L"ObstacleGroup");
 			auto obstacle = AddGameObject<Object>(
-				Vec3(10.0f, -7.5f, 0.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(2.0f, 5.0f, 5.0f)
+				Vec3(-28.0f, 3.0f, 10.0f),
+				Vec3(0.0f, 0.0f, -XM_PI / 20.0f),
+				Vec3(3.0f),
+				ObjectType::Harumaki
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(10.0f, -7.5f, 5.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(4.0f, 2.0f, 3.0f)
+				Vec3(30.0f, 5.0f, -10.0f),
+				Vec3(XM_PI / 2.0f, 0.0f, 0.0f),
+				Vec3(1.5f),
+				ObjectType::Asupara
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(-5.0f, -7.5f, -10.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(2.0f, 1.0f, 2.5f)
+				Vec3(30.0f, 5.0f, -5.0f),
+				Vec3(XM_PI / 2.0f, 0.0f, 0.0f),
+				Vec3(1.5f),
+				ObjectType::Asupara
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(20.0f, -7.5f, -15.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(5.0f, 1.0f, 10.0f)
+				Vec3(30.0f, 5.0f, 0.0f),
+				Vec3(XM_PI / 2.0f, 0.0f, 0.0f),
+				Vec3(1.5f),
+				ObjectType::Asupara
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(10.0f, -7.5f, 20.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(2.0f, 5.0f, 10.0f)
+				Vec3(30.0f, 5.0f, 5.0f),
+				Vec3(XM_PI / 2.0f, 0.0f, 0.0f),
+				Vec3(1.5f),
+				ObjectType::Asupara
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(20.0f, -7.5f, 0.0f),
+				Vec3(0.0f, 2.0f, 40.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(10.0f, 10.0f, 10.0f)
+				Vec3(2.0f),
+				ObjectType::Siitake
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(-20.0f, -7.5f, 13.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(4.0f, 3.0f, 8.0f)
+				Vec3(10.0f, 2.0f, 40.0f),
+				Vec3(0.0f, 1.0f, 0.0f),
+				Vec3(5.0f),
+				ObjectType::Katu
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(24.0f, -7.5f, 10.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(5.0f, 3.0f, 3.0f)
+				Vec3(20.0f, 4.0f, -40.0f),
+				Vec3(0.0f, XM_PI / 4.0f, XM_PI / 2.0f),
+				Vec3(7.0f),
+				ObjectType::Korokke
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(10.0f, -7.5f, -26.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(14.0f, 2.0f, 6.0f)
+				Vec3(-40.0f, 2.0f, -30.0f),
+				Vec3(0.0f, 1.5f, 0.0f),
+				Vec3(6.0f),
+				ObjectType::Nasu
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(-15.0f, -7.5f, -20.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(8.0f, 5.0f, 10.0f)
+				Vec3(-40.0f, 1.5f, 10.0f),
+				Vec3(0.0f, 0.0f, XM_PI / 8.0f),
+				Vec3(5.0f),
+				ObjectType::Imo
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(-30.0f, -7.5f, -11.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(6.0f, 2.0f, 8.0f)
-				);
-			obstacleGroup->IntoGroup(obstacle);
-			auto oil = AddGameObject<OilStage>(
-				Vec3(0.0f, -10.0f, 0.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
-				);
-			oil->AddTag(L"Obstacle");
-			AddGameObject<Oil>(
-				Vec3(0.0f, -20.0f, 0.0f),
+				Vec3(-20.0f, 2.0f, 40.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f),
-				true
+				ObjectType::Azi
 				);
-			AddGameObject<Nabe>(
-				Vec3(0.0f, -10.0f, 0.0f),
+			obstacleGroup->IntoGroup(obstacle);
+			obstacle = AddGameObject<Object>(
+				Vec3(-30.0f, 4.0f, 20.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
+				Vec3(3.0f, 3.0f, 3.0f),
+				ObjectType::Kabotya
+				);
+			obstacleGroup->IntoGroup(obstacle);
+
+			auto oil = AddGameObject<Object>(
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.4f, 0.4f, 0.4f),
+				ObjectType::Kakiage
+				);
+			oil->AddTag(L"Obstacle");
+			AddGameObject<Object>(
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.4f, 0.4f, 0.4f),
+				ObjectType::Oil
+				);
+			AddGameObject<Object>(
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(0.4f, 0.4f, 0.4f),
+				ObjectType::Nabe
 				);
 
 			m_player = AddGameObject<Player>(
@@ -351,13 +467,7 @@ namespace basecross {
 					true
 				};
 
-				m_enemy = AddGameObject<AIchan>(
-					p,
-					false,
-					i, i,
-					AIparam
-					);
-
+				CreateAIchan();
 				characterGroup->IntoGroup(m_enemy);
 			}
 
@@ -367,27 +477,20 @@ namespace basecross {
 			m_weaponTime = 10.0f;
 
 			AddGameObject<GunSeat>(
-				Vec3(-10.0f, -8.2f, 0.0f),
+				Vec3(-10.0f, 2.5f, 10.0f),
 				Quat(0.0f),
 				true
 				);
 
 			AddGameObject<SetGun>(
-				Vec3(0.0f, -8.2f, 0.0f),
+				Vec3(40.0f, 2.0f, -20.0f),
 				Quat(0.0f),
 				false
 				);
 
 			AddGameObject<CannonAmmoBox>(
-				Vec3(0.0f, -8.0f, 5.0f)
+				Vec3(0.0f, 2.0f, 5.0f)
 				);
-
-			//m_enemy = AddGameObject<Enemy>(
-			//	CharacterType::CHICKEN,
-			//	false,
-			//	1,0
-			//	);
-
 
 
 			CreatePinP();
@@ -401,7 +504,9 @@ namespace basecross {
 			m_curtain->Open();
 
 			//PlaySE(L"爆発_色々01.wav", 0.5f);
+
 			PlayBGM(L"Main_BGM01.wav", 0.2f);
+
 		}
 		catch (...) {
 			throw;
@@ -421,6 +526,8 @@ namespace basecross {
 		}
 
 		WeaponUpdate();
+		//m_efkInterface->;
+		m_efkInterface->OnUpdate();
 
 		ShowPause();
 

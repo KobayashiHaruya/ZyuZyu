@@ -34,6 +34,9 @@ namespace basecross {
 		shared_ptr<UI_Curtain> m_curtain;
 
 		unsigned int m_state;
+		//エフェクト
+		shared_ptr<EfkEffect> m_effect[50];
+		vector<wstring> m_effectName;
 
 		//ビューの作成
 		void CreateViewLight();
@@ -60,10 +63,12 @@ namespace basecross {
 		void PrevTitleStage();
 		void PrevSelectStage();
 
+		void CreateEffect();
+
 	public:
+		shared_ptr<EfkInterface> m_efkInterface;
 		vector<WeaponState_s> m_weaponState;
 		bool m_start = false;
-		int bomb;
 
 		//構築と破棄
 		GameStage() :
@@ -84,6 +89,7 @@ namespace basecross {
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnUpdate2() override;
+		virtual void OnDraw()override;
 
 		void GameFinishScore();
 
@@ -109,6 +115,14 @@ namespace basecross {
 		void TestFunc() {
 
 		}
+
+		shared_ptr<EfkEffect> GetEffect(wstring name) {
+			for (int i = 0; i < m_effectName.size(); i++) {
+				if (m_effectName[i] == name)
+					return m_effect[i];
+			}
+		}
+
 	};
 
 
