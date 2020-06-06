@@ -5,11 +5,13 @@ namespace basecross {
 
 	class ResultStage : public Stage {
 		int m_layer;
-		int m_Amount;
 		float m_PosY;
 		float m_Move;
 		float m_Second;
+		float m_Second2;
 		float m_randpos;
+		int m_Value;
+		bool m_Onoff;
 
 		Vec3 m_position = Vec3(0.0f, 5.0f, 5.0f);
 		int m_Score;
@@ -37,9 +39,11 @@ namespace basecross {
 			m_Score_Image(L"Number_695_Gold.png"),
 			m_Stage_Image(L"ScoreBoard_Sample.png"),
 			m_Cartain(NULL),
+			m_Onoff(true),
 			m_PosY(1500.0f),
-			m_Amount(5),
+			m_Value(1),
 			m_Second(0.0f),
+			m_Second2(0.0f),
 			m_Move(500.0f),
 			m_Score(000000),
 			m_TrueScore(0),

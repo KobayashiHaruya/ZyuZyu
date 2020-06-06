@@ -50,43 +50,46 @@ namespace basecross {
 	}
 
 	void ResultStage::CreateIcon(CharacterType type) {
+		m_Second2 += App::GetApp()->GetElapsedTime();
 		m_randpos = rand() % 5;
 		m_randpos -= rand() % 5;
-		switch (m_type)
-		{
-		case POTATO:
-			AddGameObject<Result_Icon>(
-				m_position + Vec3(m_randpos, 0.0f, 0.0f),
-				type
-				);
-			m_type = DOUGHNUT;
-			break;
-		case SHRIMP:
-			AddGameObject<Result_Icon>(
-				m_position + Vec3(m_randpos, 0.0f, 0.0f),
-				type
-				);
-			m_type = POTATO;
+		if (m_Second2 > 0.5f) {
+			switch (m_type)
+			{
+			case POTATO:
+				AddGameObject<Result_Icon>(
+					m_position + Vec3(m_randpos, 0.0f, 0.0f),
+					type
+					);
+				m_type = DOUGHNUT;
+				break;
+			case SHRIMP:
+				AddGameObject<Result_Icon>(
+					m_position + Vec3(m_randpos, 0.0f, 0.0f),
+					type
+					);
+				m_type = POTATO;
 
-			break;
-		case CHICKEN:
-			AddGameObject<Result_Icon>(
-				m_position + Vec3(m_randpos, 0.0f, 0.0f),
-				type
-				);
-			m_type = SHRIMP;
+				break;
+			case CHICKEN:
+				AddGameObject<Result_Icon>(
+					m_position + Vec3(m_randpos, 0.0f, 0.0f),
+					type
+					);
+				m_type = SHRIMP;
 
-			break;
-		case DOUGHNUT:
-			AddGameObject<Result_Icon>(
-				m_position + Vec3(m_randpos, 0.0f, 0.0f),
-				type
-				);
-			m_type = CHICKEN;
+				break;
+			case DOUGHNUT:
+				AddGameObject<Result_Icon>(
+					m_position + Vec3(m_randpos, 0.0f, 0.0f),
+					type
+					);
+				m_type = CHICKEN;
 
-			break;
+				break;
+			}
+			m_Second2 = 0.0f;
 		}
-
 	}
 
 	void ResultStage::CreateWall() {
@@ -102,11 +105,14 @@ namespace basecross {
 
 	void ResultStage::ScoreMove() {
 		m_Second += App::GetApp()->GetElapsedTime();
-		if (m_Second <= 13.0f) {
+		if (m_Second < 13.0f) {
 			SetScore(rand());
 		}
-		else {
+		else if (m_Onoff) {
 			SetScore(m_TrueScore);
+			PlaySE(L"Curia02.wav", 0.5f);
+			m_Onoff = false;
+
 		}
 	}
 
@@ -115,10 +121,12 @@ namespace basecross {
 			StopBGM();
 			CreateViewLight();
 			CreateUI();		
-			CreateIcon(m_type);
 			CreateWall();
 			//AddGameObject<ResultScore>();
-			PlayBGM(L"rezult_bgm.wav", 0.5f);
+			//PlayBGM(L"rezult_bgm.wav", 0.5f);
+			PlaySE(L"Doram01.wav", 0.5f);
+
+			
 		}
 		catch (...) {
 			throw;
@@ -141,23 +149,23 @@ namespace basecross {
 			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
 		}
 
-		if (KeyState.m_bUpKeyTbl[VK_DOWN] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)){
-			CreateIcon(m_type);
-		}
 
+		//if (KeyState.m_bUpKeyTbl[VK_DOWN] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)){
+		//}
 
 		ScoreMove();
-
+		if (m_Second < 30.0f) {
+			CreateIcon(m_type);
+		}
 		if (m_Cartain->GetCount() >= 40) m_resultThree->Play();
 	}
 
 	void ResultStage::OnUpdate2() {
 		m_Second += App::GetApp()->GetElapsedTime();
-		for (int i = 0; i < 5; i++) {	//ƒ‹[ƒv”‚ÅŒ…•ÏX
+		for (int i = 0; i < 5; i++) {
 
 			if (m_Second >= 8.0f) {
 				m_Score_UI[i]->SetDrawActive(true);
-
 			}
 		}
 	}
