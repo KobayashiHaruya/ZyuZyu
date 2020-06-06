@@ -176,8 +176,10 @@ namespace basecross {
 			}
 		}
 		ScoreMove();
-		if (m_Second < 30.0f) {
-			CreateIcon(m_type);
+		if (m_Second > 5.0f) {
+			if (m_Second < 35.0f) {
+				CreateIcon(m_type);
+			}
 		}
 		//if (m_Cartain->GetCount() >= 40) m_resultThree->Play();
 	}
