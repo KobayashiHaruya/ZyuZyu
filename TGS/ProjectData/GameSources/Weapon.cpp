@@ -131,6 +131,18 @@ namespace basecross {
 		ptr->SetQuaternion(m_rot);
 		ptr->SetScale(m_scale);
 
+		//auto ptrShadow = AddComponent<Shadowmap>();
+		//ptrShadow->SetMeshResource(L"DEFAULT_SPHERE");
+
+		//auto ptrDraw = AddComponent<PNTStaticModelDraw>();
+		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+		//ptrDraw->SetOwnShadowActive(true);
+		//ptrDraw->SetDrawActive(true);
+		//SetAlphaActive(true);
+
+		//auto PtrDraw = AddComponent<BcPNTStaticDraw>();
+		//PtrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 		ptrColl->AddExcludeCollisionTag(L"Bullet");
@@ -146,6 +158,7 @@ namespace basecross {
 		EffectState(m_type);
 
 		SetID(ID);
+		SetBulletType(m_type);
 	}
 
 	void Bullet::EffectState(BulletS state) {
