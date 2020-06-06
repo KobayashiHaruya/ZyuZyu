@@ -24,6 +24,10 @@ namespace basecross {
 		
 		vector<CharacterStatus_s> m_charState;
 
+		//エフェクト
+		shared_ptr<EfkEffect> m_effect[50];
+		vector<wstring> m_effectName;
+
 		//ビューの作成
 		void CreateViewLight();
 		void CreateUI();
@@ -45,10 +49,12 @@ namespace basecross {
 		//bool gather = false;
 		void CreateAIchan();
 
+		void CreateEffect();
+
 	public:
+		shared_ptr<EfkInterface> m_efkInterface;
 		vector<WeaponState_s> m_weaponState;
 		bool m_start = false;
-		int bomb;
 
 		//構築と破棄
 		GameStage() :
@@ -62,6 +68,7 @@ namespace basecross {
 		//初期化
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+		virtual void OnDraw()override;
 
 		void GameFinishScore();
 
@@ -78,6 +85,13 @@ namespace basecross {
 		void StopBGM() {
 			auto se = App::GetApp()->GetXAudio2Manager();
 			se->Stop(m_bgm);
+		}
+
+		shared_ptr<EfkEffect> GetEffect(wstring name) {
+			for (int i = 0; i < m_effectName.size(); i++) {
+				if (m_effectName[i] == name)
+					return m_effect[i];
+			}
 		}
 
 	};

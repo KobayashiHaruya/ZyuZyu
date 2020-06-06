@@ -6,7 +6,7 @@
 
 #include "stdafx.h"
 
-namespace basecross{
+namespace basecross {
 
 	enum GameStageKey {
 		copyright,
@@ -113,10 +113,10 @@ namespace basecross{
 		void FindFile(wstring dir);
 
 		wstring m_stageKey[GameStageKey::Max];
-
 		GameStageKey m_gameStageKey;
 
 	public:
+
 		Scene() {};
 		virtual ~Scene() {};
 		virtual void OnCreate() override;
@@ -128,8 +128,6 @@ namespace basecross{
 		}
 
 	};
-
-
 
 }
 

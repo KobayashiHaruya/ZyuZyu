@@ -17,8 +17,6 @@ namespace basecross{
 		//mediaディレクトリ取得用
 		App::GetApp()->GetAssetsDirectory(dataDir);
 
-
-
 		wstring mediaDir;
 		App::GetApp()->GetDataDirectory(mediaDir);
 
@@ -27,7 +25,7 @@ namespace basecross{
 		FindFile(mediaDir + L"Sound/SE/");
 		FindFile(mediaDir + L"Sound/BGM/");
 		FindFile(mediaDir + L"Model/");
-
+		FindFile(mediaDir + L"Effect/");
 	}
 
 	void Scene::FindFile(wstring dir) {
@@ -72,11 +70,11 @@ namespace basecross{
 
 				if (exe == L".bmf") {
 					// 例外の登録,ボーンモデルだから
-					if ((fileName == L"Chara_R.bmf") || 
-						(fileName == L"CornGatling_Animation.bmf") || 
-						(fileName == L"TomatoCannon_Animation.bmf") || 
-						(fileName == L"Shrimp_Animation_ver2.bmf") || 
-						(fileName == L"0525_Animation_Shrimp_test4.bmf") || 
+					if ((fileName == L"Chara_R.bmf") ||
+						(fileName == L"CornGatling_Animation.bmf") ||
+						(fileName == L"TomatoCannon_Animation.bmf") ||
+						(fileName == L"Shrimp_Animation_ver2.bmf") ||
+						(fileName == L"0525_Animation_Shrimp_test4.bmf") ||
 						(fileName == L"Chicken_Animation_test9.bmf") ||
 						(fileName == L"Animation_Potato_test5.bmf") ||
 						(fileName == L"Animation_Doughnut_test3.bmf")) {
@@ -88,15 +86,6 @@ namespace basecross{
 						auto modelMesh = MeshResource::CreateStaticModelMesh(dir, fileName);
 						App::GetApp()->RegisterResource(fileName, modelMesh);
 					}
-				}
-				if (exe == L".tbmf") {
-					// タンジェント付きモデルの読み込み
-					auto modelMesh = MeshResource::CreateStaticModelMeshWithTangent(dir, fileName);
-					App::GetApp()->RegisterResource(fileName, modelMesh);
-				}
-				if (exe == L".bbmf") {
-					// ボーンモデルの読み込み
-
 				}
 
 			}
@@ -112,7 +101,7 @@ namespace basecross{
 			//リソース作成
 			CreateResourses();
 
-			SetGameStage(GameStageKey::game);
+			SetGameStage(GameStageKey::title);
 	
 			//App::GetApp()->GetStepTimer().GetFramesPerSecond();
 			//App::GetApp()->

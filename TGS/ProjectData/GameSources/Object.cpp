@@ -54,6 +54,7 @@ namespace basecross {
 			m_modelRot = Vec3(0.0f, 0.0f, 0.0f);
 			m_colSize = Vec3(18.0f, 2.0f, 18.0f);
 			phy = true;
+			AddTag(L"Ground");
 			break;
 		case ObjectType::Nabe:
 			m_modelName = L"Nabe_50(100).bmf";

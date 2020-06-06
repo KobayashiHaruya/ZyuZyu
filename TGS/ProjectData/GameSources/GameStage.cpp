@@ -215,10 +215,105 @@ namespace basecross {
 
 	}
 
+	void GameStage::CreateEffect() {
+		m_efkInterface = ObjectFactory::Create<EfkInterface>();
+
+		wstring dir;
+		App::GetApp()->GetDataDirectory(dir);
+
+
+		wstring effectStr = dir + L"Effect\\";
+
+		wstring name = L"Assault_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[0] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Revolver_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[1] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Shotgun_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[2] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"SMG_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[3] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"RocketBoost.efk";
+		m_effectName.push_back(name);
+		m_effect[4] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Sniper2_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[5] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Laser3_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[6] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Wind_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[7] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Gatling_ver2.efk";
+		m_effectName.push_back(name);
+		m_effect[8] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Explosion_Tomato.efk";
+		m_effectName.push_back(name);
+		m_effect[9] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Explosion_Tomato2.efk";
+		m_effectName.push_back(name);
+		m_effect[10] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Explosion_Gatling.efk";
+		m_effectName.push_back(name);
+		m_effect[11] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Explosion_Grenade.efk";
+		m_effectName.push_back(name);
+		m_effect[12] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Assault.efk";
+		m_effectName.push_back(name);
+		m_effect[13] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Assault.efk";
+		m_effectName.push_back(name);
+		m_effect[14] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Assault.efk";
+		m_effectName.push_back(name);
+		m_effect[15] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Assault.efk";
+		m_effectName.push_back(name);
+		m_effect[16] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Assault.efk";
+		m_effectName.push_back(name);
+		m_effect[17] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+		name = L"Assault.efk";
+		m_effectName.push_back(name);
+		m_effect[18] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+	}
+
+	void GameStage::OnDraw()
+	{
+		auto& camera = GetView()->GetTargetCamera();
+		m_efkInterface->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
+		m_efkInterface->OnDraw();
+	}
+
 	void GameStage::OnCreate() {
 		try {
 			//SetPhysicsActive(true);
-			//ビューとライトの作成
+			//ビューとライトの作成.
+			CreateEffect();
 			WeaponState();
 			CreateViewLight();
 			CreateUI();
@@ -343,73 +438,68 @@ namespace basecross {
 
 
 
-			//for (int i = 1; i < 8; i++) {
+			for (int i = 1; i < 8; i++) {
 
-			//	CharacterType p;
-			//	int Rand = rand() % 4;
-			//	switch (Rand) {
-			//	case 0:
-			//		p = CharacterType::SHRIMP;
-			//		break;
-			//	case 1:
-			//		p = CharacterType::CHICKEN;
-			//		break;
-			//	case 2:
-			//		p = CharacterType::POTATO;
-			//		break;
-			//	case 3:
-			//		p = CharacterType::DOUGHNUT;
-			//		break;
-			//	}
+				CharacterType p;
+				int Rand = rand() % 4;
+				switch (Rand) {
+				case 0:
+					p = CharacterType::SHRIMP;
+					break;
+				case 1:
+					p = CharacterType::CHICKEN;
+					break;
+				case 2:
+					p = CharacterType::POTATO;
+					break;
+				case 3:
+					p = CharacterType::DOUGHNUT;
+					break;
+				}
 
-			//	auto AIparam = AIParam_s{
-			//		vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
-			//		1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
-			//		3, 3,
-			//		0,
-			//		15.0f,
-			//		true
-			//	};
+				auto AIparam = AIParam_s{
+					vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
+					1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
+					3, 3,
+					0,
+					15.0f,
+					true
+				};
 
-			//	CreateAIchan();
-			//	characterGroup->IntoGroup(m_enemy);
-			//}
+				CreateAIchan();
+				characterGroup->IntoGroup(m_enemy);
+			}
 
 			for (int i = 0; i < 5; i++) {
 				AddGameObject<Weapon>();
 			}
 			m_weaponTime = 10.0f;
 
-			//AddGameObject<GunSeat>(
-			//	Vec3(-10.0f, 2.0f, 0.0f),
-			//	Quat(0.0f),
-			//	true
-			//	);
+			AddGameObject<GunSeat>(
+				Vec3(-10.0f, 2.5f, 10.0f),
+				Quat(0.0f),
+				true
+				);
 
-			//AddGameObject<SetGun>(
-			//	Vec3(0.0f, 2.0f, 0.0f),
-			//	Quat(0.0f),
-			//	false
-			//	);
+			AddGameObject<SetGun>(
+				Vec3(40.0f, 2.0f, -20.0f),
+				Quat(0.0f),
+				false
+				);
 
-			//AddGameObject<CannonAmmoBox>(
-			//	Vec3(0.0f, 2.0f, 5.0f)
-			//	);
+			AddGameObject<CannonAmmoBox>(
+				Vec3(0.0f, 2.0f, 5.0f)
+				);
 
 			CreatePinP();
-
-			//m_enemy = AddGameObject<Enemy>(
-			//	CharacterType::CHICKEN,
-			//	false,
-			//	1,0
-			//	);
-
 
 			AddGameObject<UI_CountdownTimer>(180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
 
 
 			//PlaySE(L"爆発_色々01.wav", 0.5f);
+
 			PlayBGM(L"Main_BGM01.wav", 0.2f);
+
 		}
 		catch (...) {
 			throw;
@@ -428,6 +518,8 @@ namespace basecross {
 		}
 
 		WeaponUpdate();
+		//m_efkInterface->;
+		m_efkInterface->OnUpdate();
 
 		ShowPause();
 	}

@@ -19,7 +19,6 @@ namespace basecross {
 		}
 	};
 
-
 	class Bullet :public GameObject, public ObstacleEvent<const CharacterStatus_s> {
 		Vec3 m_pos;
 		Quat m_rot;
@@ -37,6 +36,10 @@ namespace basecross {
 		int m_fromUnique;
 
 		CharacterStatus_s m_frome;
+
+		shared_ptr<EfkEffect> m_efkEffect;
+		shared_ptr<EfkPlay> m_efkPlay;
+
 
 	public:
 
@@ -56,12 +59,15 @@ namespace basecross {
 			ID(id),
 			m_frome(frome)
 		{}
+
 		~Bullet() {}
 
 		void Draw();
 		void Move();
 		void Timer();
+		void Effect(wstring name);
 		void BulletState(BulletS state);
+		void EffectState(BulletS state);
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
