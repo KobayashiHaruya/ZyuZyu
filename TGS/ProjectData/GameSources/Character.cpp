@@ -69,7 +69,7 @@ namespace basecross {
 			jump = 10.0f;
 			break;
 		case CharacterType::SHRIMP:
-			m_WeaponO.weapon = BulletS::SMG; //SMG
+			m_WeaponO.weapon = BulletS::SMG;
 			m_WeaponT.weapon = BulletS::None;
 			m_modelName = L"0525_Animation_Shrimp_test4.bmf";
 			speed = 10.0f;
@@ -1020,6 +1020,7 @@ namespace basecross {
 					{
 						//Quat X;
 						//X.x = (i * 3.14f) / 180.0f;
+
 						auto bullet = GetStage()->AddGameObject<Bullet>(
 							ptr->GetPosition(),
 							m_bulletRot,
@@ -1093,45 +1094,18 @@ namespace basecross {
 
 					for (size_t i = 0; i < 20; i++)
 					{
-						//Quat X;
-						//X.x = (i * 3.14f) / 180.0f;
-						auto a = rot.toRotVec();
-						rot.facingY(Vec3(Util::RandZeroToOne() + a.x, a.y, a.z));
+						auto x = Util::RandZeroToOne() * 5.0f;
+						if (Util::RandZeroToOne() < 2.5f) x *= -1;
+						auto y = Util::RandZeroToOne() * 5.0f;
+						if (Util::RandZeroToOne() < 2.5f) y *= -1;
 
-						float aaa = (float)rand() / 360.0f;
-
-
-						auto n = Util::RandZeroToOne();
-						if (Util::RandZeroToOne() < 0.5f) n *= -0.5f;
-						auto p = Util::RandZeroToOne();
-						if (Util::RandZeroToOne() < 0.5f) p *= -1;
-
-						Quat thisQuat = ptr->GetQuaternion();
-						auto camera = OnGetDrawCamera();
-
-
-						mt19937_64 mt{ random_device{}() };
-						uniform_int_distribution<unsigned int> dist(-3, 3);
-
-						auto pospos = ptr->GetPosition();
-						pospos.x += dist(mt);
-						//pospos.y += dist(mt);
-
-						auto front = pospos - camera->GetEye();
-						thisQuat.facing(front);
-						//thisQuat.rotationX(n);
-						//thisQuat.facing(Vec3(Util::RandZeroToOne(), Util::RandZeroToOne(), Util::RandZeroToOne()));
-
-
-
-
-
-
-
+						Quat r = rot;
+						r.x += x * (XM_PI / 180.0f);
+						r.y += y * (XM_PI / 180.0f);
 
 						auto bullet = GetStage()->AddGameObject<Bullet>(
 							ptr->GetPosition(),
-							rot,
+							r,
 							m_WeaponO.weapon,
 							m_myData.unique,
 							ID,
@@ -1201,11 +1175,18 @@ namespace basecross {
 
 					for (size_t i = 0; i < 20; i++)
 					{
-						//Quat X;
-						//X.x = (i * 3.14f) / 180.0f;
+						auto x = Util::RandZeroToOne() * 5.0f;
+						if (Util::RandZeroToOne() < 2.5f) x *= -1;
+						auto y = Util::RandZeroToOne() * 5.0f;
+						if (Util::RandZeroToOne() < 2.5f) y *= -1;
+
+						Quat r = rot;
+						r.x += x * (XM_PI / 180.0f);
+						r.y += y * (XM_PI / 180.0f);
+
 						auto bullet = GetStage()->AddGameObject<Bullet>(
 							ptr->GetPosition(),
-							rot,
+							r,
 							m_WeaponT.weapon,
 							m_myData.unique,
 							ID,
