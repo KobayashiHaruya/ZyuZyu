@@ -69,7 +69,7 @@ namespace basecross {
 			jump = 10.0f;
 			break;
 		case CharacterType::SHRIMP:
-			m_WeaponO.weapon = BulletS::SMG;
+			m_WeaponO.weapon = BulletS::SMG; //SMG
 			m_WeaponT.weapon = BulletS::None;
 			m_modelName = L"0525_Animation_Shrimp_test4.bmf";
 			speed = 10.0f;
@@ -783,15 +783,10 @@ namespace basecross {
 		gameStage->TestFunc();
 		auto test = gameStage->GetCamera()->GetAt();
 
-		//ƒJƒƒ‰‚ÌŽæ“¾
-		/*auto camera = OnGetDrawCamera();
+		Quat thisQuat = ptr->GetQuaternion();
+		auto camera = OnGetDrawCamera();
 		auto front = ptr->GetPosition() - camera->GetEye();
-		front = front.normalize();
-		float angle = atan2(front.y, front.z);
-		auto playerAngle = ptr->GetRotation();
-		Quat q = ptr->GetQuaternion();
-		q.rotationRollPitchYawFromVector(Vec3(playerAngle.x + 50, playerAngle.y, playerAngle.z));
-		q.normalize();*/
+		thisQuat.facing(front);
 
 		bool fire = false;
 
@@ -854,7 +849,7 @@ namespace basecross {
 				}
 			}
 
-			WeaponOFire(fire);
+			WeaponOFire(fire, thisQuat);
 
 		}
 		else {
@@ -902,7 +897,7 @@ namespace basecross {
 				}
 			}
 
-			WeaponTFire(fire);
+			WeaponTFire(fire, thisQuat);
 
 		}
 		
@@ -1089,6 +1084,40 @@ namespace basecross {
 					{
 						//Quat X;
 						//X.x = (i * 3.14f) / 180.0f;
+						auto a = rot.toRotVec();
+						rot.facingY(Vec3(Util::RandZeroToOne() + a.x, a.y, a.z));
+
+						float aaa = (float)rand() / 360.0f;
+
+
+						auto n = Util::RandZeroToOne();
+						if (Util::RandZeroToOne() < 0.5f) n *= -0.5f;
+						auto p = Util::RandZeroToOne();
+						if (Util::RandZeroToOne() < 0.5f) p *= -1;
+
+						Quat thisQuat = ptr->GetQuaternion();
+						auto camera = OnGetDrawCamera();
+
+
+						mt19937_64 mt{ random_device{}() };
+						uniform_int_distribution<unsigned int> dist(-3, 3);
+
+						auto pospos = ptr->GetPosition();
+						pospos.x += dist(mt);
+						//pospos.y += dist(mt);
+
+						auto front = pospos - camera->GetEye();
+						thisQuat.facing(front);
+						//thisQuat.rotationX(n);
+						//thisQuat.facing(Vec3(Util::RandZeroToOne(), Util::RandZeroToOne(), Util::RandZeroToOne()));
+
+
+
+
+
+
+
+
 						auto bullet = GetStage()->AddGameObject<Bullet>(
 							ptr->GetPosition(),
 							rot,

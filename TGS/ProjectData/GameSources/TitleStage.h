@@ -23,6 +23,10 @@ namespace basecross {
 
 		shared_ptr<SoundItem> m_bgm;
 
+		shared_ptr<UI_Curtain> m_curtain;
+
+		int m_state;
+
 		void CreateViewLight();
 		void CreateUI();
 
@@ -30,6 +34,8 @@ namespace basecross {
 
 		void ToggleExplanationImage();
 		void UpdateInput();
+
+		void NextStage();
 
 	public:
 		TitleStage() :Stage(),
@@ -48,7 +54,9 @@ namespace basecross {
 			m_explanationReturnImage(NULL),
 			m_explanationStartImage(NULL),
 			m_iconImages(NULL),
-			m_bgm(NULL)
+			m_bgm(NULL),
+			m_curtain(NULL),
+			m_state(NULL)
 		{}
 		virtual ~TitleStage() {}
 
