@@ -34,9 +34,6 @@ namespace basecross {
 		shared_ptr<UI_Curtain> m_curtain;
 
 		unsigned int m_state;
-		//エフェクト
-		shared_ptr<EfkEffect> m_effect[50];
-		vector<wstring> m_effectName;
 
 		//ビューの作成
 		void CreateViewLight();
@@ -63,9 +60,9 @@ namespace basecross {
 		void PrevTitleStage();
 		void PrevSelectStage();
 
-		void CreateEffect();
-
 	public:
+		//エフェクト
+		shared_ptr<EfkEffect> m_effect;
 		shared_ptr<EfkInterface> m_efkInterface;
 		vector<WeaponState_s> m_weaponState;
 		bool m_start = false;
@@ -117,10 +114,13 @@ namespace basecross {
 		}
 
 		shared_ptr<EfkEffect> GetEffect(wstring name) {
-			for (int i = 0; i < m_effectName.size(); i++) {
-				if (m_effectName[i] == name)
-					return m_effect[i];
-			}
+			wstring dir;
+			App::GetApp()->GetDataDirectory(dir);
+			wstring effectStr = dir + L"Effect\\";
+			m_effect = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+			return m_effect;
+
 		}
 
 	};

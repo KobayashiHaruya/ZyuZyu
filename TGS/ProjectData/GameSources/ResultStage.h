@@ -38,7 +38,14 @@ namespace basecross {
 		shared_ptr<Score_UI> m_Score_UI[5];
 		//shared_ptr<Object> m_Object;
 
+		//エフェクトの再生
+		shared_ptr<EfkEffect> m_efkEffect;
+		shared_ptr<EfkPlay> m_efkPlay;
 	public:
+		//エフェクトの生成
+		shared_ptr<EfkInterface> m_efkInterface;
+		shared_ptr<EfkEffect> m_effect;
+
 		ResultStage() :Stage(),
 			m_layer(5),
 			m_Score_Image(L"Number_695_Gold.png"),
@@ -70,6 +77,7 @@ namespace basecross {
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnUpdate2() override;
+		virtual void OnDraw() override;
 
 		void PlaySE(wstring key, float vol) {
 			auto se = App::GetApp()->GetXAudio2Manager();
@@ -92,6 +100,16 @@ namespace basecross {
 
 		void SetScore(int value) {
 			m_Score = value;
+		}
+
+		shared_ptr<EfkEffect> GetEffect(wstring name) {
+			wstring dir;
+			App::GetApp()->GetDataDirectory(dir);
+			wstring effectStr = dir + L"Effect\\";
+			m_effect = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
+
+			return m_effect;
+
 		}
 
 	};

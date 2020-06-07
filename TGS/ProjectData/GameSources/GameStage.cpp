@@ -216,93 +216,6 @@ namespace basecross {
 
 	}
 
-	void GameStage::CreateEffect() {
-		m_efkInterface = ObjectFactory::Create<EfkInterface>();
-
-		wstring dir;
-		App::GetApp()->GetDataDirectory(dir);
-
-
-		wstring effectStr = dir + L"Effect\\";
-
-		wstring name = L"Assault_ver2.efk";
-		m_effectName.push_back(name);
-		m_effect[0] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Revolver_ver2.efk";
-		m_effectName.push_back(name);
-		m_effect[1] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Shotgun_ver2.efk";
-		m_effectName.push_back(name);
-		m_effect[2] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"SMG_ver2.efk";
-		m_effectName.push_back(name);
-		m_effect[3] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"RocketBoost.efk";
-		m_effectName.push_back(name);
-		m_effect[4] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Sniper2_ver2.efk";
-		m_effectName.push_back(name);
-		m_effect[5] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Laser3_ver2.efk";
-		m_effectName.push_back(name);
-		m_effect[6] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Wind_ver2.efk";
-		m_effectName.push_back(name);
-		m_effect[7] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Gatling_ver2.efk";
-		m_effectName.push_back(name);
-		m_effect[8] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Explosion_Tomato.efk";
-		m_effectName.push_back(name);
-		m_effect[9] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Explosion_Tomato2.efk";
-		m_effectName.push_back(name);
-		m_effect[10] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Explosion_Gatling.efk";
-		m_effectName.push_back(name);
-		m_effect[11] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Explosion_Grenade.efk";
-		m_effectName.push_back(name);
-		m_effect[12] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Explosion_Egg.efk";
-		m_effectName.push_back(name);
-		m_effect[13] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Assault.efk";
-		m_effectName.push_back(name);
-		m_effect[14] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Assault.efk";
-		m_effectName.push_back(name);
-		m_effect[15] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Assault.efk";
-		m_effectName.push_back(name);
-		m_effect[16] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Assault.efk";
-		m_effectName.push_back(name);
-		m_effect[17] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-
-		name = L"Assault.efk";
-		m_effectName.push_back(name);
-		m_effect[18] = ObjectFactory::Create<EfkEffect>(m_efkInterface, (effectStr + name));
-		
-	}
-
 	void GameStage::OnDraw()
 	{
 		auto& camera = GetView()->GetTargetCamera();
@@ -312,9 +225,11 @@ namespace basecross {
 
 	void GameStage::OnCreate() {
 		try {
+			m_efkInterface = ObjectFactory::Create<EfkInterface>();
+			
 			//SetPhysicsActive(true);
 			//ビューとライトの作成.
-			CreateEffect();
+			//CreateEffect();
 			WeaponState();
 			CreateViewLight();
 			CreateUI();

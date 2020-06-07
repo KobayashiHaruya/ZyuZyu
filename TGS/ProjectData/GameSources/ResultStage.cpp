@@ -121,8 +121,23 @@ namespace basecross {
 		}
 	}
 
+	void ResultStage::OnDraw()
+	{
+		auto& camera = GetView()->GetTargetCamera();
+		m_efkInterface->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
+		m_efkInterface->OnDraw();
+	}
+
+
 	void ResultStage::OnCreate() {
 		try {
+			m_efkInterface = ObjectFactory::Create<EfkInterface>();
+			
+			//m_efkEffect = GetEffect(エフェクトの名前);
+			//m_efkPlay = ObjectFactory::Create<EfkPlay>(m_efkEffect, ptr->GetPosition());
+			//m_efkPlay->Play(m_efkEffect, ptr->GetPosition());
+
+
 			StopBGM();
 			CreateViewLight();
 			CreateUI();		
@@ -143,6 +158,8 @@ namespace basecross {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		m_Second += App::GetApp()->GetElapsedTime();
+
+		m_efkInterface->OnUpdate();
 
 		if ((KeyState.m_bUpKeyTbl[VK_LBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) && m_state == 10) {
 			m_curtain->Close();
