@@ -139,7 +139,7 @@ namespace basecross {
 		}
 		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B) {
 			ToggleExplanationImage();
-			PlaySE(L"button_pause_se.wav", 0.5f);
+			PlaySE(L"button_pause_se.wav", 0.05f);
 		}
 	}
 

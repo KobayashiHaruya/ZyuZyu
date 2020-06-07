@@ -1130,14 +1130,13 @@ namespace basecross {
 	public:
 		UI_PlayerAmmo(const shared_ptr<Stage>& StagePtr,
 			UINT NumberOfDigits,
-			const wstring& TextureKey,
 			const Vec3& StartPos,
 			const Vec3& StartScale,
 			const bool& rem
 		) :
 			GameObject(StagePtr),
 			m_NumberOfDigits(NumberOfDigits),
-			m_TextureKey(TextureKey),
+			m_TextureKey(L"Corn_Number.png"),
 			m_pos(StartPos),
 			m_scale(StartScale),
 			m_rem(rem)

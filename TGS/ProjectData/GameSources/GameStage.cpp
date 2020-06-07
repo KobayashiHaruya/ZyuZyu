@@ -480,7 +480,7 @@ namespace basecross {
 			for (int i = 0; i < 5; i++) {
 				AddGameObject<Weapon>();
 			}
-			m_weaponTime = 10.0f;
+			m_weaponTime = 5.0f;
 
 			AddGameObject<GunSeat>(
 				Vec3(-10.0f, 2.0f, 10.0f),
@@ -511,7 +511,7 @@ namespace basecross {
 
 			//PlaySE(L"”š”­_FX01.wav", 0.5f);
 
-			PlayBGM(L"Main_BGM01.wav", 0.2f);
+			PlayBGM(L"Main_BGM01.wav", 0.05f);
 
 		}
 		catch (...) {
@@ -561,7 +561,6 @@ namespace basecross {
 				break;
 			case 1:
 				if (m_timer->GetTime() == 0) {
-					m_start = false;
 					m_curtain->Close();
 					m_state = 2;
 				}
@@ -688,6 +687,8 @@ namespace basecross {
 	void GameStage::OnUpdate2() {
 		if (!m_timer->GetTime() && m_curtain->Finished()) {
 			m_state = 3;
+			m_start = false;
+			StopBGM();
 			m_curtain->Close();
 		}
 		if (m_timer->GetTime() == 180) m_start = true;

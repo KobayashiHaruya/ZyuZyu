@@ -13,7 +13,7 @@ namespace basecross {
 		m_spanMat.affineTransformation(
 			Vec3(1.0f, 1.0f, 1.0f),
 			Vec3(0.0f, 0.0f, 0.0f),
-			Vec3(0.0f, 3.14f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
 			Vec3(0.0f, -1.5f, 0.0f));
 
 		auto ptrColl = AddComponent<CollisionCapsule>();
@@ -116,14 +116,12 @@ namespace basecross {
 	void Character::PlayerUI() {
 		GetStage()->AddGameObject<UI_PlayerAmmo>(
 			3,
-			L"Share_Number.png",
 			Vec3(725.0f, -120.0f, 0.0f),
 			Vec3(150.0f, 50.0f, 1.0f),
 			true
 			);
 		GetStage()->AddGameObject<UI_PlayerAmmo>(
 			3,
-			L"Share_Number.png",
 			Vec3(875.0f, -120.0f, 0.0f),
 			Vec3(150.0f, 50.0f, 1.0f),
 			false
@@ -371,36 +369,35 @@ namespace basecross {
 		Vec2 moveVec;
 		float cntlAngle;
 		float totalAngle;
-		if ((cntlVec[0].bLeftTrigger > 250.0f || KeyState.m_bPushKeyTbl[VK_RBUTTON])) {
-			moveVec = Vec2(0.0f, 1.0f);
-			cntlAngle = atan2(0.0f, 1.0f);
-		}
-		else {
-			moveVec = Vec2(fThumbLX, fThumbLY);
-			cntlAngle = atan2(-fThumbLX, fThumbLY);
-		}
+		//if ((cntlVec[0].bLeftTrigger > 250.0f || KeyState.m_bPushKeyTbl[VK_RBUTTON])) {
+		moveVec = Vec2(0.0f, 1.0f);
+		cntlAngle = atan2(0.0f, 1.0f);
+		//}
+		//else {
+		//	moveVec = Vec2(fThumbLX, fThumbLY);
+		//	cntlAngle = atan2(-fThumbLX, fThumbLY);
+		//}
 		totalAngle = frontAngle + cntlAngle;
 		angle = Vec3(cos(totalAngle), 0, sin(totalAngle));
 		angle.normalize();
 		float moveSize = moveVec.length();
 		angle *= moveSize;
-
 		angle.y = 0.0f;
 
 		if (angle.length() > 0.0f) {
 			auto ptr = GetBehavior<UtilBehavior>();
 			ptr->RotToHead(angle, 1.0f);
-
-			Vec3 Temp = angle;
-			Temp.normalize();
-			float ToAngle = atan2(Temp.x, Temp.z);
-			bsm::Quat Qt;
-			Qt.rotationRollPitchYawFromVector(bsm::Vec3(0, ToAngle, 0));
-			Qt.normalize();
-			Quat NowQt = trans->GetQuaternion();
-			m_bulletRot = Qt;
 		}
 
+		auto ptr = GetComponent<Transform>();
+		auto gameStage = dynamic_pointer_cast<GameStage>(GetStage());
+		gameStage->TestFunc();
+		auto test = gameStage->GetCamera()->GetAt();
+
+		Quat thisQuat = ptr->GetQuaternion();
+		auto camera = OnGetDrawCamera();
+		auto fro = ptr->GetPosition() - camera->GetEye();
+		m_bulletRot.facing(fro);
 	}
 
 	void Character::GrenadeFire() {
@@ -789,16 +786,6 @@ namespace basecross {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 
-		auto ptr = GetComponent<Transform>();
-		auto gameStage = dynamic_pointer_cast<GameStage>(GetStage());
-		gameStage->TestFunc();
-		auto test = gameStage->GetCamera()->GetAt();
-
-		Quat thisQuat = ptr->GetQuaternion();
-		auto camera = OnGetDrawCamera();
-		auto front = ptr->GetPosition() - camera->GetEye();
-		thisQuat.facing(front);
-
 		bool fire = false;
 
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_Y) || KeyState.m_bPressedKeyTbl[VK_RBUTTON])) {
@@ -860,7 +847,7 @@ namespace basecross {
 				}
 			}
 
-			WeaponOFire(fire, thisQuat);
+			WeaponOFire(fire, m_bulletRot);
 
 		}
 		else {
@@ -908,7 +895,7 @@ namespace basecross {
 				}
 			}
 
-			WeaponTFire(fire, thisQuat);
+			WeaponTFire(fire, m_bulletRot);
 
 		}
 		

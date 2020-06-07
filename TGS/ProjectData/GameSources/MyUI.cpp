@@ -1410,7 +1410,7 @@ namespace basecross {
 		auto ptrDraw = AddComponent<PTSpriteDraw>(m_BackupVertices, indices);
 		ptrDraw->SetTextureResource(m_TextureKey);
 
-		ptrDraw->SetDiffuse(Col4(1.0f, 1.0f, 1.0f, 1.0f));
+		ptrDraw->SetDiffuse(Col4(0.2f, 0.2f, 0.2f, 1.0f));
 
 		SetDrawLayer(15);
 	
@@ -1442,15 +1442,15 @@ namespace basecross {
 			}
 		}
 
-		//if (ammo < 10) {
-		//	m_NumberOfDigits = 1;
-		//}
-		//else if (ammo < 100){
-		//	m_NumberOfDigits = 2;
-		//}
-		//else {
-		//	m_NumberOfDigits = 3;
-		//}
+		if (ammo < 10) {
+			m_NumberOfDigits = 1;
+		}
+		else if (ammo < 100){
+			m_NumberOfDigits = 2;
+		}
+		else {
+			m_NumberOfDigits = 3;
+		}
 
 
 		for (UINT i = m_NumberOfDigits; i > 0; i--) {
