@@ -506,7 +506,7 @@ namespace basecross {
 
 			wstring mediaDir;
 			App::GetApp()->GetDataDirectory(mediaDir);
-			m_curtain =  AddGameObject<UI_Curtain>(mediaDir + L"Texters/ShareImagies/CurtainAnimation/", Vec3(0.0f), Vec3(34.0f), 1000);
+			m_curtain =  AddGameObject<UI_Curtain>(mediaDir + L"Texters/ShareImagies/CurtainAnimation/", Vec3(0.0f), Vec3(34.0f), 999999);
 			m_curtain->Open();
 
 			//PlaySE(L"”š”­_FX01.wav", 0.5f);

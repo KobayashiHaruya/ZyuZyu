@@ -38,6 +38,17 @@ namespace basecross {
 		shared_ptr<Score_UI> m_Score_UI[5];
 		//shared_ptr<Object> m_Object;
 
+		wstring m_resultFont;
+
+		shared_ptr<UI_Static_Image> m_scoreTableBack;
+		shared_ptr<UI_Score_Table> m_scoreTable;
+		bool m_isScoreTableShow;
+
+		void CreateSplash();
+
+		void CreateScoreTable();
+		void ShowScoreTable(const bool e);
+
 	public:
 		ResultStage() :Stage(),
 			m_layer(5),
@@ -57,7 +68,11 @@ namespace basecross {
 			m_curtain(NULL),
 			m_resultThree(NULL),
 			m_resultTwo(NULL),
-			m_state(NULL)
+			m_state(NULL),
+			m_scoreTableBack(NULL),
+			m_scoreTable(NULL),
+			m_isScoreTableShow(NULL),
+			m_resultFont(L"ResultFont.png")
 		{}
 		virtual ~ResultStage() {}
 
