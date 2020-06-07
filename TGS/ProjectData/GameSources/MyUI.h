@@ -751,6 +751,8 @@ namespace basecross {
 		wstring m_titlebackImageName;
 		wstring m_selectbackImageName;
 		wstring m_backImageName;
+		wstring m_returnImageName;
+		wstring m_moveImageName;
 
 		std::shared_ptr<UI_Static_Image> m_base;
 		shared_ptr<UI_Sprite_Text> m_title;
@@ -761,6 +763,8 @@ namespace basecross {
 		shared_ptr<UI_Static_Image> m_titleback;
 		shared_ptr<UI_Static_Image> m_selectback;
 		shared_ptr<UI_Static_Image> m_back;
+		shared_ptr<UI_Static_Image> m_return;
+		shared_ptr<UI_Static_Image> m_move;
 
 		vector<CharacterStatus_s> m_characterStatuses;
 		vector<CharacterKillDetails_s> m_characterStatusKillDetails;
@@ -799,6 +803,8 @@ namespace basecross {
 			m_titlebackImageName(L"OperationReturn.png"),
 			m_selectbackImageName(L"OperationStart.png"),
 			m_backImageName(L"PS_Other.png"),
+			m_returnImageName(L"PS_Return.png"),
+			m_moveImageName(L"PS_Move.png"),
 			m_base(NULL),
 			m_title(NULL),
 			m_tab(NULL),
@@ -808,6 +814,8 @@ namespace basecross {
 			m_titleback(NULL),
 			m_selectback(NULL),
 			m_back(NULL),
+			m_return(NULL),
+			m_move(NULL),
 			m_index(0),
 			m_oldIndex(-1),
 			m_white(Col4(1.0f, 1.0f, 1.0f, 1.0f))

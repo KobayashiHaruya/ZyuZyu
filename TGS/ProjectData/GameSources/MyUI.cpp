@@ -913,17 +913,26 @@ namespace basecross {
 	}
 
 	void UI_The_World::ShowBack(bool e) {
-		if (m_back) {
-			m_back->SetDrawActive(e);
+		if (m_return && m_move) {
+			m_return->Hidden(!e);
+			m_move->Hidden(!e);
 		}
 		else {
-			m_back = GetStage()->AddGameObject<UI_Static_Image>(
-				Vec2(541.0f, 204.0f),
-				Vec3(-820.0f, -470.0f, 0.0f),
+			m_return = GetStage()->AddGameObject<UI_Static_Image>(
+				Vec2(548.0f, 82.0f),
+				Vec3(-820.0f, -450.0f, 0.0f),
 				Vec3(0.4f, 0.4f, 0.4f),
 				m_layer,
 				m_white,
-				m_backImageName
+				m_returnImageName
+				);
+			m_move = GetStage()->AddGameObject<UI_Static_Image>(
+				Vec2(759.0f, 83.0f),
+				Vec3(-779.0f, -500.0f, 0.0f),
+				Vec3(0.4f, 0.4f, 0.4f),
+				m_layer,
+				m_white,
+				m_moveImageName
 				);
 			ShowBack(e);
 		}

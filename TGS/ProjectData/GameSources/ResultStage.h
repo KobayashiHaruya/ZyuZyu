@@ -41,6 +41,17 @@ namespace basecross {
 		//エフェクトの再生
 		shared_ptr<EfkEffect> m_efkEffect;
 		shared_ptr<EfkPlay> m_efkPlay;
+		wstring m_resultFont;
+
+		shared_ptr<UI_Static_Image> m_scoreTableBack;
+		shared_ptr<UI_Score_Table> m_scoreTable;
+		bool m_isScoreTableShow;
+
+		void CreateSplash();
+
+		void CreateScoreTable();
+		void ShowScoreTable(const bool e);
+
 	public:
 		//エフェクトの生成
 		shared_ptr<EfkInterface> m_efkInterface;
@@ -64,7 +75,11 @@ namespace basecross {
 			m_curtain(NULL),
 			m_resultThree(NULL),
 			m_resultTwo(NULL),
-			m_state(NULL)
+			m_state(NULL),
+			m_scoreTableBack(NULL),
+			m_scoreTable(NULL),
+			m_isScoreTableShow(NULL),
+			m_resultFont(L"ResultFont.png")
 		{}
 		virtual ~ResultStage() {}
 
