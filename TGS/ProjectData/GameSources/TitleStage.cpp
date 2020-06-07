@@ -95,6 +95,11 @@ namespace basecross {
 		ToggleExplanationImage();
 
 		CreateIcons();
+
+		wstring mediaDir;
+		App::GetApp()->GetDataDirectory(mediaDir);
+		m_curtain = AddGameObject<UI_Curtain>(mediaDir + L"Texters/ShareImagies/CurtainAnimation/", Vec3(0.0f), Vec3(34.0f), m_baseLayer + 100);
+		m_curtain->Open();
 	}
 
 	void TitleStage::CreateIcons() {
@@ -128,14 +133,19 @@ namespace basecross {
 	void TitleStage::UpdateInput() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-		if (KeyState.m_bUpKeyTbl[VK_LBUTTON] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) {
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
-			StopBGM();
+		if ((KeyState.m_bUpKeyTbl[VK_LBUTTON] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) && m_state == 0) {
+			m_curtain->Close();
+			m_state = 1;
 		}
 		if (KeyState.m_bUpKeyTbl[VK_RBUTTON] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B) {
 			ToggleExplanationImage();
 			PlaySE(L"button_pause_se.wav", 0.5f);
 		}
+	}
+
+	void TitleStage::NextStage() {
+		App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
+		StopBGM();
 	}
 
 	void TitleStage::OnCreate() {
@@ -154,5 +164,17 @@ namespace basecross {
 
 	void TitleStage::OnUpdate() {
 		UpdateInput();
+
+		if (m_curtain->Finished()) {
+			switch (m_state)
+			{
+			case 1:
+				NextStage();
+				m_state = 2;
+				break;
+			default:
+				break;
+			}
+		}
 	}
 }
