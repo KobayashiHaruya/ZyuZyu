@@ -287,7 +287,7 @@ namespace basecross {
 			);
 
 		m_scoreTable = AddGameObject<UI_Score_Table>(8, m_layer + 101);
-		//m_scoreTable->SetCharacterStatuses(m_characterStatuses);  //スコアテーブルにキャラクターのステータスを指定
+		m_scoreTable->SetCharacterStatuses(m_charState);  //スコアテーブルにキャラクターのステータスを指定
 	}
 
 	void ResultStage::ShowScoreTable(const bool e) {
