@@ -117,6 +117,9 @@ namespace basecross {
 
 	void ResultStage::OnCreate() {
 		try {
+			CreateScoreTable();
+			ShowScoreTable(false);
+
 			m_efkInterface = ObjectFactory::Create<EfkInterface>();
 			
 			//m_efkEffect = GetEffect(エフェクトの名前);
@@ -276,15 +279,6 @@ namespace basecross {
 			Col4(0.0f, 0.0f, 0.0f, 0.5f),
 			L"dot.png"
 			);
-		
-		AddGameObject<UI_Static_Image>(
-			Vec2(863.0f, 82.0f),
-			Vec3(-730.0f, -500.0f, 0.0f),
-			Vec3(0.5f),
-			m_layer + 101,
-			Col4(1.0f),
-			m_resultFont
-			);
 
 		m_scoreTable = AddGameObject<UI_Score_Table>(8, m_layer + 101);
 		//m_scoreTable->SetCharacterStatuses(m_characterStatuses);  //スコアテーブルにキャラクターのステータスを指定
@@ -300,8 +294,17 @@ namespace basecross {
 		if (m_effectWaitTimaer <= -1.0f) return;
 		m_effectWaitTimaer += App::GetApp()->GetElapsedTime();
 		if (m_effectWaitTimaer >= 8.0f) {
-			CreateScoreTable();
+			AddGameObject<UI_Static_Image>(
+				Vec2(863.0f, 82.0f),
+				Vec3(-730.0f, -500.0f, 0.0f),
+				Vec3(0.5f),
+				m_layer + 101,
+				Col4(1.0f),
+				m_resultFont
+				);
+
 			ShowScoreTable(true);
+
 			m_effectWaitTimaer *= -1.0f;
 		}
 	}
