@@ -661,8 +661,12 @@ namespace basecross {
 		~UI_Score_Table() {}
 
 		void Show(bool e);
+		vector<CharacterStatus_s> GetCharacterStatuses() {
+			return m_characterStatuses;
+		}
 		void SetCharacterStatuses(const vector<CharacterStatus_s>& characterStatuses) {
 			m_characterStatuses = characterStatuses;
+			UpdateTable();
 		}
 		void SetCharacterStatus(const CharacterStatus_s& status);
 		CharacterStatus_s GetPlayerStatus() {
@@ -671,6 +675,7 @@ namespace basecross {
 			});
 			return *it;
 		}
+
 	};
 
 
