@@ -149,11 +149,13 @@ namespace basecross {
 		m_efkInterface->OnUpdate();
 
 		if ((KeyState.m_bUpKeyTbl[VK_LBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) && m_state == 10) {
+			m_starEffectPlay->StopEffect();
 			m_curtain->Close();
 			m_state = 1;
 		}
 
 		if ((KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) && m_state == 10) {
+			m_starEffectPlay->StopEffect();
 			m_curtain->Close();
 			m_state = 2;
 		}
@@ -296,12 +298,29 @@ namespace basecross {
 		if (m_effectWaitTimaer >= 8.0f) {
 			AddGameObject<UI_Static_Image>(
 				Vec2(863.0f, 82.0f),
-				Vec3(-730.0f, -500.0f, 0.0f),
+				Vec3(0.0f, -500.0f, 0.0f),
 				Vec3(0.5f),
 				m_layer + 101,
 				Col4(1.0f),
 				m_resultFont
 				);
+			AddGameObject<UI_Static_Image>(
+				Vec2(532.0f, 147.0f),
+				Vec3(-730.0f, -500.0f, 0.0f),
+				Vec3(0.5f),
+				m_layer + 101,
+				Col4(1.0f),
+				L"OperationStart.png"
+				);
+			AddGameObject<UI_Static_Image>(
+				Vec2(532.0f, 147.0f),
+				Vec3(750.0f, -500.0f, 0.0f),
+				Vec3(0.5f),
+				m_layer + 101,
+				Col4(1.0f),
+				L"OperationReturn.png"
+				);
+
 
 			ShowScoreTable(true);
 
