@@ -144,7 +144,7 @@ namespace basecross {
 
 	void CharSelectStage::NextStage() {
 		//ここにゲームステージへ遷移する処理を書く
-		SelectData();
+		//SelectData();
 		StopBGM();
 		App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::game);
 	}

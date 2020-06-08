@@ -46,6 +46,27 @@ namespace basecross {
 		vector<CharacterStatus_s> m_charState;
 		vector<vector<int>> m_KillList;
 
+		wstring m_resultFont;
+
+		shared_ptr<UI_Static_Image> m_scoreTableBack;
+		shared_ptr<UI_Score_Table> m_scoreTable;
+		bool m_isScoreTableShow;
+
+		void CreateSplash();
+
+		void CreateScoreTable();
+		void ShowScoreTable(const bool e);
+
+		float m_effectWaitTimaer;
+		void UpdateEffectWaitTimert();
+
+		shared_ptr<EfkEffect> m_starEffect;
+		shared_ptr<EfkPlay> m_starEffectPlay;
+		void PlayStarEffect();
+		shared_ptr<EfkEffect> m_crackerEffect;
+		shared_ptr<EfkPlay> m_crackerEffectPlay;
+		void PlayCrackerEffect();
+
 	public:
 		//エフェクトの生成
 		shared_ptr<EfkInterface> m_efkInterface;
@@ -69,7 +90,16 @@ namespace basecross {
 			m_curtain(NULL),
 			m_resultThree(NULL),
 			m_resultTwo(NULL),
-			m_state(NULL)
+			m_state(NULL),
+			m_scoreTableBack(NULL),
+			m_scoreTable(NULL),
+			m_isScoreTableShow(NULL),
+			m_resultFont(L"ResultFont.png"),
+			m_effectWaitTimaer(NULL),
+			m_starEffect(NULL),
+			m_starEffectPlay(NULL),
+			m_crackerEffect(NULL),
+			m_crackerEffectPlay(NULL)
 		{}
 		virtual ~ResultStage() {}
 

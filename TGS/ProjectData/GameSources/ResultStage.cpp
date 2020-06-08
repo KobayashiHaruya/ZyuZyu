@@ -18,11 +18,9 @@ namespace basecross {
 		PtrMultiLight->SetDefaultLighting();
 	}
 
-
 	void ResultStage::CreateUI() {
 		//スコア
 		m_TrueScore = 10000;
-
 
 		for (int i = 0; i < 5; i++) {	//ループ数で桁変更
 			float n = static_cast<float>(i);
@@ -30,7 +28,7 @@ namespace basecross {
 				Vec2(500.0f, 100.0f),
 				Vec3(300.0f * 0.5f - n * 64.0f - 64.0f, 460.0f * 0.5f, 0.0f),
 				Vec3(1.5f, 1.5f, 1.5f),
-				10,
+				m_layer,
 				Col4(1.0f, 1.0f, 1.0f, 1.0f),
 				m_Score_Image,
 				static_cast<int>((powf(10.0f, n))),
@@ -38,20 +36,6 @@ namespace basecross {
 				);
 			m_Score_UI[i]->SetDrawActive(false);
 		}
-
-		wstring mediaDir;
-		App::GetApp()->GetDataDirectory(mediaDir);
-		//m_Cartain = AddGameObject<Result_Curtain>(mediaDir + L"Texters/ResultImagis/ResultAnimation/SpriteStadio/", Vec3(0.0f, 0.0f, 0.0f), Vec3(50.0f), m_layer);
-
-		m_curtain = AddGameObject<UI_Curtain>(mediaDir + L"Texters/ShareImagies/CurtainAnimation/", Vec3(0.0f), Vec3(34.0f), m_layer + 100);
-		m_curtain->Open();
-		
-		//m_Cartain = AddGameObject<Result_Curtain>(mediaDir + L"Texters/ResultImagis/ResultAnimation/SpriteStadio/", Vec3(0.0f, 0.0f, 0.0f), Vec3(32.0f), m_layer);
-		m_resultThree = AddGameObject<UI_Result_Three>(mediaDir + L"Texters/ResultImagis/ResultAnimation3/", Vec3(0.0f), Vec3(32.0f), m_layer - 9);
-		m_resultTwo = AddGameObject<UI_Result_Two>(mediaDir + L"Texters/ResultImagis/ResultAnimation2_ver4/", Vec3(0.0f), Vec3(32.0f), m_layer - 1);
-
-		m_resultTwo->ChangeCharacter(CharacterType::DOUGHNUT);
-		m_resultTwo->Play();
 	}
 
 	void ResultStage::CreateIcon(CharacterType type) {
@@ -118,6 +102,8 @@ namespace basecross {
 			PlaySE(L"Curia02.wav", 0.5f);
 			m_Onoff = false;
 
+			PlayStarEffect();
+			PlayCrackerEffect();
 		}
 	}
 
@@ -143,15 +129,14 @@ namespace basecross {
 			CreateUI();		
 			CreateWall();
 
+			CreateSplash();
 			//PlayBGM(L"rezult_bgm.wav", 0.5f);
 			PlaySE(L"Doram01.wav", 0.5f);
-			
 		}
 		catch (...) {
 			throw;
 		}
 	}
-
 
 	void ResultStage::OnUpdate() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
@@ -168,6 +153,10 @@ namespace basecross {
 		if ((KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) && m_state == 10) {
 			m_curtain->Close();
 			m_state = 2;
+		}
+
+		if (KeyState.m_bPressedKeyTbl['P'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_START) {
+			ShowScoreTable(m_isScoreTableShow = !m_isScoreTableShow);
 		}
 
 		if (m_curtain->Finished()) {
@@ -191,6 +180,7 @@ namespace basecross {
 				break;
 			}
 		}
+
 		ScoreMove();
 		if (m_Second > 5.0f) {
 			if (m_Second < 35.0f) {
@@ -198,6 +188,7 @@ namespace basecross {
 			}
 		}
 		//if (m_Cartain->GetCount() >= 40) m_resultThree->Play();
+		UpdateEffectWaitTimert();
 	}
 
 	void ResultStage::OnUpdate2() {
@@ -262,4 +253,68 @@ namespace basecross {
 		}
 	}
 
+	void ResultStage::CreateSplash() {
+		wstring mediaDir;
+		App::GetApp()->GetDataDirectory(mediaDir);
+
+		m_curtain = AddGameObject<UI_Curtain>(mediaDir + L"Texters/ShareImagies/CurtainAnimation/", Vec3(0.0f), Vec3(34.0f), m_layer + 200);
+		m_curtain->Open();
+		
+		m_resultThree = AddGameObject<UI_Result_Three>(mediaDir + L"Texters/ResultImagis/ResultAnimation3/", Vec3(0.0f), Vec3(32.0f), m_layer - 9);
+		m_resultTwo = AddGameObject<UI_Result_Two>(mediaDir + L"Texters/ResultImagis/ResultAnimation2_ver4/", Vec3(0.0f), Vec3(32.0f), m_layer - 1);
+
+		m_resultTwo->ChangeCharacter(CharacterType::DOUGHNUT);  //スプラッシュにキャラクターのタイプを指定
+		m_resultTwo->Play();
+	}
+
+	void ResultStage::CreateScoreTable() {
+		m_scoreTableBack = AddGameObject<UI_Static_Image>(
+			Vec2(1920.0f, 1080.0f),
+			Vec3(0.0f),
+			Vec3(1.0f),
+			m_layer + 100,
+			Col4(0.0f, 0.0f, 0.0f, 0.5f),
+			L"dot.png"
+			);
+		
+		AddGameObject<UI_Static_Image>(
+			Vec2(863.0f, 82.0f),
+			Vec3(-730.0f, -500.0f, 0.0f),
+			Vec3(0.5f),
+			m_layer + 101,
+			Col4(1.0f),
+			m_resultFont
+			);
+
+		m_scoreTable = AddGameObject<UI_Score_Table>(8, m_layer + 101);
+		//m_scoreTable->SetCharacterStatuses(m_characterStatuses);  //スコアテーブルにキャラクターのステータスを指定
+	}
+
+	void ResultStage::ShowScoreTable(const bool e) {
+		m_scoreTableBack->Hidden(!e);
+		m_scoreTable->Show(e);
+		m_isScoreTableShow = e;
+	}
+
+	void ResultStage::UpdateEffectWaitTimert() {
+		if (m_effectWaitTimaer <= -1.0f) return;
+		m_effectWaitTimaer += App::GetApp()->GetElapsedTime();
+		if (m_effectWaitTimaer >= 8.0f) {
+			CreateScoreTable();
+			ShowScoreTable(true);
+			m_effectWaitTimaer *= -1.0f;
+		}
+	}
+
+	void ResultStage::PlayStarEffect() {
+		m_starEffect = GetEffect(L"ShiningStar.efk");
+		m_starEffectPlay = ObjectFactory::Create<EfkPlay>(m_starEffect, Vec3(0.0f));
+		m_starEffectPlay->Play(m_starEffect, Vec3(0.0f, 0.0f, 15.0f));
+	}
+
+	void ResultStage::PlayCrackerEffect() {
+		m_crackerEffect = GetEffect(L"Cracker.efk");
+		m_crackerEffectPlay = ObjectFactory::Create<EfkPlay>(m_crackerEffect, Vec3(0.0f));
+		m_crackerEffectPlay->Play(m_crackerEffect, Vec3(0.0f, -10.0f, 20.0f));
+	}
 }

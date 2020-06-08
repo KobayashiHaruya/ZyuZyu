@@ -661,8 +661,12 @@ namespace basecross {
 		~UI_Score_Table() {}
 
 		void Show(bool e);
+		vector<CharacterStatus_s> GetCharacterStatuses() {
+			return m_characterStatuses;
+		}
 		void SetCharacterStatuses(const vector<CharacterStatus_s>& characterStatuses) {
 			m_characterStatuses = characterStatuses;
+			UpdateTable();
 		}
 		void SetCharacterStatus(const CharacterStatus_s& status);
 		CharacterStatus_s GetPlayerStatus() {
@@ -671,6 +675,7 @@ namespace basecross {
 			});
 			return *it;
 		}
+
 	};
 
 
@@ -747,13 +752,16 @@ namespace basecross {
 		float m_titleFontSize;
 
 		wstring m_baseImageName;
+		wstring m_titleImageName;
 		wstring m_operationImageName;
 		wstring m_titlebackImageName;
 		wstring m_selectbackImageName;
 		wstring m_backImageName;
+		wstring m_returnImageName;
+		wstring m_moveImageName;
 
 		std::shared_ptr<UI_Static_Image> m_base;
-		shared_ptr<UI_Sprite_Text> m_title;
+		shared_ptr<UI_Static_Image> m_title;
 		std::shared_ptr<UI_Tab> m_tab;
 		shared_ptr<UI_Score_Table> m_scoreTable;
 		std::shared_ptr<UI_Static_Image> m_operation;
@@ -761,6 +769,8 @@ namespace basecross {
 		shared_ptr<UI_Static_Image> m_titleback;
 		shared_ptr<UI_Static_Image> m_selectback;
 		shared_ptr<UI_Static_Image> m_back;
+		shared_ptr<UI_Static_Image> m_return;
+		shared_ptr<UI_Static_Image> m_move;
 
 		vector<CharacterStatus_s> m_characterStatuses;
 		vector<CharacterKillDetails_s> m_characterStatusKillDetails;
@@ -795,10 +805,13 @@ namespace basecross {
 			m_characterStatusKillDetails(vector<CharacterKillDetails_s>(NULL)),
 			m_isShow(false),
 			m_baseImageName(L"PS_Base.png"),
+			m_titleImageName(L"PS_Title.png"),
 			m_operationImageName(L"Operation.png"),
 			m_titlebackImageName(L"OperationReturn.png"),
 			m_selectbackImageName(L"OperationStart.png"),
 			m_backImageName(L"PS_Other.png"),
+			m_returnImageName(L"PS_Return.png"),
+			m_moveImageName(L"PS_Move.png"),
 			m_base(NULL),
 			m_title(NULL),
 			m_tab(NULL),
@@ -808,6 +821,8 @@ namespace basecross {
 			m_titleback(NULL),
 			m_selectback(NULL),
 			m_back(NULL),
+			m_return(NULL),
+			m_move(NULL),
 			m_index(0),
 			m_oldIndex(-1),
 			m_white(Col4(1.0f, 1.0f, 1.0f, 1.0f))
