@@ -52,6 +52,16 @@ namespace basecross {
 		void CreateScoreTable();
 		void ShowScoreTable(const bool e);
 
+		float m_effectWaitTimaer;
+		void UpdateEffectWaitTimert();
+
+		shared_ptr<EfkEffect> m_starEffect;
+		shared_ptr<EfkPlay> m_starEffectPlay;
+		void PlayStarEffect();
+		shared_ptr<EfkEffect> m_crackerEffect;
+		shared_ptr<EfkPlay> m_crackerEffectPlay;
+		void PlayCrackerEffect();
+
 	public:
 		//エフェクトの生成
 		shared_ptr<EfkInterface> m_efkInterface;
@@ -79,7 +89,12 @@ namespace basecross {
 			m_scoreTableBack(NULL),
 			m_scoreTable(NULL),
 			m_isScoreTableShow(NULL),
-			m_resultFont(L"ResultFont.png")
+			m_resultFont(L"ResultFont.png"),
+			m_effectWaitTimaer(NULL),
+			m_starEffect(NULL),
+			m_starEffectPlay(NULL),
+			m_crackerEffect(NULL),
+			m_crackerEffectPlay(NULL)
 		{}
 		virtual ~ResultStage() {}
 

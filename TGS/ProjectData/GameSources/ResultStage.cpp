@@ -102,7 +102,8 @@ namespace basecross {
 			PlaySE(L"Curia02.wav", 0.5f);
 			m_Onoff = false;
 
-			ShowScoreTable(true);
+			PlayStarEffect();
+			PlayCrackerEffect();
 		}
 	}
 
@@ -128,8 +129,6 @@ namespace basecross {
 			CreateUI();		
 			CreateWall();
 			CreateSplash();
-			CreateScoreTable();
-			ShowScoreTable(false);
 			//AddGameObject<ResultScore>();
 			//PlayBGM(L"rezult_bgm.wav", 0.5f);
 			PlaySE(L"Doram01.wav", 0.5f);
@@ -189,6 +188,7 @@ namespace basecross {
 			}
 		}
 		//if (m_Cartain->GetCount() >= 40) m_resultThree->Play();
+		UpdateEffectWaitTimert();
 	}
 
 	void ResultStage::OnUpdate2() {
@@ -242,5 +242,27 @@ namespace basecross {
 		m_scoreTableBack->Hidden(!e);
 		m_scoreTable->Show(e);
 		m_isScoreTableShow = e;
+	}
+
+	void ResultStage::UpdateEffectWaitTimert() {
+		if (m_effectWaitTimaer <= -1.0f) return;
+		m_effectWaitTimaer += App::GetApp()->GetElapsedTime();
+		if (m_effectWaitTimaer >= 8.0f) {
+			CreateScoreTable();
+			ShowScoreTable(true);
+			m_effectWaitTimaer *= -1.0f;
+		}
+	}
+
+	void ResultStage::PlayStarEffect() {
+		m_starEffect = GetEffect(L"ShiningStar.efk");
+		m_starEffectPlay = ObjectFactory::Create<EfkPlay>(m_starEffect, Vec3(0.0f));
+		m_starEffectPlay->Play(m_starEffect, Vec3(0.0f, 0.0f, 15.0f));
+	}
+
+	void ResultStage::PlayCrackerEffect() {
+		m_crackerEffect = GetEffect(L"Cracker.efk");
+		m_crackerEffectPlay = ObjectFactory::Create<EfkPlay>(m_crackerEffect, Vec3(0.0f));
+		m_crackerEffectPlay->Play(m_crackerEffect, Vec3(0.0f, -10.0f, 20.0f));
 	}
 }
