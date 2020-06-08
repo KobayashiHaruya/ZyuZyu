@@ -63,6 +63,7 @@ namespace basecross {
 		shared_ptr<EfkEffect> m_starEffect;
 		shared_ptr<EfkPlay> m_starEffectPlay;
 		void PlayStarEffect();
+
 		shared_ptr<EfkEffect> m_crackerEffect;
 		shared_ptr<EfkPlay> m_crackerEffectPlay;
 		void PlayCrackerEffect();
