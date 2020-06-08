@@ -117,6 +117,7 @@ namespace basecross {
 
 	void ResultStage::OnCreate() {
 		try {
+			ReadScore();
 			CreateScoreTable();
 			ShowScoreTable(false);
 
@@ -126,7 +127,6 @@ namespace basecross {
 			//m_efkPlay = ObjectFactory::Create<EfkPlay>(m_efkEffect, ptr->GetPosition());
 			//m_efkPlay->Play(m_efkEffect, ptr->GetPosition());
 
-			ReadScore();
 			StopBGM();
 			CreateViewLight();
 			CreateUI();		
