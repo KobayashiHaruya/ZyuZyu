@@ -226,8 +226,8 @@ namespace basecross {
 			);
 		
 		AddGameObject<UI_Static_Image>(
-			Vec2(797.0f, 82.0f),
-			Vec3(-740.0f, -500.0f, 0.0f),
+			Vec2(863.0f, 82.0f),
+			Vec3(-730.0f, -500.0f, 0.0f),
 			Vec3(0.5f),
 			m_layer + 101,
 			Col4(1.0f),

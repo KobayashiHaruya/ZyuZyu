@@ -747,6 +747,7 @@ namespace basecross {
 		float m_titleFontSize;
 
 		wstring m_baseImageName;
+		wstring m_titleImageName;
 		wstring m_operationImageName;
 		wstring m_titlebackImageName;
 		wstring m_selectbackImageName;
@@ -755,7 +756,7 @@ namespace basecross {
 		wstring m_moveImageName;
 
 		std::shared_ptr<UI_Static_Image> m_base;
-		shared_ptr<UI_Sprite_Text> m_title;
+		shared_ptr<UI_Static_Image> m_title;
 		std::shared_ptr<UI_Tab> m_tab;
 		shared_ptr<UI_Score_Table> m_scoreTable;
 		std::shared_ptr<UI_Static_Image> m_operation;
@@ -799,6 +800,7 @@ namespace basecross {
 			m_characterStatusKillDetails(vector<CharacterKillDetails_s>(NULL)),
 			m_isShow(false),
 			m_baseImageName(L"PS_Base.png"),
+			m_titleImageName(L"PS_Title.png"),
 			m_operationImageName(L"Operation.png"),
 			m_titlebackImageName(L"OperationReturn.png"),
 			m_selectbackImageName(L"OperationStart.png"),

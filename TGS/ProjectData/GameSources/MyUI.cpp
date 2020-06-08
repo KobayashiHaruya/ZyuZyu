@@ -828,7 +828,7 @@ namespace basecross {
 	void UI_The_World::ShowBase(bool e) {
 		if (!m_base && !e) return;
 		if (m_base) {
-			m_base->SetDrawActive(e);
+			m_base->Hidden(!e);
 		}
 		else {
 			m_base = GetStage()->AddGameObject<UI_Static_Image>(
@@ -855,29 +855,27 @@ namespace basecross {
 	void UI_The_World::ShowTitle(bool e) {
 		if (!m_title && !e) return;
 		if (m_title) {
-			m_title->SetDrawActive(e);
+			m_title->Hidden(!e);
 		} else {
-			m_title = GetStage()->AddGameObject<UI_Sprite_Text>(
-				m_fontName,
-				m_titleFontSize,
-				m_white,
-				Rect2D<float>(0.0f, 30.0f, 1920.0f, m_titleFontSize + 18.0f + 30.0f),
-				StringSprite::TextAlignment::m_Center,
-				L"ƒ|[ƒY",
+			m_title = GetStage()->AddGameObject<UI_Static_Image>(
+				Vec2(531.0f, 171.0f),
+				Vec3(0.0f, 485.0f, 0.0f),
+				Vec3(0.4f),
 				m_layer,
-				false
+				m_white,
+				m_titleImageName
 				);
 		}
 	}
 
 	void UI_The_World::ShowOperation(bool e) {
 		if (m_operation) {
-			m_operation->SetDrawActive(e);
+			m_operation->Hidden(!e);
 		} else {
 			m_operation = GetStage()->AddGameObject<UI_Static_Image>(
 				Vec2(1280.0f, 720.0f),
 				Vec3(0.0f, -80.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f),
+				Vec3(1.0f),
 				m_layer,
 				m_white,
 				m_operationImageName
@@ -919,7 +917,7 @@ namespace basecross {
 		}
 		else {
 			m_return = GetStage()->AddGameObject<UI_Static_Image>(
-				Vec2(548.0f, 82.0f),
+				Vec2(614.0f, 82.0f),
 				Vec3(-820.0f, -450.0f, 0.0f),
 				Vec3(0.4f, 0.4f, 0.4f),
 				m_layer,
@@ -927,7 +925,7 @@ namespace basecross {
 				m_returnImageName
 				);
 			m_move = GetStage()->AddGameObject<UI_Static_Image>(
-				Vec2(759.0f, 83.0f),
+				Vec2(825.0f, 83.0f),
 				Vec3(-779.0f, -500.0f, 0.0f),
 				Vec3(0.4f, 0.4f, 0.4f),
 				m_layer,
