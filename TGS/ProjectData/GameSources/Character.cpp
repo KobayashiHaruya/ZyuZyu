@@ -115,15 +115,15 @@ namespace basecross {
 
 	void Character::PlayerUI() {
 		GetStage()->AddGameObject<UI_PlayerAmmo>(
-			3,
+			4,
 			Vec3(725.0f, -120.0f, 0.0f),
-			Vec3(150.0f, 50.0f, 1.0f),
+			Vec3(120.0f, 50.0f, 1.0f),
 			true
 			);
 		GetStage()->AddGameObject<UI_PlayerAmmo>(
-			3,
+			4,
 			Vec3(875.0f, -120.0f, 0.0f),
-			Vec3(150.0f, 50.0f, 1.0f),
+			Vec3(120.0f, 50.0f, 1.0f),
 			false
 			);
 
@@ -213,7 +213,14 @@ namespace basecross {
 			Vec3(800.0f, -430.0f, 0.0f),
 			Vec3(250.0f, 100.0f, 1.0f)
 			);
-
+		GetStage()->AddGameObject<UI_Static_Image>(
+			Vec2(64.0f, 128.0f),
+			Vec3(800.0f, -120.0f, 0.0f),
+			Vec3(0.5f),
+			11,
+			Col4(0.2f, 0.2f, 0.2f, 1.0f),
+			L"Slash.png"
+			);
 	}
 
 	void Character::Draw() {

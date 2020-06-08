@@ -1452,11 +1452,14 @@ namespace basecross {
 		if (ammo < 10) {
 			m_NumberOfDigits = 1;
 		}
-		else if (ammo < 100){
+		else if (ammo < 100) {
 			m_NumberOfDigits = 2;
 		}
-		else {
+		else if(ammo < 1000) {
 			m_NumberOfDigits = 3;
+		}
+		else {
+			m_NumberOfDigits = 4;
 		}
 
 

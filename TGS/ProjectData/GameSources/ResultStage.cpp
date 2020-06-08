@@ -117,6 +117,7 @@ namespace basecross {
 
 	void ResultStage::OnCreate() {
 		try {
+			ReadScore();
 			CreateScoreTable();
 			ShowScoreTable(false);
 
@@ -126,7 +127,6 @@ namespace basecross {
 			//m_efkPlay = ObjectFactory::Create<EfkPlay>(m_efkEffect, ptr->GetPosition());
 			//m_efkPlay->Play(m_efkEffect, ptr->GetPosition());
 
-			ReadScore();
 			StopBGM();
 			CreateViewLight();
 			CreateUI();		
@@ -281,7 +281,7 @@ namespace basecross {
 			);
 
 		m_scoreTable = AddGameObject<UI_Score_Table>(8, m_layer + 101);
-		//m_scoreTable->SetCharacterStatuses(m_characterStatuses);  //スコアテーブルにキャラクターのステータスを指定
+		m_scoreTable->SetCharacterStatuses(m_charState);  //スコアテーブルにキャラクターのステータスを指定
 	}
 
 	void ResultStage::ShowScoreTable(const bool e) {
