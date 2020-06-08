@@ -519,6 +519,8 @@ namespace basecross {
 
 		m_charState = statuses;
 
+		CharacterStatus_s top;
+
 		for (int i = 0; i < m_charState.size(); i++) {
 			wstring id = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/ID";
 			wstring type = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Type";
@@ -530,17 +532,16 @@ namespace basecross {
 
 			wstring listSave = L"";
 
-			auto& obj = vec[i].lock();
+			auto& obj = vec[m_charState[i].unique].lock();
 			if (obj) {
 				auto character = dynamic_pointer_cast<Character>(obj);
 				kills = character->GetKillCharacters();
 			}
-
 			if (kills.size() > 0) {
-				for (int j = 0; j < kills.size(); j++)
+				for (int i = 0; i < kills.size(); i++)
 				{
 					int state = 0;
-					CharacterType type = kills[j].type;
+					CharacterType type = kills[i].type;
 					switch (type)
 					{
 					case CharacterType::SHRIMP:
@@ -558,9 +559,7 @@ namespace basecross {
 					default:
 						break;
 					}
-
 					state += kills[i].level;
-
 					listSave += Util::IntToWStr(state);
 					listSave += L"|";
 				}
@@ -589,14 +588,41 @@ namespace basecross {
 				key->GetSelectSingleNode(list.c_str())
 			};
 
-			for (int j = 0; j < Data.size(); j++) {
-				key->SetText(Data[j], Save[j].c_str());
+			for (int i = 0; i < Data.size(); i++) {
+				key->SetText(Data[i], Save[i].c_str());
 			}
 
 			key->Save(ss + L"/XML/" + L"ResultScore.xml");
 
+			//if (i != 0) {
+			//	if (m_charState[i].score > top.score) {
+			//		top = m_charState[i];
+			//	}
+			//	else if (m_charState[i].score == top.score) {
+			//		if (m_charState[i].kill > top.kill) {
+			//			top = m_charState[i];
+			//		}
+			//		else if (m_charState[i].kill == top.kill) {
+			//			if (m_charState[i].death < top.death) {
+			//				top = m_charState[i];
+			//			}
+			//		}
+			//	}
+			//}
+			//else {
+			//	top = m_charState[i];
+			//}
 		}
 
+		//wstring id = L"ScoreTable/Top/ID";
+		//wstring type = L"ScoreTable/Top/Type";
+		//wstring kill = L"ScoreTable/Top/Kill";
+		//wstring death = L"ScoreTable/Top/Death";
+		//wstring score = L"ScoreTable/Top/Score";
+		//wstring player = L"ScoreTable/Top/Player";
+		//wstring list = L"ScoreTable/Top/List";
+
+		//wstring listSave = L"";
 	}
 
 	void GameStage::OnUpdate2() {
@@ -613,8 +639,8 @@ namespace basecross {
 	}
 
 	void GameStage::NextStage() {
+		GameFinishScore();
 		App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
-
 	}
 
 	void GameStage::PrevTitleStage() {

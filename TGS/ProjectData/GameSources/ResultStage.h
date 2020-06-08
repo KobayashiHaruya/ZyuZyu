@@ -41,6 +41,11 @@ namespace basecross {
 		//エフェクトの再生
 		shared_ptr<EfkEffect> m_efkEffect;
 		shared_ptr<EfkPlay> m_efkPlay;
+
+		//Score
+		vector<CharacterStatus_s> m_charState;
+		vector<vector<int>> m_KillList;
+
 	public:
 		//エフェクトの生成
 		shared_ptr<EfkInterface> m_efkInterface;
@@ -73,6 +78,7 @@ namespace basecross {
 		void CreateIcon(CharacterType type);
 		void ScoreMove();
 		void CreateWall();
+		void ReadScore();
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;

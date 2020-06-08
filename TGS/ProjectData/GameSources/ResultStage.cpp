@@ -137,15 +137,14 @@ namespace basecross {
 			//m_efkPlay = ObjectFactory::Create<EfkPlay>(m_efkEffect, ptr->GetPosition());
 			//m_efkPlay->Play(m_efkEffect, ptr->GetPosition());
 
-
+			ReadScore();
 			StopBGM();
 			CreateViewLight();
 			CreateUI();		
 			CreateWall();
-			//AddGameObject<ResultScore>();
+
 			//PlayBGM(L"rezult_bgm.wav", 0.5f);
 			PlaySE(L"Doram01.wav", 0.5f);
-
 			
 		}
 		catch (...) {
@@ -210,4 +209,57 @@ namespace basecross {
 			}
 		}
 	}
+
+	void ResultStage::ReadScore() {
+		wstring key;
+		App::GetApp()->GetDataDirectory(key);
+
+		unique_ptr<XmlDocReader> m_XmlDocReader;
+		m_XmlDocReader.reset(new XmlDocReader(key + L"XML/" + L"ResultScore.xml"));
+
+		wstring table = L"ScoreTable/Char";
+
+
+		for (int i = 0; i < 8; i++) {
+			CharacterStatus_s m_myData;
+			vector<int> killList;
+
+			wstring id = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/ID";
+			wstring type = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Type";
+			wstring kill = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Kill";
+			wstring death = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Death";
+			wstring score = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Score";
+			wstring player = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/Player";
+			wstring list = L"ScoreTable/Char" + Util::IntToWStr(i) + L"/List";
+
+			m_myData.unique = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(id.c_str())));
+			m_myData.type = (CharacterType)std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(type.c_str())));
+			m_myData.kill = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(kill.c_str())));
+			m_myData.death = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(death.c_str())));
+			m_myData.score = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(score.c_str())));
+			m_myData.isPlayer = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(player.c_str())));
+
+			wstring kills = XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(list.c_str()));
+
+			int killState = 0;
+			wstring num = L"";
+			for (int j = 0; j < kills.size(); j++) {
+				if (kills[j] == L'|') {
+					if (num != L"") {
+						killState = std::stoi(num);
+						killList.push_back(killState);
+					}
+					num = L"";
+				}
+				else {
+					num += kills[j];
+				}
+			}
+
+			m_charState.push_back(m_myData);
+			m_KillList.push_back(killList);
+
+		}
+	}
+
 }
