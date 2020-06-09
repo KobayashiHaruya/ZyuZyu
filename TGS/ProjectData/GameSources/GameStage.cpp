@@ -68,7 +68,7 @@ namespace basecross {
 
 		if (m_weaponTime <= 0.0f) {
 			AddGameObject<Weapon>();
-			m_weaponTime = 10.0f;
+			m_weaponTime = 5.0f;
 		}
 
 	}

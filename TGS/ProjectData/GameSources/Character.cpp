@@ -69,7 +69,7 @@ namespace basecross {
 			jump = 10.0f;
 			break;
 		case CharacterType::SHRIMP:
-			m_WeaponO.weapon = BulletS::SMG;
+			m_WeaponO.weapon = BulletS::Rocket;
 			m_WeaponT.weapon = BulletS::None;
 			m_modelName = L"0525_Animation_Shrimp_test4.bmf";
 			speed = 10.0f;
@@ -514,6 +514,12 @@ namespace basecross {
 
 		if (Other->FindTag(L"Smoke")) {
 			m_smoke = true;
+
+			auto smoke = dynamic_pointer_cast<SmokeGrenade>(Other);
+			if (smoke) {
+				m_touchOil = dynamic_pointer_cast<ObstacleEvent<const CharacterStatus_s>>(Other);
+				m_opponent = smoke->GetFrome();
+			}
 		}
 
 		if (Other->FindTag(L"Explosion")) {

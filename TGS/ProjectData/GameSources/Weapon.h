@@ -144,13 +144,16 @@ namespace basecross {
 	};
 
 
-	class SmokeGrenade :public GameObject {
+	class SmokeGrenade :public GameObject, public ObstacleEvent<const CharacterStatus_s> {
 		Vec3 m_pos;
 		Quat m_rot;
 		int ID;
 
 		float m_time;
 		CharacterStatus_s m_frome;
+
+		shared_ptr<EfkEffect> m_efkEffect;
+		shared_ptr<EfkPlay> m_efkPlay;
 
 	public:
 		SmokeGrenade(const shared_ptr<Stage>& StagePtr,
@@ -172,6 +175,10 @@ namespace basecross {
 		void Timer();
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
+
+		CharacterStatus_s GetFrome() {
+			return m_frome;
+		}
 
 	};
 

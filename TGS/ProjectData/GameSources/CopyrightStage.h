@@ -5,22 +5,37 @@ namespace basecross {
 
 	class CopyrightStage : public Stage {
 		int m_baseLayer;
+
 		shared_ptr<UI_Copyright_Splash> m_splash;
 
-		float m_count;
-		float m_titleTime;
+		float m_splashCount;
+		float m_splashTime;
+
+		unsigned int m_bannerIndex;
+		vector<shared_ptr<UI_Static_Image>> m_banners;
+		float m_bannerCount;
+		float m_bannerChangeTime;
 
 		shared_ptr<SoundItem> m_bgm;
 
 		void CreateViewLight();
+
 		void CreateSplash();
+
+		void CreateBanners();
+		void UpdateBanners();
+
 
 	public:
 		CopyrightStage() :Stage(),
 			m_baseLayer(10),
 			m_splash(NULL),
-			m_count(NULL),
-			m_titleTime(3.0f),
+			m_splashCount(NULL),
+			m_splashTime(3.0f),
+			m_bannerIndex(NULL),
+			m_banners(vector<shared_ptr<UI_Static_Image>>()),
+			m_bannerCount(4.0f),
+			m_bannerChangeTime(4.0f),
 			m_bgm(NULL)
 		{}
 		virtual ~CopyrightStage() {}

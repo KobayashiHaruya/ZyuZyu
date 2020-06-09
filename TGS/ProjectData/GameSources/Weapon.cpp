@@ -232,7 +232,7 @@ namespace basecross {
 		m_efkPlay = ObjectFactory::Create<EfkPlay>(m_efkEffect, ptr->GetPosition());
 		m_efkPlay->Play(m_efkEffect, ptr->GetPosition());
 		Vec3 rot = ptr->GetForword();
-		m_efkPlay->SetRotation(rot);
+		m_efkPlay->SetRotation(ptr->GetRotation());
 	}
 
 	void Bullet::Move() {
@@ -265,7 +265,15 @@ namespace basecross {
 			if (m_type == BulletS::Rocket) {
 				auto ptr = GetComponent<Transform>();
 
-				GetStage()->AddGameObject<Bullet>(
+				auto bullet = dynamic_pointer_cast<Bullet>(Other);
+				if (bullet) {
+					m_frome = bullet->GetFrome();
+					AddEvent([bullet](const CharacterStatus_s status) {
+						bullet->Run(status);
+						});
+				}
+
+				auto eBullet = GetStage()->AddGameObject<Bullet>(
 					ptr->GetPosition(),
 					ptr->GetQuaternion(),
 					BulletS::RExplosion,
@@ -273,7 +281,16 @@ namespace basecross {
 					ID,
 					m_frome
 					);
-
+				
+				if (bullet) {
+					eBullet->AddEvent([bullet](const CharacterStatus_s status) {
+						bullet->Run(status);
+						});
+				}
+				
+				AddEvent([eBullet](const CharacterStatus_s status) {
+						eBullet->Run(status);
+						});
 			}
 
 		}
@@ -500,11 +517,11 @@ namespace basecross {
 		ptr->SetScale(Vec3(13.0f));
 
 		//影をつける
-		auto ShadowPtr = AddComponent<Shadowmap>();
-		ShadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
+		//auto ShadowPtr = AddComponent<Shadowmap>();
+		//ShadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
-		auto PtrDraw = AddComponent<BcPNTStaticDraw>();
-		PtrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+		//auto PtrDraw = AddComponent<BcPNTStaticDraw>();
+		//PtrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
@@ -519,6 +536,12 @@ namespace basecross {
 		AddTag(L"Grenade");
 		AddTag(L"Smoke");
 
+		m_efkEffect = GetTypeStage<GameStage>()->GetEffect(L"SmokeGrenade.efk");
+		m_efkPlay = ObjectFactory::Create<EfkPlay>(m_efkEffect, ptr->GetPosition());
+		m_efkPlay->Play(m_efkEffect, ptr->GetPosition());
+		Vec3 rot = ptr->GetForword();
+		m_efkPlay->SetRotation(rot);
+
 		m_time = 8.0;
 
 	}
@@ -532,7 +555,18 @@ namespace basecross {
 			GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
 			GetStage()->RemoveGameObject<GameObject>(Other);
 			auto trans = GetComponent<Transform>();
-			GetStage()->AddGameObject<Bullet>(
+
+			auto bullet = dynamic_pointer_cast<Bullet>(Other);
+			if (bullet) {
+				m_frome = bullet->GetFrome();
+				AddEvent([bullet](const CharacterStatus_s status) {
+					bullet->Run(status);
+					});
+			}
+
+			//このBulletハ爆発のeffectを再生するために使用していると思われる
+			//ということはここに煙に当たったバレットの情報をまるっと入れてあげればキル情報を更新d家いるのでは？
+			auto eBullet = GetStage()->AddGameObject<Bullet>(
 				trans->GetPosition(),
 				trans->GetQuaternion(),
 				BulletS::SExplosion,
@@ -541,6 +575,15 @@ namespace basecross {
 				m_frome
 				);
 
+			if (bullet) {
+				eBullet->AddEvent([bullet](const CharacterStatus_s status) {
+					bullet->Run(status);
+					});
+			}
+
+			AddEvent([eBullet](const CharacterStatus_s status) {
+				eBullet->Run(status);
+				});
 		}
 	}
 
