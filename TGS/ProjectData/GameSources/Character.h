@@ -344,6 +344,30 @@ namespace basecross{
 
 	};
 
+	class OilEffect : public GameObject {
+		Vec3 m_pos;
 
+		shared_ptr<EfkEffect> m_fEfkEffect;
+		shared_ptr<EfkPlay> m_fEfkPlay;
+
+		shared_ptr<EfkEffect> m_lEfkEffect;
+		shared_ptr<EfkPlay> m_lEfkPlay;
+
+		void CreateFirstEffect();
+		void CreateLastEffect();
+
+	public:
+		OilEffect(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos
+			) :
+			GameObject(StagePtr),
+			m_pos(pos)
+		{
+		}
+		~OilEffect() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+	};
 }
 //end basecross

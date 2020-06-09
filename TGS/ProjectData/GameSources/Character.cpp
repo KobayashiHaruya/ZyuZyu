@@ -554,7 +554,7 @@ namespace basecross {
 
 
 		if (Other->FindTag(L"Oil")) {
-			TouchOil();
+			//TouchOil();
 		}
 
 	}
@@ -639,6 +639,13 @@ namespace basecross {
 
 	//–û‚ÉG‚ê‚½‚Ìˆ—
 	void Character::TouchOil() {
+
+		GetTypeStage<GameStage>()->PlaySE(L"Aburamizu01.wav", 0.5f);
+
+		GetStage()->AddGameObject<OilEffect>(
+			GetComponent<Transform>()->GetPosition()
+			);
+
 		if (m_touchOil) m_touchOil->Run(m_myData);
 		AddDeath(1);
 
@@ -662,6 +669,7 @@ namespace basecross {
 		m_torimoti = false;
 		m_myData.level = 1;
 		m_damage = 0.0f;
+
 	}
 
 	//‘Šè‚ğ–û‚É—‚Æ‚µ‚½‚Ìˆ—
@@ -1356,5 +1364,32 @@ namespace basecross {
 	}
 
 
+	void OilEffect::CreateFirstEffect() {
+		auto upPos = m_pos;
+		upPos.y = -8.5f;
+
+		m_fEfkEffect = GetTypeStage<GameStage>()->GetEffect(L"OilSplash.efk");
+		m_fEfkPlay = ObjectFactory::Create<EfkPlay>(m_fEfkEffect, upPos);
+		m_fEfkPlay->Play(m_fEfkEffect, upPos);
+	}
+
+	void OilEffect::CreateLastEffect() {
+		auto upPos = m_pos;
+		upPos.y = -8.5f;
+
+		m_lEfkEffect = GetTypeStage<GameStage>()->GetEffect(L"OilBubble.efk");
+		m_lEfkPlay = ObjectFactory::Create<EfkPlay>(m_lEfkEffect, upPos);
+		m_lEfkPlay->Play(m_lEfkEffect, upPos);
+	}
+
+	void OilEffect::OnCreate() {
+		CreateFirstEffect();
+	}
+
+	void OilEffect::OnUpdate() {
+		if (m_fEfkPlay->IsCreated() && !m_lEfkPlay) {
+	      CreateLastEffect();
+		};
+	}
 }
 //end basecross
