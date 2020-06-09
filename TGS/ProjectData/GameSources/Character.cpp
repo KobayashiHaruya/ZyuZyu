@@ -1384,6 +1384,7 @@ namespace basecross {
 
 	void OilEffect::OnCreate() {
 		CreateFirstEffect();
+		GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
 	}
 
 	void OilEffect::OnUpdate() {

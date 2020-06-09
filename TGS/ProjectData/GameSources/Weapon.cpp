@@ -260,18 +260,11 @@ namespace basecross {
 
 		}
 		else if ((Other->FindTag(L"Object") && !Other->FindTag(L"Bullet")) || Other->GetID() != ID) {
-			Destroy();
+			//Destroy();
 
+			m_efkPlay->StopEffect();
 			if (m_type == BulletS::Rocket) {
 				auto ptr = GetComponent<Transform>();
-
-				auto bullet = dynamic_pointer_cast<Bullet>(Other);
-				if (bullet) {
-					m_frome = bullet->GetFrome();
-					AddEvent([bullet](const CharacterStatus_s status) {
-						bullet->Run(status);
-						});
-				}
 
 				auto eBullet = GetStage()->AddGameObject<Bullet>(
 					ptr->GetPosition(),
@@ -281,26 +274,22 @@ namespace basecross {
 					ID,
 					m_frome
 					);
-				
-				if (bullet) {
-					eBullet->AddEvent([bullet](const CharacterStatus_s status) {
-						bullet->Run(status);
-						});
-				}
-				
-				AddEvent([eBullet](const CharacterStatus_s status) {
-						eBullet->Run(status);
-						});
+
+				AddEvent([this](const CharacterStatus_s status) {
+					Destroy();
+					});
+
+				eBullet->AddEvent([this](const CharacterStatus_s status) {
+					Run(status);
+					});
 			}
 
 		}
 	}
 
 	void Bullet::Destroy() {
-
 		GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
-		m_efkPlay->StopEffect();
-
+		//m_efkPlay->StopEffect();
 	}
 
 
