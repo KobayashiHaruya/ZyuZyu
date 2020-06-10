@@ -621,8 +621,6 @@ namespace basecross {
 					});
 			}
 
-			//このBulletハ爆発のeffectを再生するために使用していると思われる
-			//ということはここに煙に当たったバレットの情報をまるっと入れてあげればキル情報を更新d家いるのでは？
 			auto eBullet = GetStage()->AddGameObject<Bullet>(
 				trans->GetPosition(),
 				trans->GetQuaternion(),
