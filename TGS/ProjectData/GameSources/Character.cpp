@@ -899,27 +899,6 @@ namespace basecross {
 				m_WeaponO.reTime = m_WeaponO.maxreTime;
 			}
 
-			if (m_reload && m_WeaponO.maxAmmo > 0) {
-				if (m_WeaponO.reTime > 0) {
-					float time = App::GetApp()->GetElapsedTime();
-					m_WeaponO.reTime -= time;
-					m_fire = false;
-				}
-				else {
-					int rem;
-					rem = m_WeaponO.reAmmo - m_WeaponO.ammo;
-					m_WeaponO.maxAmmo -= rem;
-					if (m_WeaponO.maxAmmo < 0) {
-						rem += m_WeaponO.maxAmmo;
-						m_WeaponO.maxAmmo = 0;
-					}
-					m_WeaponO.ammo += rem;
-
-					m_reload = false;
-					m_fire = true;
-				}
-			}
-
 			WeaponOFire(fire, m_bulletRot);
 
 		}
@@ -947,27 +926,6 @@ namespace basecross {
 				m_WeaponT.reTime = m_WeaponT.maxreTime;
 			}
 
-			if (m_reload && m_WeaponT.maxAmmo > 0) {
-				if (m_WeaponT.reTime > 0) {
-					float time = App::GetApp()->GetElapsedTime();
-					m_WeaponT.reTime -= time;
-					m_fire = false;
-				}
-				else {
-					int rem;
-					rem = m_WeaponT.reAmmo - m_WeaponT.ammo;
-					m_WeaponT.maxAmmo -= rem;
-					if (m_WeaponT.maxAmmo < 0) {
-						rem += m_WeaponT.maxAmmo;
-						m_WeaponT.maxAmmo = 0;
-					}
-					m_WeaponT.ammo += rem;
-
-					m_reload = false;
-					m_fire = true;
-				}
-			}
-
 			WeaponTFire(fire, m_bulletRot);
 
 		}
@@ -977,6 +935,12 @@ namespace basecross {
 	void Character::WeaponOFire(bool fire, Quat rot) {
 		auto ptr = GetComponent<Transform>();
 
+		if (m_WeaponO.ammo <= 0 && !m_reload) {
+			m_reload = true;
+			m_fire = false;
+			m_WeaponO.reTime = m_WeaponO.maxreTime;
+		}
+		
 		if (m_reload && m_WeaponO.maxAmmo > 0) {
 			if (m_WeaponO.reTime > 0) {
 				float time = App::GetApp()->GetElapsedTime();
@@ -999,7 +963,7 @@ namespace basecross {
 		}
 
 		if (m_WeaponO.ammo > 0 && m_WeaponO.intTime <= 0) {
-			if (fire && m_fire) {
+			if (fire && m_fire && !m_reload) {
 				if (m_WeaponO.weapon == BulletS::Shot) {
 
 					for (size_t i = 0; i < 20; i++)
@@ -1044,8 +1008,7 @@ namespace basecross {
 
 				}
 				m_WeaponO.ammo--;
-				m_WeaponO.intTime = m_WeaponO.maxIntTime;
-
+					m_WeaponO.intTime = m_WeaponO.maxIntTime;
 				m_fire = false;
 			}
 		}
@@ -1058,6 +1021,12 @@ namespace basecross {
 	void Character::WeaponTFire(bool fire, Quat rot) {
 		auto ptr = GetComponent<Transform>();
 
+		if (m_WeaponT.ammo <= 0 && !m_reload) {
+			m_reload = true;
+			m_fire = false;
+			m_WeaponT.reTime = m_WeaponT.maxreTime;
+		}
+		
 		if (m_reload && m_WeaponT.maxAmmo > 0) {
 			if (m_WeaponT.reTime > 0) {
 				float time = App::GetApp()->GetElapsedTime();
@@ -1125,7 +1094,13 @@ namespace basecross {
 
 				}
 				m_WeaponT.ammo--;
-				m_WeaponT.intTime = m_WeaponT.maxIntTime;
+				if (m_WeaponT.ammo == 0) {
+					m_reload = true;
+				}
+				else {
+					m_WeaponT.intTime = m_WeaponT.maxIntTime;
+				}
+
 
 				m_fire = false;
 			}

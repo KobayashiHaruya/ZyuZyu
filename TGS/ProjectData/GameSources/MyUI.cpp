@@ -1713,10 +1713,10 @@ namespace basecross {
 		int index = 0;
 		switch (m_type)
 		{
-		case CharacterType::SHRIMP:
+		case CharacterType::CHICKEN:
 			index = 3;
 			break;
-		case CharacterType::CHICKEN:
+		case CharacterType::POTATO:
 			index = 6;
 			break;
 		case CharacterType::DOUGHNUT:

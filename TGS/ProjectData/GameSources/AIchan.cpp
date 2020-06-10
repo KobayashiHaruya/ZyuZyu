@@ -319,7 +319,6 @@ namespace basecross {
 	}
 	void AIchan::RandomBulletShot() {
 		bool fire = true;
-		SetFire(true, true);
 
 		auto thisQuat = GetComponent<Transform>()->GetQuaternion();
 
@@ -328,12 +327,12 @@ namespace basecross {
 			thisQuat.facing(front);
 		}
 
-		if (m_newBulletNum == 1) {
 			WeaponOFire(fire, thisQuat);
-		}
-		else if (m_newBulletNum == 2) {
-			WeaponTFire(fire, thisQuat);
-		}
+		//if (m_newBulletNum == 1) {
+		//}
+		//else if (m_newBulletNum == 2) {
+		//	WeaponTFire(fire, thisQuat);
+		//}
 	}
 
 	void AIchan::CreateDebugObject() {
