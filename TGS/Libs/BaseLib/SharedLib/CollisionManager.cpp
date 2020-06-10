@@ -87,13 +87,13 @@ namespace basecross {
 								tgt.m_Children[i] = &g_PiecePool[g_NextPoolIndex];
 								tgt.m_Children[i]->Clear();
 								g_NextPoolIndex++;
-								if (g_NextPoolIndex >= MAX_PIECE_COUNT) {
-									throw BaseException(
-										L"これ以上衝突判定は行えません。",
-										L"if (g_NextPoolIndex >= MAX_PIECE_COUNT)",
-										L"CollisionBlocks::SetCollisionBlock2Sub()"
-									);
-								}
+								//if (g_NextPoolIndex >= MAX_PIECE_COUNT) {
+								//	throw BaseException(
+								//		L"これ以上衝突判定は行えません。",
+								//		L"if (g_NextPoolIndex >= MAX_PIECE_COUNT)",
+								//		L"CollisionBlocks::SetCollisionBlock2Sub()"
+								//	);
+								//}
 								AABB childAABB = tgt.m_AABB;
 								switch (i) {
 								case 0:

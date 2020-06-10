@@ -594,35 +594,60 @@ namespace basecross {
 
 			key->Save(ss + L"/XML/" + L"ResultScore.xml");
 
-			//if (i != 0) {
-			//	if (m_charState[i].score > top.score) {
-			//		top = m_charState[i];
-			//	}
-			//	else if (m_charState[i].score == top.score) {
-			//		if (m_charState[i].kill > top.kill) {
-			//			top = m_charState[i];
-			//		}
-			//		else if (m_charState[i].kill == top.kill) {
-			//			if (m_charState[i].death < top.death) {
-			//				top = m_charState[i];
-			//			}
-			//		}
-			//	}
-			//}
-			//else {
-			//	top = m_charState[i];
-			//}
+			if (i != 0) {
+				if (m_charState[i].score > top.score) {
+					top = m_charState[i];
+				}
+				else if (m_charState[i].score == top.score) {
+					if (m_charState[i].kill > top.kill) {
+						top = m_charState[i];
+					}
+					else if (m_charState[i].kill == top.kill) {
+						if (m_charState[i].death < top.death) {
+							top = m_charState[i];
+						}
+					}
+				}
+			}
+			else {
+				top = m_charState[i];
+			}
 		}
 
-		//wstring id = L"ScoreTable/Top/ID";
-		//wstring type = L"ScoreTable/Top/Type";
-		//wstring kill = L"ScoreTable/Top/Kill";
-		//wstring death = L"ScoreTable/Top/Death";
-		//wstring score = L"ScoreTable/Top/Score";
-		//wstring player = L"ScoreTable/Top/Player";
+		wstring id = L"ScoreTable/Top/ID";
+		wstring type = L"ScoreTable/Top/Type";
+		wstring kill = L"ScoreTable/Top/Kill";
+		wstring death = L"ScoreTable/Top/Death";
+		wstring score = L"ScoreTable/Top/Score";
+		wstring player = L"ScoreTable/Top/Player";
 		//wstring list = L"ScoreTable/Top/List";
-
 		//wstring listSave = L"";
+
+		vector<wstring> Save = {
+			Util::IntToWStr(top.unique),
+			Util::IntToWStr(top.type),
+			Util::IntToWStr(top.kill),
+			Util::IntToWStr(top.death),
+			Util::IntToWStr(top.score),
+			Util::IntToWStr(top.isPlayer)
+		};
+
+		vector<IXMLDOMNodePtr> Data = {
+			key->GetSelectSingleNode(id.c_str()),
+			key->GetSelectSingleNode(type.c_str()),
+			key->GetSelectSingleNode(kill.c_str()),
+			key->GetSelectSingleNode(death.c_str()),
+			key->GetSelectSingleNode(score.c_str()),
+			key->GetSelectSingleNode(player.c_str())
+		};
+		
+		for (int i = 0; i < Data.size(); i++) {
+			key->SetText(Data[i], Save[i].c_str());
+		}
+
+		key->Save(ss + L"/XML/" + L"ResultScore.xml");
+
+
 	}
 
 	void GameStage::OnUpdate2() {
