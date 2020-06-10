@@ -660,7 +660,9 @@ namespace basecross {
 		//Rキーもしくはパッドのスタートボタンを押したらポーズ画面を表示する
 		if (KeyState.m_bPressedKeyTbl['P'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_START) {
 
-			m_pinp->Hidden(m_pinp->GetActive());
+			//m_pinp->Hidden(m_pinp->GetActive());
+
+			if(m_timer->GetTime() < 180) m_start = m_pause->GetShowing();
 
 			//ここでは毎回配列を生成してステータスを設定しているが実際には１度だけ処理してChangeStatusをする
 			vector<CharacterStatus_s> statuses;

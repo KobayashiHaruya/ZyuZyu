@@ -344,9 +344,9 @@ namespace basecross {
 		else if ((Other->FindTag(L"Object") && !Other->FindTag(L"Bullet"))
 			|| (Other->FindTag(L"Grenade") && !Other->FindTag(L"Smoke")) ||
 			Other->GetID() != ID) {
-			Destroy();
 
 			m_efkPlay->StopEffect();
+
 			if (m_type == BulletS::Rocket) {
 				auto ptr = GetComponent<Transform>();
 
