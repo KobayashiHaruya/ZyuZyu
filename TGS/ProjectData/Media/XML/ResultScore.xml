@@ -20,21 +20,21 @@
 	</Char1>
 	<Char2>
 		<ID>2</ID>
-		<Type>3</Type>
-		<Kill>6</Kill>
-		<Death>4</Death>
-		<Score>600</Score>
-		<Player>0</Player>
-		<List>7|1|1|1|1|1|</List>
+		<Type>2</Type>
+		<Kill>5</Kill>
+		<Death>1</Death>
+		<Score>900</Score>
+		<Player>1</Player>
+		<List>1|1|1|2|11|</List>
 	</Char2>
 	<Char3>
 		<ID>3</ID>
-		<Type>0</Type>
-		<Kill>6</Kill>
-		<Death>4</Death>
-		<Score>600</Score>
+		<Type>3</Type>
+		<Kill>2</Kill>
+		<Death>1</Death>
+		<Score>200</Score>
 		<Player>0</Player>
-		<List>1|1|1|10|4|4|</List>
+		<List>1|1|</List>
 	</Char3>
 	<Char4>
 		<ID>4</ID>
@@ -60,15 +60,17 @@
 		<Kill>6</Kill>
 		<Death>9</Death>
 		<Score>1000</Score>
+		<Death>3</Death>
+		<Score>200</Score>
 		<Player>0</Player>
-		<List>4|4|8|2|1|1|</List>
+		<List>4|10|</List>
 	</Char6>
 	<Char7>
 		<ID>7</ID>
-		<Type>0</Type>
-		<Kill>5</Kill>
-		<Death>3</Death>
-		<Score>700</Score>
+		<Type>2</Type>
+		<Kill>0</Kill>
+		<Death>1</Death>
+		<Score>0</Score>
 		<Player>0</Player>
 		<List>1|5|1|4|4|</List>
 	</Char7>
