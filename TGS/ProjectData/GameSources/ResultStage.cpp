@@ -241,7 +241,7 @@ namespace basecross {
 		m_resultThree = AddGameObject<UI_Result_Three>(mediaDir + L"Texters/ResultImagis/ResultAnimation3/", Vec3(0.0f), Vec3(32.0f), m_layer - 9);
 		m_resultTwo = AddGameObject<UI_Result_Two>(mediaDir + L"Texters/ResultImagis/ResultAnimation2_ver4/", Vec3(0.0f), Vec3(32.0f), m_layer - 1);
 
-		m_resultTwo->ChangeCharacter(m_scoreTable->GetCharacterStatuses()[0].type);  //スプラッシュにキャラクターのタイプを指定
+		m_resultTwo->ChangeCharacter(CharacterType::CHICKEN);  //スプラッシュにキャラクターのタイプを指定
 		m_resultTwo->Play();
 	}
 

@@ -12,9 +12,9 @@
 	<Char1>
 		<ID>1</ID>
 		<Type>2</Type>
-		<Kill>2</Kill>
+		<Kill>15</Kill>
 		<Death>4</Death>
-		<Score>200</Score>
+		<Score>2000</Score>
 		<Player>0</Player>
 		<List>1|7|</List>
 	</Char1>
