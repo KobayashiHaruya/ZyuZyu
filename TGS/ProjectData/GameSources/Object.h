@@ -52,9 +52,32 @@ namespace basecross {
 		void BmfDateRead(wstring model, Vec3 mpos);
 		void ObjectModel();
 		void Collision();
+		void KakiCol();
 
 	};
 
+	class OilStage : public GameObject {
+		Vec3 m_pos;
+		Vec3 m_rot;
+		Vec3 m_scale;
+
+	public:
+
+		OilStage(const shared_ptr<Stage>& StagePtr,
+			const Vec3& pos,
+			const Vec3& rot,
+			const Vec3& scale
+		) :
+			GameObject(StagePtr),
+			m_pos(pos),
+			m_rot(rot),
+			m_scale(scale)
+
+		{}
+		~OilStage() {}
+
+		virtual void OnCreate() override;
+	};
 
 	class Result_Icon : public GameObject {
 		Vec3 m_pos;

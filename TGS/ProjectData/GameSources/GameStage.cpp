@@ -272,13 +272,13 @@ namespace basecross {
 				ObjectType::Asupara
 				);
 			obstacleGroup->IntoGroup(obstacle);
-			obstacle = AddGameObject<Object>(
-				Vec3(0.0f, 2.0f, 40.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(2.0f),
-				ObjectType::Siitake
-				);
-			obstacleGroup->IntoGroup(obstacle);
+			//obstacle = AddGameObject<Object>(
+			//	Vec3(0.0f, 2.0f, 40.0f),
+			//	Vec3(0.0f, 0.0f, 0.0f),
+			//	Vec3(2.0f),
+			//	ObjectType::Siitake
+			//	);
+			//obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
 				Vec3(10.0f, 2.0f, 40.0f),
 				Vec3(0.0f, 1.0f, 0.0f),
@@ -307,20 +307,20 @@ namespace basecross {
 				ObjectType::Imo
 				);
 			obstacleGroup->IntoGroup(obstacle);
-			obstacle = AddGameObject<Object>(
-				Vec3(-20.0f, 2.0f, 40.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f),
-				ObjectType::Azi
-				);
-			obstacleGroup->IntoGroup(obstacle);
-			obstacle = AddGameObject<Object>(
-				Vec3(-30.0f, 4.0f, 20.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(3.0f, 3.0f, 3.0f),
-				ObjectType::Kabotya
-				);
-			obstacleGroup->IntoGroup(obstacle);
+			//obstacle = AddGameObject<Object>(
+			//	Vec3(-20.0f, 2.0f, 40.0f),
+			//	Vec3(0.0f, 0.0f, 0.0f),
+			//	Vec3(1.0f, 1.0f, 1.0f),
+			//	ObjectType::Azi
+			//	);
+			//obstacleGroup->IntoGroup(obstacle);
+			//obstacle = AddGameObject<Object>(
+			//	Vec3(-30.0f, 4.0f, 20.0f),
+			//	Vec3(0.0f, 0.0f, 0.0f),
+			//	Vec3(3.0f, 3.0f, 3.0f),
+			//	ObjectType::Kabotya
+			//	);
+			//obstacleGroup->IntoGroup(obstacle);
 
 			auto oil = AddGameObject<Object>(
 				Vec3(0.0f, 0.0f, 0.0f),

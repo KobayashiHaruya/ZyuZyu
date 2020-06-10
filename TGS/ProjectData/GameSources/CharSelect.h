@@ -24,6 +24,8 @@ namespace basecross {
 		int m_startIndex;
 		int m_oldIndex;
 
+		bool m_dec;
+
 		void CreateViewLight();
 		void CreateUI();
 		void ChangeCharacter(int index);

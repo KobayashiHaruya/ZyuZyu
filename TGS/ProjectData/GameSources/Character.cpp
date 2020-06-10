@@ -237,7 +237,6 @@ namespace basecross {
 		ptrTrans->SetScale(Vec3(1.0f));
 		ptrTrans->SetRotation(Vec3(0.0f));
 
-
 		SetID(ID);
 
 		AddTag(L"Character");
@@ -547,6 +546,12 @@ namespace basecross {
 		if (Other->FindTag(L"Torimoti")) {
 			m_torimoti = true;
 			m_toriHitInTime = 15.0f;
+			
+			auto pos = GetComponent<Transform>()->GetPosition();
+			pos.y -= 1.4f;
+			m_efkEffect = GetTypeStage<GameStage>()->GetEffect(L"LiquidGrenade2_ver3.efk");
+			m_efkPlay = ObjectFactory::Create<EfkPlay>(m_efkEffect, Vec3(0.0f));
+			m_efkPlay->Play(m_efkEffect, pos);
 		}
 
 		if (Other->FindTag(L"Smoke")) {
@@ -594,6 +599,7 @@ namespace basecross {
 					);
 				m_torimoti = false;
 				m_toriHitInTime = 0.0f;
+				m_efkPlay->StopEffect();
 			}
 		}
 

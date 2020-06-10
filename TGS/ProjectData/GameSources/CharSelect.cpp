@@ -75,7 +75,6 @@ namespace basecross {
 			switch (m_state)
 			{
 			case 1:
-				SelectData();
 				NextStage();
 				break;
 			case 2:
@@ -135,6 +134,7 @@ namespace basecross {
 			PlaySE(L"button_pause_se.wav", 0.5f);
 			m_curtain->Close();
 			m_state = 1;
+			SelectData();
 		}
 		if ((KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) && m_state == 0) {
 			PlaySE(L"button_pause_se.wav", 0.5f);

@@ -53,8 +53,8 @@ namespace basecross {
 			m_modelPos = Vec3(0.0f, -238.35f, 0.0f);
 			m_modelRot = Vec3(0.0f, 0.0f, 0.0f);
 			m_colSize = Vec3(18.0f, 2.0f, 18.0f);
-			phy = true;
-			AddTag(L"Ground");
+			KakiCol();
+			phy = false;
 			break;
 		case ObjectType::Nabe:
 			m_modelName = L"Nabe_50(100).bmf";
@@ -144,16 +144,107 @@ namespace basecross {
 		ptrColl->AddExcludeCollisionTag(L"Explosion");
 		ptrColl->AddExcludeCollisionTag(L"SetGun");
 		ptrColl->AddExcludeCollisionTag(L"Object");
+		ptrColl->AddExcludeCollisionTag(L"Ground");
 
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
 		ptrColl->SetMakedSize(m_colSize);
 		ptrColl->SetFixed(true);
+
+	}
+
+	void Object::KakiCol() {
+		auto trans = GetComponent<Transform>();
+		GetStage()->AddGameObject<OilStage>(
+			Vec3(0.0f),
+			Vec3(0.0f,0.0f,0.0f),
+			Vec3(80.0f, 2.0f, 80.0f)
+			);
+		GetStage()->AddGameObject<OilStage>(
+			Vec3(48.0f,0.0f,0.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(15.0f, 2.0f, 60.0f)
+			);
+		GetStage()->AddGameObject<OilStage>(
+			Vec3(-48.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(15.0f, 2.0f, 60.0f)
+			);
+		GetStage()->AddGameObject<OilStage>(
+			Vec3(0.0f, 0.0f, 48.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(60.0f, 2.0f, 15.0f)
+			);
+		GetStage()->AddGameObject<OilStage>(
+			Vec3(0.0f, 0.0f, -48.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(60.0f, 2.0f, 15.0f)
+			);
+		GetStage()->AddGameObject<OilStage>(
+			Vec3(44.0f, 0.0f, 34.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(7.0f, 2.0f, 7.0f)
+			);
+		GetStage()->AddGameObject<OilStage>(
+			Vec3(-44.0f, 0.0f, 34.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(7.0f, 2.0f, 7.0f)
+			);
+		GetStage()->AddGameObject<OilStage>(
+			Vec3(44.0f, 0.0f, -34.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(7.0f, 2.0f, 7.0f)
+			);
+		GetStage()->AddGameObject<OilStage>(
+			Vec3(-44.0f, 0.0f, -34.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(7.0f, 2.0f, 7.0f)
+			);
+		GetStage()->AddGameObject<OilStage>(
+			Vec3(34.0f, 0.0f, 44.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(7.0f, 2.0f, 7.0f)
+			);
+		GetStage()->AddGameObject<OilStage>(
+			Vec3(-34.0f, 0.0f, 44.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(7.0f, 2.0f, 7.0f)
+			);
+		GetStage()->AddGameObject<OilStage>(
+			Vec3(34.0f, 0.0f, -44.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(7.0f, 2.0f, 7.0f)
+			);
+		GetStage()->AddGameObject<OilStage>(
+			Vec3(-34.0f, 0.0f, -44.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(7.0f, 2.0f, 7.0f)
+			);
 	}
 
 	void Object::OnCreate() {
 		ObjectModel();
 	}
 	
+	void OilStage::OnCreate() {
+		auto ptr = GetComponent<Transform>();
+
+		ptr->SetPosition(m_pos);
+		ptr->SetRotation(m_rot);
+		ptr->SetScale(m_scale);
+
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->AddExcludeCollisionTag(L"Smoke");
+		ptrColl->AddExcludeCollisionTag(L"Torimoti");
+		ptrColl->AddExcludeCollisionTag(L"Explosion");
+		ptrColl->AddExcludeCollisionTag(L"SetGun");
+		ptrColl->AddExcludeCollisionTag(L"Object");
+		ptrColl->AddExcludeCollisionTag(L"Ground");
+
+		ptrColl->SetAfterCollision(AfterCollision::Auto);
+		ptrColl->SetFixed(true);
+		AddTag(L"Ground");
+		AddTag(L"Object");
+	}
 
 	void Result_Icon::OnCreate() {
 		auto ptr = GetComponent<Transform>();

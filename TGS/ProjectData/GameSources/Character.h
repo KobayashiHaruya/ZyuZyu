@@ -96,6 +96,10 @@ namespace basecross{
 
 		shared_ptr<SoundItem> m_bgm;
 
+		shared_ptr<EfkEffect> m_efkEffect;
+		shared_ptr<EfkPlay> m_efkPlay;
+
+
 	public:
 
 		Character(const shared_ptr<Stage>& StagePtr,
