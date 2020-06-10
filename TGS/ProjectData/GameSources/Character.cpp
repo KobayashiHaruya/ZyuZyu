@@ -68,7 +68,7 @@ namespace basecross {
 			jump = 10.0f;
 			break;
 		case CharacterType::SHRIMP:
-			m_WeaponO.weapon = BulletS::Rocket;
+			m_WeaponO.weapon = BulletS::SMG;
 			m_WeaponT.weapon = BulletS::None;
 			m_modelName = L"0525_Animation_Shrimp_test4.bmf";
 			speed = 10.0f;
@@ -231,7 +231,7 @@ namespace basecross {
 
 		BmfDateRead(m_modelName);
 
-		Respawn();
+		Respawn(m_myData.unique);
 
 		auto ptrTrans = GetComponent<Transform>();
 		ptrTrans->SetScale(Vec3(1.0f));
@@ -487,12 +487,10 @@ namespace basecross {
 		}
 	}
 
-	void Character::Respawn() {
-		int Rand = rand() % 8;
-		const float activeY = -25.0f;
+	void Character::Respawn(int rand) {
 		auto PtrTransform = GetComponent<Transform>();
 		//ƒ‰ƒ“ƒ_ƒ€‚Éo‚·‚æ‚¤‚É
-		switch (Rand) {
+		switch (rand) {
 		case 0:
 			PtrTransform->SetPosition(Vec3(0.0f, 5.0f, 0.0f));
 			break;
@@ -509,13 +507,16 @@ namespace basecross {
 			PtrTransform->SetPosition(Vec3(-30.0f, 5.0f, -30.0f));
 			break;
 		case 5:
-			PtrTransform->SetPosition(Vec3(-30.0f, 5.0f, 0.0f));
+			PtrTransform->SetPosition(Vec3(-40.0f, 5.0f, 0.0f));
 			break;
 		case 6:
-			PtrTransform->SetPosition(Vec3(30.0f, 5.0f, 0.0f));
+			PtrTransform->SetPosition(Vec3(40.0f, 5.0f, 0.0f));
 			break;
 		case 7:
-			PtrTransform->SetPosition(Vec3(0.0f, 5.0f, -30.0f));
+			PtrTransform->SetPosition(Vec3(0.0f, 5.0f, -40.0f));
+			break;
+		case 8:
+			PtrTransform->SetPosition(Vec3(0.0f, 5.0f, 40.0f));
 			break;
 		default:
 			PtrTransform->SetPosition(Vec3(0.0f, 5.0f, 0.0f));
@@ -622,10 +623,6 @@ namespace basecross {
 					auto trans = Other->GetComponent<Transform>();
 					m_setGunPos = trans->GetPosition();
 					if (Other->FindTag(L"GatlingGun")) {
-						GetStage()->AddGameObject<SetGun>(
-							trans->GetPosition(),
-							trans->GetQuaternion(),
-							true);
 						m_setGunType = true;
 						m_gatlingShotAmmo = 0;
 						m_gatlingCoolTime = 0.0f;
@@ -700,13 +697,14 @@ namespace basecross {
 		auto grav = GetComponent<Gravity>();
 		grav->SetGravityVerocityZero();
 
-		Respawn();
 		CharaState();
 		m_smoke = false;
 		m_torimoti = false;
 		m_myData.level = 1;
 		m_damage = 0.0f;
 
+		int Rand = rand() % 8;
+		Respawn(Rand);
 	}
 
 	//‘Šè‚ğ–û‚É—‚Æ‚µ‚½‚Ìˆ—
@@ -1413,7 +1411,7 @@ namespace basecross {
 
 	void Player::OnUpdate() {
 		PlayerMovement();
-		DrawString();
+		//DrawString();
 	}
 
 

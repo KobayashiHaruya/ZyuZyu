@@ -75,6 +75,7 @@ namespace basecross {
 			switch (m_state)
 			{
 			case 1:
+				SelectData();
 				NextStage();
 				break;
 			case 2:

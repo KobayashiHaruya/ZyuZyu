@@ -76,6 +76,9 @@ namespace basecross {
 	}
 
 	void CopyrightStage::OnUpdate() {
+		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+
 		if (m_splash->IsAnimeEnd()) {
 			m_splashCount += App::GetApp()->GetElapsedTime();
 			if (m_splashCount >= m_splashTime) {
@@ -83,6 +86,10 @@ namespace basecross {
 				UpdateBanners();
 			}
 			//if(m_count >= m_titleTime) App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
+		}
+
+		if (KeyState.m_bPressedKeyTbl['P'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_START) {
+			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
 		}
 	}
 }

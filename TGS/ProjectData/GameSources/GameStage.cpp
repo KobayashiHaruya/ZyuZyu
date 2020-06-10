@@ -404,14 +404,20 @@ namespace basecross {
 				);
 
 			AddGameObject<SetGun>(
-				Vec3(40.0f, 2.0f, -20.0f),
+				Vec3(-10.0f, 2.0f, 10.0f),
 				Quat(0.0f),
-				false
-				);
+				true);
 
-			AddGameObject<CannonAmmoBox>(
-				Vec3(0.0f, 2.0f, 5.0f)
-				);
+
+			//AddGameObject<SetGun>(
+			//	Vec3(40.0f, 2.0f, -20.0f),
+			//	Quat(0.0f),
+			//	false
+			//	);
+
+			//AddGameObject<CannonAmmoBox>(
+			//	Vec3(0.0f, 2.0f, 5.0f)
+			//	);
 
 
 			CreatePinP();
@@ -439,12 +445,6 @@ namespace basecross {
 	void GameStage::OnUpdate() {
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-
-		if (KeyState.m_bPressedKeyTbl['Z']) {
-			App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::result);
-			StopBGM();
-			GameFinishScore();
-		}
 
 		WeaponUpdate();
 		//m_efkInterface->;

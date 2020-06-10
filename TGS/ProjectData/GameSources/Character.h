@@ -124,7 +124,7 @@ namespace basecross{
 
 		void PickGun(int state);
 
-		void Respawn();
+		void Respawn(int rand);
 		void GrenadeFire();
 		void ShotState();
 		void BulletDamage(int state, Vec3 rot);

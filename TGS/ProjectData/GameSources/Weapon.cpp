@@ -338,8 +338,11 @@ namespace basecross {
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& Other) {
-		if (FindTag(L"Explosion") || m_type == BulletS::Laser || m_type == BulletS::Torimoti) {
+		if (FindTag(L"Explosion") || m_type == BulletS::Torimoti) {
 
+		}
+		else if (m_type == BulletS::Laser && FindTag(L"Ground")) {
+			Destroy();
 		}
 		else if ((Other->FindTag(L"Object") && !Other->FindTag(L"Bullet"))
 			|| (Other->FindTag(L"Grenade") && !Other->FindTag(L"Smoke")) ||
