@@ -331,11 +331,44 @@ namespace basecross {
 		}
 
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) || KeyState.m_bPushKeyTbl[VK_SPACE]) & m_jump) {
+			PlaySE(L"jump_se.wav", 0.05f);
 			grav->StartJump(Vec3(0.0f, m_jumpPower, 0.0f));
 			m_jump = false;
 		}
 
+		PlayingWalkSE();
+	}
 
+	void Character::PlayingWalkSE() {
+		Vec3 angle(0, 0, 0);
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		float fThumbLY = 0.0f;
+		float fThumbLX = 0.0f;
+		WORD wButtons = 0;
+		if (cntlVec[0].bConnected) {
+			fThumbLY = cntlVec[0].fThumbLY;
+			fThumbLX = cntlVec[0].fThumbLX;
+			wButtons = cntlVec[0].wButtons;
+		}
+
+		m_Second += App::GetApp()->GetElapsedTime();
+
+		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
+		if (KeyState.m_bPushKeyTbl['W'] || KeyState.m_bPushKeyTbl['S'] ||
+			KeyState.m_bPushKeyTbl['D'] || KeyState.m_bPushKeyTbl['A']) {
+			if (m_Second > 0.4f) {
+				PlaySE(L"Asioto08.wav", 0.3f);
+				m_Second = 0.0f;
+			}
+		}
+
+		if (fThumbLX != 0 || fThumbLY != 0) {
+			if (m_Second > 0.4f) {
+				PlaySE(L"Asioto08.wav", 0.3f);
+				m_Second = 0.0f;
+			}
+
+		}
 	}
 
 	void Character::PlayerRotMove() {

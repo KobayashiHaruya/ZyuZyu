@@ -74,6 +74,7 @@ namespace basecross{
 		float m_rotSpeed = 2.0f;
 		float m_gravityScale;
 		float m_jumpPower;
+		float m_Second;
 		int ID;
 		float t;
 		Vec2 m_force;
@@ -91,6 +92,8 @@ namespace basecross{
 
 		shared_ptr<ObstacleEvent<const CharacterStatus_s>> m_touchOil;
 		CharacterStatus_s m_opponent;  //自身を攻撃してきた相手のステータスを持つ
+
+		shared_ptr<SoundItem> m_bgm;
 
 	public:
 
@@ -116,6 +119,7 @@ namespace basecross{
 		void PlayerRotMove();
 		void PlayerUI();
 		void PlayerMovement();
+		void PlayingWalkSE();
 
 		void PickGun(int state);
 
@@ -279,6 +283,22 @@ namespace basecross{
 
 		int GetId() {
 			return m_myData.unique;
+		}
+
+
+		void PlaySE(wstring key, float vol) {
+			auto se = App::GetApp()->GetXAudio2Manager();
+			se->Start(key, 0, vol);
+		}
+
+		void PlayBGM(wstring key, float vol) {
+			auto bgm = App::GetApp()->GetXAudio2Manager();
+			m_bgm = bgm->Start(key, XAUDIO2_LOOP_INFINITE, vol);
+		}
+
+		void StopBGM() {
+			auto se = App::GetApp()->GetXAudio2Manager();
+			se->Stop(m_bgm);
 		}
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other) override;
