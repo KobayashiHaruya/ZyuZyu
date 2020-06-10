@@ -644,10 +644,12 @@ namespace basecross {
 	}
 
 	void GameStage::PrevTitleStage() {
+		StopBGM();
 		App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::title);
 	}
 
 	void GameStage::PrevSelectStage() {
+		StopBGM();
 		App::GetApp()->GetScene<Scene>()->SetGameStage(GameStageKey::charSelect);
 	}
 
