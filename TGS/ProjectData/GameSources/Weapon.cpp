@@ -229,58 +229,75 @@ namespace basecross {
 	
 	void Bullet::SE(BulletS state) {
 		wstring SEName;
+		float volume;
+
 		switch (state)
 		{
 		case BulletS::None:
 			SEName = L"ハンドガン01.wav";
+			volume = 0.1f;
 			break;
 		case BulletS::Assault:
 			SEName = L"ハンドガン01.wav";
+			volume = 0.1f;
 			break;
 		case BulletS::Hand:
 			SEName = L"+Zyu_05.wav";
+			volume = 0.1f;
 			break;
 		case BulletS::Shot:
 			SEName = L"short_se.wav";
+			volume = 0.01f;
 			break;
 		case BulletS::SMG:
 			SEName = L"+Ga03.wav";
+			volume = 0.1f;
 			break;
 		case BulletS::Rocket:
 			SEName = L"Roketto01.wav";
+			volume = 0.1f;
 			break;
 		case BulletS::Sniper:
 			SEName = L"爆発_色々03.wav";
+			volume = 0.1f;
 			break;
 		case BulletS::Laser:
 			SEName = L"レーザー05.wav";
+			volume = 0.1f;
 			break;
 		case BulletS::Wind:
-			SEName = L"+Kaze01.wav";
+			SEName = L"+Kaze05.wav";
+			volume = 0.1f;
 			break;
 		case BulletS::Gatling:
 			SEName = L"+Ga03.wav";
+			volume = 0.05f;
 			break;
 		case BulletS::Cannon:
 			SEName = L"cannonbomb_se.wav";
+			volume = 0.1f;
 			break;
 		case BulletS::GExplosion:
 			SEName = L"cannonbomb_se.wav";
+			volume = 0.1f;
 			break;
 		case BulletS::CExplosion:
 			SEName = L"cannonbomb_se.wav";
+			volume = 0.1f;
 			break;
 		case BulletS::SExplosion:
 			SEName = L"explosion_smork_se.wav";
+			volume = 0.1f;
 			break;
 		case BulletS::RExplosion:
 			SEName = L"+Bakuhatu01.wav";
+			volume = 0.1f;
 			break;
 		default:
 			break;
 		}
 
-		GetTypeStage<GameStage>()->PlaySE(SEName, 0.10f);
+		GetTypeStage<GameStage>()->PlaySE(SEName, volume);
 
 	}
 
@@ -592,6 +609,7 @@ namespace basecross {
 	void SmokeGrenade::OnCollisionEnter(shared_ptr<GameObject>& Other) {
 		if (Other->FindTag(L"Bullet")) {
 			GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
+			m_efkPlay->StopEffect();
 
 			auto trans = GetComponent<Transform>();
 
