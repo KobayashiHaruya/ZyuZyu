@@ -308,15 +308,10 @@ namespace basecross {
 		if (FindTag(L"Explosion") || m_type == BulletS::Laser) {
 
 		}
-<<<<<<< HEAD
-		else if ((Other->FindTag(L"Object") && !Other->FindTag(L"Bullet")) || Other->GetID() != ID) {
-			//Destroy();
-=======
 		else if ((Other->FindTag(L"Object") && !Other->FindTag(L"Bullet"))
 			|| (Other->FindTag(L"Grenade") && !Other->FindTag(L"Smoke")) ||
 			Other->GetID() != ID) {
 			Destroy();
->>>>>>> Ko
 
 			m_efkPlay->StopEffect();
 			if (m_type == BulletS::Rocket) {
@@ -333,11 +328,11 @@ namespace basecross {
 
 				AddEvent([this](const CharacterStatus_s status) {
 					Destroy();
-					});
+				});
 
 				eBullet->AddEvent([this](const CharacterStatus_s status) {
 					Run(status);
-					});
+				});
 			}
 
 		}
