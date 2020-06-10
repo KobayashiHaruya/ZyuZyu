@@ -53,6 +53,8 @@ namespace basecross{
 		bool m_cannonAmmo = false;
 		bool m_setGunType;
 		Vec3 m_setGunPos;
+		int m_shotHit = 1;
+		float m_shotTime;
 
 		bool m_torimoti = false;
 		bool m_smoke = false;
@@ -119,10 +121,9 @@ namespace basecross{
 
 		void Respawn();
 		void GrenadeFire();
+		void ShotState();
 		void BulletDamage(int state, Vec3 rot);
 		void BulletFire();
-		void WeaponOFire(bool fire);
-		void WeaponTFire(bool fire);
 		void WeaponOFire(bool fire, Quat rot);
 		void WeaponTFire(bool fire, Quat rot);
 		void SetWeaponFire();

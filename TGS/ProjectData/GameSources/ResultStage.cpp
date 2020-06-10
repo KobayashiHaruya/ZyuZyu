@@ -20,7 +20,7 @@ namespace basecross {
 
 	void ResultStage::CreateUI() {
 		//スコア
-		m_TrueScore = 10000;
+		m_TrueScore = m_scoreTable->GetCharacterStatuses()[0].score;
 
 		for (int i = 0; i < 5; i++) {	//ループ数で桁変更
 			float n = static_cast<float>(i);
@@ -38,45 +38,18 @@ namespace basecross {
 		}
 	}
 
-	void ResultStage::CreateIcon(CharacterType type) {
+	void ResultStage::CreateIcon() {
 		m_Second2 += App::GetApp()->GetElapsedTime();
-		m_randpos = rand() % 5;
-		m_randpos -= rand() % 5;
-		if (m_Second2 > 0.5f) {
-			switch (m_type)
-			{
-			case POTATO:
-				AddGameObject<Result_Icon>(
-					m_position + Vec3(m_randpos, 0.0f, 0.0f),
-					type
-					);
-				m_type = DOUGHNUT;
-				break;
-			case SHRIMP:
-				AddGameObject<Result_Icon>(
-					m_position + Vec3(m_randpos, 0.0f, 0.0f),
-					type
-					);
-				m_type = POTATO;
+		m_randpos = rand() % 4;
+		m_randpos -= rand() % 4;
+		int id = m_scoreTable->GetCharacterStatuses()[0].unique;
 
-				break;
-			case CHICKEN:
-				AddGameObject<Result_Icon>(
-					m_position + Vec3(m_randpos, 0.0f, 0.0f),
-					type
-					);
-				m_type = SHRIMP;
-
-				break;
-			case DOUGHNUT:
-				AddGameObject<Result_Icon>(
-					m_position + Vec3(m_randpos, 0.0f, 0.0f),
-					type
-					);
-				m_type = CHICKEN;
-
-				break;
-			}
+		if (m_Second2 > 0.5f && m_KillList[id].size() > m_listSize) {
+			AddGameObject<Result_Icon>(
+				m_position + Vec3(m_randpos, 0.0f, 0.0f),
+				m_KillList[id][m_listSize]
+				);
+			m_listSize++;
 			m_Second2 = 0.0f;
 		}
 	}
@@ -189,7 +162,7 @@ namespace basecross {
 		ScoreMove();
 		if (m_Second > 5.0f) {
 			if (m_Second < 35.0f) {
-				CreateIcon(m_type);
+				CreateIcon();
 			}
 		}
 		//if (m_Cartain->GetCount() >= 40) m_resultThree->Play();

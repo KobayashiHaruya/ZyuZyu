@@ -426,7 +426,7 @@ namespace basecross {
 
 			//PlaySE(L"îöî≠_êFÅX01.wav", 0.5f);
 
-			PlayBGM(L"Main_BGM01.wav", 0.05f);
+			PlayBGM(L"Main_BGM01.wav", 0.1f);
 
 		}
 		catch (...) {

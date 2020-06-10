@@ -16,9 +16,8 @@ namespace basecross {
 			Vec3(0.0f, XM_PI, 0.0f),
 			Vec3(0.0f, -1.5f, 0.0f));
 
-		auto ptrColl = AddComponent<CollisionCapsule>();
-		ptrColl->SetMakedDiameter(2.0f);
-		ptrColl->SetMakedHeight(1.0f);
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetMakedSize(Vec3(1.0f, 1.7f, 1.0f));
 		ptrColl->SetAfterCollision(AfterCollision::Auto);
 
 		//影をつける
@@ -253,7 +252,7 @@ namespace basecross {
 		if (ptrCamera) {
 			//MyCameraに注目するオブジェクト（プレイヤー）の設定
 			ptrCamera->SetTargetObject(GetThis<Character>());
-			ptrCamera->SetTargetToAt(Vec3(0.0f, 1.5f, 0));
+			ptrCamera->SetTargetToAt(Vec3(0.0f, 2.0f, 0));
 		}
 
 	}
@@ -403,8 +402,11 @@ namespace basecross {
 
 		Quat thisQuat = ptr->GetQuaternion();
 		auto camera = OnGetDrawCamera();
-		auto fro = ptr->GetPosition() - camera->GetEye();
+		auto came = camera->GetEye();
+		came.y -= 2.0f;
+		auto fro = ptr->GetPosition() - came;
 		m_bulletRot.facing(fro);
+
 	}
 
 	void Character::GrenadeFire() {
@@ -435,7 +437,7 @@ namespace basecross {
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || KeyState.m_bPressedKeyTbl['Q']) && m_toriG) {
 			GetStage()->AddGameObject<Grenade>(
 				ptr->GetPosition(),
-				ptr->GetQuaternion(),
+				m_bulletRot,
 				50.0f, 10.0f, true, ID, m_myData
 				);
 			m_toriG = false;
@@ -444,7 +446,7 @@ namespace basecross {
 		if (((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) || KeyState.m_bPressedKeyTbl['E']) && m_smokeG) {
 			GetStage()->AddGameObject<Grenade>(
 				ptr->GetPosition(),
-				ptr->GetQuaternion(),
+				m_bulletRot,
 				50.0f, 10.0f, false, ID, m_myData
 				);
 			m_smokeG = false;
@@ -497,7 +499,7 @@ namespace basecross {
 		Vec3 vecForce = rot * force.x;
 		vecForce.y = force.y;
 
-		grav->SetGravityVerocity(vecForce * ((m_damage / 250.0f) + 1));
+		grav->SetGravityVerocity(vecForce * ((m_damage / 250.0f) + m_shotHit));
 
 		//ここで一定の条件（吹っ飛び率、自身をふっとばしたのはプレイヤーか）などで自身を表示するPinPを表示する
 		/*if(m_opponent.isPlayer) */ShowMyPinP();
@@ -530,6 +532,7 @@ namespace basecross {
 			}
 
 		}
+
 		if(Other->FindTag(L"Bullet") && Other->GetID() != ID){
 			BulletDamage(Other->GetBulletType(), Other->GetComponent<Transform>()->GetForword());
 			auto bullet = dynamic_pointer_cast<Bullet>(Other);
@@ -746,6 +749,7 @@ namespace basecross {
 			level = 3;
 
 		m_myData.level = level;
+		ShotState();
 	}
 
 	void Character::AddKill(const int kill) {
@@ -756,6 +760,15 @@ namespace basecross {
 		m_myData.death += death;
 	}
 
+	void Character::ShotState() {
+		if (m_shotTime > 0) {
+			float time = App::GetApp()->GetElapsedTime();
+			m_shotTime -= time;
+		}
+		else {
+			m_shotHit = 1;
+		}
+	}
 
 	void Character::BulletState(int state, bool weapon, bool same) {
 		WeaponState_s m_state;
@@ -1181,58 +1194,73 @@ namespace basecross {
 		switch (state)
 		{
 		case BulletS::Assault:
+			m_shotHit = 1;
 			force = Vec2(3.0f, 2.0f);
 			damage = 5.0;
 			break;
 		case BulletS::Hand:
+			m_shotHit = 1;
 			force = Vec2(3.0f, 3.0f);
 			damage = 15.0;
 			break;
 		case BulletS::Shot:
-			force = Vec2(1.0f, 1.0f);
+			m_shotHit++;
+			m_shotTime = 0.5f;
+			force = Vec2(0.3f, 0.3f);
 			damage = 5.0;
 			break;
 		case BulletS::SMG:
+			m_shotHit = 1;
 			force = Vec2(2.0f, 3.0f);
 			damage = 2.0;
 			break;
 		case BulletS::Rocket:
+			m_shotHit = 1;
 			force = Vec2(0.0f, 0.0f);
 			damage = 0.0;
 			break;
 		case BulletS::Sniper:
-			force = Vec2(5.0f, 1.0f);
+			m_shotHit = 1;
+			force = Vec2(5.0f, 2.0f);
 			damage = 20.0;
 			break;
 		case BulletS::Laser:
+			m_shotHit = 1;
 			force = Vec2(0.5f, 0.0f);
 			damage = 20.0;
 			break;
 		case BulletS::Wind:
-			force = Vec2(10.0f, 0.2f);
+			m_shotHit = 1;
+			force = Vec2(2.0f, 1.0f);
 			damage = 1.0;
 			break;
 		case BulletS::Gatling:
+			m_shotHit = 1;
 			force = Vec2(10.0f, 5.0f);
 			damage = 2.0;
 			break;
 		case BulletS::Cannon:
+			m_shotHit = 1;
 			force = Vec2(15.0f, 10.0f);
 			damage = 50.0;
 			break;
 		case BulletS::GExplosion:
+			m_shotHit = 1;
 			force = Vec2(-5.0f, 5.0f);
 			damage = 40.0;
 			break;
 		case BulletS::CExplosion:
+			m_shotHit = 1;
 			force = Vec2(5.0f, 5.0f);
 			damage = 30.0;
 			break;
 		case BulletS::SExplosion:
+			m_shotHit = 1;
 			force = Vec2(5.0f, 5.0f);
 			damage = 20.0;
 			break;
 		case BulletS::RExplosion:
+			m_shotHit = 1;
 			force = Vec2(4.0f, 3.0f);
 			damage = 15.0;
 			break;

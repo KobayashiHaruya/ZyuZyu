@@ -17,10 +17,11 @@ namespace basecross {
 		int m_Score;
 		int m_TrueScore;
 
-		CharacterType m_type;
 		int m_level;
 
 		int m_state;
+
+		int m_listSize;
 
 		wstring m_Stage_Image;
 		wstring m_Score_Image;
@@ -86,8 +87,8 @@ namespace basecross {
 			m_Move(500.0f),
 			m_Score(000000),
 			m_TrueScore(0),
-			m_type(SHRIMP),
 			m_level(0),
+			m_listSize(0),
 			m_curtain(NULL),
 			m_resultThree(NULL),
 			m_resultTwo(NULL),
@@ -106,7 +107,7 @@ namespace basecross {
 
 		void CreateViewLight();
 		void CreateUI();
-		void CreateIcon(CharacterType type);
+		void CreateIcon();
 		void ScoreMove();
 		void CreateWall();
 		void ReadScore();
