@@ -160,19 +160,17 @@ namespace basecross {
 
 		ptr->SetPosition(m_pos);
 		ptr->SetRotation(Vec3(0.0f));
-		ptr->SetScale(Vec3(1.0f, 1.0f, 0.5f));
+		ptr->SetScale(m_scale);
 
 		vector<VertexPositionNormalTexture> vertices;
 		vector<uint16_t> indices;
 		MeshUtill::CreateSquare(1.0f, vertices, indices);
-
-		vertices[0].textureCoordinate = Vec2(0, 0);
-
-		vertices[1].textureCoordinate = Vec2(1, 0);
-
-		vertices[2].textureCoordinate = Vec2(0, 1.0f);
-
-		vertices[3].textureCoordinate = Vec2(1, 1.0f);
+		float from = (m_type - 1.0f) / 12.0f;
+		float to = from + (1.0f / 12.0f);
+		vertices[0].textureCoordinate = Vec2(from, 0);
+		vertices[1].textureCoordinate = Vec2(to, 0);
+		vertices[2].textureCoordinate = Vec2(from, 1.0f);
+		vertices[3].textureCoordinate = Vec2(to, 1.0f);
 
 		vector<VertexPositionColorTexture> new_vertices;
 		for (auto& v : vertices) {
@@ -187,21 +185,8 @@ namespace basecross {
 
 		auto draw = AddComponent<PCTStaticDraw>();
 		draw->SetMeshResource(m_SquareMeshResource);
-		switch (m_type)
-		{
-		case POTATO:
-			draw->SetTextureResource(L"Result_Potato.png");
-			break;
-		case SHRIMP:
-			draw->SetTextureResource(L"Result_Shrimp.png");
-			break;
-		case CHICKEN:
-			draw->SetTextureResource(L"Result_Chicken.png");
-			break;
-		case DOUGHNUT:
-			draw->SetTextureResource(L"Result_Doughnut.png");
-			break;
-		}
+		draw->SetTextureResource(L"Result_Food.png");
+
 		SetDrawLayer(-2);
 		SetAlphaActive(true);
 

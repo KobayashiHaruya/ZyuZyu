@@ -65,6 +65,7 @@ namespace basecross {
 		void Timer();
 		void Destroy();
 		void Effect(wstring name);
+		void SE(BulletS state);
 		void BulletState(BulletS state);
 		void EffectState(BulletS state);
 

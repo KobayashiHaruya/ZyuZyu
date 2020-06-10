@@ -58,12 +58,11 @@ namespace basecross {
 
 	class Result_Icon : public GameObject {
 		Vec3 m_pos;
-		Quat m_qua;
 		Vec3 m_scale = Vec3(1.0f);
 
 		shared_ptr<MeshResource> m_SquareMeshResource;
 
-		CharacterType m_type;
+		int m_type;
 
 		Quat Billboard(const Vec3& Line) {
 			Vec3 Temp = Line;
@@ -85,7 +84,7 @@ namespace basecross {
 	public:
 		Result_Icon(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos,
-			const CharacterType type
+			const int& type
 			) :
 			GameObject(StagePtr),
 			m_pos(pos),

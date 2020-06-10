@@ -60,7 +60,7 @@ namespace basecross {
 		try {
 			CreateViewLight();
 			CreateUI();
-			PlayBGM(L"title_bgm.wav", 0.1f);
+			PlayBGM(L"Serekuto02.wav", 0.1f);
 		}
 		catch (...) {
 			throw;

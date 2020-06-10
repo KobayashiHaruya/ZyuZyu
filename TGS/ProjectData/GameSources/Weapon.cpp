@@ -72,7 +72,7 @@ namespace basecross {
 			speed = 80.0f;
 			grav = 5.0f;
 			time = 0.2f;
-			scale = Vec3(1.0f);
+			scale = Vec3(2.0f);
 			AddTag(L"Bullet");
 			break;
 		case BulletS::Gatling:
@@ -142,18 +142,6 @@ namespace basecross {
 		ptr->SetQuaternion(m_rot);
 		ptr->SetScale(m_scale);
 
-		//auto ptrShadow = AddComponent<Shadowmap>();
-		//ptrShadow->SetMeshResource(L"DEFAULT_SPHERE");
-
-		//auto ptrDraw = AddComponent<PNTStaticModelDraw>();
-		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
-		//ptrDraw->SetOwnShadowActive(true);
-		//ptrDraw->SetDrawActive(true);
-		//SetAlphaActive(true);
-
-		//auto PtrDraw = AddComponent<BcPNTStaticDraw>();
-		//PtrDraw->SetMeshResource(L"DEFAULT_SPHERE");
-
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetAfterCollision(AfterCollision::None);
 		ptrColl->AddExcludeCollisionTag(L"Bullet");
@@ -167,6 +155,9 @@ namespace basecross {
 		gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
 
 		EffectState(m_type);
+		if (m_frome.isPlayer) {
+			SE(m_type);
+		}
 
 		SetID(ID);
 		SetBulletType(m_type);
@@ -231,8 +222,65 @@ namespace basecross {
 		m_efkEffect = GetTypeStage<GameStage>()->GetEffect(name);
 		m_efkPlay = ObjectFactory::Create<EfkPlay>(m_efkEffect, ptr->GetPosition());
 		m_efkPlay->Play(m_efkEffect, ptr->GetPosition());
-		Vec3 rot = ptr->GetForword();
-		m_efkPlay->SetRotation(rot);
+		//Vec3 rot = ptr->GetForword();
+		//m_efkPlay->SetRotation(Vec3(ptr->GetForword()));
+	}
+	
+	void Bullet::SE(BulletS state) {
+		wstring SEName;
+		switch (state)
+		{
+		case BulletS::None:
+			SEName = L"ハンドガン01.wav";
+			break;
+		case BulletS::Assault:
+			SEName = L"ハンドガン01.wav";
+			break;
+		case BulletS::Hand:
+			SEName = L"+Zyu_05.wav";
+			break;
+		case BulletS::Shot:
+			SEName = L"short_se.wav";
+			break;
+		case BulletS::SMG:
+			SEName = L"+Ga03.wav";
+			break;
+		case BulletS::Rocket:
+			SEName = L"Roketto01.wav";
+			break;
+		case BulletS::Sniper:
+			SEName = L"爆発_色々03.wav";
+			break;
+		case BulletS::Laser:
+			SEName = L"レーザー05.wav";
+			break;
+		case BulletS::Wind:
+			SEName = L"+Kaze01.wav";
+			break;
+		case BulletS::Gatling:
+			SEName = L"+Ga03.wav";
+			break;
+		case BulletS::Cannon:
+			SEName = L"cannonbomb_se.wav";
+			break;
+		case BulletS::GExplosion:
+			SEName = L"cannonbomb_se.wav";
+			break;
+		case BulletS::CExplosion:
+			SEName = L"cannonbomb_se.wav";
+			break;
+		case BulletS::SExplosion:
+			SEName = L"explosion_smork_se.wav";
+			break;
+		case BulletS::RExplosion:
+			SEName = L"+Bakuhatu01.wav";
+			break;
+		default:
+			break;
+		}
+
+		GetTypeStage<GameStage>()->PlaySE(SEName, 0.10f);
+
 	}
 
 	void Bullet::Move() {
@@ -259,7 +307,9 @@ namespace basecross {
 		if (FindTag(L"Explosion") || m_type == BulletS::Laser) {
 
 		}
-		else if ((Other->FindTag(L"Object") && !Other->FindTag(L"Bullet")) || Other->GetID() != ID) {
+		else if ((Other->FindTag(L"Object") && !Other->FindTag(L"Bullet"))
+			|| (Other->FindTag(L"Grenade") && !Other->FindTag(L"Smoke")) ||
+			Other->GetID() != ID) {
 			Destroy();
 
 			if (m_type == BulletS::Rocket) {
@@ -286,15 +336,14 @@ namespace basecross {
 
 	}
 
-
 	void Bullet::OnCreate() {
 		Draw();
 		Move();
 	}
 
 	void Bullet::OnUpdate() {
-		auto pos = GetComponent<Transform>()->GetPosition();
-		m_efkPlay->SetLocation(pos);
+		auto pos = GetComponent<Transform>();
+		m_efkPlay->SetLocation(pos->GetPosition());
 		Timer();
 	}
 
@@ -530,7 +579,7 @@ namespace basecross {
 	void SmokeGrenade::OnCollisionEnter(shared_ptr<GameObject>& Other) {
 		if (Other->FindTag(L"Bullet")) {
 			GetStage()->RemoveGameObject<GameObject>(GetThis<GameObject>());
-			GetStage()->RemoveGameObject<GameObject>(Other);
+
 			auto trans = GetComponent<Transform>();
 			GetStage()->AddGameObject<Bullet>(
 				trans->GetPosition(),

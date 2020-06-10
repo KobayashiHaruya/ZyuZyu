@@ -666,7 +666,7 @@ namespace basecross {
 		}
 		void SetCharacterStatuses(const vector<CharacterStatus_s>& characterStatuses) {
 			m_characterStatuses = characterStatuses;
-			UpdateTable();
+			//UpdateTable();
 		}
 		void SetCharacterStatus(const CharacterStatus_s& status);
 		CharacterStatus_s GetPlayerStatus() {
@@ -1335,7 +1335,7 @@ namespace basecross {
 				scale,
 				layer,
 				Col4(1.0f, 1.0f, 1.0f, 1.0f),
-				L"PS_Characteres_Level_Sprite.png",
+				L"Kill_Icon_ver2.png",
 				Vec2(256.0f, 256.0f)
 			),
 			m_type(type),
