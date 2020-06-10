@@ -122,6 +122,14 @@ namespace basecross {
 			AddTag(L"Explosion");
 			AddTag(L"Bullet");
 			break;
+		case BulletS::Torimoti:
+			speed = 0.0f;
+			grav = 0.0f;
+			time = 0.5f;
+			scale = Vec3(10.0f);
+			AddTag(L"Grenade");
+			AddTag(L"Torimoti");
+			break;
 		default:
 			break;
 		}
@@ -150,6 +158,7 @@ namespace basecross {
 		ptrColl->AddExcludeCollisionTag(L"GatlingAmmo");
 		ptrColl->AddExcludeCollisionTag(L"SetGun");
 		ptrColl->AddExcludeCollisionTag(L"Explosion");
+		ptrColl->AddExcludeCollisionTag(L"Torimoti");
 
 		auto gravity = AddComponent<Gravity>();
 		gravity->SetGravity(Vec3(0.0f, -m_gravityScale, 0.0f));
@@ -210,6 +219,9 @@ namespace basecross {
 			break;
 		case BulletS::RExplosion:
 			Effect(L"Explosion_Egg.efk");
+			break;
+		case BulletS::Torimoti:
+			Effect(L"LiquidGrenade.efk");
 			break;
 		default:
 			break;
@@ -293,6 +305,10 @@ namespace basecross {
 			SEName = L"+Bakuhatu01.wav";
 			volume = 0.1f;
 			break;
+		case BulletS::Torimoti:
+			SEName = L"explosion_water2_se.wav";
+			volume = 0.2f;
+			break;
 		default:
 			break;
 		}
@@ -322,7 +338,7 @@ namespace basecross {
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& Other) {
-		if (FindTag(L"Explosion") || m_type == BulletS::Laser) {
+		if (FindTag(L"Explosion") || m_type == BulletS::Laser || m_type == BulletS::Torimoti) {
 
 		}
 		else if ((Other->FindTag(L"Object") && !Other->FindTag(L"Bullet"))
@@ -536,6 +552,10 @@ namespace basecross {
 		if ((Other->GetID() != ID && !Other->FindTag(L"Grenade")) || Other->FindTag(L"Object")) {
 			auto ptr = GetComponent<Transform>();
 			if (m_grenade) {
+				m_efkEffect = GetTypeStage<GameStage>()->GetEffect(L"explosion_smork_se.wav");
+				m_efkPlay = ObjectFactory::Create<EfkPlay>(m_efkEffect, ptr->GetPosition());
+				m_efkPlay->Play(m_efkEffect, ptr->GetPosition());
+
 				GetStage()->AddGameObject<SmokeGrenade>(
 					ptr->GetPosition(),
 					m_rot,
@@ -543,10 +563,12 @@ namespace basecross {
 					m_frome
 					);
 			}
-			else {
-				GetStage()->AddGameObject<TorimotiGrenade>(
+			else {				
+				GetStage()->AddGameObject<Bullet>(
 					ptr->GetPosition(),
-					m_rot,
+					ptr->GetQuaternion(),
+					BulletS::Torimoti,
+					m_frome.unique,
 					ID,
 					m_frome
 					);

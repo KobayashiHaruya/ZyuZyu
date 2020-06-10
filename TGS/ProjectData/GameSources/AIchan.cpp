@@ -24,7 +24,7 @@ namespace basecross {
 	}
 
 	void AIchan::OnUpdate() {
-		if (GetTypeStage<GameStage>()->m_start) {
+		if (GetTypeStage<GameStage>()->m_start && !Torimoti()) {
 			m_stateMachine->Update();
 
 			AddLevel();

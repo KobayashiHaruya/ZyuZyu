@@ -1,3 +1,0 @@
-TGS  ->  libs  ->  lib
-D -> Debug
-R -> Release

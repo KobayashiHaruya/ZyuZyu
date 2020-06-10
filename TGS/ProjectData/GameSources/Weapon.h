@@ -116,6 +116,9 @@ namespace basecross {
 		bool m_grenade;
 		CharacterStatus_s m_frome;
 
+		shared_ptr<EfkEffect> m_efkEffect;
+		shared_ptr<EfkPlay> m_efkPlay;
+
 	public:
 		Grenade(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos,

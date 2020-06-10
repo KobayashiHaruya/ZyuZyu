@@ -79,7 +79,8 @@ namespace basecross {
 		GExplosion,
 		CExplosion,
 		SExplosion,
-		RExplosion
+		RExplosion,
+		Torimoti
 	};
 
 

@@ -57,6 +57,7 @@ namespace basecross{
 		float m_shotTime;
 
 		bool m_torimoti = false;
+		float m_toriHitInTime;
 		bool m_smoke = false;
 		bool m_toriIn = false;
 		bool m_smokeIn = false;
@@ -149,13 +150,17 @@ namespace basecross{
 				m_anim = true;
 			}
 		}
-		void Torimoti(bool hit) {
-			if (hit) {
-				m_defaultSpeed = 0.0f;
+		bool Torimoti() {
+			if (m_toriHitInTime > 0) {
+				float time = App::GetApp()->GetElapsedTime();
+				m_toriHitInTime -= time;
+				m_torimoti = true;
 			}
 			else {
-				m_defaultSpeed = m_moveSpeed;
+				m_torimoti = false;
 			}
+
+			return m_torimoti;
 		}
 		int GetAmmoO() {
 			return m_WeaponO.ammo;

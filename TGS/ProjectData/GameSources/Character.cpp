@@ -357,14 +357,14 @@ namespace basecross {
 		if (KeyState.m_bPushKeyTbl['W'] || KeyState.m_bPushKeyTbl['S'] ||
 			KeyState.m_bPushKeyTbl['D'] || KeyState.m_bPushKeyTbl['A']) {
 			if (m_Second > 0.4f) {
-				PlaySE(L"Asioto08.wav", 0.3f);
+				PlaySE(L"Asioto08.wav", 0.1f);
 				m_Second = 0.0f;
 			}
 		}
 
 		if (fThumbLX != 0 || fThumbLY != 0) {
 			if (m_Second > 0.4f) {
-				PlaySE(L"Asioto08.wav", 0.3f);
+				PlaySE(L"Asioto08.wav", 0.1f);
 				m_Second = 0.0f;
 			}
 
@@ -545,6 +545,7 @@ namespace basecross {
 
 		if (Other->FindTag(L"Torimoti")) {
 			m_torimoti = true;
+			m_toriHitInTime = 15.0f;
 		}
 
 		if (Other->FindTag(L"Smoke")) {
@@ -566,7 +567,7 @@ namespace basecross {
 
 		}
 
-		if(Other->FindTag(L"Bullet") && Other->GetID() != ID){
+		if (Other->FindTag(L"Bullet") && Other->GetID() != ID) {
 			BulletDamage(Other->GetBulletType(), Other->GetComponent<Transform>()->GetForword());
 			auto bullet = dynamic_pointer_cast<Bullet>(Other);
 			if (bullet) {
@@ -574,10 +575,24 @@ namespace basecross {
 				m_opponent = bullet->GetFrome();
 			}
 
-			if (m_toriIn) {
+			if (m_torimoti) {
 				GetStage()->AddGameObject<GatlingAmmo>(
 					GetComponent<Transform>()->GetPosition()
 					);
+				GetStage()->AddGameObject<GatlingAmmo>(
+					GetComponent<Transform>()->GetPosition()
+					);
+				GetStage()->AddGameObject<GatlingAmmo>(
+					GetComponent<Transform>()->GetPosition()
+					);
+				GetStage()->AddGameObject<GatlingAmmo>(
+					GetComponent<Transform>()->GetPosition()
+					);
+				GetStage()->AddGameObject<GatlingAmmo>(
+					GetComponent<Transform>()->GetPosition()
+					);
+				m_torimoti = false;
+				m_toriHitInTime = 0.0f;
 			}
 		}
 
@@ -638,16 +653,6 @@ namespace basecross {
 			m_jump = true;
 		}
 
-		if (Other->FindTag(L"Torimoti")) {
-			m_torimoti = true;
-			Torimoti(true);
-			m_toriIn = true;
-		}
-		else {
-			Torimoti(false);
-			m_toriIn = false;
-		}
-
 		if (Other->FindTag(L"Smoke")) {
 			m_smoke = true;
 			m_smokeIn = true;
@@ -661,10 +666,6 @@ namespace basecross {
 	void Character::OnCollisionExit(shared_ptr<GameObject>& Other) {
 		if (Other->FindTag(L"Object")) {
 			m_jump = false;
-		}
-
-		if (Other->FindTag(L"Torimoti")) {
-			Torimoti(false);
 		}
 
 		if (Other->FindTag(L"SetGun")) {
@@ -1340,7 +1341,9 @@ namespace basecross {
 				SetWeaponFire();
 			}
 			else {
-				PlayerMove();
+				if (!Torimoti()) {
+					PlayerMove();
+				}
 				BulletFire();
 				GrenadeFire();
 			}
