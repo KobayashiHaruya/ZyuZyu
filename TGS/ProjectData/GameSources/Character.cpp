@@ -536,7 +536,8 @@ namespace basecross {
 		grav->SetGravityVerocity(vecForce * ((m_damage / 250.0f) + m_shotHit));
 
 		//ここで一定の条件（吹っ飛び率、自身をふっとばしたのはプレイヤーか）などで自身を表示するPinPを表示する
-		/*if(m_opponent.isPlayer) */ShowMyPinP();
+		/*if(m_opponent.isPlayer) */
+		//ShowMyPinP();
 	}
 
 	void Character::OnCollisionEnter(shared_ptr<GameObject>& Other) {
@@ -684,11 +685,11 @@ namespace basecross {
 		AddDeath(1);
 
 		//PinPで表示しているのが自身だったらPinPを非表示にする
-		auto pinp = GetStage()->GetSharedGameObject<PinP>(L"BlownPinP");
+		/*auto pinp = GetStage()->GetSharedGameObject<PinP>(L"BlownPinP");
 		if (m_myData.unique == pinp->GetUse().unique) {
 			pinp->DeleteUse();
 			pinp->Out(PinPAction::LEFT);
-		}
+		}*/
 
 		SetUpdateActive(true);
 		SetDrawActive(true);
