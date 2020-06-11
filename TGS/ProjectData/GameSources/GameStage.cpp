@@ -620,8 +620,6 @@ namespace basecross {
 		wstring death = L"ScoreTable/Top/Death";
 		wstring score = L"ScoreTable/Top/Score";
 		wstring player = L"ScoreTable/Top/Player";
-		//wstring list = L"ScoreTable/Top/List";
-		//wstring listSave = L"";
 
 		vector<wstring> Save = {
 			Util::IntToWStr(top.unique),
