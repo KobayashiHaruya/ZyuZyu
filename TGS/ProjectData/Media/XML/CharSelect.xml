@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CharSelect>
-<<<<<<< HEAD
-	<Character>0.0</Character>
-=======
-<<<<<<< HEAD
-	<Character>0.0</Character>
-=======
-	<Character>3.0</Character>
->>>>>>> 9540ffbaa349390617c3a74587ae9dd3e162b0c7
->>>>>>> b287b1657f9422d8b5839c5cabbc856679167767
+	<Character>1.0</Character>
 </CharSelect>
