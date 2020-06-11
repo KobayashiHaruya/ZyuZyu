@@ -88,6 +88,8 @@ namespace basecross {
 		virtual void OnUpdate2() override;
 		virtual void OnDraw()override;
 
+		void StageObject();
+
 		void GameFinishScore();
 
 		void PlaySE(wstring key, float vol) {

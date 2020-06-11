@@ -1,0 +1,2 @@
+﻿  DirectXTexUtil.cpp
+c:\users\halu\documents\jga\tga\tgs\libs\directxtex\directxtexutil.cpp(1503): error C2857: /Ycstdafx.h コマンド ライン オプションで指定された '#include' ステートメントは、ソース ファイルに含まれていません。

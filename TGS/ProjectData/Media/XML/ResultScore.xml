@@ -2,18 +2,44 @@
 <ScoreTable>
 	<Char0>
 		<ID>0</ID>
+<<<<<<< HEAD
 		<Type>1</Type>
 		<Kill>13</Kill>
+=======
+<<<<<<< HEAD
+		<Type>1</Type>
+		<Kill>0</Kill>
+		<Death>0</Death>
+		<Score>0</Score>
+		<Player>1</Player>
+		<List>None</List>
+=======
+		<Type>3</Type>
+		<Kill>16</Kill>
+>>>>>>> b287b1657f9422d8b5839c5cabbc856679167767
 		<Death>7</Death>
 		<Score>2500</Score>
 		<Player>1</Player>
+<<<<<<< HEAD
 		<List>8|5|5|7|4|8|4|10|4|1|1|5|11|</List>
+=======
+		<List>5|8|9|6|12|4|4|1|7|7|4|8|1|5|8|5|</List>
+>>>>>>> 9540ffbaa349390617c3a74587ae9dd3e162b0c7
+>>>>>>> b287b1657f9422d8b5839c5cabbc856679167767
 	</Char0>
 	<Char1>
 		<ID>1</ID>
 		<Type>2</Type>
 		<Kill>0</Kill>
+<<<<<<< HEAD
 		<Death>4</Death>
+=======
+<<<<<<< HEAD
+		<Death>2</Death>
+=======
+		<Death>9</Death>
+>>>>>>> 9540ffbaa349390617c3a74587ae9dd3e162b0c7
+>>>>>>> b287b1657f9422d8b5839c5cabbc856679167767
 		<Score>0</Score>
 		<Player>0</Player>
 		<List>None</List>
@@ -21,35 +47,91 @@
 	<Char2>
 		<ID>2</ID>
 		<Type>3</Type>
+<<<<<<< HEAD
 		<Kill>8</Kill>
+=======
+<<<<<<< HEAD
+		<Kill>11</Kill>
+		<Death>4</Death>
+		<Score>1100</Score>
+		<Player>0</Player>
+		<List>4|1|7|1|1|1|1|1|1|1|4|</List>
+=======
+		<Kill>9</Kill>
+>>>>>>> b287b1657f9422d8b5839c5cabbc856679167767
 		<Death>4</Death>
 		<Score>1000</Score>
 		<Player>0</Player>
+<<<<<<< HEAD
 		<List>2|1|1|1|1|1|1|4|</List>
+=======
+		<List>7|4|4|10|10|1|1|1|1|</List>
+>>>>>>> 9540ffbaa349390617c3a74587ae9dd3e162b0c7
+>>>>>>> b287b1657f9422d8b5839c5cabbc856679167767
 	</Char2>
 	<Char3>
 		<ID>3</ID>
 		<Type>0</Type>
+<<<<<<< HEAD
 		<Kill>2</Kill>
 		<Death>1</Death>
 		<Score>200</Score>
 		<Player>0</Player>
 		<List>1|1|</List>
+=======
+<<<<<<< HEAD
+		<Kill>1</Kill>
+		<Death>4</Death>
+		<Score>100</Score>
+		<Player>0</Player>
+		<List>1|</List>
+=======
+		<Kill>8</Kill>
+		<Death>5</Death>
+		<Score>1200</Score>
+		<Player>0</Player>
+		<List>8|2|10|10|10|4|1|10|</List>
+>>>>>>> 9540ffbaa349390617c3a74587ae9dd3e162b0c7
+>>>>>>> b287b1657f9422d8b5839c5cabbc856679167767
 	</Char3>
 	<Char4>
 		<ID>4</ID>
 		<Type>1</Type>
+<<<<<<< HEAD
 		<Kill>3</Kill>
 		<Death>4</Death>
 		<Score>300</Score>
 		<Player>0</Player>
 		<List>1|1|7|</List>
+=======
+<<<<<<< HEAD
+		<Kill>2</Kill>
+		<Death>10</Death>
+		<Score>200</Score>
+		<Player>0</Player>
+		<List>10|10|</List>
+=======
+		<Kill>4</Kill>
+		<Death>10</Death>
+		<Score>700</Score>
+		<Player>0</Player>
+		<List>6|1|1|10|</List>
+>>>>>>> 9540ffbaa349390617c3a74587ae9dd3e162b0c7
+>>>>>>> b287b1657f9422d8b5839c5cabbc856679167767
 	</Char4>
 	<Char5>
 		<ID>5</ID>
 		<Type>2</Type>
 		<Kill>0</Kill>
+<<<<<<< HEAD
 		<Death>3</Death>
+=======
+<<<<<<< HEAD
+		<Death>5</Death>
+=======
+		<Death>6</Death>
+>>>>>>> 9540ffbaa349390617c3a74587ae9dd3e162b0c7
+>>>>>>> b287b1657f9422d8b5839c5cabbc856679167767
 		<Score>0</Score>
 		<Player>0</Player>
 		<List>None</List>
@@ -57,6 +139,7 @@
 	<Char6>
 		<ID>6</ID>
 		<Type>1</Type>
+<<<<<<< HEAD
 		<Kill>2</Kill>
 		<Death>6</Death>
 		<Score>400</Score>
@@ -64,13 +147,52 @@
 		<Score>200</Score>
 		<Player>0</Player>
 		<List>11|10|</List>
+=======
+<<<<<<< HEAD
+		<Kill>1</Kill>
+		<Death>5</Death>
+		<Score>100</Score>
+		<Death>3</Death>
+		<Score>200</Score>
+		<Player>0</Player>
+		<List>10|</List>
+=======
+		<Kill>4</Kill>
+		<Death>4</Death>
+		<Score>600</Score>
+		<Death>3</Death>
+		<Score>200</Score>
+		<Player>0</Player>
+		<List>2|7|4|1|</List>
+>>>>>>> 9540ffbaa349390617c3a74587ae9dd3e162b0c7
+>>>>>>> b287b1657f9422d8b5839c5cabbc856679167767
 	</Char6>
 	<Char7>
 		<ID>7</ID>
 		<Type>0</Type>
+<<<<<<< HEAD
 		<Kill>2</Kill>
 		<Death>3</Death>
 		<Score>600</Score>
+=======
+<<<<<<< HEAD
+		<Kill>1</Kill>
+		<Death>4</Death>
+		<Score>300</Score>
+		<Player>0</Player>
+		<List>2|</List>
+	</Char7>
+	<Top>
+		<ID>0</ID>
+		<Type>1</Type>
+		<Kill>0</Kill>
+		<Death>0</Death>
+		<Score>0</Score>
+=======
+		<Kill>6</Kill>
+		<Death>5</Death>
+		<Score>800</Score>
+>>>>>>> b287b1657f9422d8b5839c5cabbc856679167767
 		<Player>0</Player>
 		<List>2|2|</List>
 	</Char7>
@@ -79,7 +201,12 @@
 		<Type>1</Type>
 		<Kill>13</Kill>
 		<Death>7</Death>
+<<<<<<< HEAD
 		<Score>2500</Score>
+=======
+		<Score>3700</Score>
+>>>>>>> 9540ffbaa349390617c3a74587ae9dd3e162b0c7
+>>>>>>> b287b1657f9422d8b5839c5cabbc856679167767
 		<Player>1</Player>
 		<List>10|10|</List>
 	</Top>

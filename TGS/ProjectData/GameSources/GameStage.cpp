@@ -223,52 +223,68 @@ namespace basecross {
 		m_efkInterface->OnDraw();
 	}
 
-	void GameStage::OnCreate() {
-		try {
-			m_efkInterface = ObjectFactory::Create<EfkInterface>();
-			
-			//SetPhysicsActive(true);
-			//ビューとライトの作成.
-			//CreateEffect();
-			WeaponState();
-			CreateViewLight();
-			CreateUI();
-			/*CreateTime();
-			CreateEndTime();*/
-
+	void GameStage::StageObject() {
 			auto obstacleGroup = CreateSharedObjectGroup(L"ObstacleGroup");
 			auto obstacle = AddGameObject<Object>(
 				Vec3(-28.0f, 3.0f, 10.0f),
-				Vec3(0.0f, 0.0f, -XM_PI / 20.0f),
+				Vec3(0.0f, 0.0f, 90.0f),
 				Vec3(3.0f),
 				ObjectType::Harumaki
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(30.0f, 5.0f, -10.0f),
-				Vec3(XM_PI / 2.0f, 0.0f, 0.0f),
-				Vec3(1.5f),
+				Vec3(20.0f, 3.0f, -5.0f),
+				Vec3(80.0f, 60.0f, 0.0f),
+				Vec3(3.0f),
+				ObjectType::Harumaki
+				);
+			obstacleGroup->IntoGroup(obstacle); 
+			obstacle = AddGameObject<Object>(
+				Vec3(-40.0f, 3.5f, 1.0f),
+				Vec3(XM_PI / 1.0f, 0.0f, 2.0f),
+				Vec3(2.0f),
 				ObjectType::Asupara
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(30.0f, 5.0f, -5.0f),
-				Vec3(XM_PI / 2.0f, 0.0f, 0.0f),
-				Vec3(1.5f),
+				Vec3(-40.0f, 2.5f, 10.0f),
+				Vec3(XM_PI / 1.0f, 0.0f, 2.0f),
+				Vec3(2.0f),
 				ObjectType::Asupara
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(30.0f, 5.0f, 0.0f),
-				Vec3(XM_PI / 2.0f, 0.0f, 0.0f),
-				Vec3(1.5f),
+				Vec3(-40.0f, 2.5f, -10.0f),
+				Vec3(XM_PI / 1.0f, 0.0f, 2.0f),
+				Vec3(2.0f),
+				ObjectType::Asupara
+				);
+			obstacleGroup->IntoGroup(obstacle); 
+			obstacle = AddGameObject<Object>(
+				Vec3(-40.0f, 3.5f, -20.0f),
+				Vec3(XM_PI / 1.0f, 0.0f, 2.0f),
+				Vec3(2.0f),
+				ObjectType::Asupara
+				);
+			obstacleGroup->IntoGroup(obstacle); 
+			obstacle = AddGameObject<Object>(
+				Vec3(30.0f, 5.0f, -20.0f),
+				Vec3(-80.0f, 0.0f, 1.0f),
+				Vec3(2.0f),
 				ObjectType::Asupara
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(30.0f, 5.0f, 5.0f),
-				Vec3(XM_PI / 2.0f, 0.0f, 0.0f),
-				Vec3(1.5f),
+				Vec3(25.0f, 5.0f, -20.0f),
+				Vec3(90.0f, 0.0f, 1.0f),
+				Vec3(2.0f),
+				ObjectType::Asupara
+				);
+			obstacleGroup->IntoGroup(obstacle);
+			obstacle = AddGameObject<Object>(
+				Vec3(1.0f, 5.0f,-20.0f),
+				Vec3(2.0f, 0.0f, 0.4f),
+				Vec3(2.0f),
 				ObjectType::Asupara
 				);
 			obstacleGroup->IntoGroup(obstacle);
@@ -294,7 +310,7 @@ namespace basecross {
 				);
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
-				Vec3(-40.0f, 2.0f, -30.0f),
+				Vec3(-40.0f, 2.0f, -25.0f),
 				Vec3(0.0f, 1.5f, 0.0f),
 				Vec3(6.0f),
 				ObjectType::Nasu
@@ -302,6 +318,13 @@ namespace basecross {
 			obstacleGroup->IntoGroup(obstacle);
 			obstacle = AddGameObject<Object>(
 				Vec3(-40.0f, 1.5f, 10.0f),
+				Vec3(0.0f, 0.0f, XM_PI / 8.0f),
+				Vec3(5.0f),
+				ObjectType::Imo
+				);
+			obstacleGroup->IntoGroup(obstacle);
+			obstacle = AddGameObject<Object>(
+				Vec3(-40.0f, 1.5f, -10.0f),
 				Vec3(0.0f, 0.0f, XM_PI / 8.0f),
 				Vec3(5.0f),
 				ObjectType::Imo
@@ -321,6 +344,46 @@ namespace basecross {
 			//	ObjectType::Kabotya
 			//	);
 			//obstacleGroup->IntoGroup(obstacle);
+
+			AddGameObject<GunSeat>(
+				Vec3(-10.0f, 2.0f, 10.0f),
+				Quat(0.0f),
+				true
+				);
+
+			AddGameObject<SetGun>(
+				Vec3(-10.0f, 2.0f, 10.0f),
+				Quat(0.0f),
+				true);
+
+
+			//AddGameObject<SetGun>(
+			//	Vec3(40.0f, 2.0f, -20.0f),
+			//	Quat(0.0f),
+			//	false
+			//	);
+
+			//AddGameObject<CannonAmmoBox>(
+			//	Vec3(0.0f, 2.0f, 5.0f)
+			//	);
+
+	
+	}
+
+	void GameStage::OnCreate() {
+		try {
+			m_efkInterface = ObjectFactory::Create<EfkInterface>();
+			
+			//SetPhysicsActive(true);
+			//ビューとライトの作成.
+			//CreateEffect();
+			WeaponState();
+			CreateViewLight();
+			CreateUI();
+			/*CreateTime();
+			CreateEndTime();*/
+
+			StageObject();
 
 			auto oil = AddGameObject<Object>(
 				Vec3(0.0f, 0.0f, 0.0f),
@@ -354,71 +417,48 @@ namespace basecross {
 
 
 
-			for (int i = 1; i < 8; i++) {
+			//for (int i = 1; i < 8; i++) {
 
-				CharacterType p;
-				int Rand = rand() % 4;
-				switch (Rand) {
-				case 0:
-					p = CharacterType::SHRIMP;
-					break;
-				case 1:
-					p = CharacterType::CHICKEN;
-					break;
-				case 2:
-					p = CharacterType::POTATO;
-					break;
-				case 3:
-					p = CharacterType::DOUGHNUT;
-					break;
-				}
+			//	CharacterType p;
+			//	int Rand = rand() % 4;
+			//	switch (Rand) {
+			//	case 0:
+			//		p = CharacterType::SHRIMP;
+			//		break;
+			//	case 1:
+			//		p = CharacterType::CHICKEN;
+			//		break;
+			//	case 2:
+			//		p = CharacterType::POTATO;
+			//		break;
+			//	case 3:
+			//		p = CharacterType::DOUGHNUT;
+			//		break;
+			//	}
 
-				auto AIparam = AIParam_s{
-					vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
-					1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
-					3, 3,
-					0,
-					15.0f,
-					true
-				};
+			//	auto AIparam = AIParam_s{
+			//		vector<Vec3> { Vec3(0.0f, -10.0f, 0.0f), Vec3(30.0f, -10.0f, 10.0f), Vec3(-30.0f, -10.0f, 40.0f), Vec3(10, -10.0f, 40) },
+			//		1.0f, 5.0f, 15.0f, 10, 0.0f, 10, 15.0f, 15.0f,
+			//		3, 3,
+			//		0,
+			//		15.0f,
+			//		true
+			//	};
 
-				m_enemy = AddGameObject<AIchan>(
-					p,
-					false,
-					i, i,
-					AIparam
-					);
+			//	m_enemy = AddGameObject<AIchan>(
+			//		p,
+			//		false,
+			//		i, i,
+			//		AIparam
+			//		);
 
-				characterGroup->IntoGroup(m_enemy);
-			}
+			//	characterGroup->IntoGroup(m_enemy);
+			//}
 
 			for (int i = 0; i < 5; i++) {
 				AddGameObject<Weapon>();
 			}
 			m_weaponTime = 5.0f;
-
-			AddGameObject<GunSeat>(
-				Vec3(-10.0f, 2.0f, 10.0f),
-				Quat(0.0f),
-				true
-				);
-
-			AddGameObject<SetGun>(
-				Vec3(-10.0f, 2.0f, 10.0f),
-				Quat(0.0f),
-				true);
-
-
-			//AddGameObject<SetGun>(
-			//	Vec3(40.0f, 2.0f, -20.0f),
-			//	Quat(0.0f),
-			//	false
-			//	);
-
-			//AddGameObject<CannonAmmoBox>(
-			//	Vec3(0.0f, 2.0f, 5.0f)
-			//	);
-
 
 			CreatePinP();
 			m_timer = AddGameObject<UI_CountdownTimer>(185, 180, Vec2(870.0f, 500.0f), Vec2(0.5f), Col4(1.0f), 5);
