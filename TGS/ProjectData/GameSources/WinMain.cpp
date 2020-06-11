@@ -9,7 +9,7 @@ using namespace basecross;
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 
 //定数
-const wchar_t* pClassName = L"BaseCrossFullClass";
+const wchar_t* pClassName = L"銃ジュウ";
 const wchar_t* pWndTitle = L"銃ジュウ";
 
 

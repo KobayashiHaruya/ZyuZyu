@@ -368,6 +368,8 @@ namespace basecross {
 				});
 			}
 
+			Destroy();
+
 		}
 	}
 

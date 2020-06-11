@@ -46,6 +46,7 @@ namespace basecross {
 		//Score
 		vector<CharacterStatus_s> m_charState;
 		vector<vector<int>> m_KillList;
+		int m_topID;
 
 		wstring m_resultFont;
 

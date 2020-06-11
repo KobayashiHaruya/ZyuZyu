@@ -20,7 +20,7 @@ namespace basecross {
 
 	void ResultStage::CreateUI() {
 		//スコア
-		m_TrueScore = m_scoreTable->GetCharacterStatuses()[0].score;
+		m_TrueScore = m_charState[m_topID].score;
 
 		for (int i = 0; i < 5; i++) {	//ループ数で桁変更
 			float n = static_cast<float>(i);
@@ -42,12 +42,11 @@ namespace basecross {
 		m_Second2 += App::GetApp()->GetElapsedTime();
 		m_randpos = rand() % 4;
 		m_randpos -= rand() % 4;
-		int id = m_scoreTable->GetCharacterStatuses()[0].unique;
 
-		if (m_Second2 > 0.5f && m_KillList[id].size() > m_listSize) {
+		if (m_Second2 > 0.5f && m_KillList[m_topID].size() > m_listSize) {
 			AddGameObject<Result_Icon>(
 				m_position + Vec3(m_randpos, 0.0f, 0.0f),
-				m_KillList[id][m_listSize]
+				m_KillList[m_topID][m_listSize]
 				);
 			m_listSize++;
 			m_Second2 = 0.0f;
@@ -95,14 +94,14 @@ namespace basecross {
 			ShowScoreTable(false);
 
 			m_efkInterface = ObjectFactory::Create<EfkInterface>();
-			
+
 			//m_efkEffect = GetEffect(エフェクトの名前);
 			//m_efkPlay = ObjectFactory::Create<EfkPlay>(m_efkEffect, ptr->GetPosition());
 			//m_efkPlay->Play(m_efkEffect, ptr->GetPosition());
 
 			StopBGM();
 			CreateViewLight();
-			CreateUI();		
+			CreateUI();
 			CreateWall();
 
 			CreateSplash();
@@ -188,7 +187,6 @@ namespace basecross {
 
 		wstring table = L"ScoreTable/Char";
 
-
 		for (int i = 0; i < 8; i++) {
 			CharacterStatus_s m_myData;
 			vector<int> killList;
@@ -230,6 +228,9 @@ namespace basecross {
 
 		}
 
+		wstring id = L"ScoreTable/Top/ID";
+		m_topID = std::stoi(XmlDocReader::GetText(m_XmlDocReader->GetSelectSingleNode(id.c_str())));
+
 	}
 
 	void ResultStage::CreateSplash() {
@@ -242,7 +243,7 @@ namespace basecross {
 		m_resultThree = AddGameObject<UI_Result_Three>(mediaDir + L"Texters/ResultImagis/ResultAnimation3/", Vec3(0.0f), Vec3(32.0f), m_layer - 9);
 		m_resultTwo = AddGameObject<UI_Result_Two>(mediaDir + L"Texters/ResultImagis/ResultAnimation2_ver4/", Vec3(0.0f), Vec3(32.0f), m_layer - 1);
 
-		m_resultTwo->ChangeCharacter(m_scoreTable->GetCharacterStatuses()[0].type);  //スプラッシュにキャラクターのタイプを指定
+		m_resultTwo->ChangeCharacter(m_charState[m_topID].type);  //スプラッシュにキャラクターのタイプを指定
 		m_resultTwo->Play();
 	}
 

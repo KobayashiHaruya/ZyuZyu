@@ -2,86 +2,85 @@
 <ScoreTable>
 	<Char0>
 		<ID>0</ID>
-		<Type>0</Type>
-		<Kill>2</Kill>
-		<Death>15</Death>
-		<Score>200</Score>
+		<Type>2</Type>
+		<Kill>4</Kill>
+		<Death>6</Death>
+		<Score>400</Score>
 		<Player>1</Player>
-		<List>10|10|</List>
+		<List>10|4|4|4|</List>
 	</Char0>
 	<Char1>
 		<ID>1</ID>
-		<Type>3</Type>
-		<Kill>12</Kill>
-		<Death>12</Death>
-		<Score>1200</Score>
+		<Type>2</Type>
+		<Kill>2</Kill>
+		<Death>7</Death>
+		<Score>200</Score>
 		<Player>0</Player>
-		<List>10|10|10|10|10|4|4|4|4|4|4|4|</List>
+		<List>10|10|</List>
 	</Char1>
 	<Char2>
 		<ID>2</ID>
 		<Type>3</Type>
-		<Kill>22</Kill>
-		<Death>10</Death>
-		<Score>2800</Score>
+		<Kill>8</Kill>
+		<Death>6</Death>
+		<Score>800</Score>
 		<Player>0</Player>
-		<List>10|10|10|10|10|10|7|7|4|4|10|10|7|7|7|8|8|7|7|4|4|8|</List>
+		<List>1|4|4|4|4|4|4|4|</List>
 	</Char2>
 	<Char3>
 		<ID>3</ID>
-		<Type>2</Type>
-		<Kill>8</Kill>
-		<Death>11</Death>
-		<Score>800</Score>
+		<Type>0</Type>
+		<Kill>7</Kill>
+		<Death>3</Death>
+		<Score>700</Score>
 		<Player>0</Player>
-		<List>7|10|7|10|10|10|10|10|</List>
+		<List>1|1|1|1|4|1|1|</List>
 	</Char3>
 	<Char4>
 		<ID>4</ID>
-		<Type>2</Type>
-		<Kill>10</Kill>
-		<Death>11</Death>
-		<Score>1000</Score>
+		<Type>1</Type>
+		<Kill>2</Kill>
+		<Death>3</Death>
+		<Score>200</Score>
 		<Player>0</Player>
-		<List>4|7|10|4|10|10|10|10|10|7|</List>
+		<List>7|4|</List>
 	</Char4>
 	<Char5>
 		<ID>5</ID>
-		<Type>0</Type>
-		<Kill>4</Kill>
-		<Death>3</Death>
-		<Score>400</Score>
+		<Type>2</Type>
+		<Kill>0</Kill>
+		<Death>4</Death>
+		<Score>0</Score>
 		<Player>0</Player>
-		<List>4|10|10|7|</List>
+		<List>None</List>
 	</Char5>
 	<Char6>
 		<ID>6</ID>
-		<Type>3</Type>
-		<Kill>15</Kill>
-		<Death>12</Death>
-		<Score>1500</Score>
+		<Type>1</Type>
+		<Kill>2</Kill>
+		<Death>9</Death>
+		<Score>200</Score>
 		<Death>3</Death>
 		<Score>200</Score>
 		<Player>0</Player>
-		<List>10|10|4|4|4|4|7|7|4|4|4|4|4|4|4|</List>
+		<List>10|7|</List>
 	</Char6>
 	<Char7>
 		<ID>7</ID>
-		<Type>2</Type>
-		<Kill>2</Kill>
-		<Death>4</Death>
-		<Score>400</Score>
-		<Player>0</Player>
-		<List>7|11|</List>
-	</Char7>
-
-	<Top>
-		<ID>0</ID>
 		<Type>0</Type>
-		<Kill>2</Kill>
-		<Death>15</Death>
-		<Score>200</Score>
-		<Player>1</Player>
+		<Kill>1</Kill>
+		<Death>1</Death>
+		<Score>100</Score>
+		<Player>0</Player>
+		<List>4|</List>
+	</Char7>
+	<Top>
+		<ID>2</ID>
+		<Type>3</Type>
+		<Kill>8</Kill>
+		<Death>6</Death>
+		<Score>800</Score>
+		<Player>0</Player>
 		<List>10|10|</List>
 	</Top>
 </ScoreTable>
