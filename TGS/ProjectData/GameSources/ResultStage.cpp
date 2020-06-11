@@ -121,15 +121,19 @@ namespace basecross {
 		m_efkInterface->OnUpdate();
 
 		if ((KeyState.m_bUpKeyTbl[VK_LBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)) && m_state == 10) {
-			m_starEffectPlay->StopEffect();
+			if (m_Second > 13.0f) {
+				m_starEffectPlay->StopEffect();
+			}
 			m_curtain->Close();
-			m_state = 1;
+			m_state = 2;
 		}
 
 		if ((KeyState.m_bUpKeyTbl[VK_RBUTTON] || (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)) && m_state == 10) {
-			m_starEffectPlay->StopEffect();
+			if (m_Second > 13.0f) {
+				m_starEffectPlay->StopEffect();
+			}
 			m_curtain->Close();
-			m_state = 2;
+			m_state = 1;
 		}
 
 		if (KeyState.m_bPressedKeyTbl['P'] || cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_START) {

@@ -2,18 +2,18 @@
 <ScoreTable>
 	<Char0>
 		<ID>0</ID>
-		<Type>3</Type>
-		<Kill>16</Kill>
+		<Type>1</Type>
+		<Kill>13</Kill>
 		<Death>7</Death>
-		<Score>3700</Score>
+		<Score>2500</Score>
 		<Player>1</Player>
-		<List>5|8|9|6|12|4|4|1|7|7|4|8|1|5|8|5|</List>
+		<List>8|5|5|7|4|8|4|10|4|1|1|5|11|</List>
 	</Char0>
 	<Char1>
 		<ID>1</ID>
 		<Type>2</Type>
 		<Kill>0</Kill>
-		<Death>9</Death>
+		<Death>4</Death>
 		<Score>0</Score>
 		<Player>0</Player>
 		<List>None</List>
@@ -21,35 +21,35 @@
 	<Char2>
 		<ID>2</ID>
 		<Type>3</Type>
-		<Kill>9</Kill>
+		<Kill>8</Kill>
 		<Death>4</Death>
-		<Score>900</Score>
+		<Score>1000</Score>
 		<Player>0</Player>
-		<List>7|4|4|10|10|1|1|1|1|</List>
+		<List>2|1|1|1|1|1|1|4|</List>
 	</Char2>
 	<Char3>
 		<ID>3</ID>
 		<Type>0</Type>
-		<Kill>8</Kill>
-		<Death>5</Death>
-		<Score>1200</Score>
+		<Kill>2</Kill>
+		<Death>1</Death>
+		<Score>200</Score>
 		<Player>0</Player>
-		<List>8|2|10|10|10|4|1|10|</List>
+		<List>1|1|</List>
 	</Char3>
 	<Char4>
 		<ID>4</ID>
 		<Type>1</Type>
-		<Kill>4</Kill>
-		<Death>10</Death>
-		<Score>700</Score>
+		<Kill>3</Kill>
+		<Death>4</Death>
+		<Score>300</Score>
 		<Player>0</Player>
-		<List>6|1|1|10|</List>
+		<List>1|1|7|</List>
 	</Char4>
 	<Char5>
 		<ID>5</ID>
 		<Type>2</Type>
 		<Kill>0</Kill>
-		<Death>6</Death>
+		<Death>3</Death>
 		<Score>0</Score>
 		<Player>0</Player>
 		<List>None</List>
@@ -57,29 +57,29 @@
 	<Char6>
 		<ID>6</ID>
 		<Type>1</Type>
-		<Kill>4</Kill>
-		<Death>4</Death>
-		<Score>600</Score>
+		<Kill>2</Kill>
+		<Death>6</Death>
+		<Score>400</Score>
 		<Death>3</Death>
 		<Score>200</Score>
 		<Player>0</Player>
-		<List>2|7|4|1|</List>
+		<List>11|10|</List>
 	</Char6>
 	<Char7>
 		<ID>7</ID>
 		<Type>0</Type>
-		<Kill>6</Kill>
-		<Death>5</Death>
-		<Score>800</Score>
+		<Kill>2</Kill>
+		<Death>3</Death>
+		<Score>600</Score>
 		<Player>0</Player>
-		<List>5|4|1|1|10|10|</List>
+		<List>2|2|</List>
 	</Char7>
 	<Top>
 		<ID>0</ID>
-		<Type>3</Type>
-		<Kill>16</Kill>
+		<Type>1</Type>
+		<Kill>13</Kill>
 		<Death>7</Death>
-		<Score>3700</Score>
+		<Score>2500</Score>
 		<Player>1</Player>
 		<List>10|10|</List>
 	</Top>
