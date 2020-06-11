@@ -546,6 +546,7 @@ namespace basecross {
 
 		if (Other->FindTag(L"Torimoti")) {
 			m_torimoti = true;
+			m_toriIn = true;
 			m_toriHitInTime = 15.0f;
 			
 			auto pos = GetComponent<Transform>()->GetPosition();
@@ -582,7 +583,7 @@ namespace basecross {
 				m_opponent = bullet->GetFrome();
 			}
 
-			if (m_torimoti) {
+			if (m_toriIn) {
 				GetStage()->AddGameObject<GatlingAmmo>(
 					GetComponent<Transform>()->GetPosition()
 					);
@@ -598,7 +599,7 @@ namespace basecross {
 				GetStage()->AddGameObject<GatlingAmmo>(
 					GetComponent<Transform>()->GetPosition()
 					);
-				m_torimoti = false;
+				m_toriIn = false;
 				m_toriHitInTime = 0.0f;
 				m_efkPlay->StopEffect();
 			}

@@ -158,13 +158,13 @@ namespace basecross{
 			if (m_toriHitInTime > 0) {
 				float time = App::GetApp()->GetElapsedTime();
 				m_toriHitInTime -= time;
-				m_torimoti = true;
+				m_toriIn = true;
 			}
 			else {
-				m_torimoti = false;
+				m_toriIn = false;
 			}
 
-			return m_torimoti;
+			return m_toriIn;
 		}
 		int GetAmmoO() {
 			return m_WeaponO.ammo;
