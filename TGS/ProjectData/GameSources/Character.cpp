@@ -546,6 +546,7 @@ namespace basecross {
 
 		if (Other->FindTag(L"Torimoti")) {
 			m_torimoti = true;
+			m_torimoti = true;
 			m_toriHitInTime = 15.0f;
 			
 			auto pos = GetComponent<Transform>()->GetPosition();

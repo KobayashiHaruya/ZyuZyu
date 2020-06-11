@@ -2,54 +2,54 @@
 <ScoreTable>
 	<Char0>
 		<ID>0</ID>
-		<Type>2</Type>
-		<Kill>4</Kill>
-		<Death>6</Death>
-		<Score>400</Score>
+		<Type>1</Type>
+		<Kill>0</Kill>
+		<Death>0</Death>
+		<Score>0</Score>
 		<Player>1</Player>
-		<List>10|4|4|4|</List>
+		<List>None</List>
 	</Char0>
 	<Char1>
 		<ID>1</ID>
 		<Type>2</Type>
-		<Kill>2</Kill>
-		<Death>7</Death>
-		<Score>200</Score>
+		<Kill>0</Kill>
+		<Death>2</Death>
+		<Score>0</Score>
 		<Player>0</Player>
-		<List>10|10|</List>
+		<List>None</List>
 	</Char1>
 	<Char2>
 		<ID>2</ID>
 		<Type>3</Type>
-		<Kill>8</Kill>
-		<Death>6</Death>
-		<Score>800</Score>
+		<Kill>11</Kill>
+		<Death>4</Death>
+		<Score>1100</Score>
 		<Player>0</Player>
-		<List>1|4|4|4|4|4|4|4|</List>
+		<List>4|1|7|1|1|1|1|1|1|1|4|</List>
 	</Char2>
 	<Char3>
 		<ID>3</ID>
 		<Type>0</Type>
-		<Kill>7</Kill>
-		<Death>3</Death>
-		<Score>700</Score>
+		<Kill>1</Kill>
+		<Death>4</Death>
+		<Score>100</Score>
 		<Player>0</Player>
-		<List>1|1|1|1|4|1|1|</List>
+		<List>1|</List>
 	</Char3>
 	<Char4>
 		<ID>4</ID>
 		<Type>1</Type>
 		<Kill>2</Kill>
-		<Death>3</Death>
+		<Death>10</Death>
 		<Score>200</Score>
 		<Player>0</Player>
-		<List>7|4|</List>
+		<List>10|10|</List>
 	</Char4>
 	<Char5>
 		<ID>5</ID>
 		<Type>2</Type>
 		<Kill>0</Kill>
-		<Death>4</Death>
+		<Death>5</Death>
 		<Score>0</Score>
 		<Player>0</Player>
 		<List>None</List>
@@ -57,30 +57,30 @@
 	<Char6>
 		<ID>6</ID>
 		<Type>1</Type>
-		<Kill>2</Kill>
-		<Death>9</Death>
-		<Score>200</Score>
+		<Kill>1</Kill>
+		<Death>5</Death>
+		<Score>100</Score>
 		<Death>3</Death>
 		<Score>200</Score>
 		<Player>0</Player>
-		<List>10|7|</List>
+		<List>10|</List>
 	</Char6>
 	<Char7>
 		<ID>7</ID>
 		<Type>0</Type>
 		<Kill>1</Kill>
-		<Death>1</Death>
-		<Score>100</Score>
+		<Death>4</Death>
+		<Score>300</Score>
 		<Player>0</Player>
-		<List>4|</List>
+		<List>2|</List>
 	</Char7>
 	<Top>
-		<ID>2</ID>
-		<Type>3</Type>
-		<Kill>8</Kill>
-		<Death>6</Death>
-		<Score>800</Score>
-		<Player>0</Player>
+		<ID>0</ID>
+		<Type>1</Type>
+		<Kill>0</Kill>
+		<Death>0</Death>
+		<Score>0</Score>
+		<Player>1</Player>
 		<List>10|10|</List>
 	</Top>
 </ScoreTable>
