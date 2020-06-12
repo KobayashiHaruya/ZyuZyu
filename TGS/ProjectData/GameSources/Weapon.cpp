@@ -367,8 +367,10 @@ namespace basecross {
 					Run(status);
 				});
 			}
+			else {
+				Destroy();
+			}
 
-			Destroy();
 
 		}
 	}
