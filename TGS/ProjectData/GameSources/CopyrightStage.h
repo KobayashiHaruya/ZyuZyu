@@ -31,11 +31,11 @@ namespace basecross {
 			m_baseLayer(10),
 			m_splash(NULL),
 			m_splashCount(NULL),
-			m_splashTime(3.0f),
+			m_splashTime(2.0f),
 			m_bannerIndex(NULL),
 			m_banners(vector<shared_ptr<UI_Static_Image>>()),
-			m_bannerCount(4.0f),
-			m_bannerChangeTime(4.0f),
+			m_bannerCount(2.0f),
+			m_bannerChangeTime(2.0f),
 			m_bgm(NULL)
 		{}
 		virtual ~CopyrightStage() {}
