@@ -14,13 +14,10 @@ namespace basecross{
 	void Scene::CreateResourses() {
 
 		wstring dataDir;
-		//mediaディレクトリ取得用
-		App::GetApp()->GetAssetsDirectory(dataDir);
 
 		wstring mediaDir;
 		App::GetApp()->GetDataDirectory(mediaDir);
 
-		FindFile(dataDir);
 		FindFile(mediaDir + L"Texters/");
 		FindFile(mediaDir + L"Sound/SE/");
 		FindFile(mediaDir + L"Sound/BGM/");
@@ -70,8 +67,7 @@ namespace basecross{
 
 				if (exe == L".bmf") {
 					// 例外の登録,ボーンモデルだから
-					if ((fileName == L"Chara_R.bmf") ||
-						(fileName == L"CornGatling_Animation.bmf") ||
+					if ((fileName == L"CornGatling_Animation.bmf") ||
 						(fileName == L"TomatoCannon_Animation.bmf") ||
 						(fileName == L"Shrimp_Animation_ver2.bmf") ||
 						(fileName == L"0525_Animation_Shrimp_test4.bmf") ||
