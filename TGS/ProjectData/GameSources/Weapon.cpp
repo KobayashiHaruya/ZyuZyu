@@ -299,7 +299,7 @@ namespace basecross {
 			break;
 		case BulletS::SExplosion:
 			SEName = L"explosion_smork_se.wav";
-			volume = 0.1f;
+			volume = 0.5f;
 			break;
 		case BulletS::RExplosion:
 			SEName = L"+Bakuhatu01.wav";
