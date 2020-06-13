@@ -99,6 +99,8 @@ namespace basecross{
 		shared_ptr<EfkEffect> m_efkEffect;
 		shared_ptr<EfkPlay> m_efkPlay;
 
+		shared_ptr<CharacterHand> m_hand;
+
 
 	public:
 
@@ -113,7 +115,8 @@ namespace basecross{
 			m_killCharacters(vector<CharacterKillDetails_s>(NULL)),
 			m_touchOil(NULL),
 			ID(unique),
-			m_opponent({})
+			m_opponent({}),
+			m_hand(NULL)
 		{}
 		~Character() {}
 
@@ -328,6 +331,21 @@ namespace basecross{
 		void AddLevel();
 		void AddKill(const int kill);
 		void AddDeath(const int death);
+
+		void CreateHand();
+		void UpdateHand();
+		shared_ptr<CharacterHand> GetHand() {
+			return m_hand;
+		}
+		
+		BulletS GetMainWeapon() {
+			if (m_weapon) {
+				return m_WeaponO.weapon;
+			}
+			else {
+				return m_WeaponT.weapon;
+			}
+		}
 	};
 
 	class Player :public Character {
@@ -374,6 +392,11 @@ namespace basecross{
 
 	};
 
+
+	//------------------------------------------------------------------------------------------------
+	//油に落ちるエフェクト : Class
+	//------------------------------------------------------------------------------------------------
+
 	class OilEffect : public GameObject {
 		Vec3 m_pos;
 
@@ -389,7 +412,7 @@ namespace basecross{
 	public:
 		OilEffect(const shared_ptr<Stage>& StagePtr,
 			const Vec3& pos
-			) :
+		) :
 			GameObject(StagePtr),
 			m_pos(pos)
 		{

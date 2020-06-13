@@ -978,4 +978,157 @@ namespace basecross {
 		AddTag(L"SetGun");
 	}
 
+
+	//------------------------------------------------------------------------------------------------
+	//キャラクターの手: Class
+	//------------------------------------------------------------------------------------------------
+
+	int CharacterHand::WeaponFindIndex(const BulletS& bulletType) {
+		int i = 0;
+		for (auto& weapon : m_weapons) {
+			if (weapon->GetBulletType() == bulletType) {
+				return i;
+			}
+			else {
+				i++;
+			}
+		}
+		return -1;
+	}
+
+	void CharacterHand::ChangeWeapon(const int index) {
+		int i = 0;
+		for (auto& weapon : m_weapons) {
+			if (i == index) {
+				weapon->Hidden(false);
+				m_activeWeapon = weapon;
+			}
+			else {
+				weapon->Hidden(true);
+			}
+			i++;
+		}
+	}
+
+	void CharacterHand::CreateWeapon(const BulletS& bulletType) {
+		auto newWeapon = GetStage()->AddGameObject<CharacterHandWeapon>(
+			m_characterTrans,
+			bulletType
+			);
+		m_weapons.push_back(newWeapon);
+	}
+
+	void CharacterHand::OnUpdate2() {
+		auto trans = GetComponent<Transform>();
+		trans->SetQuaternion(m_characterTrans->GetQuaternion());
+		trans->SetPosition(m_characterTrans->GetPosition());
+	}
+
+	void CharacterHand::SetWeapon(const BulletS& bulletType) {
+		auto i = WeaponFindIndex(bulletType);
+		if (i >= 0) {
+			ChangeWeapon(i);
+		}
+		else {
+			CreateWeapon(bulletType);
+			SetWeapon(bulletType);
+		}
+	}
+
+
+	//------------------------------------------------------------------------------------------------
+	//キャラクターが手に持つ武器 : Class
+	//------------------------------------------------------------------------------------------------
+
+	void CharacterHandWeapon::BulletTypeToModelName() {
+		switch (m_bulletType)
+		{
+		case BulletS::Assault:
+			m_bmfName = L"AssaultRifle_Carry.bmf";
+			break;
+		case BulletS::Hand:
+			m_bmfName = L"Revolver_Carry.bmf";
+			break;
+		case BulletS::Shot:
+			m_bmfName = L"Shotgun_Carry.bmf";
+			break;
+		case BulletS::SMG:
+			m_bmfName = L"SMG_Carry.bmf";
+			break;
+		case BulletS::Rocket:
+			m_bmfName = L"Rocketlauncher_Carry.bmf";
+			break;
+		case BulletS::Sniper:
+			m_bmfName = L"SniperRifle_Carry.bmf";
+			break;
+		case BulletS::Laser:
+			m_bmfName = L"Laser_Carry.bmf";
+			break;
+		case BulletS::Wind:
+			m_bmfName = L"Wind_Carry.bmf";
+			break;
+		default:
+			break;
+		}
+	}
+
+	void CharacterHandWeapon::BmfLoad() {
+		Mat4x4 m_spanMat;
+		m_spanMat.affineTransformation(
+			Vec3(1.0f, 1.0f, 1.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f));
+
+		auto ptrShadow = AddComponent<Shadowmap>();
+		ptrShadow->SetMeshResource(m_bmfName);
+		ptrShadow->SetMeshToTransformMatrix(m_spanMat);
+
+		auto ptrDraw = AddComponent<PNTStaticModelDraw>();
+		ptrDraw->SetMeshResource(m_bmfName);
+		ptrDraw->SetMeshToTransformMatrix(m_spanMat);
+		ptrDraw->SetOwnShadowActive(true);
+		ptrDraw->SetDrawActive(true);
+
+		SetAlphaActive(true);
+
+		GetStage()->SetCollisionPerformanceActive(true);
+		GetStage()->SetUpdatePerformanceActive(true);
+		GetStage()->SetDrawPerformanceActive(true);
+	}
+
+	void CharacterHandWeapon::UpdateTrans() {
+		auto trans = GetComponent<Transform>();
+		auto pos = m_characterTrans->GetPosition();
+		pos.y -= 2.0f;
+
+		auto testPos = Vec3(0.0f, 2.0f, 0.0f);
+		trans->SetPosition(pos);
+		auto rot = m_characterTrans->GetQuaternion();
+		trans->SetQuaternion(rot);
+
+		auto parent = m_characterTrans->GetWorldMatrix();
+		parent.scaleIdentity();
+		Mat4x4 mat;
+		mat.affineTransformation(
+			Vec3(1.0),
+			Vec3(0.0),
+			Vec3(0.0, XM_PI, 0.0),
+			m_characterTrans->GetPosition() - trans->GetPosition()
+		);
+		mat *= parent;
+		//trans->SetPosition(mat.transInMatrix());
+		trans->SetQuaternion(mat.quatInMatrix());
+
+	}
+
+	void CharacterHandWeapon::OnCreate() {
+		BulletTypeToModelName();
+		BmfLoad();
+		UpdateTrans();
+	}
+
+	void CharacterHandWeapon::OnUpdate2() {
+		UpdateTrans();
+	}
 }

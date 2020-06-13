@@ -16,6 +16,7 @@ namespace basecross {
 
 	void AIchan::OnCreate() {
 		Draw();
+		CreateHand();
 
 		m_stateMachine.reset(new StateMachine<AIchan>(GetThis<AIchan>()));
 		m_stateMachine->ChangeState(SeekPatrolState::Instance());
@@ -327,7 +328,10 @@ namespace basecross {
 			thisQuat.facing(front);
 		}
 
-			WeaponOFire(fire, thisQuat);
+		WeaponOFire(fire, thisQuat);
+
+		GetHand()->SetWeapon(GetMainWeapon());
+
 		//if (m_newBulletNum == 1) {
 		//}
 		//else if (m_newBulletNum == 2) {

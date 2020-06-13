@@ -713,6 +713,8 @@ namespace basecross {
 
 		int Rand = rand() % 8;
 		Respawn(Rand);
+
+		GetHand()->SetWeapon(m_WeaponO.weapon);
 	}
 
 	//相手を油に落とした時の処理
@@ -870,6 +872,8 @@ namespace basecross {
 			m_WeaponT.reTime = 0.0f;
 			m_WeaponO.intTime = 0.0f;
 			m_WeaponT.intTime = 0.0f;
+
+			if(GetMainWeapon()) GetHand()->SetWeapon(GetMainWeapon());
 		}
 
 		if (BulletS::None == m_WeaponT.weapon) {
@@ -1385,11 +1389,24 @@ namespace basecross {
 
 	}
 
+	void Character::CreateHand() {
+		m_hand = GetStage()->AddGameObject<CharacterHand>(
+			GetComponent<Transform>()
+			);
+	}
+
+	void Character::UpdateHand() {
+		//m_hand->SetWeapon(m_)
+	}
+
 
 	void Player::OnCreate() {
 		Draw();
 		PlayerUI();
 		PlayerCamera();
+		CreateHand();
+
+		if (GetMainWeapon()) GetHand()->SetWeapon(GetMainWeapon());
 	}
 
 	void Player::OnUpdate() {
@@ -1408,6 +1425,10 @@ namespace basecross {
 		PinPUpdate();
 	}
 
+	
+	//------------------------------------------------------------------------------------------------
+	//油に落ちるエフェクト : Class
+	//------------------------------------------------------------------------------------------------
 
 	void OilEffect::CreateFirstEffect() {
 		auto upPos = m_pos;

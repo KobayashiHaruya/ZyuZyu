@@ -333,4 +333,81 @@ namespace basecross {
 	};
 
 
+	//------------------------------------------------------------------------------------------------
+	//キャラクターが手に持つ武器 : Class
+	//------------------------------------------------------------------------------------------------
+
+	class CharacterHandWeapon : public GameObject {
+		shared_ptr<Transform> m_characterTrans;
+		BulletS m_bulletType;
+
+		wstring m_bmfName;
+
+		void BulletTypeToModelName();
+		void BmfLoad();
+		void UpdateTrans();
+
+	public:
+		CharacterHandWeapon(const shared_ptr<Stage>& StagePtr,
+			const shared_ptr<Transform>& characterTrans,
+			const BulletS bulletType
+		) :
+			GameObject(StagePtr),
+			m_characterTrans(characterTrans),
+			m_bulletType(bulletType),
+			m_bmfName(L"")
+		{}
+		~CharacterHandWeapon() {}
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate2() override;
+
+		void Hidden(const bool e) {
+			SetDrawActive(!e);
+			SetUpdateActive(!e);
+		}
+
+		BulletS GetBulletType() {
+			return m_bulletType;
+		}
+
+		wstring GetBmfName() {
+			return m_bmfName;
+		}
+	};
+
+
+	//------------------------------------------------------------------------------------------------
+	//キャラクターの手: Class
+	//------------------------------------------------------------------------------------------------
+
+	class CharacterHand : public GameObject {
+		shared_ptr<Transform> m_characterTrans;
+
+		vector<shared_ptr<CharacterHandWeapon>> m_weapons;
+		shared_ptr<CharacterHandWeapon> m_activeWeapon;
+
+		int WeaponFindIndex(const BulletS& bulletType);
+		void ChangeWeapon(const int index);
+		void CreateWeapon(const BulletS& bulletType);
+
+	public:
+		CharacterHand(const shared_ptr<Stage>& StagePtr,
+			const shared_ptr<Transform>& characterTrans
+		) :
+			GameObject(StagePtr),
+			m_characterTrans(characterTrans),
+			m_weapons(vector<shared_ptr<CharacterHandWeapon>>(NULL)),
+			m_activeWeapon(NULL)
+		{}
+		~CharacterHand() {}
+
+		virtual void OnUpdate2() override;
+
+		void SetWeapon(const BulletS& bulletType);
+
+		shared_ptr<CharacterHandWeapon> GetWeapon() {
+			return m_activeWeapon;
+		}
+	};
 }
